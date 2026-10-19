@@ -1,0 +1,10 @@
+{
+  "status": "environment_blocked",
+  "media_directory_available": false,
+  "source_data_unchanged": false,
+  "initial_files": 370,
+  "current_files": null,
+  "changed_or_missing": [],
+  "added": [],
+  "note": "mount unavailable does not mean files were deleted; size/mtime comparison is not a full-byte SHA audit"
+}

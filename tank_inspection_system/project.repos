@@ -1,0 +1,18 @@
+# physic_bev/src is an unborn local Git repository: no HEAD/remote to import.
+repositories:
+  tank_vision_inspection:
+    type: git
+    url: https://github.com/Dtsyyds/project_east_eleair.git
+    version: 75d2148f426c64cca92372ed69f6cb5f8e005014
+  third_party/Livox-SDK2:
+    type: git
+    url: https://github.com/Livox-SDK/Livox-SDK2.git
+    version: 08f523c930b2f0ba1e98a6afaa8d7476bf479908
+  third_party/Sophus:
+    type: git
+    url: https://github.com/strasdat/Sophus.git
+    version: de0f8d3d92bf776271e16de56d1803940ebccab9
+  third_party/librealsense:
+    type: git
+    url: https://github.com/IntelRealSense/librealsense.git
+    version: e15c5d6bb1563e778d116f682aeefffbae2daedc

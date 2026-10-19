@@ -1,0 +1,28 @@
+{
+  "business_sha256": "24603a96fba1e9e6ec334a9582fba4777b1f52086439762be006398618ff1107",
+  "timings": {
+    "trace_off": {
+      "p50_ms": 70.49902050016499,
+      "p95_ms": 72.49400540001716,
+      "throughput_hz": 17.075280179886523,
+      "frames": 30
+    },
+    "trace_on": {
+      "p50_ms": 365.5809624997346,
+      "p95_ms": 700.9829086498936,
+      "throughput_hz": 2.404999860992881,
+      "frames": 30
+    }
+  },
+  "wall_sec": 89.42283047199999,
+  "cpu_sec": 90.95700585,
+  "peak_rss_bytes": 2251161600,
+  "input_sha256": "9d1da6006548d1ba091cab1f73d552b8d52b7f96eeeea355ca714fefd3854b38",
+  "input_frames": 90,
+  "queue_drop": 0,
+  "environment": {
+    "python": "3.10.12 (main, Aug 15 2025, 14:32:43) [GCC 11.4.0]",
+    "opencv": "4.11.0",
+    "numpy": "1.26.4"
+  }
+}

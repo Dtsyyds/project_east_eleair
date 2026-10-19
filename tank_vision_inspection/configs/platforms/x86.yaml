@@ -1,0 +1,29 @@
+platform:
+  name: x86
+  architecture: x86_64
+  ros_distro: jazzy
+camera:
+  source: folder
+realtime_seam:
+  enabled: true
+  queue_size: 1
+  drop_policy: drop_oldest
+  process_latest_only: true
+inspection:
+  enabled: true
+  queue_size: 2
+  drop_policy: drop_newest
+  tile_size: 1024
+  overlap: 128
+  trigger_mode: frame_interval
+  trigger_every_n_frames: 15
+inference:
+  backend: onnx
+  model_path: null
+  input_format: bgr
+  model_calibrated: false
+storage:
+  save_all_raw: false
+  save_abnormal_raw: true
+  normal_frame_interval: 15
+  output_queue_size: 32

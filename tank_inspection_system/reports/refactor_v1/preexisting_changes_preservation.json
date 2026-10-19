@@ -1,0 +1,113 @@
+{
+  "all_preserved": true,
+  "files": [
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/README.md",
+      "initial_sha256": "5f3ef5ab546b748022119792815484c34cae86ff02ef3737f9405234e783d343",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/config/rerun.yaml",
+      "initial_sha256": "6e6e83770ef2da8f0bb3f9f0781d26d832c080a23a9a04589805d63d2887bd7f",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/image_adapter.py",
+      "initial_sha256": "b12814dd1d954752d0f395c8a907ea4baf4b568f5aeddf00f0e953c76548b984",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/pointcloud_adapter.py",
+      "initial_sha256": "aacb2a23f3f2fb0310c64d5e161e7006dcb748cf65739e1b74058116f7ed2534",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/rerun_session.py",
+      "initial_sha256": "a4e38669a925818dabe1ddca5b94270a63c93c60c6ba9f43e01d7ff23afab92f",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/package.xml",
+      "initial_sha256": "bf94cfdc150152cd56e2f1e77d52ef1b74c2d9879586e49d952eb746e7efce71",
+      "unchanged": false,
+      "original_backup_preserved": true
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/setup.py",
+      "initial_sha256": "0c7d385f7f20c24a1f8acc4ffacfecdced36a698c6bb2ab13083a8d5699d97b1",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_image_adapter.py",
+      "initial_sha256": "a0bf06b15732a6fafde0d9e5e25d3f82bce8901993c30e02b61acd8998cc236b",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py",
+      "initial_sha256": "d6c7e38f3294cadeb00913e4fc660a7b0f4d0661ebd5f1d1654e2e321b8a05ec",
+      "unchanged": false,
+      "original_backup_preserved": true
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/scripts/build_run_rrd.py",
+      "initial_sha256": "d3fe8b3db99a0d68e6a3af744963591a43b2d896f6ba1443287a3eda58186843",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/scripts/build_run_rrd_incomplete.sh",
+      "initial_sha256": "bba6d454bf48e5e9f9353f784bb83461ee2890c97936176bc4e32c74d05074bd",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/scripts/build_run_rrd_nice.sh",
+      "initial_sha256": "012976b83aaed514891c9a355cd1fe210302c6f0edf33aa225cf7313e67e81d8",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py",
+      "initial_sha256": "c86a3228ac42c573aed71b60ad2e54601d559d27be0d04e6dcbbbf2e509717b0",
+      "unchanged": false,
+      "original_backup_preserved": true
+    },
+    {
+      "path": "tank_vision_inspection/scripts/field_w4_multisensor_e2e.py",
+      "initial_sha256": "20f96ea46d12c15a1de008168eaa8811f9ba951da3812c8bf482fcea89a60e54",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/scripts/field_w4b_resource_contention.py",
+      "initial_sha256": "2c3ec6f4192c3b58c7276792b34603b05d63698c6b735881198bbb2b7e1d0c06",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/scripts/run_field_w4_multisensor_e2e.sh",
+      "initial_sha256": "2504b20eef24bc54f4f668bc1bacaf70bc05c413d6fc9b6fdc6cda63e36b7896",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/scripts/run_field_w4b_resource_contention.sh",
+      "initial_sha256": "92063b148e6730cba03ae07221251f1d2a228768d794b3828f1f26b95a57c408",
+      "unchanged": true,
+      "original_backup_preserved": false
+    },
+    {
+      "path": "tank_vision_inspection/tests/test_field_w4_multisensor_e2e.py",
+      "initial_sha256": "bcba56dc4517511c71a9d82b32c3674f63024400e9c1017eb650047536ada2eb",
+      "unchanged": true,
+      "original_backup_preserved": false
+    }
+  ]
+}

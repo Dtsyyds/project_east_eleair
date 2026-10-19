@@ -1,0 +1,9 @@
+uint8 INTERFACE_VERSION=1
+string defect_id
+string class_name
+float32 confidence
+int32[4] bbox_xyxy
+geometry_msgs/Point32[] polygon
+float32 area_px
+geometry_msgs/Point32 centroid_uv
+string backend_name

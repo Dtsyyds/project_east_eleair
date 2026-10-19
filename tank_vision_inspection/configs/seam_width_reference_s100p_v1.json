@@ -1,0 +1,417 @@
+{
+  "schema_version": "1.0",
+  "source_image_path": "output/s1_real_seam_images/seam_center_lit_quality_01.bmp",
+  "source_image_sha256": "f49df2fd8e7cffa72b87f5d004096f1b2410a88cf503984b2dc89e53d9bbaf92",
+  "annotation_path": "output/s1_d7_manual_ground_truth_v2/seam_center_lit_quality_01_annotation_v2.json",
+  "annotation_sha256": "f960bf210508e011d3646d64a181df01d10ad4e416834e42cf23cfac7f3a68c6",
+  "source_width": 4096,
+  "source_height": 3072,
+  "reference_samples": [
+    {
+      "y_normalized": 0.1388888888888889,
+      "center_x_normalized": 0.46458333333333335,
+      "width_normalized": 0.05083333333333334,
+      "width_px_at_reference_resolution": 208.21333333333337
+    },
+    {
+      "y_normalized": 0.15206349206349207,
+      "center_x_normalized": 0.46374120670995667,
+      "width_normalized": 0.051781204906204914,
+      "width_px_at_reference_resolution": 212.09581529581533
+    },
+    {
+      "y_normalized": 0.16523809523809527,
+      "center_x_normalized": 0.46168876262626257,
+      "width_normalized": 0.051781204906204914,
+      "width_px_at_reference_resolution": 212.09581529581533
+    },
+    {
+      "y_normalized": 0.17841269841269844,
+      "center_x_normalized": 0.45919981060606063,
+      "width_normalized": 0.050171807359307374,
+      "width_px_at_reference_resolution": 205.503722943723
+    },
+    {
+      "y_normalized": 0.1915873015873016,
+      "center_x_normalized": 0.4567108585858586,
+      "width_normalized": 0.04856240981240978,
+      "width_px_at_reference_resolution": 198.91163059163046
+    },
+    {
+      "y_normalized": 0.20476190476190478,
+      "center_x_normalized": 0.45422190656565653,
+      "width_normalized": 0.04856240981240978,
+      "width_px_at_reference_resolution": 198.91163059163046
+    },
+    {
+      "y_normalized": 0.21793650793650796,
+      "center_x_normalized": 0.454709145021645,
+      "width_normalized": 0.05129599567099563,
+      "width_px_at_reference_resolution": 210.1083982683981
+    },
+    {
+      "y_normalized": 0.23111111111111113,
+      "center_x_normalized": 0.4553871649184149,
+      "width_normalized": 0.0560205419580419,
+      "width_px_at_reference_resolution": 229.46013986013963
+    },
+    {
+      "y_normalized": 0.2442857142857143,
+      "center_x_normalized": 0.45632810816634345,
+      "width_normalized": 0.06021924154277092,
+      "width_px_at_reference_resolution": 246.65801335918968
+    },
+    {
+      "y_normalized": 0.25746031746031744,
+      "center_x_normalized": 0.45621253877895246,
+      "width_normalized": 0.0615161817415138,
+      "width_px_at_reference_resolution": 251.97028041324052
+    },
+    {
+      "y_normalized": 0.2706349206349206,
+      "center_x_normalized": 0.4554266249510557,
+      "width_normalized": 0.0615161817415138,
+      "width_px_at_reference_resolution": 251.97028041324052
+    },
+    {
+      "y_normalized": 0.28380952380952384,
+      "center_x_normalized": 0.45464071112315896,
+      "width_normalized": 0.0615161817415138,
+      "width_px_at_reference_resolution": 251.97028041324052
+    },
+    {
+      "y_normalized": 0.296984126984127,
+      "center_x_normalized": 0.4537618251470533,
+      "width_normalized": 0.06165837735566293,
+      "width_px_at_reference_resolution": 252.55271364879536
+    },
+    {
+      "y_normalized": 0.31015873015873024,
+      "center_x_normalized": 0.45264040313214193,
+      "width_normalized": 0.06230751938855794,
+      "width_px_at_reference_resolution": 255.21159941553333
+    },
+    {
+      "y_normalized": 0.3233333333333334,
+      "center_x_normalized": 0.45146054259455637,
+      "width_normalized": 0.0628397843761046,
+      "width_px_at_reference_resolution": 257.39175680452445
+    },
+    {
+      "y_normalized": 0.3365079365079366,
+      "center_x_normalized": 0.4502005377973034,
+      "width_normalized": 0.0628397843761046,
+      "width_px_at_reference_resolution": 257.39175680452445
+    },
+    {
+      "y_normalized": 0.34968253968253976,
+      "center_x_normalized": 0.449532867494824,
+      "width_normalized": 0.062399068322981366,
+      "width_px_at_reference_resolution": 255.58658385093167
+    },
+    {
+      "y_normalized": 0.36285714285714293,
+      "center_x_normalized": 0.4489958592132505,
+      "width_normalized": 0.06132505175983438,
+      "width_px_at_reference_resolution": 251.18741200828163
+    },
+    {
+      "y_normalized": 0.3760317460317461,
+      "center_x_normalized": 0.4485714285714286,
+      "width_normalized": 0.06047619047619052,
+      "width_px_at_reference_resolution": 247.71047619047636
+    },
+    {
+      "y_normalized": 0.3892063492063493,
+      "center_x_normalized": 0.4483611111111111,
+      "width_normalized": 0.059579365079365065,
+      "width_px_at_reference_resolution": 244.0370793650793
+    },
+    {
+      "y_normalized": 0.40238095238095245,
+      "center_x_normalized": 0.4486493055555556,
+      "width_normalized": 0.0576855158730159,
+      "width_px_at_reference_resolution": 236.27987301587314
+    },
+    {
+      "y_normalized": 0.4155555555555556,
+      "center_x_normalized": 0.4489375,
+      "width_normalized": 0.05579166666666663,
+      "width_px_at_reference_resolution": 228.5226666666665
+    },
+    {
+      "y_normalized": 0.4287301587301588,
+      "center_x_normalized": 0.4483274221064919,
+      "width_normalized": 0.05472711083176196,
+      "width_px_at_reference_resolution": 224.162245966897
+    },
+    {
+      "y_normalized": 0.44190476190476197,
+      "center_x_normalized": 0.44697042141809584,
+      "width_normalized": 0.05472711083176196,
+      "width_px_at_reference_resolution": 224.162245966897
+    },
+    {
+      "y_normalized": 0.45507936507936514,
+      "center_x_normalized": 0.4456134207296998,
+      "width_normalized": 0.05477058453802636,
+      "width_px_at_reference_resolution": 224.34031426775596
+    },
+    {
+      "y_normalized": 0.4682539682539683,
+      "center_x_normalized": 0.4442564200413037,
+      "width_normalized": 0.05477058453802636,
+      "width_px_at_reference_resolution": 224.34031426775596
+    },
+    {
+      "y_normalized": 0.48142857142857154,
+      "center_x_normalized": 0.4433496427461945,
+      "width_normalized": 0.05395708516398168,
+      "width_px_at_reference_resolution": 221.00822083166895
+    },
+    {
+      "y_normalized": 0.4946031746031747,
+      "center_x_normalized": 0.44251164958061506,
+      "width_normalized": 0.052962543824612796,
+      "width_px_at_reference_resolution": 216.934579505614
+    },
+    {
+      "y_normalized": 0.5077777777777779,
+      "center_x_normalized": 0.4419736842105263,
+      "width_normalized": 0.052962543824612796,
+      "width_px_at_reference_resolution": 216.934579505614
+    },
+    {
+      "y_normalized": 0.5209523809523811,
+      "center_x_normalized": 0.44171365914786964,
+      "width_normalized": 0.05323934837092731,
+      "width_px_at_reference_resolution": 218.06837092731826
+    },
+    {
+      "y_normalized": 0.5341269841269842,
+      "center_x_normalized": 0.441453634085213,
+      "width_normalized": 0.05375939849624062,
+      "width_px_at_reference_resolution": 220.19849624060157
+    },
+    {
+      "y_normalized": 0.5473015873015874,
+      "center_x_normalized": 0.4411936090225564,
+      "width_normalized": 0.05427944862155387,
+      "width_px_at_reference_resolution": 222.32862155388466
+    },
+    {
+      "y_normalized": 0.5604761904761906,
+      "center_x_normalized": 0.44093358395989973,
+      "width_normalized": 0.05479949874686718,
+      "width_px_at_reference_resolution": 224.45874686716797
+    },
+    {
+      "y_normalized": 0.5736507936507937,
+      "center_x_normalized": 0.4407068452380952,
+      "width_normalized": 0.0552529761904762,
+      "width_px_at_reference_resolution": 226.3161904761905
+    },
+    {
+      "y_normalized": 0.5868253968253969,
+      "center_x_normalized": 0.440500992063492,
+      "width_normalized": 0.05566468253968254,
+      "width_px_at_reference_resolution": 228.0025396825397
+    },
+    {
+      "y_normalized": 0.6000000000000001,
+      "center_x_normalized": 0.44010416666666663,
+      "width_normalized": 0.05645833333333333,
+      "width_px_at_reference_resolution": 231.25333333333333
+    },
+    {
+      "y_normalized": 0.6131746031746033,
+      "center_x_normalized": 0.4395748299319728,
+      "width_normalized": 0.057451298701298725,
+      "width_px_at_reference_resolution": 235.32051948051958
+    },
+    {
+      "y_normalized": 0.6263492063492064,
+      "center_x_normalized": 0.4384172077922078,
+      "width_normalized": 0.057481240981240966,
+      "width_px_at_reference_resolution": 235.443163059163
+    },
+    {
+      "y_normalized": 0.6395238095238096,
+      "center_x_normalized": 0.4370847763347763,
+      "width_normalized": 0.057481240981240966,
+      "width_px_at_reference_resolution": 235.443163059163
+    },
+    {
+      "y_normalized": 0.6526984126984128,
+      "center_x_normalized": 0.4357523448773448,
+      "width_normalized": 0.05751118326118326,
+      "width_px_at_reference_resolution": 235.56580663780665
+    },
+    {
+      "y_normalized": 0.665873015873016,
+      "center_x_normalized": 0.434491341991342,
+      "width_normalized": 0.05768398268398267,
+      "width_px_at_reference_resolution": 236.27359307359302
+    },
+    {
+      "y_normalized": 0.6790476190476191,
+      "center_x_normalized": 0.4338176406926407,
+      "width_normalized": 0.05903138528138524,
+      "width_px_at_reference_resolution": 241.79255411255394
+    },
+    {
+      "y_normalized": 0.6922222222222224,
+      "center_x_normalized": 0.43314393939393936,
+      "width_normalized": 0.060378787878787865,
+      "width_px_at_reference_resolution": 247.3115151515151
+    },
+    {
+      "y_normalized": 0.7053968253968255,
+      "center_x_normalized": 0.4336896641666175,
+      "width_normalized": 0.06193542195712509,
+      "width_px_at_reference_resolution": 253.68748833638438
+    },
+    {
+      "y_normalized": 0.7185714285714287,
+      "center_x_normalized": 0.4345801344514656,
+      "width_normalized": 0.06304646745014664,
+      "width_px_at_reference_resolution": 258.2383306758006
+    },
+    {
+      "y_normalized": 0.7317460317460318,
+      "center_x_normalized": 0.4354706047363137,
+      "width_normalized": 0.06415751294316818,
+      "width_px_at_reference_resolution": 262.7891730152169
+    },
+    {
+      "y_normalized": 0.7449206349206351,
+      "center_x_normalized": 0.43603006456820015,
+      "width_normalized": 0.06427158999192895,
+      "width_px_at_reference_resolution": 263.25643260694096
+    },
+    {
+      "y_normalized": 0.7580952380952382,
+      "center_x_normalized": 0.43619753833736885,
+      "width_normalized": 0.06443962585034013,
+      "width_px_at_reference_resolution": 263.9447074829932
+    },
+    {
+      "y_normalized": 0.7712698412698414,
+      "center_x_normalized": 0.43582100340136054,
+      "width_normalized": 0.06443962585034013,
+      "width_px_at_reference_resolution": 263.9447074829932
+    },
+    {
+      "y_normalized": 0.7844444444444445,
+      "center_x_normalized": 0.43512698412698414,
+      "width_normalized": 0.0646984126984127,
+      "width_px_at_reference_resolution": 265.0046984126984
+    },
+    {
+      "y_normalized": 0.7976190476190478,
+      "center_x_normalized": 0.4344329648526077,
+      "width_normalized": 0.0649308236808237,
+      "width_px_at_reference_resolution": 265.9566537966539
+    },
+    {
+      "y_normalized": 0.8107936507936508,
+      "center_x_normalized": 0.4335963642213642,
+      "width_normalized": 0.0649308236808237,
+      "width_px_at_reference_resolution": 265.9566537966539
+    },
+    {
+      "y_normalized": 0.8239682539682541,
+      "center_x_normalized": 0.43291344916344915,
+      "width_normalized": 0.06416023166023166,
+      "width_px_at_reference_resolution": 262.8003088803089
+    },
+    {
+      "y_normalized": 0.8371428571428572,
+      "center_x_normalized": 0.4323793436293436,
+      "width_normalized": 0.06309202059202057,
+      "width_px_at_reference_resolution": 258.42491634491626
+    },
+    {
+      "y_normalized": 0.8503174603174605,
+      "center_x_normalized": 0.4320833333333333,
+      "width_normalized": 0.06277777777777777,
+      "width_px_at_reference_resolution": 257.1377777777777
+    },
+    {
+      "y_normalized": 0.8634920634920635,
+      "center_x_normalized": 0.43194444444444446,
+      "width_normalized": 0.06277777777777777,
+      "width_px_at_reference_resolution": 257.1377777777777
+    },
+    {
+      "y_normalized": 0.8766666666666668,
+      "center_x_normalized": 0.4311759259259259,
+      "width_normalized": 0.06431481481481482,
+      "width_px_at_reference_resolution": 263.4334814814815
+    },
+    {
+      "y_normalized": 0.8898412698412699,
+      "center_x_normalized": 0.4304074074074074,
+      "width_normalized": 0.06585185185185183,
+      "width_px_at_reference_resolution": 269.7291851851851
+    },
+    {
+      "y_normalized": 0.9030158730158732,
+      "center_x_normalized": 0.4296388888888889,
+      "width_normalized": 0.06738888888888889,
+      "width_px_at_reference_resolution": 276.0248888888889
+    },
+    {
+      "y_normalized": 0.9161904761904762,
+      "center_x_normalized": 0.4289039408866995,
+      "width_normalized": 0.06885878489326763,
+      "width_px_at_reference_resolution": 282.0455829228242
+    },
+    {
+      "y_normalized": 0.9293650793650795,
+      "center_x_normalized": 0.4282224958949097,
+      "width_normalized": 0.07022167487684727,
+      "width_px_at_reference_resolution": 287.62798029556643
+    },
+    {
+      "y_normalized": 0.9425396825396826,
+      "center_x_normalized": 0.42750632868089766,
+      "width_normalized": 0.07065879937246217,
+      "width_px_at_reference_resolution": 289.41844222960503
+    },
+    {
+      "y_normalized": 0.9557142857142858,
+      "center_x_normalized": 0.4250525447582133,
+      "width_normalized": 0.07065879937246217,
+      "width_px_at_reference_resolution": 289.41844222960503
+    },
+    {
+      "y_normalized": 0.9688888888888889,
+      "center_x_normalized": 0.422577519379845,
+      "width_normalized": 0.06984496124031009,
+      "width_px_at_reference_resolution": 286.0849612403101
+    }
+  ],
+  "width_statistics_px": {
+    "min": 198.91163059163046,
+    "p05": 208.49759307359307,
+    "p50": 246.9847642553524,
+    "p95": 285.4790544926872,
+    "max": 289.41844222960503
+  },
+  "common_y_range_original_px": [
+    426.6666666666667,
+    2976.4266666666667
+  ],
+  "generated_at": "2026-09-09T02:44:21.520074+00:00",
+  "reference_is_manual": true,
+  "smoothing": "three_sample_running_median_with_preserved_endpoints",
+  "frozen_v2_validation": {
+    "manifest_status_frozen": true,
+    "human_overlay_approved": true,
+    "json_overlay_consistent": true,
+    "source_image_sha256": true,
+    "annotation_sha256": true,
+    "overlay_sha256": true
+  }
+}

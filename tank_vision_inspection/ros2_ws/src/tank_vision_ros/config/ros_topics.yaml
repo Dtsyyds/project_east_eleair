@@ -1,0 +1,9 @@
+tank_vision_node:
+  ros__parameters:
+    image_topic: /vision/image_raw
+    camera_info_topic: /camera/camera_info
+    debug_image_topic: /vision/debug_image
+    seam_topic: /vision/seam_state
+    defects_topic: /vision/defects
+    quality_topic: /vision/quality
+

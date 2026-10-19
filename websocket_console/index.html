@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; style-src 'unsafe-inline'; script-src 'self'">
+  <title>罐体巡检操作台</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0d141d;--panel:#172230;--panel2:#101b27;--line:#34465c;--text:#edf4fb;--muted:#adbdcd;--good:#70ddb1;--bad:#ff9393;--warn:#ffd080;--info:#8fcaff;--focus:#fff1a8}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button,input,select,textarea{border:1px solid var(--line);border-radius:7px;background:#0c1723;color:var(--text);padding:8px 11px}button{cursor:pointer;background:#2c435b}button:hover:enabled{background:#3e607e}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--focus);outline-offset:2px}button:disabled{opacity:.48;cursor:not-allowed}.primary{background:#176b57}.danger{background:#763b43}.quiet{background:#1b2c3e}.hidden{display:none!important}
+    .shell{max-width:1480px;margin:auto;padding:16px}.topbar{position:sticky;z-index:20;top:0;background:rgba(13,20,29,.97);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:0 6px 24px #0007}.brand{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.brand h1{font-size:23px;margin:0}.brand p{margin:2px 0 0;color:var(--muted)}.headline{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.badge{padding:4px 10px;border:1px solid var(--line);border-radius:18px;background:#223044;white-space:nowrap}.badge.good{color:var(--good);border-color:#367c66}.badge.bad{color:var(--bad);border-color:#91494f}.badge.warn{color:var(--warn);border-color:#936c34}.badge.info{color:var(--info);border-color:#386a93}.badge.muted{color:var(--muted)}.top-alert{margin-top:9px;padding:7px 10px;border-radius:7px;background:#261e19;color:var(--warn);font-weight:600}.top-alert:empty{display:none}
+    nav{display:flex;gap:5px;margin-top:12px;overflow:auto;padding-bottom:1px}nav button{background:transparent;border-color:transparent;border-bottom:2px solid transparent;border-radius:6px 6px 0 0;white-space:nowrap}nav button.active{color:var(--good);border-bottom-color:var(--good);background:#132337}.view{display:none}.view.active{display:block}.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px;margin-top:14px;min-width:0}.panel h2,.panel h3{margin:0 0 11px}.panel h2{font-size:18px}.panel h3{font-size:16px}.head,.toolbar,.status-row,.buttons{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.head{justify-content:space-between}.toolbar label,.field{display:flex;gap:6px;align-items:center}.stack{display:grid;gap:10px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.muted,small{color:var(--muted)}.good-text{color:var(--good)}.bad-text{color:var(--bad)}.warn-text{color:var(--warn)}.reason{margin:8px 0;color:var(--warn);min-height:1.5em}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}.metric-line{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted)}.metric-line strong{color:var(--text)}
+    .video-card{min-width:0}.screen{height:330px;background:#050a10;border-radius:8px;position:relative;display:grid;place-items:center;overflow:hidden;border:1px solid #26384c}.screen canvas{position:absolute;max-width:100%;max-height:100%;width:auto;height:auto}.screen .overlay{pointer-events:none}.screen.raw-only .overlay{display:none}.screen-state{position:absolute;z-index:3;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;padding:14px;background:#07101bd9;color:var(--muted);font-weight:700}.screen-state.stale{display:block!important;background:#5e2e2ee8;color:white;font-size:18px}.video-title{display:flex;justify-content:space-between;gap:8px;align-items:center}.video-meta{white-space:pre-line;font:12px/1.65 ui-monospace,SFMono-Regular,monospace;color:var(--muted);overflow-wrap:anywhere}.rate-pair{font-size:12px;color:var(--muted);white-space:nowrap}.rate-pair b{color:var(--text)}
+    .tracking-state{font-size:21px;font-weight:750}.tracking-summary{padding:12px;border-radius:8px;background:var(--panel2);border-left:4px solid var(--line)}.tracking-summary.good{border-color:var(--good)}.tracking-summary.warn{border-color:var(--warn)}.tracking-summary.bad{border-color:var(--bad)}.kv{display:grid;grid-template-columns:max-content 1fr;gap:5px 12px}.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}.trajectory-wrap{height:260px;background:#09121c;border-radius:8px;position:relative}.trajectory-wrap canvas{width:100%;height:100%}.pose{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.pose>div{padding:10px;background:var(--panel2);border-radius:7px}.pose strong{display:block;font-size:20px}.pose-label{color:var(--muted);font-size:12px}
+    .alert-list,.event-list{display:grid;gap:7px}.alert-item{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:center;padding:8px;background:var(--panel2);border-radius:7px}.severity{font-size:12px;font-weight:700}.severity.critical,.severity.error{color:var(--bad)}.severity.warning{color:var(--warn)}.severity.info{color:var(--info)}
+    .form-grid{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:10px}.form-grid label{display:grid;gap:4px;color:var(--muted)}.form-grid textarea{min-height:72px;resize:vertical}.wide{grid-column:span 2}.task-stage{display:grid;grid-template-columns:repeat(7,minmax(90px,1fr));gap:4px;margin:10px 0}.stage{padding:7px 5px;background:#101a25;text-align:center;color:var(--muted);font-size:12px;border-bottom:3px solid var(--line)}.stage.current{color:var(--text);border-color:var(--warn)}.stage.done{color:var(--good);border-color:var(--good)}.progress{height:9px;background:#0b131d;border-radius:10px;overflow:hidden}.progress>span{display:block;background:var(--good);height:100%;width:0}.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.check{padding:9px;background:var(--panel2);border-radius:7px;border-left:3px solid var(--line)}.check.good{border-color:var(--good)}.check.bad{border-color:var(--bad)}.check.warn{border-color:var(--warn)}
+    table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:8px;border-bottom:1px solid #2b3a4e;vertical-align:top}th{color:var(--muted);font-weight:600}.table-wrap{overflow:auto;max-height:380px}.empty-cell{text-align:center;color:var(--muted);padding:24px}.devices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.device{padding:11px;background:var(--panel2);border-radius:8px;border-left:3px solid var(--line);overflow-wrap:anywhere}.device.good{border-color:var(--good)}.device.bad{border-color:var(--bad)}.device.warn{border-color:var(--warn)}.device-name{font-weight:650}.device-status{float:right}.device-reason{font-size:13px;color:var(--muted);margin:5px 0}.device-detail{font-size:12px;color:var(--muted);white-space:pre-line}
+    #endpoint{width:min(460px,70vw)}input[type=password]{width:210px}input[type=number]{width:105px}input[type=checkbox]{accent-color:var(--good)}details{border:1px solid var(--line);padding:10px;border-radius:8px}summary{cursor:pointer;font-weight:650}pre{margin:10px 0 0;background:#0a131d;border-radius:7px;padding:11px;max-height:300px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}#log{max-height:300px;overflow:auto;padding:0;list-style:none;font:12px/1.6 ui-monospace,monospace}#log li{padding:4px 0;border-bottom:1px solid #29394d;overflow-wrap:anywhere}.log-error{color:var(--bad)}.log-tx{color:var(--good)}#notice{min-height:22px;color:var(--warn)}.chart{height:190px;background:#09121c;border-radius:8px;width:100%}
+    .replay-window{min-width:0}.replay-window canvas{display:block;width:100%;height:260px;background:#050a10;border-radius:8px;touch-action:none}.replay-window:fullscreen{background:var(--bg);padding:24px;display:flex;flex-direction:column}.replay-window:fullscreen canvas{flex:1;min-height:0}.replay-window pre{min-height:150px}.replay-meta{white-space:pre-line;color:var(--muted);font-size:12px;overflow-wrap:anywhere}.replay-empty{padding:14px;text-align:center;color:var(--muted);background:var(--panel2);border-radius:7px}.replay-values{font-size:13px;white-space:pre-line;margin:8px 0;min-height:20px}#replay-run{width:min(570px,75vw)}
+    .replay-window canvas{object-fit:contain}.replay-window canvas[hidden]{display:none}
+    @media(max-width:980px){.grid3{grid-template-columns:1fr 1fr}.devices{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:1fr 1fr}.task-stage{grid-template-columns:repeat(4,1fr)}.screen{height:280px}}
+    @media(max-width:680px){.shell{padding:8px}.brand{display:block}.headline{justify-content:flex-start;margin-top:8px}.grid2,.grid3{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}.devices,.checks{grid-template-columns:1fr}.pose{grid-template-columns:1fr 1fr}.screen{height:235px}.task-stage{grid-template-columns:1fr 1fr}.topbar{position:relative}}
+  </style>
+  <script src="console_core.js" defer></script>
+  <script src="replay.js" defer></script>
+  <script src="console.js" defer></script>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <div><h1>罐体巡检操作台</h1><p>现场采集 · 巡迹观察 · 异常留证 · 任务封存</p></div>
+      <div class="headline" aria-label="常驻状态">
+        <span id="robot-badge" class="badge muted">机器人 tank_inspection_robot（默认）</span>
+        <span id="connection" class="badge warn" role="status">未连接</span>
+        <span id="mode-badge" class="badge muted">模式 未知</span>
+        <span id="run-badge" class="badge muted">run 未开始</span>
+        <span id="task-badge" class="badge muted">采集 未开始</span>
+        <span id="ssd-badge" class="badge muted">SSD 未知</span>
+      </div>
+    </div>
+    <div id="top-alert" class="top-alert" role="alert"></div>
+    <nav aria-label="主视图">
+      <button class="active" data-view="realtime">实时巡检</button>
+      <button data-view="collection">采集任务</button>
+      <button data-view="replay">数据回放</button>
+      <button data-view="events">事件与数据</button>
+      <button data-view="devices">设备与调试</button>
+    </nav>
+    <div class="buttons" style="margin-top:12px">
+      <button id="quick-start" class="primary" disabled>一键启动采集</button>
+      <button id="quick-stop" class="danger" disabled>一键停止</button>
+      <button id="quick-replay" class="primary" disabled>一键回放</button>
+      <label>测厚数据 <select id="measurement-source"><option value="saved">已有波形</option><option value="live">实时采集</option></select></label>
+      <button id="measure-thickness" class="primary" disabled>一键测厚</button>
+      <strong id="thickness-result" aria-live="polite">厚度：—</strong>
+    </div>
+    <p id="measurement-message" class="muted" role="status">连接后可启动采集或测厚。</p>
+  </header>
+
+  <section id="view-realtime" class="view active">
+    <section class="panel">
+      <div class="head"><h2>关键告警</h2><small>确认仅表示已读，恢复状态以板端真实数据为准</small></div>
+      <div id="alert-list" class="alert-list"><p class="muted">尚无告警数据</p></div>
+    </section>
+    <div class="grid2">
+      <section class="panel video-card" data-stream="mindvision">
+        <div class="video-title"><h2>工业相机 · <span id="mindvision-kind">内容类型未提供</span></h2><span class="rate-pair">接收 <b id="mindvision-receive-fps">0.0</b> / 显示 <b id="mindvision-display-fps">0.0</b> FPS</span></div>
+        <div id="mindvision-screen" class="screen"><canvas id="mindvision-canvas"></canvas><canvas id="mindvision-overlay" class="overlay"></canvas><div id="mindvision-state" class="screen-state">尚未收到预览</div></div>
+        <div class="toolbar"><button data-overlay="mindvision" class="quiet">隐藏叠加</button><button data-fullscreen="mindvision" class="quiet">全屏</button></div>
+        <p id="mindvision-meta" class="video-meta">等待 status_sensor</p>
+      </section>
+      <section class="panel video-card" data-stream="fisheye">
+        <div class="video-title"><h2>鱼眼相机 · <span id="fisheye-kind">内容类型未提供</span></h2><span class="rate-pair">接收 <b id="fisheye-receive-fps">0.0</b> / 显示 <b id="fisheye-display-fps">0.0</b> FPS</span></div>
+        <div id="fisheye-screen" class="screen"><canvas id="fisheye-canvas"></canvas><canvas id="fisheye-overlay" class="overlay"></canvas><div id="fisheye-state" class="screen-state">尚未收到预览</div></div>
+        <div class="toolbar"><button data-overlay="fisheye" class="quiet">隐藏叠加</button><button data-fullscreen="fisheye" class="quiet">全屏</button></div>
+        <p id="fisheye-meta" class="video-meta">等待 status_sensor</p>
+      </section>
+      <section class="panel video-card" data-stream="depth_camera">
+        <div class="video-title"><h2>D405 · <span id="depth_camera-kind">内容类型未提供</span></h2><span class="rate-pair">接收 <b id="depth_camera-receive-fps">0.0</b> / 显示 <b id="depth_camera-display-fps">0.0</b> FPS</span></div>
+        <div id="depth_camera-screen" class="screen"><canvas id="depth_camera-canvas"></canvas><canvas id="depth_camera-overlay" class="overlay"></canvas><div id="depth_camera-state" class="screen-state">尚未收到预览</div></div>
+        <div class="toolbar"><button data-overlay="depth_camera" class="quiet">隐藏叠加</button><button data-fullscreen="depth_camera" class="quiet">全屏</button></div>
+        <p id="depth_camera-meta" class="video-meta">等待 status_sensor</p>
+        <small>深度 JPEG 只作为可视化；没有原始深度与有效标定时不提供毫米读数或图面测距。</small>
+      </section>
+    </div>
+    <div class="grid2">
+      <section class="panel">
+        <div class="head"><h2>巡迹结果</h2><span id="tracking-age" class="muted">未收到</span></div>
+        <div id="tracking-summary" class="tracking-summary"><div id="tracking-state" class="tracking-state">状态未知</div><p id="tracking-reason" class="muted">等待板端结果；页面不重新计算巡迹算法。</p></div>
+        <dl id="tracking-core" class="kv"></dl>
+        <details><summary>观测、阈值与阶段指标</summary><dl id="tracking-metrics" class="kv"><dt>状态</dt><dd>未提供</dd></dl></details>
+      </section>
+      <section class="panel">
+        <div class="head"><h2>位姿与轻量轨迹</h2><small id="pose-status">未收到有效位姿</small></div>
+        <div class="pose"><div><span class="pose-label">X · m</span><strong id="pose-x">—</strong></div><div><span class="pose-label">Y · m</span><strong id="pose-y">—</strong></div><div><span class="pose-label">Z · m</span><strong id="pose-z">—</strong></div><div><span class="pose-label">Yaw · rad</span><strong id="pose-angle">—</strong></div></div>
+        <div class="trajectory-wrap"><canvas id="trajectory"></canvas></div>
+        <p id="pose-meta" class="mono muted">坐标系、轴方向与源时间待回包；未注册到罐体资产坐标。</p>
+      </section>
+    </div>
+    <section class="panel"><div class="head"><h2>涡流通道均值预览</h2><small>有界降采样显示，不是原始波形，不参与记录</small></div><canvas id="eddy-chart" class="chart"></canvas><p id="eddy-meta" class="muted">未收到 channel_mean；单位未知时不标注 mm。</p></section>
+  </section>
+
+  <section id="view-replay" class="view">
+    <section class="panel">
+      <div class="head"><h2>历史采集回放</h2><span id="replay-status" class="badge muted">未回放</span></div>
+      <div class="toolbar">
+        <label>采集批次 <select id="replay-run"><option value="">正在读取历史批次…</option></select></label>
+        <button id="replay-refresh" disabled>刷新批次</button>
+        <label>速度 <select id="replay-rate"><option value="0.5">0.5 倍</option><option value="1" selected>1 倍</option><option value="2">2 倍</option></select></label>
+      </div>
+      <div class="buttons" style="margin-top:12px">
+        <button id="replay-start" class="primary" disabled>一键回放</button>
+        <button id="replay-pause" disabled>暂停回放</button>
+        <button id="replay-resume" disabled>继续回放</button>
+        <button id="replay-stop" class="danger" disabled>停止回放</button>
+      </div>
+      <p id="replay-message" role="status" class="reason">选择历史批次后点击一键回放。</p>
+      <div class="progress"><span id="replay-progress"></span></div>
+      <p id="replay-time" class="metric-line">0.0 / 0.0 秒</p>
+      <small>各窗口按采集时间共同回放。相机、点云和曲线为限频预览；页面显示不改变原始采集文件。</small>
+    </section>
+    <div id="replay-windows" class="grid2"></div>
+    <section class="panel">
+      <div class="head"><h2>全部记录话题</h2><small>相机内参、设备状态、TF 和诊断等记录可展开查看</small></div>
+      <div id="replay-other-topics" class="stack"><p class="muted">启动回放后显示记录信息。</p></div>
+    </section>
+  </section>
+
+  <section id="view-collection" class="view">
+    <section class="panel">
+      <div class="head"><h2>任务信息与预检</h2><span id="collection-capability" class="badge warn">等待板端能力</span></div>
+      <p class="muted">run_id 和目录必须由板端生成；网页不提交 shell 命令或任意文件路径。网页掉线、刷新或关闭不应停止板端采集。</p>
+      <div class="form-grid">
+        <label>任务名称<input id="task-name" maxlength="80" autocomplete="off"></label>
+        <label>罐体/样件 ID<input id="asset-id" maxlength="80" autocomplete="off"></label>
+        <label>焊缝段 ID<input id="seam-id" maxlength="80" autocomplete="off"></label>
+        <label>采集 profile<select id="profile"><option value="">等待板端提供</option></select></label>
+        <label class="wide">操作员备注<textarea id="task-note" maxlength="500"></textarea></label>
+      </div>
+      <div class="buttons" style="margin-top:12px"><button id="preflight" class="primary" disabled>执行预检</button><button id="start-recording" class="primary" disabled>一键启动采集</button><button id="stop-recording" class="danger" disabled>一键停止</button><button id="query-task" disabled>刷新任务状态</button></div>
+      <p id="collection-disabled-reason" class="reason">板端未声明任务管理能力。</p>
+    </section>
+    <section class="panel">
+      <div class="head"><h2>当前任务</h2><span id="task-state-text" class="badge muted">未开始</span></div>
+      <div id="task-stages" class="task-stage"></div><div class="progress"><span id="task-progress"></span></div>
+      <div id="task-metrics" class="metric-line" style="margin-top:10px"><span>elapsed <strong>未知</strong></span><span>写入量 <strong>未知</strong></span><span>剩余空间 <strong>未知</strong></span></div>
+      <p id="task-message" class="muted">等待任务状态。</p>
+      <div id="preflight-checks" class="checks"><div class="check">尚无预检结果</div></div>
+      <details style="margin-top:12px"><summary>封存与验收分项</summary><div id="finalize-checks" class="checks"><div class="check">尚无封存结果</div></div></details>
+    </section>
+  </section>
+
+  <section id="view-events" class="view">
+    <section class="panel">
+      <div class="head"><h2>事件标记与证据</h2><span id="snapshot-capability" class="badge warn">等待板端能力</span></div>
+      <div class="form-grid">
+        <label>事件类型<select id="event-type"><option value="seam_lost">焊缝丢失</option><option value="boundary_offset">边界偏移</option><option value="depth_anomaly">深度异常</option><option value="surface_suspect">疑似表面异常</option><option value="sensor_anomaly">传感器异常</option><option value="custom">自定义</option></select></label>
+        <label class="wide">备注<textarea id="event-note" maxlength="500"></textarea></label>
+      </div>
+      <div class="buttons" style="margin-top:12px"><button id="save-displayed" disabled>保存当前显示帧</button><button id="save-next" disabled>请求保存下一可用处理帧</button><button id="add-marker" class="primary" disabled>添加事件标记</button></div>
+      <p id="snapshot-disabled-reason" class="reason">只有板端明确声明“显示帧缓存”能力时，才可保存当前显示帧；排队成功不等于文件完整。</p>
+    </section>
+    <section class="panel"><div class="head"><h2>近期事件</h2><small>complete/hash、缺失项和写盘错误分别显示</small></div><div class="table-wrap"><table><thead><tr><th>event_id / 类型</th><th>源时间</th><th>状态</th><th>证据</th><th>备注/错误</th></tr></thead><tbody id="events-body"><tr><td colspan="5" class="empty-cell">尚无事件</td></tr></tbody></table></div></section>
+    <section class="panel"><div class="head"><h2>历史任务与交接</h2><button id="query-history" disabled>刷新历史</button></div><p id="history-reason" class="reason">板端未声明历史索引能力。</p><div class="table-wrap"><table><thead><tr><th>run_id / 时间</th><th>传感器 / 时长</th><th>大小</th><th>封存与验收</th><th>交付位置</th></tr></thead><tbody id="history-body"><tr><td colspan="5" class="empty-cell">尚无历史任务</td></tr></tbody></table></div></section>
+    <section class="panel"><div class="buttons"><button id="export">导出本页验证记录</button><small>导出不包含 Token、JPEG 正文或认证信息，也不改变工程正式验收状态。</small></div></section>
+  </section>
+
+  <section id="view-devices" class="view">
+    <section class="panel">
+      <div class="toolbar"><label for="endpoint">板端地址 <input id="endpoint" type="url" value="ws://127.0.0.1:9001" spellcheck="false"></label><button id="connect" class="primary">连接</button><button id="disconnect" disabled>断开</button><label><input id="reconnect" type="checkbox" checked>自动重连</label><label><input id="remember-endpoint" type="checkbox">记住非敏感地址</label></div>
+      <div class="metric-line"><span>接收 <strong id="rx-count">0</strong></span><span>发送 <strong id="tx-count">0</strong></span><span>格式错误 <strong id="invalid-count">0</strong></span><span>过滤其他 ID <strong id="foreign-count">0</strong></span><span id="last-received">尚无回包</span></div>
+      <p id="notice" role="status"></p>
+      <div class="buttons"><button id="check" disabled>查询设备自检</button><button id="start-stream" disabled>开启视频预览</button><button id="stop-stream" disabled>停止视频预览</button><button id="clear-log">清空页面日志</button></div>
+      <small>旧协议仍支持自检和预览；没有 request_id 的 response 只作为共享回包，不能归属到某次按钮操作。</small>
+    </section>
+    <section class="panel"><div class="head"><h2>物理设备</h2><small>ROS 流与算法结果不重复计作硬件</small></div><div id="devices" class="devices"></div></section>
+    <section class="panel"><div class="head"><h2>ROS 数据流与质量</h2><small>频率、错误、丢帧归属、标定和同步分别呈现</small></div><div class="table-wrap"><table><thead><tr><th>数据流</th><th>活性 / 年龄</th><th>频率</th><th>帧与错误</th><th>标定 / 同步</th></tr></thead><tbody id="stream-health-body"></tbody></table></div></section>
+    <section class="panel"><details><summary>底盘单次命令验证（默认关闭）</summary><p class="muted">只有板端能力、权限、control_enabled 新鲜状态和人工开关同时满足时才可发送。零速度请求不是硬件急停。</p><div class="toolbar"><label><input id="enable-control" type="checkbox">启用本页面命令测试</label><label>Token <input id="control-token" type="password" autocomplete="off" placeholder="仅在内存中使用"></label></div><div class="toolbar" style="margin-top:10px"><label id="vx-field">vx · m/s <input id="vx" type="number" value="0" step="0.01"></label><label id="vy-field">vy · m/s <input id="vy" type="number" value="0" step="0.01"></label><label id="wz-field">wz · rad/s <input id="wz" type="number" value="0" step="0.01"></label><button id="move" disabled>发送一次速度</button><button id="stop" class="danger" disabled>发送零速度</button></div><p id="control-status" class="reason">板端控制能力未知。</p></details></section>
+    <section class="panel"><div class="head"><h2>能力与最近回包</h2><span id="protocol-version" class="badge muted">旧协议/未知</span></div><details open><summary>能力协商</summary><pre id="capabilities">板端尚未提供 capabilities</pre></details><details><summary>最近共享/关联回包</summary><pre id="response">尚无 response</pre></details><p id="bridge-meta" class="muted">等待桥接统计</p></section>
+    <section class="panel"><div class="head"><h2>验证日志</h2><small>最多 200 条 · 正文与 Token 脱敏</small></div><ul id="log" aria-live="polite"></ul></section>
+  </section>
+</main>
+</body>
+</html>

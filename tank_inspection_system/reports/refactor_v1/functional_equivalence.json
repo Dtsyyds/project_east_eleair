@@ -1,0 +1,14 @@
+{
+  "frames": 33,
+  "normal_business_trace_on_off_equivalent": true,
+  "algorithm_parameters_changed": false,
+  "performance_evidence": "baseline_performance.json, modified_performance.json",
+  "non_deterministic_fields_excluded": [
+    "processing_ms",
+    "stage_timings_ms",
+    "processing_time_ms",
+    "metrics",
+    "timing",
+    "elapsed_ms"
+  ]
+}

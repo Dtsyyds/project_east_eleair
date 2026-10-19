@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Local camera frames exceed the default 512 KiB shared-memory segment.
+     https://fast-dds.docs.eprosima.com/en/2.6.x/fastdds/transport/shared_memory/shared_memory.html -->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>inspection_shm</transport_id>
+      <type>SHM</type>
+      <segment_size>268435456</segment_size>
+      <maxMessageSize>67108864</maxMessageSize>
+      <port_queue_capacity>1024</port_queue_capacity>
+    </transport_descriptor>
+    <transport_descriptor>
+      <transport_id>inspection_udp</transport_id>
+      <type>UDPv4</type>
+    </transport_descriptor>
+  </transport_descriptors>
+  <participant profile_name="inspection_participant" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>inspection_shm</transport_id>
+        <transport_id>inspection_udp</transport_id>
+      </userTransports>
+      <useBuiltinTransports>false</useBuiltinTransports>
+    </rtps>
+  </participant>
+</profiles>

@@ -1,0 +1,421 @@
+schema_version: tank_topic_contract_v1
+basis: source inspection and installed local Eddy/snapshot ROS fixtures; runtime hardware
+  offers unknown
+dynamic_header_acceptance:
+  valid_header_count_equals_total: true
+  positive: true
+  duplicate_allowed: false
+  regression_allowed: false
+  static_exceptions:
+  - /tf_static
+  headerless_time: bag/host time separately labelled
+replay:
+  prefix: 'algorithm-replay only: /replay/camera/* and /replay/recorded*; sensor modes
+    preserve public names except documented MID360 mapping'
+  frame_id: source frame; industrial VideoSource mindvision_optical_frame
+  timeline: bag timestamps + verified original video ROS stamps
+  sensor_only_mid360:
+  - /livox/lidar
+  - /livox/imu_raw
+  qos: ReplayNode type/topic policy; runtime subscriber matching and counts require
+    independent E2E
+  sensor_mid360_output_mapping:
+    /livox/lidar: /livox/lidar_points (PointCloud2 preserved)
+    /livox/imu_raw: /livox/imu (g->m/s^2 via installed native adapter; gyro unchanged;
+      header preserved)
+  native_imu_conversion_dependency: inspection_livox_adapter/livox_imu_adapter_node,
+    existing installed package; no duplicate implementation
+  discovery_wait_authority: physic_bev/scripts/replay_vehicle_collection.py argparse,
+    before media time origin
+topics:
+- topic: /camera/front/image_raw
+  message_type: sensor_msgs/msg/Image
+  qos: &id001
+    reliability: reliable when front_video=true; standalone default best_effort
+    history: keep_last
+    depth: 1
+    durability: volatile
+  frame_id: mindvision_optical_frame
+  units: pixel encoding per message; mono8/bgr8 according to SDK layout
+  timestamp: &id002
+    meaning: exposure/device tick software anchored to host ROS
+    tick_period_ns: 100000
+    hardware_sync: false
+  source: physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/node.py
+  notes: only driver owns camera; video ROS reliable subscription
+  evidence: source_declared; hardware_not_executed
+- topic: /camera/front/camera_info
+  message_type: sensor_msgs/msg/CameraInfo
+  qos: *id001
+  frame_id: mindvision_optical_frame
+  units: pixels; K/P zero uncalibrated
+  timestamp: *id002
+  source: physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/node.py
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /camera/front/image_h264
+  message_type: img_msgs/msg/H26XFrame
+  qos:
+    reliability: recorder subscriber reliable
+    depth: 4
+    publisher: hobot_codec runtime offered QoS must be inspected
+  frame_id: from codec message/header, decoded replay fixed mindvision_optical_frame
+  units: H264 bytes; pts/dts ns
+  timestamp:
+    meaning: codec source ROS header plus codec pts/dts
+    mapping: verified decoded frame_map
+  source: physic_bev/scripts/front_h264_recorder.py
+  notes: source header is authoritative; packets are not decoded frames
+  evidence: source_declared; hardware_not_executed
+- topic: /livox/lidar
+  message_type: sensor_msgs/msg/PointCloud2 (vehicle xfer_format=0); livox_ros_driver2/msg/CustomMsg
+    for configured alternate mode
+  qos:
+    reliability: reliable publisher; sync subscriber best_effort
+    depth: driver queue_size source parameter
+  frame_id: livox_frame
+  units: x/y/z metres; intensity/point time per Livox fields
+  timestamp:
+    meaning: Livox driver nanosecond data timestamp
+    hardware_sync: unverified
+  source: physic_bev/src/livox_ros_driver2/src/lddc.cpp
+  notes: FAST-LIVO2 lidar_type=1 requires CustomMsg; do not silently reinterpret PointCloud2
+  evidence: source_declared; hardware_not_executed
+- topic: /livox/imu_raw
+  message_type: sensor_msgs/msg/Imu
+  qos:
+    reliability: reliable driver default
+    history: keep_last
+  frame_id: livox_frame
+  units: acceleration native g before adapter; gyro SDK angular rate
+  timestamp:
+    meaning: ImuData.time_stamp ns
+  source: physic_bev/src/livox_ros_driver2/src/lddc.cpp
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /livox/imu
+  message_type: sensor_msgs/msg/Imu
+  qos:
+    reliability: reliable output; best_effort input
+    depth: 200
+    durability: volatile
+  frame_id: copied incoming frame_id
+  units: adapter acceleration_scale default9.80665 converts g to m/s²; angular velocity
+    preserved
+  timestamp:
+    meaning: copied raw stamp, no clock recalibration
+  source: physic_bev/src/inspection_livox_adapter/src/livox_imu_adapter_node.cpp
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /d405/camera/depth/image_rect_raw
+  message_type: sensor_msgs/msg/Image
+  qos:
+    reliability: device source/config dependent; topic_inventory required
+  frame_id: device optical frame, verify message
+  units: ROS16UC1 millimetres via RealSense fix_depth_scale; explicit scale .001 m/count,
+    NOT SDK native units
+  timestamp:
+    meaning: device/host/global_time depending frozen startup parameters
+    default_global_time: false
+  source: physic_bev/scripts/start_vehicle_collection.sh
+  notes: device header must be nonzero/strictly increasing; rates not established
+    by fixture
+  evidence: source_verified and single-device runtime 2026-10-04; field accuracy unverified
+- topic: /d405/camera/infra1/image_rect_raw
+  message_type: sensor_msgs/msg/Image
+  qos:
+    reliability: device source/config dependent; topic_inventory required
+  frame_id: device optical frame, verify message
+  units: mono8 intensity, no metric depth
+  timestamp:
+    meaning: device/host/global_time depending frozen startup parameters
+    default_global_time: false
+  source: physic_bev/scripts/start_vehicle_collection.sh
+  notes: device header must be nonzero/strictly increasing; rates not established
+    by fixture
+  evidence: single-device runtime 2026-10-04
+- topic: /d405/camera/infra2/image_rect_raw
+  message_type: sensor_msgs/msg/Image
+  qos:
+    reliability: device source/config dependent; topic_inventory required
+  frame_id: device optical frame, verify message
+  units: mono8 intensity, no metric depth
+  timestamp:
+    meaning: device/host/global_time depending frozen startup parameters
+    default_global_time: false
+  source: physic_bev/scripts/start_vehicle_collection.sh
+  notes: device header must be nonzero/strictly increasing; rates not established
+    by fixture
+  evidence: single-device runtime 2026-10-04
+- topic: /d405/camera/{depth,infra1,infra2}/camera_info
+  message_type: sensor_msgs/msg/CameraInfo
+  qos:
+    reliability: runtime device config
+  frame_id: same stream optical frame
+  units: device intrinsics per message; rig extrinsics unverified
+  timestamp:
+    meaning: device stream header
+  source: physic_bev/src/realsense-ros/realsense2_camera/src/base_realsense_node.cpp
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /eddy/data
+  message_type: eddy_driver/msg/EddyFrame
+  qos: &id003
+    reliability: best_effort
+    depth: 5
+    durability: volatile
+  frame_id: eddy_probe_link
+  units: 20 samples ×8 channels int16 mV; sample-major index=s*8+c; sequence uint32
+  timestamp: &id004
+    meaning: system host_receive after complete UART frame
+    source: frame.host_receive_time_ns
+  source: physic_bev/src/eddy_driver/src/eddy_node.cpp
+  notes: no device sampling rate field; sync uses actual sequence; 160 values not
+    means
+  evidence: source_declared; hardware_not_executed
+- topic: /eddy/channel_mean
+  message_type: eddy_driver/msg/EddyChannelMean
+  qos: *id003
+  frame_id: eddy_probe_link
+  units: float64[8] mV; computed over20samples
+  timestamp: *id004
+  source: physic_bev/src/eddy_driver/src/eddy_node.cpp
+  notes: mean only; no raw/IQ/sequence; sync explicitly uses local arrival index
+  evidence: source_declared; hardware_not_executed
+- topic: /eddy/status
+  message_type: eddy_driver/msg/EddyStatus
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: eddy_probe_link
+  units: protocol/status bytes and diagnostics per message
+  timestamp:
+    meaning: host ROS status sample time
+  source: physic_bev/src/eddy_driver/src/eddy_node.cpp
+  notes: last_status_is_error propagated to collection acceptance
+  evidence: source_declared; hardware_not_executed
+- topic: /eddy/cmd
+  message_type: eddy_driver/msg/EddyCommand
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: headerless if message contract
+  units: device protocol commands
+  timestamp:
+    meaning: headerless available bag/host time
+  source: physic_bev/src/eddy_driver/src/eddy_node.cpp
+  notes: no command issued in this task
+  evidence: source_declared; hardware_not_executed
+- topic: /inspection/eddy_current/raw
+  message_type: inspection_interfaces/msg/EddyCurrentFrame
+  qos:
+    reliability: sync subscriber best_effort
+    depth: 200
+  frame_id: legacy sender frame
+  units: I/Q, sampling_rate_hz, gain/liftoff per legacy msg contract
+  timestamp:
+    meaning: legacy header stamp; positive required
+  source: physic_bev/src/inspection_sync/src/inspection_sync_node.cpp
+  notes: legacy contract preserved; native driver not cast into this richer message
+  evidence: source_declared; hardware_not_executed
+- topic: /derived/inspection/fusion_index
+  message_type: inspection_interfaces/msg/FusionIndex
+  qos:
+    reliability: reliable
+    depth: 100
+  frame_id: tank_course
+  units: time errors ns; derived pose SI; u/v/s/n metres only when asset_coordinate_valid
+  timestamp:
+    meaning: selected anchor header copied; camera/lidar/imu/pose stamps separately
+      recorded
+  source: physic_bev/src/inspection_sync/src/inspection_sync_node.cpp
+  notes: raw+mean anchor fixtures5→5 each; default anchor legacy ultrasound; no spatial
+    accuracy claim
+  evidence: source_declared; hardware_not_executed
+- topic: /vision/front/seam_geometry
+  message_type: tank_vision_interfaces/msg/SeamGeometry
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: copied input image frame
+  units: geometry pixel coordinates and fitted coefficients/status; no calibrated
+    mm claim
+  timestamp:
+    meaning: original input header stamp
+  source: tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/stable_seam_node.py
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /vision/front/seam_state
+  message_type: tank_vision_interfaces/msg/SeamState
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: copied input image frame
+  units: geometry pixel coordinates and fitted coefficients/status; no calibrated
+    mm claim
+  timestamp:
+    meaning: original input header stamp
+  source: tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/stable_seam_node.py
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /vision/front/debug_image
+  message_type: sensor_msgs/msg/Image
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: input frame
+  units: bgr8 pixels
+  timestamp:
+    meaning: input header
+  source: tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/stable_seam_node.py
+  notes: publish_debug_image default false; heavy diagnostic switches unchanged
+  evidence: source_declared; hardware_not_executed
+- topic: /cloud_registered
+  message_type: sensor_msgs/msg/PointCloud2
+  qos:
+    reliability: reliable default
+    depth: FAST-LIVO2 source publisher setting
+  frame_id: mapping frame per message
+  units: metres/radians; algorithm frame not calibrated tank coordinate
+  timestamp:
+    meaning: algorithm source measurement/pose header
+  source: physic_bev/src/FAST-LIVO2/src/LIVMapper.cpp
+  notes: mapping collection default false; attach-only profile available; field validation
+    not executed
+  evidence: source_declared; hardware_not_executed
+- topic: /path
+  message_type: nav_msgs/msg/Path
+  qos:
+    reliability: reliable default
+    depth: FAST-LIVO2 source publisher setting
+  frame_id: mapping frame per message
+  units: metres/radians; algorithm frame not calibrated tank coordinate
+  timestamp:
+    meaning: algorithm source measurement/pose header
+  source: physic_bev/src/FAST-LIVO2/src/LIVMapper.cpp
+  notes: mapping collection default false; attach-only profile available; field validation
+    not executed
+  evidence: source_declared; hardware_not_executed
+- topic: /aft_mapped_to_init
+  message_type: nav_msgs/msg/Odometry
+  qos:
+    reliability: reliable default
+    depth: FAST-LIVO2 source publisher setting
+  frame_id: mapping frame per message
+  units: metres/radians; algorithm frame not calibrated tank coordinate
+  timestamp:
+    meaning: algorithm source measurement/pose header
+  source: physic_bev/src/FAST-LIVO2/src/LIVMapper.cpp
+  notes: mapping collection default false; attach-only profile available; field validation
+    not executed
+  evidence: source_declared; hardware_not_executed
+- topic: /tf_static
+  message_type: tf2_msgs/msg/TFMessage
+  qos:
+    reliability: reliable
+    durability: transient_local
+  frame_id: each transform parent/child
+  units: metres/quaternion
+  timestamp:
+    meaning: static transform; exempt from positive monotonic dynamic header rule
+  source: physic_bev/src/inspection_bringup/launch/hardware_pipeline.launch.py
+  notes: rough TF is not validated extrinsics
+  evidence: source_declared; hardware_not_executed
+- topic: /diagnostics
+  message_type: diagnostic_msgs/msg/DiagnosticArray
+  qos:
+    reliability: reliable
+    depth: 10
+  frame_id: publisher dependent
+  units: diagnostic strings/values
+  timestamp:
+    meaning: host ROS stamps; multiple publishers interleave; same-source regression
+      counted
+  source: physic_bev/scripts/validate_vehicle_collection.py
+  notes: ''
+  evidence: source_declared; hardware_not_executed
+- topic: /d405/camera/color/image_raw
+  message_type: sensor_msgs/msg/Image
+  units: RGB8 original camera pixels
+  frame_id: original image optical frame; JSON records both source frames
+  qos:
+    reliability: reliable output; image input best_effort
+    durability: volatile
+  timestamp:
+    meaning: original source image stamp; depth stamp/delta separately preserved
+  source: existing RealSense ROS driver
+  evidence: experimental fixture verified; live no-seam field picture; not algorithm
+    accuracy
+- topic: /vision/d405_seam/result
+  message_type: std_msgs/msg/String
+  units: JSON d405_seam_result_v1; 2D pixels/3D optical metres explicitly separated
+  frame_id: original image optical frame; JSON records both source frames
+  qos:
+    reliability: reliable output; image input best_effort
+    durability: volatile
+  timestamp:
+    meaning: original source image stamp; depth stamp/delta separately preserved
+  source: d405_seam_tracking/src/d405_seam_tracking/ros_node.py
+  evidence: experimental fixture verified; live no-seam field picture; not algorithm
+    accuracy
+- topic: /vision/d405_seam/path_3d
+  message_type: nav_msgs/msg/Path
+  units: metres, image optical frame ONLY; empty on invalid/predicted
+  frame_id: original image optical frame; JSON records both source frames
+  qos:
+    reliability: reliable output; image input best_effort
+    durability: volatile
+  timestamp:
+    meaning: original source image stamp; depth stamp/delta separately preserved
+  source: d405_seam_tracking/src/d405_seam_tracking/ros_node.py
+  evidence: experimental fixture verified; live no-seam field picture; not algorithm
+    accuracy
+- topic: /vision/d405_seam/diagnostics
+  message_type: std_msgs/msg/String
+  units: bounded status/drop/window timing JSON
+  frame_id: original image optical frame; JSON records both source frames
+  qos:
+    reliability: reliable output; image input best_effort
+    durability: volatile
+  timestamp:
+    meaning: original source image stamp; depth stamp/delta separately preserved
+  source: d405_seam_tracking/src/d405_seam_tracking/ros_node.py
+  evidence: experimental fixture verified; live no-seam field picture; not algorithm
+    accuracy
+- topic: /vision/d405_seam/overlay
+  message_type: sensor_msgs/msg/Image
+  units: bgr8 display only, requested + subscribed
+  frame_id: original image optical frame; JSON records both source frames
+  qos:
+    reliability: reliable output; image input best_effort
+    durability: volatile
+  timestamp:
+    meaning: original source image stamp; depth stamp/delta separately preserved
+  source: d405_seam_tracking/src/d405_seam_tracking/ros_node.py
+  evidence: experimental fixture verified; live no-seam field picture; not algorithm
+    accuracy
+wireless:
+  package: agv_bridge
+  configuration_authority: physic_bev/src/system_websocket/agv_bridge/config/tank_inspection.yaml
+  topic_defaults: referenced only; no duplicate manual default source
+  subscriptions:
+    Image/Eddy/UltrasoundFrame/PointCloud2: best_effort volatile keep_last1
+    Odometry/chassis: best_effort volatile keep_last10
+  command_publication: optional reliable keep_last10, Twist or Float64MultiArray[vx,vy,wz]
+    m/s,rad/s; original driver contract must be confirmed
+  transport:
+    header:
+    - robot_id
+    - msg_type
+    precise_header_time: stamp_ns decimal string plus stamp_sec/stamp_nanosec
+    preview: two latest JPEG streams; explicit drop counts, visualization_only
+    calibration_status: unverified
+    hardware_revalidated: false
+d405_experimental:
+  config_authority: d405_seam_tracking/configs/experimental.yaml
+  default_stream: infra1
+  namespace: /vision/d405_seam
+  camera_owner_added: false
+  default_vehicle_launch_changed: false
+  factory_extrinsics_qos: reliable/transient_local/depth1
+  body_calibration_valid: false

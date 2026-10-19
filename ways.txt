@@ -1,0 +1,656 @@
+请按以下顺序重试。
+
+  终端 1：
+
+  source /opt/ros/humble/setup.bash
+  source /opt/tros/humble/setup.bash
+  source /home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/install_s100p_humble/setup.bash
+  export ROS_DOMAIN_ID=83
+  export ROS_LOCALHOST_ONLY=1
+
+  ros2 launch tank_vision_ros stable_seam_direct.launch.py
+
+  必须先看到：
+
+  snapshot service ready: /stable_seam_node/save_snapshot
+
+  终端 2确认服务：
+
+  source /opt/ros/humble/setup.bash
+  source /opt/tros/humble/setup.bash
+  source /home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/install_s100p_humble/setup.bash
+  export ROS_DOMAIN_ID=83
+  export ROS_LOCALHOST_ONLY=1
+
+  ros2 service list | grep save_snapshot
+  ros2 service type /stable_seam_node/save_snapshot
+
+  应看到：
+
+  /stable_seam_node/save_snapshot
+  std_srvs/srv/Trigger
+
+  终端 3调用：
+
+  source /opt/ros/humble/setup.bash
+  source /opt/tros/humble/setup.bash
+  source /home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/install_s100p_humble/setup.bash
+  export ROS_DOMAIN_ID=83
+  export ROS_LOCALHOST_ONLY=1
+
+  ros2 service call /stable_seam_node/save_snapshot std_srvs/srv/Trigger "{}"
+
+  预期返回：
+
+  success: true
+  message: queued
+
+  然后检查：
+
+  SNAP_ROOT=/home/sunrise/east_eleair/tank_vision_inspection/output/stable_seam_failure_snapshots
+  LATEST_DIR="$(find "$SNAP_ROOT" -mindepth 1 -maxdepth 1 -type d | sort | tail -n 1)"
+
+  echo "$LATEST_DIR"
+  ls -lh "$LATEST_DIR"
+  jq '{complete, reason, detected, tracking_state, confidence, coverage, source_mode, frame_id}' \
+    "$LATEST_DIR/metadata.json"
+
+  查看器方式：
+
+  source /opt/ros/humble/setup.bash
+  source /opt/tros/humble/setup.bash
+  source /home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/install_s100p_humble/setup.bash
+  export ROS_DOMAIN_ID=83
+  export ROS_LOCALHOST_ONLY=1
+
+  ros2 param set /stable_seam_node publish_debug_image true
+  QT_QPA_PLATFORM=xcb ros2 run tank_vision_ros seam_debug_viewer
+
+
+ 当前 stable seam tracker 可以理解成五层：候选边缘 → 左右配对 → DP 连续路径 → 联合拟合 → geometry/
+  temporal gate。任何一层失败，最终都可能是 detected=false 或 LOST。
+
+  当前现场失败帧的结论是：
+
+  - ROI 正确；
+  - 正确候选在很多扫描带存在；
+  - reference 宽度没有直接拒绝正确 pair；
+  - 路径覆盖和残差都通过；
+  - 最终失败唯一直接原因是 joint_inlier_ratio=0.553 < 0.68；
+  - 当前帧没有 temporal history 放大问题。
+
+  ## 1. 输入和 ROI
+
+  当前配置文件：
+
+  configs/s100p_stable_seam_4096x3072.yaml
+
+  固定输入要求：
+
+  4096×3072
+  BGR8 或兼容灰度输入
+  same_fov_scaled=false
+
+  当前 ROI：
+
+  roi:
+    x_min_ratio: 0.30
+    x_max_ratio: 0.60
+    y_min_ratio: 0.40
+    y_max_ratio: 0.98
+
+  对应原图坐标：
+
+  x=[1229,2458)
+  y=[1229,3011)
+  尺寸=1229×1782
+
+  ROI 内处理最大宽度：
+
+  processing:
+    max_roi_width: 896
+
+  因此当前处理尺度约为：
+
+  896×1299
+
+  ROI 越界、输入尺寸错误、未设置 same_fov_scaled=true 时，不会进入正常检测。
+
+  ## 2. 扫描带和边缘候选
+
+  当前预处理：
+
+  gaussian_kernel: 5
+  sobel_kernel: 3
+  profile_gaussian_kernel: 9
+  scan_band_half_height_px: 4
+  scan_band_step_px: 8
+
+  实际流程：
+
+  1. 裁剪 ROI；
+  2. 灰度化；
+  3. Gaussian 平滑；
+  4. 水平 Sobel；
+  5. 对扫描带做水平平均和 profile 平滑；
+  6. 左侧取正梯度峰；
+  7. 右侧取负梯度峰。
+
+  当前大约产生 162 个扫描带。
+
+  边缘候选阈值：
+
+  edge_percentile: 88.0
+  edge_min_response: 0.8
+
+  实际阈值是：
+
+  max(0.8, 当前扫描带 |Sobel| 响应的 88 分位数)
+
+  每侧候选：
+
+  top_k_edges_per_side: 12
+  edge_min_separation_px: 5
+  edge_margin_ratio: 0.025
+  edge_margin_min_px: 2
+
+  含义：
+
+  - 每侧最多保留 12 个局部峰；
+  - 相邻候选至少间隔 5 个处理尺度像素；
+  - 忽略 ROI 左右边缘的一小段区域；
+  - 后续 pair 还会再次限制为最多 8 个。
+
+  ### 放宽候选生成
+
+  修改：
+
+  processing:
+    edge_min_response: 0.8
+    edge_percentile: 88.0
+    top_k_edges_per_side: 12
+    edge_min_separation_px: 5
+
+  方向：
+
+  - 降低 edge_min_response：更容易保留弱边缘，但噪声增多；
+  - 降低 edge_percentile：每带阈值降低，弱候选增多；
+  - 增大 top_k_edges_per_side：保留更多候选，计算量增加；
+  - 降低 edge_min_separation_px：允许更近的候选，可能出现重复边缘；
+  - 减小 edge_margin_ratio：扩大横向搜索区域，但更容易选到 ROI 边缘背景。
+
+  ### 收紧候选生成
+
+  反方向调整即可：
+
+  - 提高 edge_min_response；
+  - 提高 edge_percentile；
+  - 减小 top_k_edges_per_side；
+  - 增大 edge_min_separation_px；
+  - 增大 edge_margin_ratio。
+
+  注意 Gaussian 和 profile kernel 不是简单的“阈值”：
+
+  - 增大 kernel：更平滑、更抗噪，但可能抹掉窄边缘；
+  - 减小 kernel：保留细节，但反光和纹理候选会增加。
+
+  ## 3. 左右 pair 形成条件
+
+  左右候选先形成组合，然后执行硬合法性判断。
+
+  核心硬条件：
+
+  width > 0
+  width >= width_min_scale * reference_width
+  width <= width_max_scale * reference_width
+
+  当前：
+
+  pairing:
+    width_min_scale: 0.55
+    width_max_scale: 1.80
+
+  也就是：
+
+  0.55×reference_width <= candidate_width <= 1.80×reference_width
+
+  还必须满足：
+
+  - 左右顺序正确；
+  - 内部采样区有效；
+  - 左外部采样区有效；
+  - 右外部采样区有效；
+  - 在 TRACKING/DEGRADED 时，中心不能离上一帧预测太远。
+
+  内部/外部采样参数：
+
+  interior_margin_px: 2
+  exterior_sample_width_scale: 0.25
+  exterior_sample_min_px: 3
+
+  每带最终最多保留：
+
+  max_pairs_per_band: 8
+
+  ### 放宽 pair 硬范围
+
+  pairing:
+    width_min_scale: 0.55
+    width_max_scale: 1.80
+
+  放宽方式：
+
+  - 降低 width_min_scale；
+  - 提高 width_max_scale；
+  - 增大 max_pairs_per_band；
+  - 在 TRACKING 状态增大 tracking.tracking_search_width_scale。
+
+  副作用：
+
+  - 更窄的内部纹理可能被当成焊缝；
+  - 更宽的背景结构可能进入 pair；
+  - pair 数量和 DP 计算量增加。
+
+  当前现场帧中，人工宽度 100% 落在这组硬范围内，所以不建议先改 width hard gate。
+
+  ## 4. Pair unary 评分
+
+  每个合法 pair 会计算 8 个归一化分数：
+
+  score_weights:
+    left_edge_strength: 0.10
+    right_edge_strength: 0.10
+    edge_balance: 0.12
+    contrast: 0.18
+    width_reference: 0.24
+    center_prior: 0.10
+    temporal_center: 0.09
+    temporal_width: 0.07
+
+  当前最大影响是：
+
+  width_reference: 0.24
+  contrast:         0.18
+  edge_balance:     0.12
+
+  宽度连续评分实际公式：
+
+  exp(-abs(log(candidate_width / reference_width)))
+
+  不是硬切换评分。
+
+  中心先验：
+
+  initial_reference_center_weight: 0.75
+  center_prior_decay_width_scale: 2.5
+
+  表示：
+
+  prior_center = 0.75×reference_center + 0.25×ROI_center
+
+  ### 放宽 unary 对 reference/中心的依赖
+
+  pairing:
+    score_weights:
+      width_reference: ...
+      center_prior: ...
+      temporal_center: ...
+      temporal_width: ...
+    initial_reference_center_weight: 0.75
+    center_prior_decay_width_scale: 2.5
+
+  方向：
+
+  - 降低 width_reference 权重：减少错误 reference 宽度对选择的影响；
+  - 降低 initial_reference_center_weight：减少人工中心先验的影响；
+  - 提高 center_prior_decay_width_scale：中心偏离惩罚变软；
+  - 降低 center_prior 权重：弱化中心位置；
+  - TRACKING 时降低 temporal_center / temporal_width 权重：减少上一帧锁定影响。
+
+  ### 收紧 unary
+
+  反方向调整：
+
+  - 提高 width_reference；
+  - 提高 center_prior；
+  - 提高 temporal_center / temporal_width；
+  - 降低 center_prior_decay_width_scale。
+
+  当前现场诊断显示：
+
+  - 23 个扫描带中，正确 pair 存在但 selected pair 的 unary 更高；
+  - 8 个扫描带更像是 DP 连续路径选择问题；
+  - 因此 unary 和候选质量都比 geometry gate 更值得优先审查。
+
+  ## 5. DP 连续路径
+
+  DP 不是逐带贪心，而是选择累计代价最优的连续 pair 路径。
+
+  转移约束：
+
+  path:
+    maximum_missing_run: 3
+    max_center_jump_width_scale: 0.80
+    max_boundary_jump_width_scale: 1.10
+    max_width_ratio_change: 0.55
+
+  相邻 pair 使用 reference width 归一化：
+
+  center变化 / reference_width
+  left变化   / reference_width
+  right变化  / reference_width
+  abs(log(width_ratio))
+
+  转移代价：
+
+  center_transition_weight: 0.42
+  width_transition_weight: 0.24
+  left_transition_weight: 0.12
+  right_transition_weight: 0.12
+  skip_penalty: 0.38
+
+  ### 放宽 DP
+
+  path:
+    maximum_missing_run: 3
+    max_center_jump_width_scale: 0.80
+    max_boundary_jump_width_scale: 1.10
+    max_width_ratio_change: 0.55
+
+  方向：
+
+  - 增大 maximum_missing_run：允许更长缺失段；
+  - 增大 max_center_jump_width_scale：允许中心跳动更大；
+  - 增大 max_boundary_jump_width_scale：允许单边跳动更大；
+  - 增大 max_width_ratio_change：允许宽度变化更大；
+  - 降低 skip_penalty：更容易跳过坏扫描带；
+  - 降低某个 transition weight：降低对应变化的惩罚。
+
+  ### 收紧 DP
+
+  反方向调整：
+
+  - 减小允许缺失长度；
+  - 减小中心、边界、宽度跳变比例；
+  - 提高 skip_penalty；
+  - 提高 transition weight。
+
+  注意 transition weight 越大不是越宽松，而是越强烈惩罚变化。
+
+  当前现场帧：
+
+  coverage=0.993827
+  effective_span=1.0
+  maximum_missing_run=1
+  abrupt_left_jump_count=0
+  abrupt_right_jump_count=2
+
+  因此 DP 路径连续性不是本次最终失败的直接原因。
+
+  ## 6. 联合拟合条件
+
+  当前拟合模型：
+
+  geometry:
+    fit_degree: 2
+    width_fit_degree: 1
+    robust_fit_method: irls_huber
+    robust_fit_iterations: 8
+
+  实际不是 RANSAC，而是 IRLS Huber：
+
+  - 中线：二次多项式；
+  - 宽度：一次模型；
+  - 左边界：center - width/2；
+  - 右边界：center + width/2。
+
+  最少路径点：
+
+  minimum_point_count: 20
+
+  当前拟合 Huber 参数：
+
+  robust_fit_huber_delta_px: 20.0
+  width_fit_huber_delta_scale: 2.0
+
+  对应：
+
+  中心拟合残差阈值：20 px
+  宽度拟合残差阈值：40 px
+
+  joint inlier：
+
+  center_inlier AND width_inlier
+
+  所以中心拟合通过，不代表 joint fit 一定通过。
+
+  ### 放宽拟合内点条件
+
+  geometry:
+    robust_fit_huber_delta_px: 20.0
+    width_fit_huber_delta_scale: 2.0
+    minimum_point_count: 20
+
+  方向：
+
+  - 提高 robust_fit_huber_delta_px：更多点被视为中心拟合内点；
+  - 提高 width_fit_huber_delta_scale：更多点被视为宽度内点；
+  - 降低 minimum_point_count：短路径也允许拟合。
+
+  副作用：
+
+  - 错误边缘更容易参与拟合；
+  - 曲线可能看起来完整，但几何真实性下降。
+
+  ## 7. Geometry gate
+
+  拟合完成后必须全部通过：
+
+  geometry:
+    minimum_coverage: 0.60
+    minimum_effective_span: 0.65
+    maximum_missing_run: 3
+    minimum_inlier_ratio: 0.68
+    maximum_fit_residual_px: 14.0
+    maximum_abrupt_jump_count: 3
+    abrupt_jump_width_scale: 0.65
+    minimum_path_confidence: 0.42
+
+  对应条件：
+
+  path点数 >= 20
+  coverage >= 0.60
+  effective_span >= 0.65
+  maximum_missing_run <= 3
+  abrupt jump count <= 3
+  fit 成功
+  joint inlier ratio >= 0.68
+  fit residual <= 14 px
+  path confidence >= 0.42
+  拟合宽度始终 > 0
+  左右边界在 ROI 内
+  左右边界不能交叉
+
+  放宽 gate：
+
+  - 降低 minimum_coverage
+  - 降低 minimum_effective_span
+  - 提高 maximum_missing_run
+  - 降低 minimum_inlier_ratio
+  - 提高 maximum_fit_residual_px
+  - 提高 maximum_abrupt_jump_count
+  - 提高 minimum_path_confidence
+  - 提高 abrupt_jump_width_scale
+
+  收紧 gate：
+
+  反方向调整。
+
+  当前现场失败的实际情况：
+
+  coverage             0.993827  通过
+  effective_span       1.0       通过
+  fit_residual         11.0388   通过
+  abrupt jumps         0 / 2     通过
+  path confidence      0.8000    通过
+  joint inlier ratio   0.5528    不通过
+  minimum inlier ratio 0.68
+
+  因此如果只把 minimum_inlier_ratio 从 0.68 降到 0.55 左右，当前帧可能通过 geometry gate，但这只是让
+  错误路径显示出来，不代表检测质量真的改善，生产上不建议直接这样做。
+
+  ## 8. Temporal tracker 条件
+
+  tracking:
+    enabled: true
+    acquiring_success_frames: 3
+    degraded_max_frames: 2
+    lost_frame_threshold: 3
+    ema_alpha: 0.50
+    max_lateral_jump_width_scale: 0.80
+    max_width_change_ratio: 0.40
+    max_heading_change_deg: 8.0
+    tracking_search_width_scale: 2.5
+    predicted_confidence_decay: 0.50
+
+  状态过程：
+
+  LOST
+    └─ 当前帧通过全部 geometry gate
+         └─ 连续成功 1~2 帧：ACQUIRING
+              └─ 连续成功 3 帧：TRACKING
+
+  失败时：
+
+  TRACKING/ACQUIRING
+    └─ 短期失败：DEGRADED + predicted_only
+         └─ 超过 degraded/lost 限制：LOST
+
+  时序拒绝条件：
+
+  lateral 跳变 > 0.8×上一帧宽度
+  宽度比例变化 > 40%
+  heading 变化 > 8°
+
+  ### 放宽 tracking
+
+  - 提高 max_lateral_jump_width_scale
+  - 提高 max_width_change_ratio
+  - 提高 max_heading_change_deg
+  - 提高 tracking_search_width_scale
+  - 提高 degraded_max_frames
+  - 提高 lost_frame_threshold
+  - 降低 acquiring_success_frames
+
+  ### 收紧 tracking
+
+  反方向调整。
+
+  EMA：
+
+  ema_alpha: 0.50
+
+  - 增大：更快响应当前帧，但抖动增加；
+  - 减小：更稳定，但延迟更大。
+
+  当前失败帧从 LOST 开始，失败后没有保留 tracking coefficients，因此不是 temporal lock 错误。
+
+  ## 9. 哪些文件真正可以改
+
+  生产源配置：
+
+  configs/s100p_stable_seam_4096x3072.yaml
+
+  ROS 安装运行时还会使用 install workspace 中的复制版本：
+
+  ros2_ws/install_s100p_humble/tank_vision_ros/share/tank_vision_ros/config/
+
+  推荐流程是：
+
+  1. 只修改源配置；
+  2. 不直接手改 install 中的复制文件；
+  3. 重新 colcon build；
+  4. 重新 source install workspace；
+  5. 重新启动节点。
+
+  reference 文件：
+
+  configs/seam_width_reference_s100p_v1.json
+
+  当前 reference 不建议直接修改。现场诊断已经表明它没有硬拒绝人工宽度，真正问题主要在候选缺失、错误
+  pair unary 和联合拟合内点不足。
+
+  算法实现：
+
+  tank_vision/stable_seam_tracker.py
+
+  除非明确进入下一阶段算法修改，否则不要改代码中的 gate 逻辑。当前所有生产阈值都集中在 YAML 配置中。
+
+  ## 10. 当前现场最合理的调参优先级
+
+  如果下一阶段允许修改，只建议先动一个方向：
+
+  优先检查和调整左右 signed-edge 候选生成/保留，
+  不要先降低 minimum_inlier_ratio。
+
+  原因：
+
+  - 25 px 下仍有 48 个扫描带出现至少一侧人工候选缺失；
+  - 7 个扫描带左右候选同时存在但未形成返回 pair；
+  - reference hard width gate 没有拒绝人工宽度；
+  - 当前 geometry gate 已经正确拒绝 joint inlier 只有 0.553 的路径。
+
+  也就是说，直接放宽 geometry gate 只能让当前错误路径“出线”，不能解决候选和路径质量问题。
+  
+  
+  • 问题已明确：你这次没有执行重新构建，只执行了 source。另外，import 成功是因为当
+  前目录优先导入了源码，不代表安装副本正确。
+
+  请完整复制执行：
+
+  cd /home/sunrise/east_eleair/tank_vision_inspection
+
+  set -e
+
+  source /opt/ros/humble/setup.bash
+  source /opt/tros/humble/setup.bash
+
+  colcon build \
+    --base-paths ros2_ws/src \
+    --build-base ros2_ws/build_s100p_humble_v2 \
+    --install-base ros2_ws/install_s100p_humble \
+    --log-base ros2_ws/log_s100p_humble_v2
+
+  source ros2_ws/install_s100p_humble/setup.bash
+
+  test -f "ros2_ws/install_s100p_humble/tank_vision_core/local/lib/python3.10/
+  dist-packages/tank_vision/failure_event_recorder.py"
+
+  cd /tmp
+
+  /usr/bin/python3 -c \
+    "import tank_vision.failure_event_recorder as m; print('安装成功:',
+    m.__file__)"
+
+  cd /home/sunrise/east_eleair/tank_vision_inspection
+
+  export ROS_DOMAIN_ID=83
+  export ROS_LOCALHOST_ONLY=1
+
+  ros2 launch tank_vision_ros \
+    stable_seam_direct_guided_anchor.launch.py \
+    publish_debug_image:=true \
+    auto_save_failures:=true \
+    failure_snapshot_cooldown_sec:=2.0 \
+    max_failure_snapshots_per_session:=100
+
+  你之前的这段路径被换行拆开了：
+
+  .../python3.10/
+  dist-packages/...
+
+  必须保持在同一行。
+
+  当前错误发生在 Python 导入阶段，尚未进入相机初始化。
+
+

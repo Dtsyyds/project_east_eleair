@@ -1,0 +1,11 @@
+tank_inspection_system/build_vision/inspection_rerun/pytest.xml: 38 tests, 0 errors, 2 failures, 0 skipped
+- inspection_rerun.ros2_ws.src.inspection_rerun.test.test_run_rrd_builder test_fixture_e2e_atomic_manifest_and_sha
+  <<< failure message
+    RuntimeError: No storage could be initialized. Abort
+  >>>
+- inspection_rerun.ros2_ws.src.inspection_rerun.test.test_run_rrd_builder test_mid_conversion_failure_does_not_commit
+  <<< failure message
+    RuntimeError: No storage could be initialized. Abort
+  >>>
+
+Summary: 38 tests, 0 errors, 2 failures, 0 skipped

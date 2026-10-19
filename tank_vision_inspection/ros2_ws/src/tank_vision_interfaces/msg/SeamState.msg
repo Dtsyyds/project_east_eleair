@@ -1,0 +1,10 @@
+uint8 INTERFACE_VERSION=1
+std_msgs/Header header
+bool detected
+float32 confidence
+geometry_msgs/Point32[] centerline_points
+float32 lateral_error_px
+float32 heading_error_deg
+float32 seam_width_px
+string lost_reason
+float32 processing_time_ms

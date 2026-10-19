@@ -1,0 +1,27 @@
+# Temporary USB 2.0 deployment profile validated on the connected MV-SUF1205GM.
+# It uses the vendor's 1920x1200 ROI preset (index 3) and 30 ms fixed exposure.
+camera:
+  model: MV-SUF1205GM
+  vendor: MindVision
+  source: mindvision
+  frame_id: mindvision_optical_frame
+  serial_number: "043110120081"
+  sdk_root: null
+  resolution_index: 3
+  width: 1920
+  height: 1200
+  sensor_format: 1-inch
+  color: false
+  global_shutter: true
+  transport: USB2
+  pixel_format: mono8
+  exposure_us: 30000
+  gain_db: null
+  white_balance: null
+  fps: 19.0
+  trigger_mode: continuous
+  trigger_source: null
+  timeout_ms: 1500
+  roi: null
+  calibration_file: null
+  calibration_version: null

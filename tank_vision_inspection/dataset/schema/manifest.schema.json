@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/tank-vision/manifest.schema.json",
+  "title": "Tank vision sample manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sample_id", "session_id", "tank_id", "scan_id", "image_path", "timestamp_ns",
+    "frame_id", "camera_serial", "image_width", "image_height", "pixel_format",
+    "exposure_us", "gain", "working_distance_mm", "robot_speed_mm_s", "illumination_id",
+    "calibration_version", "weather_or_environment", "annotation_path", "quality_flags", "raw_mcap_uri"
+  ],
+  "properties": {
+    "sample_id": {"type": "string", "minLength": 1},
+    "session_id": {"type": "string", "minLength": 1},
+    "tank_id": {"type": "string", "minLength": 1},
+    "scan_id": {"type": "string", "minLength": 1},
+    "image_path": {"type": "string", "minLength": 1},
+    "timestamp_ns": {"type": "integer", "minimum": 0},
+    "frame_id": {"type": "string", "minLength": 1},
+    "camera_serial": {"type": "string", "minLength": 1},
+    "image_width": {"type": "integer", "minimum": 1},
+    "image_height": {"type": "integer", "minimum": 1},
+    "pixel_format": {"type": "string", "enum": ["bgr8", "rgb8", "mono8", "bayer_bg8", "bayer_rg8"]},
+    "exposure_us": {"type": ["number", "null"], "minimum": 0},
+    "gain": {"type": ["number", "null"]},
+    "working_distance_mm": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "robot_speed_mm_s": {"type": ["number", "null"], "minimum": 0},
+    "illumination_id": {"type": ["string", "null"]},
+    "calibration_version": {"type": "string", "minLength": 1},
+    "weather_or_environment": {"type": ["string", "null"]},
+    "annotation_path": {"type": ["string", "null"]},
+    "quality_flags": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "raw_mcap_uri": {"type": ["string", "null"]}
+  }
+}

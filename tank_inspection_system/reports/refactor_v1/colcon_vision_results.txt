@@ -1,0 +1,7 @@
+tank_inspection_system/build_vision/inspection_rerun/pytest.xml: 1 test, 1 error, 0 failures, 0 skipped
+- inspection_rerun
+  <<< error message
+    collection failure
+  >>>
+
+Summary: 1 test, 1 error, 0 failures, 0 skipped

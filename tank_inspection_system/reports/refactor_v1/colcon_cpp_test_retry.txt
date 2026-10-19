@@ -1,0 +1,4 @@
+Starting >>> inspection_sync
+Finished <<< inspection_sync [0.18s]
+
+Summary: 1 package finished [0.64s]

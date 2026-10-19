@@ -1,0 +1,45 @@
+/**:
+  ros__parameters:
+    # Empty uses MINDVISION_SDK_ROOT, then workspace-relative 2.1.0.50 discovery.
+    sdk_root: ""
+    expected_model: "MV-SUS1207GC"
+    serial_number: "046041920527"
+    frame_id: mindvision_front_optical_frame
+    image_topic: /camera/front/image_raw
+    camera_info_topic: /camera/front/camera_info
+    preview_topic: /camera/front/preview/image_raw
+    preview_width: 640
+    preview_fps: 10.0
+    # Bayer GB is converted exactly once by CameraImageProcess into BGR8.
+    pixel_format: bgr8
+    resolution_index: -1
+    width: 4096
+    height: 3072
+
+    # Reproducible baseline derived from the successful vendor demo. These are
+    # starting values, not claimed optical calibration or universally optimal.
+    auto_exposure: false
+    exposure_time_us: 70877.0
+    analog_gain: 4.0
+    ae_target: 70
+    rgb_gain_r: 131
+    rgb_gain_g: 110
+    rgb_gain_b: 147
+    saturation: 100
+    gamma: -1
+    contrast: -1
+    white_balance: "off"
+    color_temperature_index: -1
+    frame_speed_index: -1
+
+    # Published full-resolution rate. Actual device/host rates are measured and
+    # reported in /diagnostics; this value is not evidence of sensor FPS.
+    target_fps: 10.0
+    ae_min_exposure_us: 0.0
+    ae_max_exposure_us: 0.0
+    ae_min_analog_gain_raw: 0
+    ae_max_analog_gain_raw: 0
+    warmup_frames: 60
+    timeout_ms: 2000
+    qos_depth: 1
+    qos_reliability: best_effort

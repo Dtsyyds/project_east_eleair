@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "tests": [
+    {
+      "topic": "/eddy/data",
+      "input_anchors": 5,
+      "output_fusion_indices": 5,
+      "type_qos_matched": true,
+      "header_fields_valid": true,
+      "quality_flags_zero": true,
+      "asset_coordinates_valid": false,
+      "fixture_rate_hz": 4.0,
+      "hardware_executed": false
+    },
+    {
+      "topic": "/eddy/channel_mean",
+      "input_anchors": 5,
+      "output_fusion_indices": 5,
+      "type_qos_matched": true,
+      "header_fields_valid": true,
+      "quality_flags_zero": true,
+      "asset_coordinates_valid": false,
+      "fixture_rate_hz": 4.0,
+      "hardware_executed": false
+    }
+  ],
+  "hardware_executed": false
+}

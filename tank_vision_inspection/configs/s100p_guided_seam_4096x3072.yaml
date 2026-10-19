@@ -1,0 +1,106 @@
+schema_version: "1.0"
+camera:
+  expected_width: 4096
+  expected_height: 3072
+  same_fov_scaled: false
+  resolution_index: 0
+  pixel_format: bgr8
+  exposure_mode: auto
+  exposure_us: null
+  ae_target: 120
+  ae_exposure_min_us: 100
+  ae_exposure_max_us: 50000
+  gain_min_raw: 2
+  gain_max_raw: 16
+  warmup_frames: 60
+  timeout_ms: 1000
+  sdk_root: /home/sunrise/east_eleair/MindVisionlinuxSDK
+processing:
+  max_roi_width: 896
+  scan_band_step_px: 8
+  scan_band_half_height_px: 4
+  gaussian_kernel: 5
+  sobel_kernel: 3
+  profile_gaussian_kernel: 9
+  top_k_edges_per_side: 12
+  edge_percentile: 88.0
+  edge_min_response: 0.8
+  edge_min_separation_px: 5
+  edge_margin_ratio: 0.025
+  edge_margin_min_px: 2
+roi:
+  x_min_ratio: 0.30
+  x_max_ratio: 0.60
+  y_min_ratio: 0.50
+  y_max_ratio: 0.92
+reference:
+  path: configs/seam_geometry_reference_s100p_live_v1.json
+pairing:
+  width_min_scale: 0.55
+  width_max_scale: 1.80
+  max_pairs_per_band: 8
+  interior_margin_px: 2
+  exterior_sample_width_scale: 0.25
+  exterior_sample_min_px: 3
+  contrast_score_offset: 0.50
+  contrast_normalization_gray: 80.0
+  initial_reference_center_weight: 0.75
+  center_prior_decay_width_scale: 2.5
+  temporal_center_decay_width_scale: 1.0
+  unavailable_temporal_score: 0.50
+  score_weights:
+    left_edge_strength: 0.10
+    right_edge_strength: 0.10
+    edge_balance: 0.12
+    contrast: 0.18
+    width_reference: 0.24
+    center_prior: 0.10
+    temporal_center: 0.09
+    temporal_width: 0.07
+path:
+  center_transition_weight: 0.42
+  width_transition_weight: 0.24
+  left_transition_weight: 0.12
+  right_transition_weight: 0.12
+  skip_penalty: 0.38
+  maximum_missing_run: 3
+  max_center_jump_width_scale: 0.80
+  max_boundary_jump_width_scale: 1.10
+  max_width_ratio_change: 0.55
+geometry:
+  fit_degree: 2
+  width_fit_degree: 1
+  robust_fit_method: irls_huber
+  robust_fit_iterations: 8
+  robust_fit_huber_delta_px: 20.0
+  width_fit_huber_delta_scale: 2.0
+  minimum_point_count: 20
+  minimum_coverage: 0.60
+  minimum_effective_span: 0.65
+  maximum_missing_run: 3
+  minimum_inlier_ratio: 0.68
+  maximum_fit_residual_px: 14.0
+  maximum_abrupt_jump_count: 3
+  abrupt_jump_width_scale: 0.65
+  minimum_path_confidence: 0.42
+  reference_y_ratio: 0.90
+tracking:
+  enabled: true
+  acquiring_success_frames: 3
+  degraded_max_frames: 2
+  lost_frame_threshold: 3
+  ema_alpha: 0.50
+  max_lateral_jump_width_scale: 0.80
+  max_width_change_ratio: 0.40
+  max_heading_change_deg: 8.0
+  tracking_search_width_scale: 2.5
+  predicted_confidence_decay: 0.50
+guided_search:
+  enabled: true
+  local_search_radius_width_scale: 0.40
+  local_top_k_per_side: 3
+  fallback_to_global_search: true
+output:
+  centerline_sample_count: 32
+  publish_debug_image: false
+  publish_raw_image: false

@@ -1,0 +1,16 @@
+FROM ros:humble-ros-base
+
+SHELL ["/bin/bash", "-c"]
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-opencv python3-pip python3-pytest python3-yaml python3-numpy \
+    ros-humble-cv-bridge ros-humble-rosbag2-storage-mcap \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace/tank_vision_inspection
+COPY . .
+RUN source /opt/ros/humble/setup.bash \
+    && cd ros2_ws \
+    && colcon build --symlink-install \
+       --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
+
+CMD ["/bin/bash", "-lc", "source /opt/ros/humble/setup.bash && source ros2_ws/install/setup.bash && python3 -m pytest -m 'not camera and not ros2 and not s100p and not rk3588' -q"]

@@ -1,0 +1,38 @@
+platform:
+  name: s100p
+  architecture: aarch64
+  ros_distro: humble
+camera:
+  source: mindvision
+  width: 4096
+  height: 3072
+  fps: 15
+  roi: null
+realtime_seam:
+  enabled: true
+  queue_size: 1
+  drop_policy: drop_oldest
+  process_latest_only: true
+inspection:
+  enabled: true
+  queue_size: 2
+  drop_policy: drop_newest
+  tile_size: 1024
+  overlap: 128
+  trigger_mode: frame_interval
+  trigger_every_n_frames: 15
+inference:
+  backend: d_robotics_bpu
+  model_path: null
+  target_arch: nash_m
+  input_format: nv12
+  model_calibrated: false
+storage:
+  save_all_raw: false
+  save_abnormal_raw: true
+  normal_frame_interval: 15
+  pre_event_frames: 15
+  post_event_frames: 15
+  compression: jpg
+  output_queue_size: 32
+  disk_low_space_threshold_mb: 1024

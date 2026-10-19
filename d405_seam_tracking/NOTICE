@@ -1,0 +1,26 @@
+D405 Seam Tracking experimental framework: original wrappers, contracts, wall geometry,
+fusion, evaluation, CLI and passive ROS adapter. No third-party repository was vendored.
+
+Direct runtime use: NumPy (BSD-3-Clause), OpenCV (Apache-2.0), PyYAML (MIT),
+installed tank-vision-inspection async_lifecycle (local project dependency).
+Training: segmentation_models.pytorch 0.5.0 (MIT, per-file exceptions retained in wheel),
+PyTorch 2.5.1 and torchvision 0.20.1 (BSD), timm 1.0.15 (Apache-2.0),
+ONNX 1.17.0 (Apache-2.0), ONNX Runtime 1.20.1 (MIT).
+Offline wheels retain their original dist-info license and notice files.
+No pretrained model or weight is downloaded or supplied as a seam model.
+
+RealSense ROS 4.57.7 and installed librealsense 2.58.4 (Apache-2.0) are existing
+device owners and factory-calibration sources, not copied into this project.
+Projection equivalence uses OpenCV Brown/fisheye APIs and tested pixel contracts.
+Unknown/inverse-Brown distortion is rejected, never guessed.
+
+D-Robotics rdk_model_zoo rdk_s (Apache-2.0) and installed local S100 examples
+were consulted for API usage. The native adapter is newly written against the
+installed proprietary DNN/UCP headers; SDK libraries/headers are NOT redistributed.
+No NV12 sample code, model asset, classification output or zero-copy claim is reused.
+
+robotic-sealing (license not found at reviewed commit), seam_detection (GPL-3.0),
+and DFormer are method/research references only. No source, dependency or model
+from these three projects is included in the first deployment.
+Exact versions, commits, local SDK hashes and verification status appear in
+README.md and reports/framework_validation.json.

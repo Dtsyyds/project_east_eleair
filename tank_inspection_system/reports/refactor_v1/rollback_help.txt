@@ -1,0 +1,12 @@
+not found: "/opt/tros/humble/local_setup.bash"
+not found: "/opt/tros/humble/local_setup.bash"
+usage: validate_vehicle_collection.py [-h] [--report-dir REPORT_DIR] run_dir
+
+Validate closed FIELD-W5 MCAP, video, timestamps, snapshots, and processes.
+
+positional arguments:
+  run_dir
+
+options:
+  -h, --help            show this help message and exit
+  --report-dir REPORT_DIR

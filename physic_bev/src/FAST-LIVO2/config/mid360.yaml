@@ -1,0 +1,32 @@
+/**:
+  ros__parameters:
+    # Livox MID-360 点云预处理参数。
+    preprocess:
+      lidar_type: 1                  # 激光雷达类型编号；1 表示 Livox AVIA/CustomMsg 处理格式。
+      scan_line: 4                   # 激光雷达扫描线数；用于点云预处理和特征组织。
+      blind: 0.6                     # 近距离盲区阈值，单位：米；小于该距离的点会被滤除。
+
+    # Livox MID-360 LiDAR 到 IMU 的刚体外参。
+    # 变换关系：p_imu = extrinsic_R * p_lidar + extrinsic_T。
+    extrin_calib:
+      extrinsic_T: [-0.011, -0.02329, 0.04412]  # LiDAR 原点在 IMU 坐标系中的平移，单位：米。
+      extrinsic_R: [1.0, 0.0, 0.0,        # LiDAR 到 IMU 的旋转矩阵，按行展开。
+                    0.0, 1.0, 0.0,
+                    0.0, 0.0, 1.0]
+
+# 参数使用位置说明：
+# 1. src/FAST-LIVO2/launch/mapping.launch.py
+#    generate_launch_description() 将本文件作为参数文件传给 fastlivo_mapping 节点。
+# 2. src/FAST-LIVO2/src/LIVMapper.cpp
+#    LIVMapper::readParameters() 读取 preprocess.lidar_type、preprocess.scan_line、
+#    preprocess.blind、extrin_calib.extrinsic_T 和 extrin_calib.extrinsic_R。
+#    LIVMapper::initializeComponents() 将外参传给 VoxelMapManager、VIOManager 和 ImuProcess；
+#    LIVMapper::initializeSubscribersAndPublishers() 根据 lidar_type 选择点云消息类型和回调。
+# 3. src/FAST-LIVO2/src/preprocess.cpp
+#    Preprocess::process() 及对应 Livox 点云处理函数使用 lidar_type、scan_line 和 blind，
+#    完成消息分派、扫描线组织以及近距离盲区点过滤。
+# 4. src/FAST-LIVO2/src/IMU_Processing.cpp
+#    ImuProcess::set_extrinsic() 保存 extrinsic_T 和 extrinsic_R，
+#    后续在 IMU 去畸变、状态传播及坐标变换中使用该外参。
+# 5. src/FAST-LIVO2/src/voxel_map.cpp
+#    VoxelMapManager 使用同一组外参完成 LiDAR 点到 IMU/世界坐标系的转换。

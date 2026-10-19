@@ -1,0 +1,52 @@
+rerun_bridge:
+  ros__parameters:
+    output_mode: "spawn"
+    recording_id: "tank_inspection"
+    save_path: "output/rerun/inspection.rrd"
+    connect_url: "rerun+http://127.0.0.1:9876/proxy"
+
+    image_topic: "/camera/front/image_raw"
+    camera_info_topic: "/camera/front/camera_info"
+    pointcloud_topic: "/livox/lidar"
+    imu_topic: "/livox/imu"
+    tf_topic: "/tf"
+    tf_static_topic: "/tf_static"
+    fusion_index_topic: "/derived/inspection/fusion_index"
+    eddy_topic: "/inspection/eddy_current/raw"
+    ultrasound_topic: "/inspection/ultrasound/raw"
+    probe_state_topic: "/inspection/probe_state"
+    robot_state_topic: "/robot/state"
+    odometry_topic: "/robot/odometry"
+    path_topic: "/robot/path"
+    pose_topic: "/robot/pose"
+    diagnostics_topic: "/diagnostics"
+
+    bev_image_topic: "/derived/inspection/bev/image"
+    bev_coverage_topic: "/derived/inspection/bev/coverage"
+    bev_defects_topic: "/derived/inspection/bev/defects"
+
+    image_max_hz: 2.0
+    pointcloud_max_hz: 1.0
+    signal_max_hz: 2.0
+    max_point_count: 100000
+    point_stride: 1
+    log_imu: true
+    log_tf: true
+    log_diagnostics: true
+    log_bev: true
+
+# This section is consumed only by the post-collection run builder.  It is
+# deliberately outside the ROS parameter tree so the live bridge is unchanged.
+rrd_builder:
+  frozen_rerun_sdk_version: "0.36.2"
+  camera_preview_max_hz: 1.0
+  camera_preview_max_width: 1280
+  camera_preview_jpeg_quality: 85
+  # D405 16UC1 depth values are millimetres: 1000 integer units per metre.
+  depth_units_per_meter: 1000.0
+  voxel_size: 0.0
+  min_free_bytes: 1073741824
+  source_size_headroom_ratio: 0.25
+  max_parse_failure_ratio: 0.01
+  max_rss_growth_bytes: 1073741824
+  memory_check_interval_messages: 10000

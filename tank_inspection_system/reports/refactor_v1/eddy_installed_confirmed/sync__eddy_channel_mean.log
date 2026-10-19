@@ -1,0 +1,2 @@
+[INFO] [1791029444.606917992] [inspection_sync_fixture_ae91366e441e]: Bounded fusion synchronizer started, anchor=/eddy/channel_mean, software_clock_match=disabled, camera_offset=0.000 ms, livox_offset=0.000 ms
+[INFO] [1791029446.719654261] [rclcpp]: signal_handler(signum=2)

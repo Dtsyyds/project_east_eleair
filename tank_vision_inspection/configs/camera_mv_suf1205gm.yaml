@@ -1,0 +1,25 @@
+# Static description for the physically detected MV-SUF1205GM.
+# This is intentionally separate from camera_mv_suf1205gc_t.yaml: GM is monochrome.
+# SDK-specific feature names must be confirmed from the official Linux SDK before use.
+camera:
+  model: MV-SUF1205GM
+  vendor: MindVision
+  source: mindvision
+  serial_number: null
+  width: 4096
+  height: 3072
+  sensor_format: 1-inch
+  color: false
+  global_shutter: true
+  transport: USB3
+  pixel_format: mono8
+  exposure_us: null
+  gain_db: null
+  white_balance: null
+  fps: 15.0
+  trigger_mode: continuous
+  trigger_source: null
+  timeout_ms: 1000
+  roi: null
+  calibration_file: null
+  calibration_version: null

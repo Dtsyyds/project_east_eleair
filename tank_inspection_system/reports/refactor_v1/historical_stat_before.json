@@ -1,0 +1,1482 @@
+{
+  "/media/mcap_data/runs/Source-20260927_221952/field_notes.md": [
+    131,
+    1790518811645303631
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/launch_parameters.json": [
+    1100,
+    1790518811645303631
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/run_manifest.json": [
+    33219,
+    1790520394602211235
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/device_inventory.json": [
+    2115,
+    1790518812213274018
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/collection_status.json": [
+    13062,
+    1790520084050237079
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/run_id.txt": [
+    23,
+    1790518811645303631
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/sha256sums.txt": [
+    13488,
+    1790520341497457450
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/complete.json": [
+    169,
+    1790520394606212798
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/topic_inventory.json": [
+    21397,
+    1790518856315861309
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/video_runtime_status.json": [
+    3121,
+    1790520084853380329
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/stop_report.json": [
+    8995,
+    1790520394634223740
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/preflight_report.json": [
+    4716,
+    1790518812249272142
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/snapshot_integrity.json": [
+    207,
+    1790520280541068738
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/next_action.json": [
+    165,
+    1790520280789175127
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/orphan_process_check.json": [
+    160,
+    1790520280545070454
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/encoder_inventory.json": [
+    24848,
+    1790520280757161400
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/path_growth_analysis.json": [
+    732,
+    1790520263565261771
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/system_acceptance.json": [
+    5415,
+    1790520280553073885
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/storage_bandwidth_report.json": [
+    2475,
+    1790520280765164831
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/replay_validation.json": [
+    504,
+    1790520280773168263
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/timestamp_validation.json": [
+    43617,
+    1790520263561259749
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/diagnostic_summary.json": [
+    16032,
+    1790520280557075601
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/seal_report.json": [
+    7705,
+    1790520087898612967
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/compact_trajectory_summary.json": [
+    352,
+    1790520263557257728
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/video_validation.json": [
+    20974,
+    1790520280537067022
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/source_inventory.json": [
+    11301,
+    1790520280749157968
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/mcap_validation.json": [
+    60213,
+    1790520263553255707
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/performance_matrix.json": [
+    1535,
+    1790520280769166547
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/topic_inventory.json": [
+    21397,
+    1790518856315861309
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/reports/runtime_samples.jsonl": [
+    6161511,
+    1790520084082044733
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/core_4.mcap": [
+    132557,
+    1790520083879369142
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/core_0.mcap": [
+    1505304,
+    1790519162549649076
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/core_2.mcap": [
+    1503359,
+    1790519762574123131
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/core_3.mcap": [
+    1502042,
+    1790520062581772344
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/core_1.mcap": [
+    1502259,
+    1790519462571240985
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/core/metadata.yaml": [
+    5034,
+    1790520083875396334
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/eddy_1.mcap": [
+    8739591,
+    1790519464679311266
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/eddy_2.mcap": [
+    8622652,
+    1790519764656606283
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/eddy_4.mcap": [
+    562350,
+    1790520083899233180
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/eddy_0.mcap": [
+    8708041,
+    1790519164665797906
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/eddy_3.mcap": [
+    8628868,
+    1790520064653271558
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/eddy/metadata.yaml": [
+    1773,
+    1790520083887314757
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_0.mcap": [
+    343611880,
+    1790518982912113073
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_7.mcap": [
+    352287229,
+    1790519822890040954
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_1.mcap": [
+    352407735,
+    1790519102880755607
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_9.mcap": [
+    361721317,
+    1790520062917691135
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_6.mcap": [
+    329312539,
+    1790519702890742743
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_2.mcap": [
+    338006593,
+    1790519222873406688
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_3.mcap": [
+    305422853,
+    1790519342866937453
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_5.mcap": [
+    295197620,
+    1790519582903090250
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_4.mcap": [
+    297418922,
+    1790519462931253000
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/metadata.yaml": [
+    4411,
+    1790520083875396334
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_10.mcap": [
+    52991546,
+    1790520084089996646
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/mid360/mid360_8.mcap": [
+    355809392,
+    1790519942874757861
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_4.mcap": [
+    1506976482,
+    1790519163717731410
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_14.mcap": [
+    1255339032,
+    1790519763717281948
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_3.mcap": [
+    1468502077,
+    1790519103548819099
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_18.mcap": [
+    1235598677,
+    1790520003736002578
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_11.mcap": [
+    1379937131,
+    1790519583615112303
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_7.mcap": [
+    1406325990,
+    1790519343606966638
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_17.mcap": [
+    1215042883,
+    1790519943750544755
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_12.mcap": [
+    1446921932,
+    1790519643716955123
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_5.mcap": [
+    1462008932,
+    1790519223577445440
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_19.mcap": [
+    1221319239,
+    1790520063737492947
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_6.mcap": [
+    1350444530,
+    1790519283528432631
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_20.mcap": [
+    442333604,
+    1790520084145660039
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_15.mcap": [
+    1208981808,
+    1790519823665796832
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_13.mcap": [
+    1235290804,
+    1790519703646765458
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_2.mcap": [
+    1549639257,
+    1790519043458023714
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_9.mcap": [
+    1421852683,
+    1790519463583274742
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_1.mcap": [
+    1547433968,
+    1790518983472223697
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_10.mcap": [
+    1416734092,
+    1790519523589228141
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_0.mcap": [
+    1548461522,
+    1790518923521609116
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_8.mcap": [
+    1373280286,
+    1790519403641211793
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/metadata.yaml": [
+    11506,
+    1790520083938961256
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/mcap/d405/d405_16.mcap": [
+    1236166128,
+    1790519883697348638
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000004.mkv": [
+    552331570,
+    1790520071886479543
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000004.frames.jsonl": [
+    1835458,
+    1790520068504340573
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000005.mkv": [
+    22681963,
+    1790520084805668849
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000001.mkv": [
+    493450538,
+    1790519165025823115
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000002.mkv": [
+    326130711,
+    1790519466671377556
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000003.frames.jsonl": [
+    1802398,
+    1790519765723854216
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000002.mux.log": [
+    277,
+    1790519464827316196
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000003.mux.log": [
+    277,
+    1790519766775129453
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000001.frames.jsonl": [
+    1809750,
+    1790519161613582786
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000004.mux.log": [
+    277,
+    1790520069261081977
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000005.frames.jsonl": [
+    90200,
+    1790520083847586681
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000001.mux.log": [
+    277,
+    1790519162681658407
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000005.mux.log": [
+    277,
+    1790520084726149715
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000002.frames.jsonl": [
+    1823207,
+    1790519463999288613
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/video/front/front_000003.mkv": [
+    420591077,
+    1790519768889717884
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/mapping_topics.txt": [
+    0,
+    1790518851393432877
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/mid360_recorder.log": [
+    2622,
+    1790520084093972603
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/inventory_command.json": [
+    18400,
+    1790518851397434886
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/d405_recorder.log": [
+    4448,
+    1790520084149635996
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/front_video_encoder.log": [
+    54264,
+    1790520084121804299
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/process_registry.json": [
+    7839,
+    1790518862959002417
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/eddy_topics.txt": [
+    19,
+    1790518851393432877
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/mid360_topics.txt": [
+    39,
+    1790518851393432877
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/monitor.log": [
+    0,
+    1790518851589531305
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/d405_topics.txt": [
+    365,
+    1790518851393432877
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/mid360_topics.record.txt": [
+    52,
+    1790518861466309632
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/front_video.log": [
+    1084,
+    1790520084940851376
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/runtime_status_inventory_command.json": [
+    84,
+    1790518856319863245
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/eddy_launch.log": [
+    332,
+    1790520084074092819
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/disk_guard.log": [
+    0,
+    1790518862750906091
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/eddy_recorder.log": [
+    1392,
+    1790520083899233180
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/mid360_launch.log": [
+    3266,
+    1790520084666510365
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/visual_launch.log": [
+    696,
+    1790518811717299876
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/d405_topics.record.txt": [
+    393,
+    1790518861914518633
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/core_topics.txt": [
+    170,
+    1790518856319863245
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/d405_launch.log": [
+    8141,
+    1790520085143722444
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/core_recorder.log": [
+    2178,
+    1790520083879369142
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/d405_parameter_config.log": [
+    98,
+    1790518832199072504
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/front_video_encoder.pid": [
+    6,
+    1790518858869086805
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/visual.pid": [
+    6,
+    1790518812369265888
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/eddy_driver.pid": [
+    6,
+    1790518812645251504
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/front_video.pid": [
+    6,
+    1790518856672033613
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/mid360_recorder.pid": [
+    6,
+    1790518861874499972
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/core_recorder.pid": [
+    6,
+    1790518861382270444
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/monitor.pid": [
+    6,
+    1790518851721597592
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/mid360_driver.pid": [
+    6,
+    1790518812509258592
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/disk_guard.pid": [
+    6,
+    1790518862963004270
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/eddy_recorder.pid": [
+    6,
+    1790518862714889420
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/d405_driver.pid": [
+    6,
+    1790518812785244208
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/logs/pids/d405_recorder.pid": [
+    6,
+    1790518862190646753
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/seam_geometry_reference_s100p_live_v1.json": [
+    44932,
+    1788943492706439397
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/s100p_guided_anchor_seam_4096x3072.yaml": [
+    2873,
+    1789026733466636930
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/d405_startup_parameters.yaml": [
+    82,
+    1790518812665250462
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/MID360_config.json": [
+    805,
+    1790146394258996000
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/front_h264_recorder.py": [
+    14284,
+    1790215152622490002
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/seam_geometry_reference_s100p_live_v1.json": [
+    44932,
+    1788943492706439397
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/stop_mapping_eddy_collection.sh": [
+    148,
+    1790171431666649614
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/validate_mapping_eddy_collection.py": [
+    183,
+    1790171433574559494
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/eddy_node.cpp": [
+    8099,
+    1790148210473894365
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/start_mapping_eddy_collection.sh": [
+    1345,
+    1790171973325820583
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/visual_field_validation.launch.py": [
+    15926,
+    1790090279694099335
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/mapping_eddy_live_probe.py": [
+    19461,
+    1790214817597900858
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/rebuild_compact_trajectory.py": [
+    3379,
+    1790214963256481633
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/replay_mapping_eddy_collection.py": [
+    193,
+    1790171434746504214
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/s100p_guided_anchor_seam_4096x3072.yaml": [
+    2873,
+    1789026733466636930
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/EddyChannelMean.msg": [
+    250,
+    1790148208241803789
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/vehicle_collection_manager.py": [
+    28087,
+    1790214816057935329
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/frozen_configs/sources/start_vehicle_collection.sh": [
+    27033,
+    1790241019068712278
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/rerun/rrd_manifest.json": [
+    30092,
+    1790521670802101586
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/rerun/Source-20260927_221952.rrd": [
+    2594983171,
+    1790521647318022125
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/rerun/conversion.log": [
+    32357,
+    1790521670814078481
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/rerun/Source-20260927_221952.rrd.sha256": [
+    93,
+    1790521670810086183
+  ],
+  "/media/mcap_data/runs/Source-20260927_221952/rerun/rrd_validation.json": [
+    4859,
+    1790521670806093884
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/field_notes.md": [
+    138,
+    1790567761738186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/launch_parameters.json": [
+    1107,
+    1790567761738186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/run_manifest.json": [
+    33881,
+    1790569573110186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/device_inventory.json": [
+    2192,
+    1790567762186186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/collection_status.json": [
+    13014,
+    1790569217938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/run_id.txt": [
+    30,
+    1790567761738186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/sha256sums.txt": [
+    13848,
+    1790569519850186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/complete.json": [
+    169,
+    1790569573114186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/topic_inventory.json": [
+    21397,
+    1790567802830186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/video_runtime_status.json": [
+    3195,
+    1790569220834186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/stop_report.json": [
+    9217,
+    1790569573138186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/preflight_report.json": [
+    4726,
+    1790567762218186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/snapshot_integrity.json": [
+    207,
+    1790569466250186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/next_action.json": [
+    165,
+    1790569466482186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/orphan_process_check.json": [
+    160,
+    1790569466254186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/encoder_inventory.json": [
+    24984,
+    1790569466454186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/path_growth_analysis.json": [
+    732,
+    1790569444402186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/system_acceptance.json": [
+    5319,
+    1790569466262186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/storage_bandwidth_report.json": [
+    2471,
+    1790569466458186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/replay_validation.json": [
+    2996,
+    1790680640290295935
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/timestamp_validation.json": [
+    43572,
+    1790569444398186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/diagnostic_summary.json": [
+    15988,
+    1790569466266186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/seal_report.json": [
+    7923,
+    1790569223298186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/compact_trajectory_summary.json": [
+    352,
+    1790569444394186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/video_validation.json": [
+    21111,
+    1790569466246186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/source_inventory.json": [
+    11308,
+    1790569466446186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/mcap_validation.json": [
+    61334,
+    1790569444386186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/performance_matrix.json": [
+    1542,
+    1790569466462186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/topic_inventory.json": [
+    21397,
+    1790567802830186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/reports/runtime_samples.jsonl": [
+    7078351,
+    1790569217954186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/core_4.mcap": [
+    1046933,
+    1790569217870186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/core_0.mcap": [
+    1517240,
+    1790568111078186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/core_2.mcap": [
+    1506552,
+    1790568711082186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/core_3.mcap": [
+    1510783,
+    1790569011090186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/core_1.mcap": [
+    1506028,
+    1790568411078186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/core/metadata.yaml": [
+    5338,
+    1790569217794186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/eddy_1.mcap": [
+    7466584,
+    1790568419718186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/eddy_2.mcap": [
+    6901303,
+    1790568719734186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/eddy_4.mcap": [
+    6176355,
+    1790569217910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/eddy_0.mcap": [
+    8624009,
+    1790568119742186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/eddy_3.mcap": [
+    8391991,
+    1790569019746186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/eddy/metadata.yaml": [
+    1775,
+    1790569217806186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_0.mcap": [
+    203602582,
+    1790567931390186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_7.mcap": [
+    163895737,
+    1790568771414186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_1.mcap": [
+    201620970,
+    1790568051382186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_11.mcap": [
+    176624725,
+    1790569217986186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_9.mcap": [
+    243656943,
+    1790569011462186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_6.mcap": [
+    152613398,
+    1790568651398186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_2.mcap": [
+    198539791,
+    1790568171402186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_3.mcap": [
+    206225830,
+    1790568291410186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_5.mcap": [
+    136806130,
+    1790568531406186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_4.mcap": [
+    191778476,
+    1790568411410186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/metadata.yaml": [
+    4611,
+    1790569217794186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_10.mcap": [
+    248992053,
+    1790569131438186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/mid360/mid360_8.mcap": [
+    195271425,
+    1790568891418186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_4.mcap": [
+    789091463,
+    1790568111730186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_14.mcap": [
+    1218424783,
+    1790568711898186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_3.mcap": [
+    803776928,
+    1790568051674186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_18.mcap": [
+    1262311432,
+    1790568951938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_21.mcap": [
+    1221746284,
+    1790569131922186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_11.mcap": [
+    881906934,
+    1790568531854186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_7.mcap": [
+    730888672,
+    1790568291754186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_17.mcap": [
+    1237671986,
+    1790568891886186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_12.mcap": [
+    1019246184,
+    1790568591882186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_5.mcap": [
+    762827475,
+    1790568171758186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_19.mcap": [
+    1229539028,
+    1790569011906186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_6.mcap": [
+    749155884,
+    1790568231738186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_20.mcap": [
+    1215912178,
+    1790569071910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_15.mcap": [
+    1261416093,
+    1790568771870186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_13.mcap": [
+    1174144978,
+    1790568651866186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_2.mcap": [
+    827189111,
+    1790567991766186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_9.mcap": [
+    719706562,
+    1790568411882186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_1.mcap": [
+    851807002,
+    1790567931662186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_23.mcap": [
+    491062191,
+    1790569218146186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_10.mcap": [
+    830587985,
+    1790568471854186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_22.mcap": [
+    1185887169,
+    1790569191902186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_0.mcap": [
+    839031321,
+    1790567871758186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_8.mcap": [
+    710238917,
+    1790568351770186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/metadata.yaml": [
+    12390,
+    1790569217826186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/mcap/d405/d405_16.mcap": [
+    1350615310,
+    1790568831874186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000004.mkv": [
+    849268631,
+    1790569018074186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000004.frames.jsonl": [
+    1826882,
+    1790569013414186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000005.mkv": [
+    554829162,
+    1790569220770186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000001.mkv": [
+    858391352,
+    1790568115158186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000002.mkv": [
+    855974136,
+    1790568416066186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000003.frames.jsonl": [
+    1834226,
+    1790568711930186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000002.mux.log": [
+    277,
+    1790568412398186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000003.mux.log": [
+    277,
+    1790568712878186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000001.frames.jsonl": [
+    1796497,
+    1790568109518186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000004.mux.log": [
+    277,
+    1790569014406186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000005.frames.jsonl": [
+    1225572,
+    1790569217718186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000001.mux.log": [
+    277,
+    1790568110726186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000005.mux.log": [
+    277,
+    1790569218650186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000002.frames.jsonl": [
+    1814653,
+    1790568411526186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000003.mkv": [
+    867399718,
+    1790568717046186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/README.md": [
+    928,
+    1790648986750603733
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/sha256sums.txt": [
+    1081,
+    1790649130361997362
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/README.md": [
+    929,
+    1790647388656003499
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/metadata.yaml": [
+    566,
+    1790647389052006895
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000004.mkv": [
+    849268631,
+    1790569018074186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000004.frames.jsonl": [
+    1826882,
+    1790569013414186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000005.mkv": [
+    554829162,
+    1790569220770186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000001.mkv": [
+    858391352,
+    1790568115158186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000002.mkv": [
+    855974136,
+    1790568416066186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000003.frames.jsonl": [
+    1834226,
+    1790568711930186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000001.frames.jsonl": [
+    1796497,
+    1790568109518186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000005.frames.jsonl": [
+    1225572,
+    1790569217718186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000002.frames.jsonl": [
+    1814653,
+    1790568411526186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/04_front_camera/data/front_000003.mkv": [
+    867399718,
+    1790568717046186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/sha256sums.txt": [
+    1263,
+    1790649111890071339
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/README.md": [
+    945,
+    1790648986094606681
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/metadata.yaml": [
+    4611,
+    1790569217794186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_0.mcap": [
+    203602582,
+    1790567931390186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_7.mcap": [
+    163895737,
+    1790568771414186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_1.mcap": [
+    201620970,
+    1790568051382186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_11.mcap": [
+    176624725,
+    1790569217986186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_9.mcap": [
+    243656943,
+    1790569011462186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_6.mcap": [
+    152613398,
+    1790568651398186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_2.mcap": [
+    198539791,
+    1790568171402186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_3.mcap": [
+    206225830,
+    1790568291410186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_5.mcap": [
+    136806130,
+    1790568531406186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_4.mcap": [
+    191778476,
+    1790568411410186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/metadata.yaml": [
+    4611,
+    1790648994158570561
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_10.mcap": [
+    248992053,
+    1790569131438186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/02_mid360/data/mid360_8.mcap": [
+    195271425,
+    1790568891418186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/sha256sums.txt": [
+    2247,
+    1790649101242114482
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/README.md": [
+    1173,
+    1790652240289740110
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/metadata.yaml": [
+    12390,
+    1790569217826186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_4.mcap": [
+    789091463,
+    1790568111730186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_14.mcap": [
+    1218424783,
+    1790568711898186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_3.mcap": [
+    803776928,
+    1790568051674186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_18.mcap": [
+    1262311432,
+    1790568951938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_21.mcap": [
+    1221746284,
+    1790569131922186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_11.mcap": [
+    881906934,
+    1790568531854186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_7.mcap": [
+    730888672,
+    1790568291754186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_17.mcap": [
+    1237671986,
+    1790568891886186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_12.mcap": [
+    1019246184,
+    1790568591882186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_5.mcap": [
+    762827475,
+    1790568171758186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_19.mcap": [
+    1229539028,
+    1790569011906186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_6.mcap": [
+    749155884,
+    1790568231738186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_20.mcap": [
+    1215912178,
+    1790569071910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_15.mcap": [
+    1261416093,
+    1790568771870186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_13.mcap": [
+    1174144978,
+    1790568651866186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_2.mcap": [
+    827189111,
+    1790567991766186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_9.mcap": [
+    719706562,
+    1790568411882186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_1.mcap": [
+    851807002,
+    1790567931662186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_23.mcap": [
+    491062191,
+    1790569218146186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_10.mcap": [
+    830587985,
+    1790568471854186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_22.mcap": [
+    1185887169,
+    1790569191902186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_0.mcap": [
+    839031321,
+    1790567871758186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_8.mcap": [
+    710238917,
+    1790568351770186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/metadata.yaml": [
+    12390,
+    1790648994154570579
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/01_d405/data/d405_16.mcap": [
+    1350615310,
+    1790568831874186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/sensor-data-replay.skill/SKILL.md": [
+    5055,
+    1790648796947541089
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/sha256sums.txt": [
+    656,
+    1790652864830985583
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/README.md": [
+    3719,
+    1790652847727036559
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/metadata.yaml": [
+    1775,
+    1790569217806186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/eddy_1.mcap": [
+    7466584,
+    1790568419718186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/eddy_2.mcap": [
+    6901303,
+    1790568719734186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/eddy_4.mcap": [
+    6176355,
+    1790569217910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/eddy_0.mcap": [
+    8624009,
+    1790568119742186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/eddy_3.mcap": [
+    8391991,
+    1790569019746186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/FIELD-VEHICLE-20260928_115534_delivery/03_eddy/data/metadata.yaml": [
+    1775,
+    1790648994158570561
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/mapping_topics.txt": [
+    0,
+    1790567797938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/mid360_recorder.log": [
+    2737,
+    1790569217986186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/inventory_command.json": [
+    18400,
+    1790567797942186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/d405_recorder.log": [
+    4793,
+    1790569218150186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/front_video_encoder.log": [
+    62172,
+    1790569217994186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/process_registry.json": [
+    7887,
+    1790567811282186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/eddy_topics.txt": [
+    19,
+    1790567797942186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/mid360_topics.txt": [
+    39,
+    1790567797938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/monitor.log": [
+    1232,
+    1790569218074186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/d405_topics.txt": [
+    365,
+    1790567797938186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/mid360_topics.record.txt": [
+    52,
+    1790567810042186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/front_video.log": [
+    1084,
+    1790569220902186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/runtime_status_inventory_command.json": [
+    84,
+    1790567802838186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/eddy_launch.log": [
+    332,
+    1790569217890186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/disk_guard.log": [
+    0,
+    1790567810910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/eddy_recorder.log": [
+    1392,
+    1790569217910186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/mid360_launch.log": [
+    3259,
+    1790569218594186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/visual_launch.log": [
+    693,
+    1790567761842186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/d405_topics.record.txt": [
+    393,
+    1790567810222186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/core_topics.txt": [
+    170,
+    1790567802838186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/d405_launch.log": [
+    8138,
+    1790569219386186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/core_recorder.log": [
+    2178,
+    1790569217870186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/d405_parameter_config.log": [
+    98,
+    1790567779462186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/front_video_encoder.pid": [
+    5,
+    1790567805366186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/visual.pid": [
+    5,
+    1790567762330186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/eddy_driver.pid": [
+    5,
+    1790567762614186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/front_video.pid": [
+    5,
+    1790567803158186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/mid360_recorder.pid": [
+    5,
+    1790567810194186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/core_recorder.pid": [
+    5,
+    1790567809990186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/monitor.pid": [
+    5,
+    1790567798266186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/mid360_driver.pid": [
+    5,
+    1790567762470186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/disk_guard.pid": [
+    5,
+    1790567811298186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/eddy_recorder.pid": [
+    5,
+    1790567810886186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/d405_driver.pid": [
+    5,
+    1790567762746186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/logs/pids/d405_recorder.pid": [
+    5,
+    1790567810490186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/seam_geometry_reference_s100p_live_v1.json": [
+    44932,
+    1788943492706439397
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/s100p_guided_anchor_seam_4096x3072.yaml": [
+    2873,
+    1789026733466636930
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/d405_startup_parameters.yaml": [
+    82,
+    1790567762630186000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/MID360_config.json": [
+    805,
+    1790146394258996000
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/front_h264_recorder.py": [
+    14284,
+    1790215152622490002
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/seam_geometry_reference_s100p_live_v1.json": [
+    44932,
+    1788943492706439397
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/stop_mapping_eddy_collection.sh": [
+    148,
+    1790171431666649614
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/validate_mapping_eddy_collection.py": [
+    183,
+    1790171433574559494
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/eddy_node.cpp": [
+    8099,
+    1790148210473894365
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/start_mapping_eddy_collection.sh": [
+    1345,
+    1790171973325820583
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/visual_field_validation.launch.py": [
+    15926,
+    1790090279694099335
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/mapping_eddy_live_probe.py": [
+    19461,
+    1790214817597900858
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/rebuild_compact_trajectory.py": [
+    3379,
+    1790214963256481633
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/replay_mapping_eddy_collection.py": [
+    193,
+    1790171434746504214
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/s100p_guided_anchor_seam_4096x3072.yaml": [
+    2873,
+    1789026733466636930
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/EddyChannelMean.msg": [
+    250,
+    1790148208241803789
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/vehicle_collection_manager.py": [
+    28087,
+    1790214816057935329
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/frozen_configs/sources/start_vehicle_collection.sh": [
+    27033,
+    1790241019068712278
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/rerun/rrd_manifest.json": [
+    30693,
+    1790596170882614304
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/rerun/FIELD-VEHICLE-20260928_115534.rrd.sha256": [
+    100,
+    1790596170890614372
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/rerun/FIELD-VEHICLE-20260928_115534.rrd": [
+    2560476029,
+    1790596142942375283
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/rerun/conversion.log": [
+    36257,
+    1790596170890614372
+  ],
+  "/media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/rerun/rrd_validation.json": [
+    4866,
+    1790596170886614338
+  ]
+}

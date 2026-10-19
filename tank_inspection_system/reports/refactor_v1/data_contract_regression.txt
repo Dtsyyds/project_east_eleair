@@ -1,0 +1,16 @@
+.....................................F.                                  [100%]
+=================================== FAILURES ===================================
+_________________ test_19_documented_limitations_are_complete __________________
+
+fake_run = PosixPath('/tmp/pytest-of-sunrise/pytest-8/test_19_documented_limitations0/FIELD-VEHICLE-20260928_115534')
+
+    def test_19_documented_limitations_are_complete(fake_run: Path):
+        text = handoff.known_limitations_text(handoff.run_facts(fake_run))
+        for needle in ("Mapping writer", "tracker", "Hardware synchronization", "30 minute", "executed=false", "last_status_is_error=true"):
+>           assert needle in text
+E           AssertionError: assert 'Mapping writer' in '# Known limitations\n\n- Source run: `FIELD-VEHICLE-20260928_115534`; duration seconds: `None`.\n- Enabled writers: `...g acceptance/calibration/model evidence is unavailable; no millimetre measurement or movement-control claim is made.\n'
+
+physic_bev/tests/test_role_handoff.py:189: AssertionError
+=========================== short test summary info ============================
+FAILED physic_bev/tests/test_role_handoff.py::test_19_documented_limitations_are_complete
+1 failed, 38 passed in 2.59s

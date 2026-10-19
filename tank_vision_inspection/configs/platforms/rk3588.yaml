@@ -1,0 +1,30 @@
+platform:
+  name: rk3588
+  architecture: aarch64
+  ros_distro: humble
+camera:
+  source: folder
+realtime_seam:
+  enabled: true
+  queue_size: 1
+  drop_policy: drop_oldest
+  process_latest_only: true
+inspection:
+  enabled: true
+  queue_size: 2
+  drop_policy: drop_newest
+  tile_size: 1024
+  overlap: 128
+  trigger_mode: frame_interval
+  trigger_every_n_frames: 15
+inference:
+  backend: rknn
+  model_path: null
+  target_arch: rk3588
+  input_format: rgb
+  model_calibrated: false
+storage:
+  save_all_raw: false
+  save_abnormal_raw: true
+  normal_frame_interval: 15
+  output_queue_size: 32

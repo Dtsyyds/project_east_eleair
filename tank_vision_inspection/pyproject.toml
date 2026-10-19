@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68", "toml>=0.10"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tank-vision-inspection"
+version = "0.1.0"
+description = "2D weld seam and surface anomaly inspection MVP for a magnetic tank robot"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+  "numpy>=1.24",
+  "opencv-python>=4.6",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+onnx = ["onnxruntime>=1.16"]
+test = ["pytest>=7.4"]
+
+[project.scripts]
+tank-vision = "tank_vision.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tank_vision*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = [
+  "unit: fast hardware-independent tests",
+  "integration: multi-component integration tests",
+  "camera: requires an attached supported camera and official SDK",
+  "ros2: requires a sourced ROS 2 environment and DDS access",
+  "s100p: requires an RDK S100P and its official BPU runtime",
+  "rk3588: requires an RK3588 and its official RKNN runtime",
+]

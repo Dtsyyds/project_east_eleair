@@ -1,0 +1,149 @@
+# MV-SUF1205GC-T nominal sensor settings. Runtime values are supplied by the source.
+camera:
+  width: 4096
+  height: 3072
+  color: true
+  global_shutter: true
+  calibration_file: null
+  calibration_version: null
+  source: folder
+  serial_number: null
+  pixel_format: bgr8
+  white_balance: null
+  fps: 15.0
+  trigger_mode: continuous
+  trigger_source: null
+  timeout_ms: 1000
+  roi: null
+
+platform:
+  name: auto
+  architecture: null
+  ros_distro: null
+
+realtime_seam:
+  enabled: true
+  queue_size: 1
+  drop_policy: drop_oldest
+  process_latest_only: true
+
+inspection:
+  enabled: true
+  queue_size: 2
+  drop_policy: drop_newest
+  tile_size: 1024
+  overlap: 128
+  trigger_mode: frame_interval
+  trigger_every_n_frames: 15
+  trigger_distance_mm: null
+
+inference:
+  backend: opencv
+  model_path: null
+  model_metadata_path: null
+  target_arch: null
+  input_format: bgr
+  model_calibrated: false
+
+storage:
+  save_all_raw: false
+  save_abnormal_raw: true
+  normal_frame_interval: 15
+  pre_event_frames: 15
+  post_event_frames: 15
+  compression: jpg
+  output_queue_size: 32
+  drop_policy: drop_newest
+  disk_low_space_threshold_mb: 1024
+
+pipeline:
+  mode: natural_seam
+  use_undistort: false
+  # [x, y, width, height] in original-image pixels, or null for the full image.
+  roi: null
+  thumbnail_max_dimension: 1600
+  save_overlay: true
+  save_json: true
+  save_masks: true
+
+seam:
+  detector: classical
+  reference_x_ratio: 0.5
+  reference_y_ratio: 0.7
+  expected_direction: vertical
+  min_confidence: 0.5
+  lost_frame_threshold: 3
+  color_channel: gray
+  clahe_clip_limit: 2.0
+  clahe_grid_size: 8
+  filter_type: gaussian
+  gaussian_kernel: 5
+  bilateral_sigma: 35.0
+  local_contrast_kernel: 41
+  local_contrast_weight: 0.75
+  gradient_weight: 0.25
+  threshold_method: otsu
+  adaptive_block_size: 31
+  adaptive_constant: -2.0
+  morphology_kernel: 5
+  morphology_open_kernel: 3
+  morphology_iterations: 2
+  minimum_response: 4.0
+  response_percentile: 99.5
+  min_component_area_ratio: 0.001
+  min_component_span_ratio: 0.25
+  center_reasonable_margin_ratio: 0.45
+  centerline_step_px: 4
+  fit_degree: 2
+  ransac_iterations: 120
+  ransac_residual_px: 4.0
+  max_fit_residual_px: 12.0
+  continuity_max_gap_px: 2.5
+  contrast_reference: 35.0
+  contrast_ring_kernel: 11
+
+defect:
+  backend: classical
+  tile_size: 1024
+  overlap: 128
+  confidence_threshold: 0.5
+  min_area_px: 80
+  max_area_ratio: 0.2
+  local_contrast_kernel: 31
+  anomaly_z_threshold: 2.5
+  texture_z_offset: 0.5
+  color_difference_threshold: 28.0
+  morphology_open_kernel: 3
+  morphology_close_kernel: 7
+  morphology_close_iterations: 2
+  color_confidence_scale: 80.0
+  exclusion_dilation_kernel: 13
+  nms_iou_threshold: 0.35
+  model_path: null
+
+laser:
+  enabled: false
+  wavelength_nm: 450
+  calibrated: false
+  blue_difference_threshold: 35
+  hsv_h_min: 90
+  hsv_h_max: 140
+  saturation_min: 70
+  value_min: 60
+  min_points: 20
+  ransac_residual_px: 2.0
+  ransac_iterations: 100
+  morphology_open_kernel: 3
+  morphology_close_width: 5
+  morphology_close_height: 3
+  quadratic_fit_min_points: 20
+
+quality:
+  enable_blur_check: true
+  enable_exposure_check: true
+  underexposed_threshold: 12
+  overexposed_threshold: 245
+  max_underexposed_ratio: 0.65
+  max_overexposed_ratio: 0.25
+  min_laplacian_variance: 20.0
+  min_contrast_std: 8.0

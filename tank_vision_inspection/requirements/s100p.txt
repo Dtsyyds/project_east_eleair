@@ -1,0 +1,2 @@
+-r core.txt
+# Install hbm_runtime/hobot_dnn only from the official S100P/TogetheROS SDK repository.

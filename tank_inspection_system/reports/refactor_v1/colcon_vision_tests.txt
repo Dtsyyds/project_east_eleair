@@ -1,0 +1,17 @@
+Starting >>> tank_vision_interfaces
+Starting >>> inspection_rerun
+Finished <<< tank_vision_interfaces [0.64s]
+Starting >>> tank_vision_ros
+--- stderr: tank_vision_ros
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+---
+Finished <<< tank_vision_ros [0.81s]
+Failed   <<< inspection_rerun [1.55s, exited with code 2]
+
+Summary: 2 packages finished [2.06s]
+  1 package failed: inspection_rerun
+  1 package had stderr output: tank_vision_ros

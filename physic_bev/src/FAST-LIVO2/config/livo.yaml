@@ -1,0 +1,116 @@
+/**:
+  ros__parameters:
+    common:
+      img_topic: "/camera/camera/color/image_raw"
+      lid_topic: "/livox/lidar"
+      imu_topic: "/livox/imu"
+      img_en: 1
+      lidar_en: 1
+      ros_driver_bug_fix: false
+
+    # LiDAR-to-camera extrinsic for the local Mid-360 + D405 rig.
+    # T_cl is row-major and transforms p_l to p_c: p_c = R_cl * p_l + P_cl.
+    # Legacy Rcl/Pcl parameters remain supported when T_cl is absent.
+    extrin_calib:
+      # T_cl: [0.9999564388707759,      0.004759234073604679,     -0.0080293244989188,      0.01160000247362164,
+      #        -0.00933118126284288,    0.530211956525646,        -0.8478137827456489,      -0.10451554532367027,
+      #        0.00022229960923624004,  0.8478517741022183,       0.5302332691699048,       0.0011290699703005549,
+      #        0.0,                     0.0,                      0.0,                      1.0]
+
+      T_cl: [-0.000855966483645,      -0.999828172768721,       -0.018517350224543,       0.031768816365067,
+            0.598269757782753,        0.014325846918316,        -0.801166691165228,       -0.108594539194672,
+            0.801294305635542,        -0.011764142469066,       0.598154696301903,        0.016584619676391,
+            0.0,                      0.0,                      0.0,                      1.0]
+
+      # Rcl: [0.9999564388707759, 0.004759234073604679, -0.0080293244989188,
+      #       -0.00933118126284288, 0.530211956525646, -0.8478137827456489,
+      #       0.00022229960923624004, 0.8478517741022183, 0.5302332691699048]
+      # Pcl: [0.01160000247362164, -0.10451554532367027, 0.0011290699703005549]
+
+    time_offset:
+      imu_time_offset: 0.0
+
+      # Camera timestamp correction, unit: second.
+      #
+      # IMPORTANT:
+      # 当前 common.img_en = 0，系统运行在 LIO 模式，因此该参数当前不参与融合。
+      # 当后续设置 img_en = 1 启用 LIVO 时，必须针对实际 MID360 + D405
+      # 重新测量/验证相机与 LiDAR/IMU 的时间偏移。
+      #
+      # 当前 0.1 仅作为已有配置值保留，不应直接视为最终正确的实机时间外参。
+      img_time_offset: 0.1
+
+      exposure_time_init: 0.0
+
+    preprocess:
+      point_filter_num: 3
+      filter_size_surf: 0.1
+      feature_extract_enabled: false
+
+    vio:
+      max_iterations: 5
+      outlier_threshold: 1000.0
+      img_point_cov: 1000.0
+      patch_size: 8
+      patch_pyrimid_level: 4
+      grid_size: 5
+      grid_n_height: 17
+      normal_en: true
+      raycast_en: false
+      inverse_composition_en: false
+      exposure_estimate_en: true
+      inv_expo_cov: 0.1
+
+    imu:
+      imu_en: true
+      # Enable online gravity estimation.
+      gravity_est_en: true
+      # Enable accelerometer and gyroscope bias estimation.
+      ba_bg_est_en: true
+      imu_int_frame: 30
+      acc_cov: 0.1
+      gyr_cov: 0.1
+      b_acc_cov: 0.0001
+      b_gyr_cov: 0.0001
+
+    lio:
+      max_iterations: 5
+      dept_err: 0.02
+      beam_err: 0.05
+      min_eigen_value: 0.0025
+      sigma_num: 3.0
+      voxel_size: 0.5
+      max_layer: 2
+      max_points_num: 50
+      layer_init_num: [5, 5, 5, 5, 5]
+
+    local_map:
+      map_sliding_en: false
+      half_map_size: 100
+      sliding_thresh: 8.0
+
+    uav:
+      imu_rate_odom: false
+      gravity_align_en: false
+
+    publish:
+      dense_map_en: true
+      pub_effect_point_en: false
+      pub_plane_en: true
+      pub_scan_num: 1
+      blind_rgb_points: 0.0
+
+    evo:
+      seq_name: "Mid360_D405_Mapping_01"
+      pose_output_en: false
+
+    pcd_save:
+      pcd_save_en: false
+      type: 0
+      colmap_output_en: false
+      filter_size_pcd: 0.15
+      interval: -1
+
+    image_save:
+      img_save_en: false
+      interval: 1

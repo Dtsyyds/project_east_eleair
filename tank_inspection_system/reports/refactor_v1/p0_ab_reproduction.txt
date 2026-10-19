@@ -1,0 +1,265 @@
+FFFFF                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_worker_failure_reaches_caller_and_abandons_pending[RealtimeSeamPipeline] _
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.realtime_pipeline.RealtimeSeamPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_worker_failure_reaches_caller_and_abandons_pending(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def broken(frame):
+            entered.set()
+            release.wait(2)
+            raise OSError("injected processor failure")
+        p = kind(config, processor=broken)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        release.set()
+        # Wait without Queue.join on the baseline (the missing-task bug is bounded here).
+        p._thread.join(1)
+>       assert getattr(p, "state", None) == "FAILED"
+E       AssertionError: assert None == 'FAILED'
+E        +  where None = getattr(<tank_vision.realtime_pipeline.RealtimeSeamPipeline object at 0xffff94d0a8f0>, 'state', None)
+
+tests/test_async_lifecycle.py:26: AssertionError
+_ test_worker_failure_reaches_caller_and_abandons_pending[InspectionPipeline] __
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.inspection_pipeline.InspectionPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_worker_failure_reaches_caller_and_abandons_pending(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def broken(frame):
+            entered.set()
+            release.wait(2)
+            raise OSError("injected processor failure")
+        p = kind(config, processor=broken)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        release.set()
+        # Wait without Queue.join on the baseline (the missing-task bug is bounded here).
+        p._thread.join(1)
+>       assert getattr(p, "state", None) == "FAILED"
+E       AssertionError: assert None == 'FAILED'
+E        +  where None = getattr(<tank_vision.inspection_pipeline.InspectionPipeline object at 0xffff94d49450>, 'state', None)
+
+tests/test_async_lifecycle.py:26: AssertionError
+_ test_close_deadline_covers_queue_and_blocked_processor[RealtimeSeamPipeline] _
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.realtime_pipeline.RealtimeSeamPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_close_deadline_covers_queue_and_blocked_processor(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def blocked(frame):
+            entered.set()
+            release.wait(3)
+            if kind is RealtimeSeamPipeline:
+                return RealtimeResult(frame, SeamResult(1, True, 1.), QualityResult(), FrameMetrics())
+            return InspectionResult(frame, [])
+        p = kind(config, processor=blocked)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        calls = []
+        def close():
+            started = time.monotonic()
+            try:
+                p.close(.05)
+            except BaseException as exc:
+                calls.append((exc, time.monotonic() - started))
+        closer = threading.Thread(target=close, daemon=True)
+        closer.start()
+        closer.join(.3)
+        try:
+>           assert not closer.is_alive(), "close ignored its deadline in Queue.join"
+E           AssertionError: close ignored its deadline in Queue.join
+E           assert not True
+E            +  where True = <bound method Thread.is_alive of <Thread(Thread-1 (close), started daemon 281473097658656)>>()
+E            +    where <bound method Thread.is_alive of <Thread(Thread-1 (close), started daemon 281473097658656)>> = <Thread(Thread-1 (close), started daemon 281473097658656)>.is_alive
+
+tests/test_async_lifecycle.py:59: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.realtime_pipeline.RealtimeSeamPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_close_deadline_covers_queue_and_blocked_processor(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def blocked(frame):
+            entered.set()
+            release.wait(3)
+            if kind is RealtimeSeamPipeline:
+                return RealtimeResult(frame, SeamResult(1, True, 1.), QualityResult(), FrameMetrics())
+            return InspectionResult(frame, [])
+        p = kind(config, processor=blocked)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        calls = []
+        def close():
+            started = time.monotonic()
+            try:
+                p.close(.05)
+            except BaseException as exc:
+                calls.append((exc, time.monotonic() - started))
+        closer = threading.Thread(target=close, daemon=True)
+        closer.start()
+        closer.join(.3)
+        try:
+            assert not closer.is_alive(), "close ignored its deadline in Queue.join"
+            assert isinstance(calls[0][0], TimeoutError)
+            assert calls[0][1] < .3
+            assert p.lifecycle_status["worker_alive"]
+            assert p.lifecycle_status["incomplete"]
+        finally:
+            release.set()
+            closer.join(1)
+>           p._thread.join(1)
+E           AttributeError: 'NoneType' object has no attribute 'join'
+
+tests/test_async_lifecycle.py:67: AttributeError
+__ test_close_deadline_covers_queue_and_blocked_processor[InspectionPipeline] __
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.inspection_pipeline.InspectionPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_close_deadline_covers_queue_and_blocked_processor(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def blocked(frame):
+            entered.set()
+            release.wait(3)
+            if kind is RealtimeSeamPipeline:
+                return RealtimeResult(frame, SeamResult(1, True, 1.), QualityResult(), FrameMetrics())
+            return InspectionResult(frame, [])
+        p = kind(config, processor=blocked)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        calls = []
+        def close():
+            started = time.monotonic()
+            try:
+                p.close(.05)
+            except BaseException as exc:
+                calls.append((exc, time.monotonic() - started))
+        closer = threading.Thread(target=close, daemon=True)
+        closer.start()
+        closer.join(.3)
+        try:
+>           assert not closer.is_alive(), "close ignored its deadline in Queue.join"
+E           AssertionError: close ignored its deadline in Queue.join
+E           assert not True
+E            +  where True = <bound method Thread.is_alive of <Thread(Thread-2 (close), started daemon 281473178202400)>>()
+E            +    where <bound method Thread.is_alive of <Thread(Thread-2 (close), started daemon 281473178202400)>> = <Thread(Thread-2 (close), started daemon 281473178202400)>.is_alive
+
+tests/test_async_lifecycle.py:59: AssertionError
+
+During handling of the above exception, another exception occurred:
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=1024))
+kind = <class 'tank_vision.inspection_pipeline.InspectionPipeline'>
+
+    @pytest.mark.parametrize("kind", [RealtimeSeamPipeline, InspectionPipeline])
+    def test_close_deadline_covers_queue_and_blocked_processor(config, kind):
+        entered, release = threading.Event(), threading.Event()
+        def blocked(frame):
+            entered.set()
+            release.wait(3)
+            if kind is RealtimeSeamPipeline:
+                return RealtimeResult(frame, SeamResult(1, True, 1.), QualityResult(), FrameMetrics())
+            return InspectionResult(frame, [])
+        p = kind(config, processor=blocked)
+        frame = FrameData(seam_image(32, 24), 1, "camera", 0, "fixture")
+        p.submit(frame)
+        assert entered.wait(1)
+        p.submit(frame)
+        calls = []
+        def close():
+            started = time.monotonic()
+            try:
+                p.close(.05)
+            except BaseException as exc:
+                calls.append((exc, time.monotonic() - started))
+        closer = threading.Thread(target=close, daemon=True)
+        closer.start()
+        closer.join(.3)
+        try:
+            assert not closer.is_alive(), "close ignored its deadline in Queue.join"
+            assert isinstance(calls[0][0], TimeoutError)
+            assert calls[0][1] < .3
+            assert p.lifecycle_status["worker_alive"]
+            assert p.lifecycle_status["incomplete"]
+        finally:
+            release.set()
+            closer.join(1)
+>           p._thread.join(1)
+E           AttributeError: 'NoneType' object has no attribute 'join'
+
+tests/test_async_lifecycle.py:67: AttributeError
+______________ test_stats_storage_is_bounded_and_mean_is_all_time ______________
+
+    def test_stats_storage_is_bounded_and_mean_is_all_time():
+        p = PipelineStats()
+        for i in range(10000):
+            p.record(StageTiming(total_algorithm_ms=i))
+>       assert len(p._timings) <= 2048
+E       assert 10000 <= 2048
+E        +  where 10000 = len([StageTiming(source_read_ms=0.0, decode_ms=0.0, undistort_ms=0.0, quality_ms=0.0, roi_ms=0.0, preprocess_ms=0.0, seam_...0, serialization_ms=0.0, writer_queue_ms=0.0, disk_write_ms=0.0, total_algorithm_ms=5.0, total_end_to_end_ms=0.0), ...])
+E        +    where [StageTiming(source_read_ms=0.0, decode_ms=0.0, undistort_ms=0.0, quality_ms=0.0, roi_ms=0.0, preprocess_ms=0.0, seam_...0, serialization_ms=0.0, writer_queue_ms=0.0, disk_write_ms=0.0, total_algorithm_ms=5.0, total_end_to_end_ms=0.0), ...] = PipelineStats(processed_frames=10000, skipped_frames=0, dropped_frames=0, failed_frames=0, max_queue_depth=0)._timings
+
+tests/test_async_lifecycle.py:75: AssertionError
+=============================== warnings summary ===============================
+tests/test_async_lifecycle.py::test_worker_failure_reaches_caller_and_abandons_pending[RealtimeSeamPipeline]
+  Warning: Exception in thread realtime-seam
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.10/threading.py", line 953, in run
+      self._target(*self._args, **self._kwargs)
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tank_vision/realtime_pipeline.py", line 154, in _worker
+      result = self._process_internal(frame, accepted_ns)
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tank_vision/realtime_pipeline.py", line 68, in _process_internal
+      result = self._custom_processor(frame)
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tests/test_async_lifecycle.py", line 17, in broken
+      raise OSError("injected processor failure")
+  OSError: injected processor failure
+
+tests/test_async_lifecycle.py::test_worker_failure_reaches_caller_and_abandons_pending[InspectionPipeline]
+  Warning: Exception in thread high-res-inspection
+  
+  Traceback (most recent call last):
+    File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+      self.run()
+    File "/usr/lib/python3.10/threading.py", line 953, in run
+      self._target(*self._args, **self._kwargs)
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tank_vision/inspection_pipeline.py", line 190, in _worker
+      self._output.put(self._process_internal(frame, mask, accepted_ns))
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tank_vision/inspection_pipeline.py", line 103, in _process_internal
+      result = self._custom_processor(frame)
+    File "/home/sunrise/east_eleair/tank_vision_inspection/tests/test_async_lifecycle.py", line 17, in broken
+      raise OSError("injected processor failure")
+  OSError: injected processor failure
+
+-- Docs: https://docs.pytest.org/en/stable/warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_async_lifecycle.py::test_worker_failure_reaches_caller_and_abandons_pending[RealtimeSeamPipeline]
+FAILED tests/test_async_lifecycle.py::test_worker_failure_reaches_caller_and_abandons_pending[InspectionPipeline]
+FAILED tests/test_async_lifecycle.py::test_close_deadline_covers_queue_and_blocked_processor[RealtimeSeamPipeline]
+FAILED tests/test_async_lifecycle.py::test_close_deadline_covers_queue_and_blocked_processor[InspectionPipeline]
+FAILED tests/test_async_lifecycle.py::test_stats_storage_is_bounded_and_mean_is_all_time
+5 failed, 2 warnings in 1.07s

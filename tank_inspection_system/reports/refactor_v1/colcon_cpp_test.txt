@@ -1,0 +1,4 @@
+[2.822s] ERROR:colcon:colcon test: Duplicate package names not supported:
+- inspection_sync:
+  - physic_bev/src/inspection_sync
+  - tank_inspection_system/reports/refactor_v1/backups/physic_bev/src/inspection_sync

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>罐体巡检 · WebSocket 验证台</title>
+  <style>
+    :root{color-scheme:dark;--bg:#111923;--panel:#1b2735;--line:#344459;--text:#eef4fb;--muted:#b6c5d5;--good:#76dfb6;--bad:#ff9494;--wait:#ffd38c}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1360px;margin:auto;padding:24px}
+    h1{margin:0;font-size:26px}h2{font-size:18px;margin:0 0 12px}p{margin:8px 0}.muted,small{color:var(--muted)}.head,.toolbar,.stats,.buttons{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.head{justify-content:space-between}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px}label{display:flex;gap:8px;align-items:center}input,button{font:inherit;border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:#101b29;color:var(--text)}input[type=checkbox]{accent-color:var(--good)}input[type=number]{width:110px}input[type=password]{width:200px}#endpoint{width:min(420px,65vw)}
+    button{cursor:pointer;background:#31475f}button:hover:enabled{background:#446581}button:disabled{opacity:.45;cursor:default}.primary{background:#216956}.danger{background:#7c3f46}.badge{padding:5px 12px;border-radius:20px;background:#2e3b4c}.badge.good{color:var(--good)}.badge.bad{color:var(--bad)}.badge.wait{color:var(--wait)}.stats{margin-top:12px;color:var(--muted)}.stats strong{color:var(--text)}
+    .devices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.device{padding:12px;background:#14202e;border-radius:8px;border-left:3px solid var(--line);overflow-wrap:anywhere}.device.good{border-color:var(--good)}.device.bad{border-color:var(--bad)}.device.wait{border-color:var(--wait)}.device-name{font-weight:650}.device-status{float:right}.device-reason{font-size:13px;color:var(--muted);margin:6px 0}.device-detail{font-size:12px;color:var(--muted);white-space:pre-line}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid .panel{min-width:0}.screen{height:300px;background:#0a1018;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden}.screen img{max-width:100%;max-height:100%;object-fit:contain}.screen img[hidden]{display:none}.video-meta{white-space:pre-line;font:12px/1.6 ui-monospace,monospace;color:var(--muted);overflow-wrap:anywhere}.pose{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.pose strong{display:block;font-size:22px}.pose-label{color:var(--muted);font-size:13px}.mono{font-family:ui-monospace,monospace;overflow-wrap:anywhere}
+    pre{margin:10px 0 0;background:#0e1721;border-radius:6px;padding:12px;max-height:280px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}summary{cursor:pointer;font-weight:600}#log{max-height:280px;overflow:auto;padding:0;list-style:none;font:12px/1.6 ui-monospace,monospace}#log li{padding:4px 0;border-bottom:1px solid #2a3a4e;overflow-wrap:anywhere}.log-error{color:var(--bad)}.log-tx{color:var(--good)}#notice{min-height:22px;color:var(--wait)}
+    @media(max-width:860px){.devices{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}.pose{grid-template-columns:repeat(2,1fr)}main{padding:12px}.screen{height:240px}}
+  </style>
+  <script src="console.js" defer></script>
+</head>
+<body>
+<main>
+  <header class="head"><div><h1>罐体巡检 · WebSocket 验证台</h1><p class="muted">六设备自检 · 双路预览 · 雷达位姿 · 本地离线页面</p></div><span id="connection" class="badge wait" role="status">未连接</span></header>
+  <section class="panel">
+    <div class="toolbar">
+      <label for="endpoint">板端地址 <input id="endpoint" type="url" value="ws://127.0.0.1:9001" spellcheck="false"></label>
+      <button id="connect" class="primary">连接</button><button id="disconnect" disabled>断开</button>
+      <label><input id="reconnect" type="checkbox" checked>自动重连</label>
+    </div>
+    <div class="stats"><span>机器人 <strong>tank_inspection_robot</strong></span><span>接收 <strong id="rx-count">0</strong></span><span>发送 <strong id="tx-count">0</strong></span><span>格式错误 <strong id="invalid-count">0</strong></span><span>过滤其他 ID <strong id="foreign-count">0</strong></span><span id="last-received">尚无回包</span></div>
+    <p id="notice" role="status"></p>
+    <div class="buttons"><button id="check" disabled>查询设备自检</button><button id="start-stream" disabled>开启双路预览</button><button id="stop-stream" disabled>停止双路预览</button><button id="export">导出验证记录</button><button id="clear-log">清空日志</button></div>
+    <p class="muted"><small>启动页面不会连接设备或发出运动命令。自检证明近期 ROS 数据活性；硬件验收、标定与现场算法状态仍未验证。预览采用最新帧策略，不能代替完整录制。</small></p>
+  </section>
+  <section class="panel"><h2>设备与数据自检</h2><div id="devices" class="devices"></div></section>
+  <div class="grid">
+    <section class="panel"><h2>鱼眼相机 <small id="fisheye-rate">0 FPS</small></h2><div class="screen"><span id="fisheye-empty" class="muted">尚未收到预览</span><img id="fisheye-image" alt="鱼眼相机预览" hidden></div><p id="fisheye-meta" class="video-meta">等待 status_sensor</p></section>
+    <section class="panel"><h2>D405 RGB 画面 <small id="depth_camera-rate">0 FPS</small></h2><div class="screen"><span id="depth_camera-empty" class="muted">尚未收到预览</span><img id="depth_camera-image" alt="D405 RGB 预览" hidden></div><p id="depth_camera-meta" class="video-meta">等待 status_sensor</p><small>RGB 画面由板端编码为 JPEG 预览；本页面不作测量。</small></section>
+  </div>
+  <section class="panel"><h2>雷达位姿 <small id="pose-status">未收到有效位姿</small></h2><div class="pose"><div><span class="pose-label">X · m</span><strong id="pose-x">—</strong></div><div><span class="pose-label">Y · m</span><strong id="pose-y">—</strong></div><div><span class="pose-label">Z · m</span><strong id="pose-z">—</strong></div><div><span class="pose-label">Yaw · rad</span><strong id="pose-angle">—</strong></div></div><p id="pose-meta" class="mono muted">坐标系与源时间戳待回包。资产坐标与标定状态未验证。</p><p id="bridge-meta" class="muted">等待桥接统计</p></section>
+  <section class="panel"><details><summary>底盘命令验证（默认关闭）</summary><p class="muted">板端还需明确启用 control_enabled 与真实命令接口。仅发送一次命令，续发超时由板端 watchdog 处理；回包是 ROS 发布结果，不是硬件执行确认。</p><div class="toolbar"><label><input id="enable-control" type="checkbox">启用本页面命令测试</label><label>Token <input id="control-token" type="password" autocomplete="off" placeholder="仅在内存中使用"></label></div><div class="toolbar" style="margin-top:12px"><label>vx · m/s <input id="vx" type="number" value="0" step="0.01" min="-0.2" max="0.2"></label><label>vy · m/s <input id="vy" type="number" value="0" step="0.01" min="-0.2" max="0.2"></label><label>wz · rad/s <input id="wz" type="number" value="0" step="0.01" min="-0.5" max="0.5"></label><button id="move" disabled>发送一次速度</button><button id="stop" class="danger" disabled>发送零速度停止</button></div><p id="control-status" class="muted">板端控制状态未知</p></details></section>
+  <section class="panel"><h2>最近回包</h2><small class="muted">协议没有 request_id；多客户端共享回包，不能自动认定为本页面请求的独立 ACK。</small><pre id="response">尚无 response</pre></section>
+  <section class="panel"><div class="head"><h2>验证日志</h2><small class="muted">最多 200 条 · 视频正文与 Token 不记录</small></div><ul id="log" aria-live="polite"></ul></section>
+</main>
+</body>
+</html>

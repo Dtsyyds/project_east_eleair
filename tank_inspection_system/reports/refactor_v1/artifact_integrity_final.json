@@ -1,0 +1,11 @@
+{
+  "verified_at": "2026-10-03T12:15:10.172323+00:00",
+  "source_files": 759,
+  "system_files": 39,
+  "config_snapshots": 15,
+  "output_hashes_verified": 9,
+  "artifact_hashes_match": true,
+  "result_manifest_sha256": "e85e18fe14c8792221b5036a81b0b74a869222d5c876f1b9551f7ff0de866925",
+  "media_preservation_status": "environment_blocked",
+  "hardware_executed": false
+}

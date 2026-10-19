@@ -1,0 +1,69 @@
+..............FF.......                                                  [100%]
+=================================== FAILURES ===================================
+___________________ test_fixture_e2e_atomic_manifest_and_sha ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-29/test_fixture_e2e_atomic_manife0')
+
+    def test_fixture_e2e_atomic_manifest_and_sha(tmp_path: Path):
+>       run, config = create_fixture_run(tmp_path)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:411: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-29/test_fixture_e2e_atomic_manife0')
+
+    def create_fixture_run(tmp_path: Path) -> tuple[Path, Path]:
+        import rosbag2_py
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+    
+        run = tmp_path / "FIXTURE-RUN"
+        bag = run / "mcap" / "core"
+        bag.parent.mkdir(parents=True)
+        writer = rosbag2_py.SequentialWriter()
+>       writer.open(
+            rosbag2_py.StorageOptions(uri=str(bag), storage_id="mcap"),
+            rosbag2_py.ConverterOptions("", ""),
+        )
+E       RuntimeError: No storage could be initialized. Abort
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:360: RuntimeError
+----------------------------- Captured stderr call -----------------------------
+[ERROR] [1791012108.714550190] [rosbag2_storage]: Could not load/open plugin with storage id 'mcap'
+_________________ test_mid_conversion_failure_does_not_commit __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff19d2c760>
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-29/test_mid_conversion_failure_do0')
+
+    def test_mid_conversion_failure_does_not_commit(monkeypatch, tmp_path: Path):
+        import inspection_rerun.run_rrd_builder as module
+    
+>       run, config = create_fixture_run(tmp_path)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:431: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-29/test_mid_conversion_failure_do0')
+
+    def create_fixture_run(tmp_path: Path) -> tuple[Path, Path]:
+        import rosbag2_py
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+    
+        run = tmp_path / "FIXTURE-RUN"
+        bag = run / "mcap" / "core"
+        bag.parent.mkdir(parents=True)
+        writer = rosbag2_py.SequentialWriter()
+>       writer.open(
+            rosbag2_py.StorageOptions(uri=str(bag), storage_id="mcap"),
+            rosbag2_py.ConverterOptions("", ""),
+        )
+E       RuntimeError: No storage could be initialized. Abort
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:360: RuntimeError
+----------------------------- Captured stderr call -----------------------------
+[ERROR] [1791012108.812364548] [rosbag2_storage]: Could not load/open plugin with storage id 'mcap'
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_fixture_e2e_atomic_manifest_and_sha
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_mid_conversion_failure_does_not_commit
+2 failed, 21 passed in 1.75s

@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "tests": [
+    {
+      "topic": "/eddy/data",
+      "input_anchors": 5,
+      "output_fusion_indices": 5,
+      "type_qos_matched": true,
+      "header_fields_valid": true,
+      "quality_flags_zero": true,
+      "asset_coordinates_valid": false,
+      "nominal_header_rate_hz": 5.0,
+      "anchor_pacing_seconds": 0.3,
+      "measured_wall_rate_hz": 3.164220468203944,
+      "discovery_settle_seconds": 0.5,
+      "hardware_executed": false
+    },
+    {
+      "topic": "/eddy/channel_mean",
+      "input_anchors": 5,
+      "output_fusion_indices": 5,
+      "type_qos_matched": true,
+      "header_fields_valid": true,
+      "quality_flags_zero": true,
+      "asset_coordinates_valid": false,
+      "nominal_header_rate_hz": 5.0,
+      "anchor_pacing_seconds": 0.3,
+      "measured_wall_rate_hz": 3.163683467516714,
+      "discovery_settle_seconds": 0.5,
+      "hardware_executed": false
+    }
+  ],
+  "hardware_executed": false
+}

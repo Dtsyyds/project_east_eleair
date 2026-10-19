@@ -1,0 +1,6 @@
+task: surface_defect_segmentation
+dataset_manifest: ""
+labels: [rust_corrosion, scratch, coating_damage, surface_anomaly, ignore]
+input_format: rgb
+target_platforms: [x86, s100p, rk3588]
+status: not_trained

@@ -1,0 +1,15 @@
+Processing ./tank_inspection_system/build_core/staging_v2
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: tank-vision-inspection
+  Building wheel for tank-vision-inspection (pyproject.toml): started
+  Building wheel for tank-vision-inspection (pyproject.toml): finished with status 'done'
+  Created wheel for tank-vision-inspection: filename=tank_vision_inspection-0.1.0-py3-none-any.whl size=123210 sha256=1343bf09fcbf44d36a16a73fb9592f7457310769c68ad7cb59a4704257ecf968
+  Stored in directory: /tmp/pip-ephem-wheel-cache-vi2maog6/wheels/f1/37/bb/292ce1b7b95b75cc75df2eb35525b7bdb7dd736f179d8379ed
+Successfully built tank-vision-inspection
+Installing collected packages: tank-vision-inspection
+  Attempting uninstall: tank-vision-inspection
+    Found existing installation: tank-vision-inspection 0.1.0
+    Uninstalling tank-vision-inspection-0.1.0:
+      Successfully uninstalled tank-vision-inspection-0.1.0
+Successfully installed tank-vision-inspection-0.1.0

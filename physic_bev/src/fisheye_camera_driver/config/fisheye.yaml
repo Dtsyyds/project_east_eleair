@@ -1,0 +1,14 @@
+/**:
+  ros__parameters:
+    # Empty uses the unique /dev/v4l/by-id/*-video-index0 path matching the ID.
+    device: ""
+    device_id_contains: "icSpring_icspring_camera_20240307110322"
+    # The camera advertises 1920x1080 MJPG, but the ARM64 software decoder only
+    # measured about 1.12 Hz there. Use the verified preview-friendly mode.
+    width: 640
+    height: 480
+    pixel_format: MJPG
+    fps: 15.0
+    frame_id: fisheye_optical_frame
+    camera_info_url: ""
+    reconnect_interval_sec: 2.0

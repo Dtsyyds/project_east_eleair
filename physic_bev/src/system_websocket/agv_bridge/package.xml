@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>agv_bridge</name>
+  <version>0.0.1</version>
+  <description>中介者模式的消息分发包，解耦硬件接口与业务逻辑</description>
+  <maintainer email="dts@todo.todo">dts</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>agv_protocol</depend>
+  <depend>eddy_driver</depend>
+  <depend>inspection_interfaces</depend>
+  <depend>libopencv-dev</depend>
+  <depend>openssl</depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>python3-websockets</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

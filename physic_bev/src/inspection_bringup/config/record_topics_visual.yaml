@@ -1,0 +1,17 @@
+topics:
+  lightweight:
+    - /camera/front/camera_info
+    - /vision/front/seam_geometry
+    - /vision/front/seam_state
+    - /diagnostics
+    - /tf_static
+  raw:
+    - /camera/front/image_raw
+storage:
+  max_bag_size: 10737418240
+  max_bag_duration: 900
+  max_cache_size: 1073741824
+raw_short:
+  max_bag_size: 10737418240
+  max_bag_duration: 60
+  max_cache_size: 1073741824

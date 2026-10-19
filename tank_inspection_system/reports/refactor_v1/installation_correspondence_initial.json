@@ -1,0 +1,818 @@
+{
+  "code_files": [
+    {
+      "source": "tank_vision_inspection/tank_vision/pipeline.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/pipeline.py",
+      "source_sha256": "3a73b00578c1b672845914dc2044b114007d4bad82fd86ba44182c1edfe7908a",
+      "installed_sha256": "3a73b00578c1b672845914dc2044b114007d4bad82fd86ba44182c1edfe7908a",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inspection_pipeline.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inspection_pipeline.py",
+      "source_sha256": "a4cf526c64eda02ded0c27f1f0619de841222d32b1a7fb6bfa1cf8b3d08b182a",
+      "installed_sha256": "a4cf526c64eda02ded0c27f1f0619de841222d32b1a7fb6bfa1cf8b3d08b182a",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/ros_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/ros_adapter.py",
+      "source_sha256": "c7ab4238b70013915a088e5c57a1e888e2a7a4baaa045bd822082bf357315434",
+      "installed_sha256": "c7ab4238b70013915a088e5c57a1e888e2a7a4baaa045bd822082bf357315434",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/async_status.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/async_status.py",
+      "source_sha256": "c9b95f32062d19fca0593907832b27f53b0016236bf695e2458e68942e852ce1",
+      "installed_sha256": "c9b95f32062d19fca0593907832b27f53b0016236bf695e2458e68942e852ce1",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/latest_frame.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/latest_frame.py",
+      "source_sha256": "5eaa8117bd59f230eeb1435c1c6f77231ed4ca7fead31fde5b9b3f521adcebbe",
+      "installed_sha256": "5eaa8117bd59f230eeb1435c1c6f77231ed4ca7fead31fde5b9b3f521adcebbe",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/__init__.py",
+      "source_sha256": "4d14a83cc36c55b157c951e5a392d908e9fdf8cf3a484e281efb0e6f3e077bc0",
+      "installed_sha256": "4d14a83cc36c55b157c951e5a392d908e9fdf8cf3a484e281efb0e6f3e077bc0",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam_tracking_types.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam_tracking_types.py",
+      "source_sha256": "8f4fed66fc8d6a4aec7c4946f9c2f7b909daf68b0d3180b6461c65489d26ceb5",
+      "installed_sha256": "8f4fed66fc8d6a4aec7c4946f9c2f7b909daf68b0d3180b6461c65489d26ceb5",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/config.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/config.py",
+      "source_sha256": "d1aaed2a9950593d16bd24c1308d1dd7433b0fd50ea71d442d8de00996c64acb",
+      "installed_sha256": "d1aaed2a9950593d16bd24c1308d1dd7433b0fd50ea71d442d8de00996c64acb",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/snapshot_writer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/snapshot_writer.py",
+      "source_sha256": "128f1a04d2449458344c6e99921346805270da36322d53869e441f767f19b566",
+      "installed_sha256": "128f1a04d2449458344c6e99921346805270da36322d53869e441f767f19b566",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/failure_event_recorder.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/failure_event_recorder.py",
+      "source_sha256": "7a108b1a55acdfaaac6b65e2b6433aa84272ffb46f9c7ee685fbc13a0173197d",
+      "installed_sha256": "7a108b1a55acdfaaac6b65e2b6433aa84272ffb46f9c7ee685fbc13a0173197d",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/dataset_tools.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/dataset_tools.py",
+      "source_sha256": "7514e7fd893a9aca14bf18b1b487e78e7c67f38e28fa80a801a719603ccc29e2",
+      "installed_sha256": "7514e7fd893a9aca14bf18b1b487e78e7c67f38e28fa80a801a719603ccc29e2",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/stable_seam_tracker.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/stable_seam_tracker.py",
+      "source_sha256": "121f3578ea5b47e1dc29c531d0da6ff42a22bf2b75d6a55be261d33e5905b23c",
+      "installed_sha256": "121f3578ea5b47e1dc29c531d0da6ff42a22bf2b75d6a55be261d33e5905b23c",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/synthetic.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/synthetic.py",
+      "source_sha256": "53e2e2c0d382d5d832b43fe740c0e5eb70a3150addb7bd1f55e3614ac65c7e9d",
+      "installed_sha256": "53e2e2c0d382d5d832b43fe740c0e5eb70a3150addb7bd1f55e3614ac65c7e9d",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/cli.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/cli.py",
+      "source_sha256": "08c853619f70108fa131d9409ac419c5d6a0f8bed7e73dc3db762d6cdb70bb0f",
+      "installed_sha256": "08c853619f70108fa131d9409ac419c5d6a0f8bed7e73dc3db762d6cdb70bb0f",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/realtime_pipeline.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/realtime_pipeline.py",
+      "source_sha256": "f19085bcad3809145d8584b27d2dcc728a61b8fb43003cf30181eb7451e73fa8",
+      "installed_sha256": "f19085bcad3809145d8584b27d2dcc728a61b8fb43003cf30181eb7451e73fa8",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/async_lifecycle.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/async_lifecycle.py",
+      "source_sha256": "052cb71dee1f8875491e3388800db68ef7c866ce72796b83f814f2d7fbfb486c",
+      "installed_sha256": "052cb71dee1f8875491e3388800db68ef7c866ce72796b83f814f2d7fbfb486c",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/metrics.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/metrics.py",
+      "source_sha256": "d880b911096e28b1c47f6089aa2d773d2a261b99b27eaf154819459093a538dc",
+      "installed_sha256": "d880b911096e28b1c47f6089aa2d773d2a261b99b27eaf154819459093a538dc",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/roi_validation_recorder.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/roi_validation_recorder.py",
+      "source_sha256": "84d63382f85df2ec50ac41804e4c4ec836a9295c53258d339cc29bc619dbb696",
+      "installed_sha256": "84d63382f85df2ec50ac41804e4c4ec836a9295c53258d339cc29bc619dbb696",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/geometry_provenance_recorder.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/geometry_provenance_recorder.py",
+      "source_sha256": "b66ab38d08754b7a3d0aa74d3ab17bd7f974fe650b502d8704b2b0d88399a112",
+      "installed_sha256": "b66ab38d08754b7a3d0aa74d3ab17bd7f974fe650b502d8704b2b0d88399a112",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/types.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/types.py",
+      "source_sha256": "5bff61a4c9f0cba0267b83e871815df7dc8202044d8aff4f60713b9a03406a42",
+      "installed_sha256": "5bff61a4c9f0cba0267b83e871815df7dc8202044d8aff4f60713b9a03406a42",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam_width_reference.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam_width_reference.py",
+      "source_sha256": "e30315ab06a9ea91891f4dd4db517bc0c91bd8b15d310dc241de469a79a36c83",
+      "installed_sha256": "e30315ab06a9ea91891f4dd4db517bc0c91bd8b15d310dc241de469a79a36c83",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/json_writer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/outputs/json_writer.py",
+      "source_sha256": "780c6087c2bc834bb6c8edf9ccc6047b835fbb774378cd8a8d6cfbdf8408d5c6",
+      "installed_sha256": "780c6087c2bc834bb6c8edf9ccc6047b835fbb774378cd8a8d6cfbdf8408d5c6",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/outputs/__init__.py",
+      "source_sha256": "38bd92f893e16683f9b7b8b751a437a58ea10f1ce52d51a6c395aaffb5365dd5",
+      "installed_sha256": "38bd92f893e16683f9b7b8b751a437a58ea10f1ce52d51a6c395aaffb5365dd5",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/result_writer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/outputs/result_writer.py",
+      "source_sha256": "46caf25f5e73567ca9950cab6adefe92297095caa8437acd97a62375690c1af2",
+      "installed_sha256": "46caf25f5e73567ca9950cab6adefe92297095caa8437acd97a62375690c1af2",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/async_writer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/outputs/async_writer.py",
+      "source_sha256": "20f561e30997fc210f20a584e580a876f27b71c03116f9ed8e17274da070cf06",
+      "installed_sha256": "20f561e30997fc210f20a584e580a876f27b71c03116f9ed8e17274da070cf06",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/overlay.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/outputs/overlay.py",
+      "source_sha256": "2d038a278ef89288fdb311bc0e97c8da8488b713ea5d02c1eb8d6990320188ea",
+      "installed_sha256": "2d038a278ef89288fdb311bc0e97c8da8488b713ea5d02c1eb8d6990320188ea",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/subpixel.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/laser/subpixel.py",
+      "source_sha256": "5786c21ea66b9194b735931597a4600f23c58d02539f6bafb40096944690c689",
+      "installed_sha256": "5786c21ea66b9194b735931597a4600f23c58d02539f6bafb40096944690c689",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/laser/__init__.py",
+      "source_sha256": "82fd15bec39eb9678eb7fc20349445905cc6315a16a4aefea065512cd51c6251",
+      "installed_sha256": "82fd15bec39eb9678eb7fc20349445905cc6315a16a4aefea065512cd51c6251",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/profile_interface.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/laser/profile_interface.py",
+      "source_sha256": "48fb306c1a0d79a2922b4b049fc977c0b261f7cbad243c3bf36d129b5f778187",
+      "installed_sha256": "48fb306c1a0d79a2922b4b049fc977c0b261f7cbad243c3bf36d129b5f778187",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/line_detector.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/laser/line_detector.py",
+      "source_sha256": "3172be5f784feeb4fbce26f5506badefd463b8921e2501c3865b71c247936ab6",
+      "installed_sha256": "3172be5f784feeb4fbce26f5506badefd463b8921e2501c3865b71c247936ab6",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/classical_detector.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/classical_detector.py",
+      "source_sha256": "4710e071b899086f3f17d6c513ec6c6c95861a9b77f5819e39a2a29eeac7b15f",
+      "installed_sha256": "4710e071b899086f3f17d6c513ec6c6c95861a9b77f5819e39a2a29eeac7b15f",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/confidence.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/confidence.py",
+      "source_sha256": "b7f20a498ec70c83d7fcd052ce7181438e4c6e25055b1dbc3ee024013341aa36",
+      "installed_sha256": "b7f20a498ec70c83d7fcd052ce7181438e4c6e25055b1dbc3ee024013341aa36",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/__init__.py",
+      "source_sha256": "c146eac6abf09a5ed8bccafc84104d24ea21f6764c15ca5a089208974ca8a9bd",
+      "installed_sha256": "c146eac6abf09a5ed8bccafc84104d24ea21f6764c15ca5a089208974ca8a9bd",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/centerline.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/centerline.py",
+      "source_sha256": "10afd2d222d1e35e5f0a7a80b26710ef59fbd81051d2a59f7c6d5bcae16c1861",
+      "installed_sha256": "10afd2d222d1e35e5f0a7a80b26710ef59fbd81051d2a59f7c6d5bcae16c1861",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/geometry.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/geometry.py",
+      "source_sha256": "3f3584bab2b9fe0f0a80b5cc12f32bb056c209fc4396c242e06173329723da84",
+      "installed_sha256": "3f3584bab2b9fe0f0a80b5cc12f32bb056c209fc4396c242e06173329723da84",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/detector.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/seam/detector.py",
+      "source_sha256": "c3c6cece3b6b865bcb7012c9b06dc872a4ac62ae2ff507f32541668d26506b9a",
+      "installed_sha256": "c3c6cece3b6b865bcb7012c9b06dc872a4ac62ae2ff507f32541668d26506b9a",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/s100p.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/platforms/s100p.py",
+      "source_sha256": "106cb01fd7465e82946b9be509ff0af095b36ba0a611a31af349797b31a32f27",
+      "installed_sha256": "106cb01fd7465e82946b9be509ff0af095b36ba0a611a31af349797b31a32f27",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/platforms/__init__.py",
+      "source_sha256": "b11c1252b75d4e1569971c10de64700c32ec998c3555f5fb19ab7170ceaf973d",
+      "installed_sha256": "b11c1252b75d4e1569971c10de64700c32ec998c3555f5fb19ab7170ceaf973d",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/x86.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/platforms/x86.py",
+      "source_sha256": "24244b30f6183f92ab1ecada8de190f9e19a17fa2b3bb27d2f27e60c25c5d3c2",
+      "installed_sha256": "24244b30f6183f92ab1ecada8de190f9e19a17fa2b3bb27d2f27e60c25c5d3c2",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/detect_platform.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/platforms/detect_platform.py",
+      "source_sha256": "9a9f3645beef4a71522cb8da9a9eecd6975f053341752641cca0de8185c785df",
+      "installed_sha256": "9a9f3645beef4a71522cb8da9a9eecd6975f053341752641cca0de8185c785df",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/rk3588.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/platforms/rk3588.py",
+      "source_sha256": "c442982f7c6163671e9598584a02e862560102204ab58dd9e437f163e316b8bf",
+      "installed_sha256": "c442982f7c6163671e9598584a02e862560102204ab58dd9e437f163e316b8bf",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/undistort.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/calibration/undistort.py",
+      "source_sha256": "378589435ad8f378f83fe76fda8e13e14019f121d9ccf20327b42b28960da350",
+      "installed_sha256": "378589435ad8f378f83fe76fda8e13e14019f121d9ccf20327b42b28960da350",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/calibration/__init__.py",
+      "source_sha256": "ef86709f05c4d5147111e58501f6f677f474e5e8746d90995f24b9830d002ea1",
+      "installed_sha256": "ef86709f05c4d5147111e58501f6f677f474e5e8746d90995f24b9830d002ea1",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/camera_calibration.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/calibration/camera_calibration.py",
+      "source_sha256": "53539b85176c2b4fb5c88cae4d5c96f90475f145c91157da2cb11a04f376d418",
+      "installed_sha256": "53539b85176c2b4fb5c88cae4d5c96f90475f145c91157da2cb11a04f376d418",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/opencv_backend.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/opencv_backend.py",
+      "source_sha256": "262a81fb3f3802bd364c9304f1d3cc8709b728c8223960d40e99aedbed8da570",
+      "installed_sha256": "262a81fb3f3802bd364c9304f1d3cc8709b728c8223960d40e99aedbed8da570",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/__init__.py",
+      "source_sha256": "6dc1810fbc5125e086127bc5e606d58a221990e7607a9af22cdcaf9ff4a043cf",
+      "installed_sha256": "6dc1810fbc5125e086127bc5e606d58a221990e7607a9af22cdcaf9ff4a043cf",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/base.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/base.py",
+      "source_sha256": "4da7ac7c26c07be0620547cb7762a832a72578f3af2bf5acb1e2711e163b8d8f",
+      "installed_sha256": "4da7ac7c26c07be0620547cb7762a832a72578f3af2bf5acb1e2711e163b8d8f",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/rknn_backend.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/rknn_backend.py",
+      "source_sha256": "7d00fa662061610f832f2e413ff4a2aa8cf6904d0a1f8608da47fe14ecff61e1",
+      "installed_sha256": "7d00fa662061610f832f2e413ff4a2aa8cf6904d0a1f8608da47fe14ecff61e1",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/onnx_backend.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/onnx_backend.py",
+      "source_sha256": "b5b3e1357975cc9de8d22af6fb01f62f77f46bb4fbac79750824860b297dd987",
+      "installed_sha256": "b5b3e1357975cc9de8d22af6fb01f62f77f46bb4fbac79750824860b297dd987",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/d_robotics_bpu_backend.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/inference/d_robotics_bpu_backend.py",
+      "source_sha256": "d707ec300a8b51747f1b67a1b0d8c93aacc932889d2b6bccd4464dc54e6b85ae",
+      "installed_sha256": "d707ec300a8b51747f1b67a1b0d8c93aacc932889d2b6bccd4464dc54e6b85ae",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/__init__.py",
+      "source_sha256": "2767e77b4897b0e37d2045b64fd28db83a0cc1c90c4b1125f15e84265f3bccc9",
+      "installed_sha256": "2767e77b4897b0e37d2045b64fd28db83a0cc1c90c4b1125f15e84265f3bccc9",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/classical_baseline.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/classical_baseline.py",
+      "source_sha256": "42c5cd95c2c407b3a6e1b69c50030208d96d975eb3d9b6e3e404f82422724f59",
+      "installed_sha256": "42c5cd95c2c407b3a6e1b69c50030208d96d975eb3d9b6e3e404f82422724f59",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/tiled_inference.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/tiled_inference.py",
+      "source_sha256": "d16875b32a31fa793864b33ac327108f7264af679e910ccc5ad33744a48d77c6",
+      "installed_sha256": "d16875b32a31fa793864b33ac327108f7264af679e910ccc5ad33744a48d77c6",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/onnx_backend.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/onnx_backend.py",
+      "source_sha256": "9c68ebda1fa372e7c807ed869ce614e4ddd881b0c1b0efba6beabfb8d2b4f4a4",
+      "installed_sha256": "9c68ebda1fa372e7c807ed869ce614e4ddd881b0c1b0efba6beabfb8d2b4f4a4",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/detector.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/detector.py",
+      "source_sha256": "a46c5c0504a5e19b2ae3b0553c3b52f7806cfc88b8b6212ecf0b48e8b6a656d0",
+      "installed_sha256": "a46c5c0504a5e19b2ae3b0553c3b52f7806cfc88b8b6212ecf0b48e8b6a656d0",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/postprocess.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/defects/postprocess.py",
+      "source_sha256": "e0277de6b304746f555444979a0ee994b125a2de559b955d8af855807e1e78fe",
+      "installed_sha256": "e0277de6b304746f555444979a0ee994b125a2de559b955d8af855807e1e78fe",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/preprocessing/__init__.py",
+      "source_sha256": "e6f259bc451c8490cdb2883940d4fbb0053bf6003750414e290549b203126d71",
+      "installed_sha256": "e6f259bc451c8490cdb2883940d4fbb0053bf6003750414e290549b203126d71",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/image_quality.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/preprocessing/image_quality.py",
+      "source_sha256": "f50edda4ec9ce4727498c169e54996db26d01a7bb051d2b781cce189a4d4fcb9",
+      "installed_sha256": "f50edda4ec9ce4727498c169e54996db26d01a7bb051d2b781cce189a4d4fcb9",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/roi.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/preprocessing/roi.py",
+      "source_sha256": "676c1d6ea32352c62415af97047d0cebdde0c123341bf816a23ff49bf810a3df",
+      "installed_sha256": "676c1d6ea32352c62415af97047d0cebdde0c123341bf816a23ff49bf810a3df",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/normalize.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/preprocessing/normalize.py",
+      "source_sha256": "97e91ce1cbfb3e2eab8c88e9a6d0b4bf83ccb384ca5f0fc00d53c8f9e497e3b0",
+      "installed_sha256": "97e91ce1cbfb3e2eab8c88e9a6d0b4bf83ccb384ca5f0fc00d53c8f9e497e3b0",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/video_source.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/video_source.py",
+      "source_sha256": "5e6b321026f4f80fbe50684994cbe1e149354bbb4d1f808ec3fefe2f3c0edffd",
+      "installed_sha256": "5e6b321026f4f80fbe50684994cbe1e149354bbb4d1f808ec3fefe2f3c0edffd",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/__init__.py",
+      "source_sha256": "86e36d40d7abb36d9f012c23cb4519ea847c7459afde1afcf9ea382fcc93ba2b",
+      "installed_sha256": "86e36d40d7abb36d9f012c23cb4519ea847c7459afde1afcf9ea382fcc93ba2b",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/vendor_camera_source.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/vendor_camera_source.py",
+      "source_sha256": "072bd749bf45873c0983927e46acfaf2ee43199cc9ee3ed599a72a2c2ae55219",
+      "installed_sha256": "072bd749bf45873c0983927e46acfaf2ee43199cc9ee3ed599a72a2c2ae55219",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/base.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/base.py",
+      "source_sha256": "0e1c54ead58924390a37923e3f3faa029440b81e1f40972c2c2a6cfda8f1e7ee",
+      "installed_sha256": "0e1c54ead58924390a37923e3f3faa029440b81e1f40972c2c2a6cfda8f1e7ee",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/opencv_camera_source.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/opencv_camera_source.py",
+      "source_sha256": "82f301d9152773e460ff980ebd8d826bd9fbc3426b33da96f1f59e8da52a9f50",
+      "installed_sha256": "82f301d9152773e460ff980ebd8d826bd9fbc3426b33da96f1f59e8da52a9f50",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/folder_source.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/folder_source.py",
+      "source_sha256": "e4dc95427630126baf9bbe48f6225b1bc47347b438273e88dc9637ea40bd8ccf",
+      "installed_sha256": "e4dc95427630126baf9bbe48f6225b1bc47347b438273e88dc9637ea40bd8ccf",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/mindvision_probe.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/sources/mindvision_probe.py",
+      "source_sha256": "fc59e6add76442f2a81b8dd06b819529484cc2cb549f44852d8b6de2d07bb1a9",
+      "installed_sha256": "fc59e6add76442f2a81b8dd06b819529484cc2cb549f44852d8b6de2d07bb1a9",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/stable_seam_node.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/stable_seam_node.py",
+      "source_sha256": "50cc2d179c24c37505324f35606a2d48f4289eb9083ebeac068188729f957638",
+      "installed_sha256": "50cc2d179c24c37505324f35606a2d48f4289eb9083ebeac068188729f957638",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/__init__.py",
+      "source_sha256": "0a74f98d632bb5e99492c51dc9a9d92d70f39f829abcbe3671fd908614d78778",
+      "installed_sha256": "0a74f98d632bb5e99492c51dc9a9d92d70f39f829abcbe3671fd908614d78778",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/vision_node.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/vision_node.py",
+      "source_sha256": "95ceb9a6de35d7cf01d1040a4a20e0f12c027eedae4bf3a50899f803103e4196",
+      "installed_sha256": "95ceb9a6de35d7cf01d1040a4a20e0f12c027eedae4bf3a50899f803103e4196",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/conversions.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/conversions.py",
+      "source_sha256": "c71ccaad385333eac5324cdab0931cd38db1fc8795272dfdec48407b6ab35042",
+      "installed_sha256": "c71ccaad385333eac5324cdab0931cd38db1fc8795272dfdec48407b6ab35042",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/tank_vision_ros/seam_debug_viewer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/seam_debug_viewer.py",
+      "source_sha256": "64a7e5b0e81911704de3120ac068ffb192de1aed6a697b93e56921b45ab513ee",
+      "installed_sha256": "64a7e5b0e81911704de3120ac068ffb192de1aed6a697b93e56921b45ab513ee",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/pointcloud_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/pointcloud_adapter.py",
+      "source_sha256": "aacb2a23f3f2fb0310c64d5e161e7006dcb748cf65739e1b74058116f7ed2534",
+      "installed_sha256": "aacb2a23f3f2fb0310c64d5e161e7006dcb748cf65739e1b74058116f7ed2534",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/run_rrd_builder.py",
+      "source_sha256": "343b18eb83ecf8ce5e1580703e7731d11aaafd8058d558f49eee42a9437870e1",
+      "installed_sha256": "343b18eb83ecf8ce5e1580703e7731d11aaafd8058d558f49eee42a9437870e1",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/image_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/image_adapter.py",
+      "source_sha256": "b12814dd1d954752d0f395c8a907ea4baf4b568f5aeddf00f0e953c76548b984",
+      "installed_sha256": "b12814dd1d954752d0f395c8a907ea4baf4b568f5aeddf00f0e953c76548b984",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/__init__.py",
+      "source_sha256": "bc500e4ed41618cd4e35804958d762f0be09400711adb80ebb5995c4c20a1649",
+      "installed_sha256": "bc500e4ed41618cd4e35804958d762f0be09400711adb80ebb5995c4c20a1649",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/timestamp_utils.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/timestamp_utils.py",
+      "source_sha256": "8bf3a9fd67bec492544a45c9953437f24a01aca49d1482c62b4b7d164c4e78cb",
+      "installed_sha256": "8bf3a9fd67bec492544a45c9953437f24a01aca49d1482c62b4b7d164c4e78cb",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/inspection_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/inspection_adapter.py",
+      "source_sha256": "93d073f51a854f8680c3a86f12fc65ebde286fe6c6794e0e65610dcdbf3cc8e5",
+      "installed_sha256": "93d073f51a854f8680c3a86f12fc65ebde286fe6c6794e0e65610dcdbf3cc8e5",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/rerun_bridge_node.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/rerun_bridge_node.py",
+      "source_sha256": "f76bbc62b2bb6a06515096f2a5c1cf604593cc7c02c5683834fe928f54d9af6a",
+      "installed_sha256": "f76bbc62b2bb6a06515096f2a5c1cf604593cc7c02c5683834fe928f54d9af6a",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/imu_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/imu_adapter.py",
+      "source_sha256": "78fd4d7f31638576c65cdf5f730ee5bd9a777bb052098904faf0687cb7048b7c",
+      "installed_sha256": "78fd4d7f31638576c65cdf5f730ee5bd9a777bb052098904faf0687cb7048b7c",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/tf_adapter.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/tf_adapter.py",
+      "source_sha256": "efc2d3ae98a24a3029f4fe88822ae6c5d1f1f0cb1ce5c0ce2d8f2a9683516ad3",
+      "installed_sha256": "efc2d3ae98a24a3029f4fe88822ae6c5d1f1f0cb1ce5c0ce2d8f2a9683516ad3",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/rerun_session.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/rerun_session.py",
+      "source_sha256": "a4e38669a925818dabe1ddca5b94270a63c93c60c6ba9f43e01d7ff23afab92f",
+      "installed_sha256": "a4e38669a925818dabe1ddca5b94270a63c93c60c6ba9f43e01d7ff23afab92f",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/validators.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/validators.py",
+      "source_sha256": "29c61d182999db02df2d6c25f02d256576fb9c09d863ef0d125300e92cabbf98",
+      "installed_sha256": "29c61d182999db02df2d6c25f02d256576fb9c09d863ef0d125300e92cabbf98",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/inspect_latest.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/inspect_latest.py",
+      "source_sha256": "b949fb7efecf0ab6f2a4180d213c320ac286c421cbe953146721e1cddc3cb410",
+      "installed_sha256": "b949fb7efecf0ab6f2a4180d213c320ac286c421cbe953146721e1cddc3cb410",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/__init__.py",
+      "source_sha256": "68962cb1edda2b464e02ab7991389d407e33f043c1c7d285bcc4945a0bcdb274",
+      "installed_sha256": "68962cb1edda2b464e02ab7991389d407e33f043c1c7d285bcc4945a0bcdb274",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/validate_bag.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/validate_bag.py",
+      "source_sha256": "027b6fd8d21a1a480f3fa880067aeef1e01fc9606c3af837cde1dbfa2757634f",
+      "installed_sha256": "027b6fd8d21a1a480f3fa880067aeef1e01fc9606c3af837cde1dbfa2757634f",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/finalize_bag.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/finalize_bag.py",
+      "source_sha256": "c7d2f475e1e3581e93c9576d0911a040798458b5a0e0e254b9a85db6e52a96e0",
+      "installed_sha256": "c7d2f475e1e3581e93c9576d0911a040798458b5a0e0e254b9a85db6e52a96e0",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/video_index.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/video_index.py",
+      "source_sha256": "e3257fd3a5d049aa1e9202a1b40eaa3dca1f58d6395a4865becdcf50df02993f",
+      "installed_sha256": "e3257fd3a5d049aa1e9202a1b40eaa3dca1f58d6395a4865becdcf50df02993f",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/estimate_storage.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/estimate_storage.py",
+      "source_sha256": "e690ffcca36ab649a78ce4fd09e40604597fc27f895396b5b1e18f73de5662f2",
+      "installed_sha256": "e690ffcca36ab649a78ce4fd09e40604597fc27f895396b5b1e18f73de5662f2",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/inspection_tools/depth_to_pointcloud.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/depth_to_pointcloud.py",
+      "source_sha256": "8ec4f2a34668cf45b03e572297eab5792ae7be85f0fd5077bcf889464bf96a5c",
+      "installed_sha256": "8ec4f2a34668cf45b03e572297eab5792ae7be85f0fd5077bcf889464bf96a5c",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/camera_settings.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/camera_settings.py",
+      "source_sha256": "917d5e89b02784e2576150fea4cb4a7cc98fe1f1b9e9b36957292e18342bb6b6",
+      "installed_sha256": "917d5e89b02784e2576150fea4cb4a7cc98fe1f1b9e9b36957292e18342bb6b6",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/clock_mapper.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/clock_mapper.py",
+      "source_sha256": "49074396ab5b226399607f646499fae1cc503bf38eb0e91ef09a95b61724e22e",
+      "installed_sha256": "49074396ab5b226399607f646499fae1cc503bf38eb0e91ef09a95b61724e22e",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/__init__.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/__init__.py",
+      "source_sha256": "b22dc47e03cd0d955d995ba655f1d55648023366bbace527dd32cbd7def37633",
+      "installed_sha256": "b22dc47e03cd0d955d995ba655f1d55648023366bbace527dd32cbd7def37633",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/buffer.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/buffer.py",
+      "source_sha256": "b6f5f105a3c3cff2584a01047faea3b3c22c64eeb55f6dd0249f530378c2de07",
+      "installed_sha256": "b6f5f105a3c3cff2584a01047faea3b3c22c64eeb55f6dd0249f530378c2de07",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/qos_settings.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/qos_settings.py",
+      "source_sha256": "69b24a3f924afd0fcadd8f6e703ee6d9f916a7a981a25460fdb290b5ac12b3c4",
+      "installed_sha256": "69b24a3f924afd0fcadd8f6e703ee6d9f916a7a981a25460fdb290b5ac12b3c4",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/frame_layout.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/frame_layout.py",
+      "source_sha256": "a9dd71ab092451ae2716ab782ef01b05543a3bda641fe2e507e84ad287371926",
+      "installed_sha256": "a9dd71ab092451ae2716ab782ef01b05543a3bda641fe2e507e84ad287371926",
+      "matches": true
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/mindvision_camera_driver/node.py",
+      "installed": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver/lib/python3.10/site-packages/mindvision_camera_driver/node.py",
+      "source_sha256": "a3d3d7fe3133aa33a47d67f04259ca8dcf12abb608fa6556379ff8813b018f56",
+      "installed_sha256": "a3d3d7fe3133aa33a47d67f04259ca8dcf12abb608fa6556379ff8813b018f56",
+      "matches": true
+    }
+  ],
+  "all_match": true,
+  "safe_cli_launch_checks": [
+    {
+      "argv": [
+        "tank-vision",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "usage: tank-vision [-h] [--config CONFIG] [--input INPUT] [--output OUTPUT]\n                   [--source {auto,folder,video,camera,mindvision}]\n                   [--camera-device CAMERA_DEVICE]\n                   [--mindvision-sdk-root MINDVISION_SDK_ROOT]\n                   [--max-frames MAX_FRAMES]\n                   [--log-level {DEBUG,INFO,WARNING,ERROR}]\n\nTank weld seam and surface anomaly inspection MVP\n\noptions:\n  -h, --help            show this help message and exit\n  --config CONFIG       YAML configuration path\n  --input INPUT         Input image folder or video file\n  --output OUTPUT       Output directory\n  --source {auto,folder,video,camera,mindvision}\n  --camera-device CAMERA_DEVICE\n                        OpenCV device index or device path\n  --mindvision-sdk-root MINDVISION_SDK_ROOT\n                        Official MindVision Linux SDK root; overrides\n                        camera.sdk_root\n  --max-frames MAX_FRAMES\n                        Stop after N frames; 0 means all\n  --log-level {DEBUG,INFO,WARNING,ERROR}\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "python3",
+        "/home/sunrise/east_eleair/tank_vision_inspection/scripts/run_three_path_demo.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "usage: run_three_path_demo.py [-h] [--config CONFIG] [--input INPUT]\n                              [--source {auto,folder,video,mindvision}]\n                              [--mindvision-sdk-root MINDVISION_SDK_ROOT]\n                              [--output OUTPUT] [--max-frames MAX_FRAMES]\n                              [--repeat REPEAT] [--pace-hz PACE_HZ]\n\nThree-path tank vision demo\n\noptions:\n  -h, --help            show this help message and exit\n  --config CONFIG\n  --input INPUT         Image directory or video; ignored for MindVision\n  --source {auto,folder,video,mindvision}\n  --mindvision-sdk-root MINDVISION_SDK_ROOT\n                        Official MindVision SDK root; overrides\n                        camera.sdk_root\n  --output OUTPUT\n  --max-frames MAX_FRAMES\n  --repeat REPEAT       Repeat finite file/video input for profiling\n  --pace-hz PACE_HZ     Submission rate; defaults to 15 for files and camera-\n                        native speed for MindVision\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "python3",
+        "/home/sunrise/east_eleair/physic_bev/scripts/validate_vehicle_collection.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "usage: validate_vehicle_collection.py [-h] [--report-dir REPORT_DIR] run_dir\n\nValidate closed FIELD-W5 MCAP, video, timestamps, snapshots, and processes.\n\npositional arguments:\n  run_dir\n\noptions:\n  -h, --help            show this help message and exit\n  --report-dir REPORT_DIR\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "python3",
+        "/home/sunrise/east_eleair/physic_bev/scripts/replay_vehicle_collection.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "usage: replay_vehicle_collection.py [-h] --mode\n                                    {core-only,sensor-only,perception,full-sensor,algorithm-replay,mapping-only,mapping-eddy,full}\n                                    [--rate {0.5,1.0}]\n                                    [--start-offset START_OFFSET]\n                                    [--duration DURATION] [--publish-clock]\n                                    [--report-dir REPORT_DIR]\n                                    run_dir\n\nReplay split FIELD-W5 bags and timestamped video on one unified timeline.\n\npositional arguments:\n  run_dir\n\noptions:\n  -h, --help            show this help message and exit\n  --mode {core-only,sensor-only,perception,full-sensor,algorithm-replay,mapping-only,mapping-eddy,full}\n  --rate {0.5,1.0}\n  --start-offset START_OFFSET\n  --duration DURATION\n  --publish-clock\n  --report-dir REPORT_DIR\n                        derived reports, never inside a sealed run\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "python3",
+        "/home/sunrise/east_eleair/physic_bev/scripts/build_role_handoff.py",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": "usage: build_role_handoff.py [-h] --run-dir RUN_DIR [--profile PROFILE]\n                             [--profiles PROFILES] [--output-root OUTPUT_ROOT]\n                             [--destination DESTINATION]\n                             [--manifest-only | --materialize | --verify-only]\n                             [--dry-run] [--resume] [--include-rerun]\n                             [--include-optional]\n                             [--copy-method {rsync,python}] [--config CONFIG]\n                             [--audit] [--verify-audit VERIFY_AUDIT]\n                             [--log-level {DEBUG,INFO,WARNING,ERROR}]\n\nBuild role-scoped, verifiable handoff definitions for a frozen field run. The\ndefault mode writes manifests and documentation only. Source payloads are\ncopied only when --materialize and --destination are both explicitly supplied.\n\noptions:\n  -h, --help            show this help message and exit\n  --run-dir RUN_DIR\n  --profile PROFILE\n  --profiles PROFILES\n  --output-root OUTPUT_ROOT\n  --destination DESTINATION\n  --manifest-only\n  --materialize\n  --verify-only\n  --dry-run\n  --resume\n  --include-rerun\n  --include-optional\n  --copy-method {rsync,python}\n  --config CONFIG\n  --audit               generate full read-only run audit\n  --verify-audit VERIFY_AUDIT\n                        compare source run against current_run_inventory.json\n  --log-level {DEBUG,INFO,WARNING,ERROR}\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "launch",
+        "tank_vision_ros",
+        "stable_seam_topic.launch.py",
+        "--show-args"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/share/tank_vision_ros/launch/stable_seam_topic.launch.py\", line 11, in generate_launch_description\n    DeclareLaunchArgument(\"image_topic\", default_value=\"/camera/front/image_raw\"),\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/actions/declare_launch_argument.py\", line 118, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\nError in sys.excepthook:\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/apport_python_hook.py\", line 146, in apport_excepthook\n    os.unlink(pr_filename)\nOSError: [Errno 30] Read-only file system: '/var/crash/_opt_ros_humble_bin_ros2.1000.crash'\n\nOriginal exception was:\nTraceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/share/tank_vision_ros/launch/stable_seam_topic.launch.py\", line 11, in generate_launch_description\n    DeclareLaunchArgument(\"image_topic\", default_value=\"/camera/front/image_raw\"),\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/actions/declare_launch_argument.py\", line 118, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\n",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "launch",
+        "inspection_bringup",
+        "visual_field_validation.launch.py",
+        "--show-args"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/physic_bev/install/inspection_bringup/share/inspection_bringup/launch/visual_field_validation.launch.py\", line 177, in generate_launch_description\n    DeclareLaunchArgument(\"data_root\", default_value=\"/media/mcap_data\"),\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/actions/declare_launch_argument.py\", line 118, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\nError in sys.excepthook:\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/apport_python_hook.py\", line 146, in apport_excepthook\n    os.unlink(pr_filename)\nOSError: [Errno 30] Read-only file system: '/var/crash/_opt_ros_humble_bin_ros2.1000.crash'\n\nOriginal exception was:\nTraceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/physic_bev/install/inspection_bringup/share/inspection_bringup/launch/visual_field_validation.launch.py\", line 177, in generate_launch_description\n    DeclareLaunchArgument(\"data_root\", default_value=\"/media/mcap_data\"),\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/actions/declare_launch_argument.py\", line 118, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\n",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "launch",
+        "inspection_bringup",
+        "hardware_pipeline.launch.py",
+        "--show-args"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/physic_bev/install/inspection_bringup/share/inspection_bringup/launch/hardware_pipeline.launch.py\", line 181, in generate_launch_description\n    record_launch = PythonLaunchDescriptionSource(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_description_source.py\", line 43, in __init__\n    super().__init__(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_source.py\", line 54, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\nError in sys.excepthook:\nTraceback (most recent call last):\n  File \"/usr/lib/python3/dist-packages/apport_python_hook.py\", line 146, in apport_excepthook\n    os.unlink(pr_filename)\nOSError: [Errno 30] Read-only file system: '/var/crash/_opt_ros_humble_bin_ros2.1000.crash'\n\nOriginal exception was:\nTraceback (most recent call last):\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 54, in get_launch_description_from_any_launch_file\n    return loader(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_file_utilities.py\", line 68, in get_launch_description_from_python_launch_file\n    return getattr(launch_file_module, 'generate_launch_description')()\n  File \"/home/sunrise/east_eleair/physic_bev/install/inspection_bringup/share/inspection_bringup/launch/hardware_pipeline.launch.py\", line 181, in generate_launch_description\n    record_launch = PythonLaunchDescriptionSource(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/python_launch_description_source.py\", line 43, in __init__\n    super().__init__(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_source.py\", line 54, in __init__\n    self.__logger = launch.logging.get_logger(__name__)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 302, in get_logger\n    launch_log_file_handler = launch_config.get_log_file_handler()\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 276, in get_log_file_handler\n    file_path = self.get_log_file_path(file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 262, in get_log_file_path\n    return os.path.join(self.log_dir, file_name)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 123, in log_dir\n    self._log_dir = _make_unique_log_dir(\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/logging/__init__.py\", line 85, in _make_unique_log_dir\n    os.makedirs(log_dir, exist_ok=True)\n  File \"/usr/lib/python3.10/os.py\", line 215, in makedirs\n    makedirs(head, exist_ok=exist_ok)\n  File \"/usr/lib/python3.10/os.py\", line 225, in makedirs\n    mkdir(name, mode)\nOSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/opt/ros/humble/bin/ros2\", line 33, in <module>\n    sys.exit(load_entry_point('ros2cli==0.18.14', 'console_scripts', 'ros2')())\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2cli/cli.py\", line 91, in main\n    rc = extension.main(parser=parser, args=args)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/command/launch.py\", line 170, in main\n    return print_arguments_of_launch_file(launch_file_path=path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/ros2launch/api/api.py\", line 123, in print_arguments_of_launch_file\n    launch_description = get_launch_description_from_any_launch_file(launch_file_path)\n  File \"/opt/ros/humble/lib/python3.10/site-packages/launch/launch_description_sources/any_launch_file_utilities.py\", line 57, in get_launch_description_from_any_launch_file\n    raise InvalidLaunchFileError(extension, likely_errors=exceptions)\nlaunch.invalid_launch_file_error.InvalidLaunchFileError: Caught multiple exceptions when trying to load file of format [py]:\n - OSError: [Errno 30] Read-only file system: '/home/sunrise/.ros/log'\n - InvalidFrontendLaunchFileError: The launch file may have a syntax error, or its format is unknown\n",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "pkg",
+        "executables",
+        "tank_vision_ros"
+      ],
+      "returncode": 0,
+      "stdout": "tank_vision_ros seam_debug_viewer\ntank_vision_ros stable_seam_node\ntank_vision_ros vision_node\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "pkg",
+        "executables",
+        "inspection_sync"
+      ],
+      "returncode": 0,
+      "stdout": "inspection_sync inspection_sync_node\n",
+      "stderr": "",
+      "hardware_started": false
+    },
+    {
+      "argv": [
+        "ros2",
+        "pkg",
+        "executables",
+        "mindvision_camera_driver"
+      ],
+      "returncode": 0,
+      "stdout": "mindvision_camera_driver mindvision_camera_node\n",
+      "stderr": "",
+      "hardware_started": false
+    }
+  ],
+  "all_safe_checks_passed": false,
+  "hardware_started": false,
+  "config_authority": "source owning repos; installation copies generated from package data_files"
+}

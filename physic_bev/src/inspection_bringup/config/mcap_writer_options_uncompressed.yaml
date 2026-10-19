@@ -1,0 +1,9 @@
+noChunkCRC: false
+noChunking: false
+noMessageIndex: false
+noSummary: false
+# Full-resolution BGR camera bursts are already high entropy.  This profile is
+# intentionally uncompressed so CPU compression cannot throttle ingestion.
+chunkSize: 67108864
+compression: None
+forceCompression: false

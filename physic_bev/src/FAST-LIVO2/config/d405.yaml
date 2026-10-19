@@ -1,0 +1,33 @@
+/**:
+  ros__parameters:
+    # RealSense D405 针孔相机模型参数。
+    # vikit_ros 通过 camera_loader::loadFromRosNs() 读取 camera 命名空间。
+    camera:
+      # D405 的 640x360x30 profile；数值来自该 profile 的 color/camera_info。
+      cam_model: Pinhole
+      cam_width: 640
+      cam_height: 360
+      scale: 1.0
+
+      cam_fx: 328.00845337
+      cam_fy: 327.17529297
+      cam_cx: 318.64349365
+      cam_cy: 178.65614319
+
+      # 畸变系数无量纲，不应随分辨率或 scale 成比例缩放。
+      cam_d0: -0.05356108397245407
+      cam_d1: 0.05783652886748314
+      cam_d2: 0.00034853132092393935
+      cam_d3: -0.00042196811409667134
+# 参数使用位置说明：
+# 1. src/FAST-LIVO2/launch/mapping.launch.py
+#    generate_launch_description() 将本文件作为参数文件传给 fastlivo_mapping 节点。
+# 2. src/FAST-LIVO2/src/LIVMapper.cpp
+#    LIVMapper::initializeComponents() 调用
+#    vk::camera_loader::loadFromRosNs(node, "camera", vio_manager->cam) 创建相机模型，
+#    随后由 VIOManager 使用该模型完成像素投影、特征跟踪和点云着色。
+# 3. src/rpg_vikit/vikit_ros/src/camera_loader.cpp
+#    vk::camera_loader::loadFromRosNs() 读取 model、width、height、scale、
+#    fx、fy、cx、cy、d0、d1、d2、d3，并构造 vk::PinholeCamera。
+# 4. src/rpg_vikit/vikit_common/src/pinhole_camera.cpp
+#    vk::PinholeCamera 的构造函数应用 scale，生成实际处理分辨率与缩放后的内参。

@@ -1,0 +1,63 @@
+not found: "/opt/tros/humble/local_setup.bash"
+{
+  "schema_version": "tank_system_preflight_v1",
+  "hardware_executed": false,
+  "machine": "aarch64",
+  "ros_distro": "humble",
+  "checks": {
+    "tank_vision": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/__init__.py"
+    },
+    "tank_vision_ros": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/__init__.py"
+    },
+    "inspection_tools": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/__init__.py"
+    },
+    "inspection_rerun": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/install_vision/inspection_rerun/lib/python3.10/site-packages/inspection_rerun/__init__.py"
+    },
+    "rosbag2_py": {
+      "available": true,
+      "origin": "/opt/ros/humble/local/lib/python3.10/dist-packages/rosbag2_py/__init__.py"
+    },
+    "eddy_driver.msg": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/install_cpp/eddy_driver/local/lib/python3.10/dist-packages/eddy_driver/msg/__init__.py"
+    },
+    "inspection_interfaces.msg": {
+      "available": true,
+      "origin": "/home/sunrise/east_eleair/tank_inspection_system/install_cpp/inspection_interfaces/local/lib/python3.10/dist-packages/inspection_interfaces/msg/__init__.py"
+    },
+    "mcap_plugin": {
+      "available": false,
+      "registered_readers": [
+        "my_read_only_test_plugin",
+        "my_test_plugin",
+        "sqlite3"
+      ],
+      "registered_writers": [
+        "my_test_plugin",
+        "sqlite3"
+      ],
+      "status": "environment_blocked"
+    },
+    "media_directory": {
+      "available": false,
+      "path": "/media/mcap_data",
+      "status": "environment_blocked"
+    }
+  },
+  "source_roots": {
+    "vision": "/home/sunrise/east_eleair/tank_vision_inspection",
+    "physic": "/home/sunrise/east_eleair/physic_bev"
+  },
+  "config_authority": "manifests/entrypoints.json and each owning repository",
+  "mcap_plugin_status": "environment_blocked",
+  "hardware_revalidation_status": "not_executed",
+  "valid": false
+}

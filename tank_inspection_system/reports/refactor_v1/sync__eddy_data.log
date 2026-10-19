@@ -1,0 +1,9 @@
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+[37;1m2026-10-03 15:24:16.655 [31;1m[[37;1mTRANSPORT[31;1m Error] [37mAll whitelist interfaces were filtered out[34;1m -> Function [36mUDPv4Transport[m
+[37;1m2026-10-03 15:24:16.655 [31;1m[[37;1mTRANSPORT_UDP[31;1m Error] [37mError creating socket: Operation not permitted[34;1m -> Function [36minit[m
+[37;1m2026-10-03 15:24:16.655 [31;1m[[37;1mRTPS_PARTICIPANT[31;1m Error] [37mUser transport failed to register.[34;1m -> Function [36mRTPSParticipantImpl[m
+[INFO] [1791012256.680215058] [inspection_sync]: Bounded fusion synchronizer started, anchor=/eddy/data, software_clock_match=disabled, camera_offset=0.000 ms, livox_offset=0.000 ms
+[INFO] [1791012258.482695236] [rclcpp]: signal_handler(signum=2)

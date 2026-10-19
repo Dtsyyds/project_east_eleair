@@ -1,0 +1,4 @@
+PLATFORM_NAME = "rk3588"
+SUPPORTED_ARCHITECTURES = ("aarch64", "arm64")
+TARGET_ARCH = "rk3588"
+PRIMARY_BACKENDS = ("rknn", "opencv")

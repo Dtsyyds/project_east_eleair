@@ -1,0 +1,129 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_________ test_atomic_rrd_and_recheck_with_injected_cdr_reader[False] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff50c4cf10>
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi0')
+tamper = False
+
+    @pytest.mark.parametrize("tamper", [False, True])
+    def test_atomic_rrd_and_recheck_with_injected_cdr_reader(monkeypatch, tmp_path, tamper):
+        """Actual Rerun writer/CLI and ROS CDR; reader injection is not MCAP validation."""
+        import base64
+        import inspection_rerun.run_rrd_builder as module
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+        run=tmp_path / 'RRD-CDR-FIXTURE'
+        source=minimal_source(run, start=1000000000, end=1200000000)
+        source.topics={'/field/collection_status':'std_msgs/msg/String'}
+        source.topic_counts={'/field/collection_status':3}
+        source.topic_ranges={'/field/collection_status':(1000000000,1200000000)}
+        fixture=source.path/'core_0.mcap'
+        # This file is a test-only CDR journal with an injected reader, deliberately
+        # not represented as a working MCAP plugin result in the refactor report.
+        payloads=[serialize_message(String(data='fixture-'+str(i))) for i in range(3)]
+        fixture.write_bytes(b''.join(payloads))
+        manifest,complete,validation=gate_documents(run,source)
+        write_json(run/'run_manifest.json',manifest)
+        write_json(run/'complete.json',complete)
+        write_json(run/'reports/mcap_validation.json',validation)
+        config=tmp_path/'rrd_config.yaml'
+        config.write_text(yaml.safe_dump({'rerun_bridge':{'ros__parameters':{}},'run_rrd_builder':{
+            'required_topics':['/field/collection_status'],'min_free_bytes':1}}))
+        monkeypatch.setattr(module,'discover_bag_sources',lambda *args,**kwargs:[source])
+        class Reader:
+            def __init__(self, selected_source, selected_topics):
+                self.index=0
+                self.next_item=(1000000000,'/field/collection_status',payloads[0],'std_msgs/msg/String')
+            def advance(self):
+                self.index+=1
+                self.next_item=(1000000000+self.index*100000000,'/field/collection_status',payloads[self.index],'std_msgs/msg/String') if self.index<3 else None
+                if tamper and self.index==2:fixture.write_bytes(b'changed during conversion')
+        monkeypatch.setattr(module,'ReaderStream',Reader)
+        output=run/'rerun/fixture.rrd'
+        builder=RunBuilder(BuildOptions(run,config,output))
+        rc=builder.run()
+        document=json.loads((output.parent/'rrd_manifest.json').read_text())
+        if tamper:
+            assert rc==1 and not output.exists()
+            assert output.with_suffix('.rrd.partial').is_file()
+            assert document['complete'] is False and document['hash_verified'] is False
+        else:
+>           assert rc==0 and output.stat().st_size>0
+E           assert (1 == 0)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:511: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-10-03 15:03:58,326 ERROR run RRD build failed: BuildError: matching Rerun CLI was not found beside the Python interpreter
+Traceback (most recent call last):
+  File "/home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py", line 1168, in run
+    rerun_version, rerun_cli = rerun_environment()
+  File "/home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py", line 925, in rerun_environment
+    raise BuildError("matching Rerun CLI was not found beside the Python interpreter")
+inspection_rerun.run_rrd_builder.BuildError: matching Rerun CLI was not found beside the Python interpreter
+__________ test_atomic_rrd_and_recheck_with_injected_cdr_reader[True] __________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff50b0a770>
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1')
+tamper = True
+
+    @pytest.mark.parametrize("tamper", [False, True])
+    def test_atomic_rrd_and_recheck_with_injected_cdr_reader(monkeypatch, tmp_path, tamper):
+        """Actual Rerun writer/CLI and ROS CDR; reader injection is not MCAP validation."""
+        import base64
+        import inspection_rerun.run_rrd_builder as module
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+        run=tmp_path / 'RRD-CDR-FIXTURE'
+        source=minimal_source(run, start=1000000000, end=1200000000)
+        source.topics={'/field/collection_status':'std_msgs/msg/String'}
+        source.topic_counts={'/field/collection_status':3}
+        source.topic_ranges={'/field/collection_status':(1000000000,1200000000)}
+        fixture=source.path/'core_0.mcap'
+        # This file is a test-only CDR journal with an injected reader, deliberately
+        # not represented as a working MCAP plugin result in the refactor report.
+        payloads=[serialize_message(String(data='fixture-'+str(i))) for i in range(3)]
+        fixture.write_bytes(b''.join(payloads))
+        manifest,complete,validation=gate_documents(run,source)
+        write_json(run/'run_manifest.json',manifest)
+        write_json(run/'complete.json',complete)
+        write_json(run/'reports/mcap_validation.json',validation)
+        config=tmp_path/'rrd_config.yaml'
+        config.write_text(yaml.safe_dump({'rerun_bridge':{'ros__parameters':{}},'run_rrd_builder':{
+            'required_topics':['/field/collection_status'],'min_free_bytes':1}}))
+        monkeypatch.setattr(module,'discover_bag_sources',lambda *args,**kwargs:[source])
+        class Reader:
+            def __init__(self, selected_source, selected_topics):
+                self.index=0
+                self.next_item=(1000000000,'/field/collection_status',payloads[0],'std_msgs/msg/String')
+            def advance(self):
+                self.index+=1
+                self.next_item=(1000000000+self.index*100000000,'/field/collection_status',payloads[self.index],'std_msgs/msg/String') if self.index<3 else None
+                if tamper and self.index==2:fixture.write_bytes(b'changed during conversion')
+        monkeypatch.setattr(module,'ReaderStream',Reader)
+        output=run/'rerun/fixture.rrd'
+        builder=RunBuilder(BuildOptions(run,config,output))
+        rc=builder.run()
+        document=json.loads((output.parent/'rrd_manifest.json').read_text())
+        if tamper:
+            assert rc==1 and not output.exists()
+>           assert output.with_suffix('.rrd.partial').is_file()
+E           AssertionError: assert False
+E            +  where False = <bound method Path.is_file of PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd.partial')>()
+E            +    where <bound method Path.is_file of PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd.partial')> = PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd.partial').is_file
+E            +      where PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd.partial') = <bound method PurePath.with_suffix of PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd')>('.rrd.partial')
+E            +        where <bound method PurePath.with_suffix of PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd')> = PosixPath('/tmp/pytest-of-sunrise/pytest-20/test_atomic_rrd_and_recheck_wi1/RRD-CDR-FIXTURE/rerun/fixture.rrd').with_suffix
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:508: AssertionError
+----------------------------- Captured stderr call -----------------------------
+2026-10-03 15:03:58,427 ERROR run RRD build failed: BuildError: matching Rerun CLI was not found beside the Python interpreter
+Traceback (most recent call last):
+  File "/home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py", line 1168, in run
+    rerun_version, rerun_cli = rerun_environment()
+  File "/home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py", line 925, in rerun_environment
+    raise BuildError("matching Rerun CLI was not found beside the Python interpreter")
+inspection_rerun.run_rrd_builder.BuildError: matching Rerun CLI was not found beside the Python interpreter
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_atomic_rrd_and_recheck_with_injected_cdr_reader[False]
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_atomic_rrd_and_recheck_with_injected_cdr_reader[True]
+2 failed, 21 deselected in 0.90s

@@ -1,0 +1,27 @@
+# Compatibility filename retained from the earlier MV-SUF1205GC-T label.
+# The connected SDK reports the color model as MV-SUF1205GC (without -T).
+# SDK reports sensor_mono=false; runtime output is therefore BGR8.
+camera:
+  model: MV-SUF1205GC-T
+  vendor: MindVision
+  source: mindvision
+  serial_number: null
+  width: 4096
+  height: 3072
+  sensor_format: 1-inch
+  color: true
+  global_shutter: true
+  transport: USB3
+  pixel_format: bgr8
+  exposure_mode: auto
+  exposure_us: null
+  gain_db: null
+  white_balance: null
+  fps: 15.0
+  trigger_mode: continuous
+  trigger_source: null
+  timeout_ms: 1000
+  warmup_frames: 60
+  roi: null
+  calibration_file: null
+  calibration_version: null

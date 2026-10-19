@@ -1,0 +1,6 @@
+task: seam_segmentation
+dataset_manifest: ""
+output_semantics: binary_mask
+input_format: rgb
+target_platforms: [x86, s100p, rk3588]
+status: not_trained

@@ -1,0 +1,67 @@
+• 当前 W6 使用以下命令。建图需提前运行在 ROS_DOMAIN_ID=23。
+
+  ### 采集
+
+  cd /home/sunrise/east_eleair/physic_bev
+
+  export ROS_DOMAIN_ID=23
+  export FIELD_DATA_ROOT=/media/mcap_data
+  export FIELD_MAPPING_BASELINE_SEC=60
+  export FIELD_CAMERA_RESOLUTION_INDEX=3
+
+  RUN_ID="FIELD-W6-COMPACT-ROI-$(date +%Y%m%d_%H%M%S)"
+
+  scripts/start_mapping_eddy_collection.sh \
+    run_id:="$RUN_ID" \
+    attach_to_existing_mapping:=true \
+    start_mapping:=false
+
+  启动成功后查看状态：
+
+  scripts/status_vehicle_collection.sh "$RUN_ID" --once
+
+  手动停止并自动封包、校验、重建轨迹：
+
+  scripts/stop_vehicle_collection.sh "$RUN_ID"
+
+  10 分钟门禁建议记录 620 秒，确保有效覆盖超过 600 秒：
+
+  sleep 620
+  scripts/stop_vehicle_collection.sh "$RUN_ID"
+
+  当前采集策略：
+
+  - /aft_mapped_to_init：写入 mapping MCAP
+  - /cloud_registered、/path：仅在线监控
+  - Eddy：记录 data、channel_mean、status
+  - 前视视频：1920×1200 ROI
+
+  ### 回放
+
+  参数顺序：
+
+  RUN_ID  MODE  RATE  OFFSET_SEC  DURATION_SEC
+
+  10 秒 mapping-eddy 验收回放：
+
+  cd /home/sunrise/east_eleair/physic_bev
+
+export FIELD_DATA_ROOT=/media/mcap_data
+export FIELD_REPLAY_ROS_DOMAIN_ID=91
+
+  scripts/replay_mapping_eddy_collection.sh \
+    "$RUN_ID" mapping-eddy 1.0 0 10
+
+  完整时长回放，将最后的 10 改为 0：
+
+  scripts/replay_mapping_eddy_collection.sh \
+    "$RUN_ID" mapping-eddy 1.0 0 0
+
+  可选模式：
+
+  - mapping-only：只回放 /aft_mapped_to_init
+  - mapping-eddy：回放紧凑里程计和 Eddy
+  - full：再加入核心数据和前视视频
+  - 回放速率支持 0.5 或 1.0。
+ 
+

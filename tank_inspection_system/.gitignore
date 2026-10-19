@@ -1,0 +1,8 @@
+build*/
+install*/
+core_env*/
+rollback/
+__pycache__/
+.pytest_cache/
+reports/refactor_v1/*_logs/
+reports/refactor_v1/backups/

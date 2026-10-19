@@ -1,0 +1,102 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_topic_single_frame_snapshot_is_complete _________________
+
+self = PosixPath('/media/mcap_data/vision/stable_seam_live_sessions')
+mode = 511, parents = True, exist_ok = True
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/media/mcap_data/vision/stable_seam_live_sessions'
+
+/usr/lib/python3.10/pathlib.py:1175: FileNotFoundError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-17/test_topic_single_frame_snapsh0')
+
+    @pytest.mark.integration
+    @pytest.mark.ros2
+    def test_topic_single_frame_snapshot_is_complete(tmp_path: Path) -> None:
+        _require()
+        rclpy = pytest.importorskip("rclpy")
+        from cv_bridge import CvBridge
+        from rclpy.executors import SingleThreadedExecutor
+        from rclpy.node import Node
+        from rclpy.qos import qos_profile_sensor_data
+        from sensor_msgs.msg import Image
+        from std_srvs.srv import Trigger
+        from tank_vision_ros.stable_seam_node import StableSeamNode
+    
+        if rclpy.ok():
+            raise RuntimeError("rclpy is already initialized")
+        root = Path(__file__).parents[1]
+        image_path = root / "output/s1_real_seam_images/seam_center_lit_quality_01.bmp"
+        image = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+        assert image is not None
+        output_dir = tmp_path / "snapshots"
+        old_domain = os.environ.get("ROS_DOMAIN_ID")
+        old_localhost = os.environ.get("ROS_LOCALHOST_ONLY")
+        os.environ["ROS_DOMAIN_ID"] = "83"
+        os.environ["ROS_LOCALHOST_ONLY"] = "1"
+        old_ros_log_dir = os.environ.get("ROS_LOG_DIR")
+        os.environ["ROS_LOG_DIR"] = str(tmp_path / "ros_log")
+        try:
+            rclpy.init(args=[
+                "--ros-args", "-p", "input_mode:=ros_topic", "-p", f"snapshot_output_dir:={output_dir}",
+            ])
+        except Exception:
+            if old_ros_log_dir is None:
+                os.environ.pop("ROS_LOG_DIR", None)
+            else:
+                os.environ["ROS_LOG_DIR"] = old_ros_log_dir
+            if old_domain is None:
+                os.environ.pop("ROS_DOMAIN_ID", None)
+            else:
+                os.environ["ROS_DOMAIN_ID"] = old_domain
+            if old_localhost is None:
+                os.environ.pop("ROS_LOCALHOST_ONLY", None)
+            else:
+                os.environ["ROS_LOCALHOST_ONLY"] = old_localhost
+            raise
+        executor = SingleThreadedExecutor()
+>       node = StableSeamNode()
+
+tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/stable_seam_node.py:307: in __init__
+    self._live_recorder = LiveSessionRecorder(
+tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/failure_event_recorder.py:186: in __init__
+    root.mkdir(parents=True, exist_ok=True)
+/usr/lib/python3.10/pathlib.py:1179: in mkdir
+    self.parent.mkdir(parents=True, exist_ok=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/media/mcap_data/vision'), mode = 511, parents = True
+exist_ok = True
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           OSError: [Errno 30] Read-only file system: '/media/mcap_data/vision'
+
+/usr/lib/python3.10/pathlib.py:1175: OSError
+----------------------------- Captured stdout call -----------------------------
+[37;1m2026-10-03 14:58:58.188 [31;1m[[37;1mTRANSPORT[31;1m Error] [37mAll whitelist interfaces were filtered out[34;1m -> Function [36mUDPv4Transport[m
+[37;1m2026-10-03 14:58:58.189 [31;1m[[37;1mTRANSPORT_UDP[31;1m Error] [37mError creating socket: Operation not permitted[34;1m -> Function [36minit[m
+[37;1m2026-10-03 14:58:58.189 [31;1m[[37;1mRTPS_PARTICIPANT[31;1m Error] [37mUser transport failed to register.[34;1m -> Function [36mRTPSParticipantImpl[m
+----------------------------- Captured stderr call -----------------------------
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py::test_topic_single_frame_snapshot_is_complete
+1 failed in 0.60s

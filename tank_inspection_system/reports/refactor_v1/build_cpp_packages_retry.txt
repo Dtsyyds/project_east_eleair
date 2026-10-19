@@ -1,0 +1,10 @@
+Starting >>> eddy_driver
+Starting >>> inspection_interfaces
+Finished <<< inspection_interfaces [1.26s]
+Finished <<< eddy_driver [1.39s]
+Starting >>> inspection_sync
+[Processing: inspection_sync]
+[Processing: inspection_sync]
+Finished <<< inspection_sync [1min 12s]
+
+Summary: 3 packages finished [1min 13s]

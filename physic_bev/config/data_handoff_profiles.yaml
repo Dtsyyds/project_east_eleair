@@ -1,0 +1,145 @@
+{
+  "schema_version": "field_data_role_handoff_profiles_v1",
+  "common": {
+    "run_paths": [
+      "run_id.txt",
+      "run_manifest.json",
+      "complete.json",
+      "collection_status.json",
+      "device_inventory.json",
+      "launch_parameters.json",
+      "topic_inventory.json",
+      "field_notes.md",
+      "sha256sums.txt",
+      "frozen_configs",
+      "reports/mcap_validation.json",
+      "reports/timestamp_validation.json",
+      "reports/source_inventory.json",
+      "reports/system_acceptance.json",
+      "reports/video_validation.json",
+      "reports/replay_validation.json"
+    ]
+  },
+  "profiles": {
+    "common": {
+      "include_common": true,
+      "run_paths": [],
+      "project_paths": [],
+      "usage_document": null
+    },
+    "fastlivo2": {
+      "include_common": true,
+      "run_paths": [
+        "mcap/mid360",
+        "logs/mid360_launch.log",
+        "logs/mid360_recorder.log",
+        "logs/mid360_topics.txt",
+        "logs/mid360_topics.record.txt"
+      ],
+      "project_paths": [
+        "src/FAST-LIVO2/CMakeLists.txt",
+        "src/FAST-LIVO2/package.xml",
+        "src/FAST-LIVO2/README.md",
+        "src/FAST-LIVO2/config",
+        "src/FAST-LIVO2/launch",
+        "src/livox_ros_driver2/msg",
+        "src/livox_ros_driver2/package.xml"
+      ],
+      "usage_document": "FASTLIVO2_USAGE.md"
+    },
+    "front_camera": {
+      "include_common": true,
+      "run_paths": [
+        "video/front",
+        "logs/front_video.log",
+        "logs/front_video_encoder.log"
+      ],
+      "optional_run_paths": [
+        "failure_snapshots",
+        "roi_validation"
+      ],
+      "project_paths": [],
+      "usage_document": "CAMERA_USAGE.md"
+    },
+    "d405": {
+      "include_common": true,
+      "run_paths": [
+        "mcap/d405",
+        "logs/d405_launch.log",
+        "logs/d405_parameter_config.log",
+        "logs/d405_recorder.log",
+        "logs/d405_topics.txt",
+        "logs/d405_topics.record.txt"
+      ],
+      "project_paths": [
+        "src/realsense-ros/realsense2_camera_msgs/msg",
+        "src/realsense-ros/realsense2_camera_msgs/package.xml"
+      ],
+      "usage_document": "D405_USAGE.md"
+    },
+    "eddy": {
+      "include_common": true,
+      "run_paths": [
+        "mcap/eddy",
+        "logs/eddy_launch.log",
+        "logs/eddy_recorder.log",
+        "logs/eddy_topics.txt"
+      ],
+      "project_paths": [
+        "src/eddy_driver/README.md",
+        "src/eddy_driver/package.xml",
+        "src/eddy_driver/config",
+        "src/eddy_driver/msg"
+      ],
+      "usage_document": "EDDY_USAGE.md"
+    },
+    "rerun_viewer": {
+      "include_common": false,
+      "run_paths": [
+        "{rrd_path}",
+        "{rrd_path}.sha256",
+        "rerun/rrd_manifest.json",
+        "rerun/rrd_validation.json",
+        "rerun/conversion.log"
+      ],
+      "project_paths": [],
+      "usage_document": "RERUN_USAGE.md"
+    },
+    "system_integration": {
+      "include_common": true,
+      "run_paths": [
+        "mcap/core",
+        "reports/topic_inventory.json",
+        "reports/diagnostic_summary.json",
+        "reports/stop_report.json",
+        "reports/performance_matrix.json"
+      ],
+      "project_paths": [
+        "scripts/replay_vehicle_collection.py",
+        "scripts/replay_vehicle_collection.sh"
+      ],
+      "usage_document": "SYSTEM_INTEGRATION_USAGE.md"
+    },
+    "all": {
+      "include_common": true,
+      "composes": [
+        "fastlivo2",
+        "front_camera",
+        "d405",
+        "eddy",
+        "rerun_viewer",
+        "system_integration"
+      ],
+      "run_paths": [],
+      "project_paths": [],
+      "usage_document": null
+    }
+  },
+  "rerun_paths": [
+    "{rrd_path}",
+    "{rrd_path}.sha256",
+    "rerun/rrd_manifest.json",
+    "rerun/rrd_validation.json",
+    "rerun/conversion.log"
+  ]
+}

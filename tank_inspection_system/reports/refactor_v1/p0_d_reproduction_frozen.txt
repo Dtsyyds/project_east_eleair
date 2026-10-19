@@ -1,0 +1,112 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+____________ test_strict_checks_actual_selected_source_bytes[zero] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-6/test_strict_checks_actual_sele0')
+damage = 'zero'
+
+    @pytest.mark.parametrize("damage", ["zero", "tamper", "missing", "escape"])
+    def test_strict_checks_actual_selected_source_bytes(tmp_path, damage):
+        run = tmp_path / "RUN-HASH"
+        source = minimal_source(run)
+        manifest, complete, validation = gate_documents(run, source)
+        victim = source.path / "core_0.mcap"
+        if damage == "zero":
+            manifest["files"][1]["sha256"] = "0" * 64
+        elif damage == "tamper":
+            victim.write_bytes(b"changed after historical validation")
+        elif damage == "missing":
+            victim.unlink()
+        else:
+            victim.unlink()
+            external = tmp_path / "outside.mcap"
+            external.write_bytes(b"mcap")
+            victim.symlink_to(external)
+>       with pytest.raises(BuildError, match="source_(hash|files|path)"):
+E       Failed: DID NOT RAISE <class 'inspection_rerun.run_rrd_builder.BuildError'>
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:456: Failed
+___________ test_strict_checks_actual_selected_source_bytes[tamper] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-6/test_strict_checks_actual_sele1')
+damage = 'tamper'
+
+    @pytest.mark.parametrize("damage", ["zero", "tamper", "missing", "escape"])
+    def test_strict_checks_actual_selected_source_bytes(tmp_path, damage):
+        run = tmp_path / "RUN-HASH"
+        source = minimal_source(run)
+        manifest, complete, validation = gate_documents(run, source)
+        victim = source.path / "core_0.mcap"
+        if damage == "zero":
+            manifest["files"][1]["sha256"] = "0" * 64
+        elif damage == "tamper":
+            victim.write_bytes(b"changed after historical validation")
+        elif damage == "missing":
+            victim.unlink()
+        else:
+            victim.unlink()
+            external = tmp_path / "outside.mcap"
+            external.write_bytes(b"mcap")
+            victim.symlink_to(external)
+>       with pytest.raises(BuildError, match="source_(hash|files|path)"):
+E       Failed: DID NOT RAISE <class 'inspection_rerun.run_rrd_builder.BuildError'>
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:456: Failed
+___________ test_strict_checks_actual_selected_source_bytes[missing] ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-6/test_strict_checks_actual_sele2')
+damage = 'missing'
+
+    @pytest.mark.parametrize("damage", ["zero", "tamper", "missing", "escape"])
+    def test_strict_checks_actual_selected_source_bytes(tmp_path, damage):
+        run = tmp_path / "RUN-HASH"
+        source = minimal_source(run)
+        manifest, complete, validation = gate_documents(run, source)
+        victim = source.path / "core_0.mcap"
+        if damage == "zero":
+            manifest["files"][1]["sha256"] = "0" * 64
+        elif damage == "tamper":
+            victim.write_bytes(b"changed after historical validation")
+        elif damage == "missing":
+            victim.unlink()
+        else:
+            victim.unlink()
+            external = tmp_path / "outside.mcap"
+            external.write_bytes(b"mcap")
+            victim.symlink_to(external)
+>       with pytest.raises(BuildError, match="source_(hash|files|path)"):
+E       Failed: DID NOT RAISE <class 'inspection_rerun.run_rrd_builder.BuildError'>
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:456: Failed
+___________ test_strict_checks_actual_selected_source_bytes[escape] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-6/test_strict_checks_actual_sele3')
+damage = 'escape'
+
+    @pytest.mark.parametrize("damage", ["zero", "tamper", "missing", "escape"])
+    def test_strict_checks_actual_selected_source_bytes(tmp_path, damage):
+        run = tmp_path / "RUN-HASH"
+        source = minimal_source(run)
+        manifest, complete, validation = gate_documents(run, source)
+        victim = source.path / "core_0.mcap"
+        if damage == "zero":
+            manifest["files"][1]["sha256"] = "0" * 64
+        elif damage == "tamper":
+            victim.write_bytes(b"changed after historical validation")
+        elif damage == "missing":
+            victim.unlink()
+        else:
+            victim.unlink()
+            external = tmp_path / "outside.mcap"
+            external.write_bytes(b"mcap")
+            victim.symlink_to(external)
+>       with pytest.raises(BuildError, match="source_(hash|files|path)"):
+E       Failed: DID NOT RAISE <class 'inspection_rerun.run_rrd_builder.BuildError'>
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:456: Failed
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_strict_checks_actual_selected_source_bytes[zero]
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_strict_checks_actual_selected_source_bytes[tamper]
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_strict_checks_actual_selected_source_bytes[missing]
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_strict_checks_actual_selected_source_bytes[escape]
+4 failed, 17 deselected in 0.14s

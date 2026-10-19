@@ -1,0 +1,65 @@
+# Local Git repositories are retained on disk; their source is vendored here.
+.git/
+
+# Python environments and caches
+.venv*/
+.runtime/
+venv/
+core_env*/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ROS/CMake build, installation and runtime output
+build/
+build_*/
+install/
+install_*/
+log/
+log_*/
+output/
+output_*/
+test_results*/
+rollback/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.a
+*.so
+*.so.*
+
+# Recordings and offline binary distributions (kept locally)
+*.mcap
+*.bag
+*.db3
+*.rrd
+*.raw
+*.whl
+*.deb
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+/tank_inspection_system/offline/sysroot/
+/tank_inspection_system/reports/refactor_v1/*_business_outputs.json
+
+# Proprietary SDK binaries; headers, documentation and examples remain source.
+/MindVisionlinuxSDK/lib/
+/MindVisionlinuxSDK/tools/
+/MindVisionSDK_v2.1.0.50/sdk/lib/
+/MindVisionSDK_v2.1.0.50/sdk/tools/
+/MindVisionlinuxSDK/demo/QT5_Demo/QT_Demo
+/MindVisionSDK_v2.1.0.50/sdk/demo/python_demo/grab.bmp
+
+# Local settings and credentials
+.vscode/
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+id_rsa
+id_ed25519

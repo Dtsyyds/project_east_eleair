@@ -1,0 +1,144 @@
+..........F...FF.....                                                    [100%]
+=================================== FAILURES ===================================
+_______________ test_camera_sidecar_discovery_and_preview_decode _______________
+
+run_dir = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8')
+
+    def discover_camera(run_dir: Path) -> list[CameraSegment]:
+        camera_root = run_dir / "video" / "front"
+        if not camera_root.is_dir():
+            return []
+        segments: list[CameraSegment] = []
+        for video in sorted(camera_root.glob("*.mkv")):
+            sidecar = video.with_suffix(".frames.jsonl")
+            if not sidecar.is_file():
+                raise BuildError(f"camera sidecar is missing for {video}")
+            try:
+>               rows = aligned_rows(video, sidecar)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py:365: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+video = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8/video/front/front_000001.mkv')
+sidecar = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8/video/front/front_000001.frames.jsonl')
+map_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8/video/front/front_000001.frame_map.json')
+
+    def aligned_rows(video, sidecar=None, map_path=None):
+        video=Path(video); sidecar=Path(sidecar) if sidecar else video.with_suffix('.frames.jsonl')
+        map_path=Path(map_path) if map_path else video.with_suffix('.frame_map.json')
+        rows=load_rows(sidecar)
+        if not map_path.is_file():
+>           raise VideoAlignmentError('no verified decoded-frame map; legacy run is not strictly alignable')
+E           inspection_tools.video_index.VideoAlignmentError: no verified decoded-frame map; legacy run is not strictly alignable
+
+tank_inspection_system/install_physic/inspection_tools/lib/python3.10/site-packages/inspection_tools/video_index.py:113: VideoAlignmentError
+
+The above exception was the direct cause of the following exception:
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff3e358280>
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0')
+
+    def test_camera_sidecar_discovery_and_preview_decode(monkeypatch, tmp_path: Path):
+        import cv2
+        import numpy as np
+    
+        run = tmp_path / "RUN-8"
+        root = run / "video" / "front"
+        root.mkdir(parents=True)
+        video = root / "front_000001.mkv"
+        video.write_bytes(b"video")
+        sidecar = video.with_suffix(".frames.jsonl")
+        sidecar.write_text("\n".join(json.dumps({
+            "frame_index": index, "ros_header_stamp_ns": 1_000_000_000 + index * 100_000_000,
+        }) for index in range(12)) + "\n", encoding="utf-8")
+>       segments = discover_camera(run)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:280: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+run_dir = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8')
+
+    def discover_camera(run_dir: Path) -> list[CameraSegment]:
+        camera_root = run_dir / "video" / "front"
+        if not camera_root.is_dir():
+            return []
+        segments: list[CameraSegment] = []
+        for video in sorted(camera_root.glob("*.mkv")):
+            sidecar = video.with_suffix(".frames.jsonl")
+            if not sidecar.is_file():
+                raise BuildError(f"camera sidecar is missing for {video}")
+            try:
+                rows = aligned_rows(video, sidecar)
+            except (VideoAlignmentError, OSError, ValueError) as exc:
+>               raise BuildError(f"camera cannot be strictly aligned: {video}: {exc}") from exc
+E               inspection_rerun.run_rrd_builder.BuildError: camera cannot be strictly aligned: /tmp/pytest-of-sunrise/pytest-7/test_camera_sidecar_discovery_0/RUN-8/video/front/front_000001.mkv: no verified decoded-frame map; legacy run is not strictly alignable
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py:367: BuildError
+___________________ test_fixture_e2e_atomic_manifest_and_sha ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_fixture_e2e_atomic_manife0')
+
+    def test_fixture_e2e_atomic_manifest_and_sha(tmp_path: Path):
+>       run, config = create_fixture_run(tmp_path)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:404: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_fixture_e2e_atomic_manife0')
+
+    def create_fixture_run(tmp_path: Path) -> tuple[Path, Path]:
+        import rosbag2_py
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+    
+        run = tmp_path / "FIXTURE-RUN"
+        bag = run / "mcap" / "core"
+        bag.parent.mkdir(parents=True)
+        writer = rosbag2_py.SequentialWriter()
+>       writer.open(
+            rosbag2_py.StorageOptions(uri=str(bag), storage_id="mcap"),
+            rosbag2_py.ConverterOptions("", ""),
+        )
+E       RuntimeError: No storage could be initialized. Abort
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:353: RuntimeError
+----------------------------- Captured stderr call -----------------------------
+[ERROR] [1791009502.606172155] [rosbag2_storage]: Could not load/open plugin with storage id 'mcap'
+_________________ test_mid_conversion_failure_does_not_commit __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff27bc6920>
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_mid_conversion_failure_do0')
+
+    def test_mid_conversion_failure_does_not_commit(monkeypatch, tmp_path: Path):
+        import inspection_rerun.run_rrd_builder as module
+    
+>       run, config = create_fixture_run(tmp_path)
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:424: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-7/test_mid_conversion_failure_do0')
+
+    def create_fixture_run(tmp_path: Path) -> tuple[Path, Path]:
+        import rosbag2_py
+        from rclpy.serialization import serialize_message
+        from std_msgs.msg import String
+    
+        run = tmp_path / "FIXTURE-RUN"
+        bag = run / "mcap" / "core"
+        bag.parent.mkdir(parents=True)
+        writer = rosbag2_py.SequentialWriter()
+>       writer.open(
+            rosbag2_py.StorageOptions(uri=str(bag), storage_id="mcap"),
+            rosbag2_py.ConverterOptions("", ""),
+        )
+E       RuntimeError: No storage could be initialized. Abort
+
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:353: RuntimeError
+----------------------------- Captured stderr call -----------------------------
+[ERROR] [1791009502.629236803] [rosbag2_storage]: Could not load/open plugin with storage id 'mcap'
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_camera_sidecar_discovery_and_preview_decode
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_fixture_e2e_atomic_manifest_and_sha
+FAILED tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py::test_mid_conversion_failure_does_not_commit
+3 failed, 18 passed in 1.15s

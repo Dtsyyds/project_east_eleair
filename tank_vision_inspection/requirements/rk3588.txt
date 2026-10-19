@@ -1,0 +1,2 @@
+-r core.txt
+# Install RKNN Runtime only from the official Rockchip distribution for the target image.

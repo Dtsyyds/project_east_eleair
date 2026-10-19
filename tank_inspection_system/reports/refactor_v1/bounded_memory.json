@@ -1,0 +1,14 @@
+{
+  "input_frames": 6000,
+  "processed_frames": 6000,
+  "saved_results_in_output_queue": 2,
+  "output_dropped": 5998,
+  "rss_bytes_at_3000_and_6000": [
+    123207680,
+    123207680
+  ],
+  "rss_growth_bytes": 0,
+  "window_frames": 2048,
+  "conservation_verified": true,
+  "hardware_executed": false
+}

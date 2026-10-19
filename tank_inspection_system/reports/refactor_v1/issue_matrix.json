@@ -1,0 +1,66 @@
+[
+  {
+    "id": "P0-A",
+    "reproduction": "p0_ab_reproduction.txt; metadata_deadline_reproduction_installed.txt",
+    "fix": "shared AsyncLifecycle; FAILED propagation; one close deadline including worker finalizer and closing metadata I/O; exact task_done; explicit unfinished/abandoned; metadata_worker_alive exposed and incomplete repaired after blocked I/O recovers",
+    "regression": "core_metadata_final.txt; lifecycle_all_writers_regression.txt",
+    "status": "fixture_verified",
+    "behavior_change": "worker failure terminal; close timeout visible and incomplete"
+  },
+  {
+    "id": "P0-B",
+    "reproduction": "p0_ab_reproduction.txt; source queue/list inspection",
+    "fix": "bounded output; latest explicitly drops, offline blocks and streams; stats window2048 with exact online mean/max",
+    "regression": "bounded_memory.json; core_metadata_final.txt",
+    "status": "fixture_verified",
+    "behavior_change": "window quantiles explicit; demo live bounded two-frame batches"
+  },
+  {
+    "id": "P0-C",
+    "reproduction": "p0_c_reproduction.json",
+    "fix": "shared installed decoded identity map; unique PTS/VCL evidence; source SHA; no nthframe guessing or95%alignment",
+    "regression": "video_timestamp_handoff_final.txt; video_consumers_manifest_complete.txt; video_delayed_flush_final.txt; colcon_physic_final_results.txt",
+    "status": "fixture_verified_hardware_encoder_pending",
+    "behavior_change": "legacy insufficient-evidence runs reject strict alignment, no historical repairs"
+  },
+  {
+    "id": "P0-D",
+    "reproduction": "p0_d_reproduction_frozen.txt",
+    "fix": "actual selected hashes; missing and escape reject; precommit rehash; preserve partial; standard derived result manifest",
+    "regression": "rrd_result_manifest_final.txt",
+    "status": "hash_and_real_rerun_fixture_verified_mcap_environment_blocked",
+    "behavior_change": "all-zero/stale hash acceptance removed; dry-run actual hash status explicit"
+  },
+  {
+    "id": "P1-A",
+    "reproduction": "original native EddyFrame/Mean vs old EddyCurrentFrame incompatible topics/types in backups",
+    "fix": "native raw/mean subscriptions plus legacy; truthful units/sequence/timing; no waveform fabrication",
+    "regression": "eddy_installed_confirmed/eddy.json; colcon_cpp_test_results_final.txt",
+    "status": "installed_ros_fixture_verified",
+    "behavior_change": "compat subscriptions on; canonical collection sync default remains off"
+  },
+  {
+    "id": "P1-B",
+    "reproduction": "p1_timestamp_eddy_reproduction.json",
+    "fix": "valid header coverage/invalid counts/intervals; explicit disabled/notexecuted states; persisted Eddy errors; remove fixed success matrix",
+    "regression": "scripts_final_complete.txt; p1_timestamp_eddy_reproduction.json",
+    "status": "fixture_verified_full_collection_blocked",
+    "behavior_change": "zero-header monotonic false pass and monitor error false pass removed"
+  },
+  {
+    "id": "P1-C",
+    "reproduction": "old handoff fixed batch RRD names and historical numbers; uncalibrated CameraInfo source",
+    "fix": "current manifest RRD names; verified external analysis option; unchanged real calibration status; model status documented",
+    "regression": "handoff_final.txt; installation_correspondence.json",
+    "status": "fixture_verified",
+    "behavior_change": "unavailable facts explicit; external artifact origin=analysis_rrd"
+  },
+  {
+    "id": "EXTRA-INSTALL",
+    "reproduction": "empty UNKNOWN wheel under setuptools59.6; install startup guided_search KeyError; mindvision colcon0tests",
+    "fix": "metadata compatibility setup.py; optional mapping unavailable; register existing tests",
+    "regression": "install_core.txt; ros_snapshot_metadata_final.txt; colcon_physic_final_results.txt",
+    "status": "installed_fixture_verified",
+    "behavior_change": "valid stable default starts; no invented guided config"
+  }
+]

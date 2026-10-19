@@ -1,0 +1,382 @@
+{
+  "schema_version": 1,
+  "platform": "aarch64 Ubuntu22.04 ROS2 Humble",
+  "archives": [
+    {
+      "path": "debs/libboost-atomic1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "d1815f60fc8a3e644f49b37446d1a6234e88bd059fb9501f0f143bea82757836",
+      "size": 221508,
+      "metadata": [
+        "Package: libboost-atomic1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-atomic1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "09f9d0427df7e39803fa3c5b87ca9b9ee2b8e138e82e2cb634b303c0f6992cda",
+      "size": 224136,
+      "metadata": [
+        "Package: libboost-atomic1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-chrono1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "b1024f6739b0e9ecb1f7cf055b7fb36bfaa78af29a063bee97e67a6012a35910",
+      "size": 238664,
+      "metadata": [
+        "Package: libboost-chrono1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-chrono1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "2f04cb0a929cbe7f03c1468e07e6f6fcd7d52d32fcafa6fe6b5f03748d47e7d5",
+      "size": 231766,
+      "metadata": [
+        "Package: libboost-chrono1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-date-time1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "91ac225d39ee27af903598335bf15b44eddad2e1151d16fa80ef7cd8b810c755",
+      "size": 225934,
+      "metadata": [
+        "Package: libboost-date-time1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-date-time1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "5ed79b72fc247359bc331d1445e96c95054a50f650e506145d452c2650e02ac7",
+      "size": 220654,
+      "metadata": [
+        "Package: libboost-date-time1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-serialization1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "d5c5a334648fb4b3170b3804449d27b34b13876a863529189806e99b499ccc61",
+      "size": 374296,
+      "metadata": [
+        "Package: libboost-serialization1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-serialization1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "6a19f6130426a429cc2570a23e7b005c9d344a9bff8710180e892751173b5070",
+      "size": 318666,
+      "metadata": [
+        "Package: libboost-serialization1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-system-dev_1.74.0.3ubuntu7_arm64.deb",
+      "sha256": "0a315bfeab41a554709ae1d555be1ed681618cc3832465f216af55c7b768803c",
+      "size": 3390,
+      "metadata": [
+        "Package: libboost-system-dev",
+        "Version: 1.74.0.3ubuntu7",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-system1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "fe866c64ee5c826690bc15c4f1d757ddb3e34a87588b6416aaa4c76ef2537b84",
+      "size": 218152,
+      "metadata": [
+        "Package: libboost-system1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-system1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "b6f1761dd35d41759aabba85cc8606f0399cf25c7aeea3ed69cd8db594976ac7",
+      "size": 220832,
+      "metadata": [
+        "Package: libboost-system1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-thread-dev_1.74.0.3ubuntu7_arm64.deb",
+      "sha256": "2d356033d952a41e2483c008e23ed8f949663626b2a8c39b7566d5b13570fc13",
+      "size": 3264,
+      "metadata": [
+        "Package: libboost-thread-dev",
+        "Version: 1.74.0.3ubuntu7",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-thread1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "baaf372aaeae988c0c9a7320ae31f0b8b9f09cd0bba023aaefe671c2ffce8765",
+      "size": 274448,
+      "metadata": [
+        "Package: libboost-thread1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost-thread1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "06543f1e187154b51b687778bae0a87705e71fe326b732a9f122f4808715b12d",
+      "size": 260112,
+      "metadata": [
+        "Package: libboost-thread1.74.0",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libboost1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "69a520b3da35320c5443957cf96deb4f444898989523c9428f5494a8a5b5bb37",
+      "size": 9608758,
+      "metadata": [
+        "Package: libboost1.74-dev",
+        "Version: 1.74.0-14ubuntu3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libjsoncpp-dev_1.9.5-3_arm64.deb",
+      "sha256": "8ee852b0ac0a7c7409282dc1fa5de10cb21a83932b0a6c9940e2e8147463e422",
+      "size": 22912,
+      "metadata": [
+        "Package: libjsoncpp-dev",
+        "Version: 1.9.5-3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libjsoncpp25_1.9.5-3_arm64.deb",
+      "sha256": "013cf07cb9210e11abbcd07c02f0279fd6e3112a03ee6750afc98fab0e8b1ffa",
+      "size": 76612,
+      "metadata": [
+        "Package: libjsoncpp25",
+        "Version: 1.9.5-3",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/liblz4-1_1.9.3-2build2_arm64.deb",
+      "sha256": "3e2274893e0963c758f0d18ba80d033736909373247a7deb211e9ff590a09133",
+      "size": 57640,
+      "metadata": [
+        "Package: liblz4-1",
+        "Version: 1.9.3-2build2",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/liblz4-dev_1.9.3-2build2_arm64.deb",
+      "sha256": "8cdcc5b9493f328d59bf8180c90197a0e859a89643af9e23b9df196c96e28de8",
+      "size": 82106,
+      "metadata": [
+        "Package: liblz4-dev",
+        "Version: 1.9.3-2build2",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-core-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "3569619eb66eb75177a3c2274b51a2d86543f8219fe21323697829009f48e008",
+      "size": 1729726,
+      "metadata": [
+        "Package: libopencv-core-dev",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-core4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "c74e3d57b9ba37675dccda19f808a387372f94933bf3f7cd32c2d0dc26ad6be8",
+      "size": 934172,
+      "metadata": [
+        "Package: libopencv-core4.5d",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-imgcodecs-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "f52dd7e526b3f890982523220949f7c80a68ee956343a7b78bfcdd38ec0b0035",
+      "size": 193708,
+      "metadata": [
+        "Package: libopencv-imgcodecs-dev",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-imgcodecs4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "b797e4889828bfe4177a9e5019c81d579fb2b6c928d8d274737fee1f6825caa5",
+      "size": 118020,
+      "metadata": [
+        "Package: libopencv-imgcodecs4.5d",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-imgproc-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "7303acb30deb3b924d92f508e17b4191a792b27a9a86b8ccfa3b545065a06122",
+      "size": 1329084,
+      "metadata": [
+        "Package: libopencv-imgproc-dev",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libopencv-imgproc4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "411eb38d382a21353ac22b0b640660b41b379bb2ed04431192babcd8e18ff8c3",
+      "size": 1015804,
+      "metadata": [
+        "Package: libopencv-imgproc4.5d",
+        "Version: 4.5.4+dfsg-9ubuntu4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libwebsocketpp-dev_0.8.2-4_arm64.deb",
+      "sha256": "229a50ac36550c364519159f62b0f5c392705d8f360e31ee17f0b0549b8ff722",
+      "size": 118502,
+      "metadata": [
+        "Package: libwebsocketpp-dev",
+        "Version: 0.8.2-4",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libzstd-dev_1.4.8+dfsg-3build1_arm64.deb",
+      "sha256": "5382229c585552619e1c75210ef07ee5d0e4230351bf388552e6511d053a19c7",
+      "size": 391710,
+      "metadata": [
+        "Package: libzstd-dev",
+        "Version: 1.4.8+dfsg-3build1",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/libzstd1_1.4.8+dfsg-3build1_arm64.deb",
+      "sha256": "0102eb80384c2432c4be819663341a1c4e511d05f13ec1467643696531ec6491",
+      "size": 311026,
+      "metadata": [
+        "Package: libzstd1",
+        "Version: 1.4.8+dfsg-3build1",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/ros-humble-mcap-vendor_0.15.17-1jammy.20260909.220900_arm64.deb",
+      "sha256": "39f7e20a6b5f39e39e84cffc2332c347cb5a873c63b6d3052e6c512a9139cf5f",
+      "size": 185312,
+      "metadata": [
+        "Package: ros-humble-mcap-vendor",
+        "Version: 0.15.17-1jammy.20260909.220900",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/ros-humble-rosbag2-storage-mcap_0.15.17-1jammy.20260909.221142_arm64.deb",
+      "sha256": "9230f98f5bdc972762a7ecd378c9191f08354dca22ea6fdab2a89a58ad23f38d",
+      "size": 98506,
+      "metadata": [
+        "Package: ros-humble-rosbag2-storage-mcap",
+        "Version: 0.15.17-1jammy.20260909.221142",
+        "Architecture: arm64"
+      ],
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "wheels/websockets-15.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "0fdfe3e2a29e4db3659dbd5bbf04560cea53dd9610273917799f1cde46aa725e",
+      "size": 182312,
+      "purpose": "offline dependency, not disposable test artifact"
+    },
+    {
+      "path": "debs/ros-humble-image-transport_3.1.13-1jammy.20260908.042813_arm64.deb",
+      "sha256": "966e523f9050f880d9e8cb4b8e9fa6d477e11dcca8475c1423c3be53ad4b04ce",
+      "size": 375258,
+      "metadata": [
+        "Package: ros-humble-image-transport",
+        "Version: 3.1.13-1jammy.20260908.042813",
+        "Architecture: arm64"
+      ],
+      "purpose": "D405 hardware driver missing runtime dependency; downloaded pinned Humble/arm64 archive, no OS/SDK upgrade",
+      "source": "http://mirrors4.tuna.tsinghua.edu.cn/ros2/ubuntu jammy/main arm64"
+    },
+    {
+      "path": "debs/ros-humble-diagnostic-updater_4.0.7-1jammy.20260908.025324_arm64.deb",
+      "sha256": "770cdd58c06ffba767a35f266d5889a7424d2681f3102f8c09bfbf019606fa05",
+      "size": 109620,
+      "metadata": [
+        "Package: ros-humble-diagnostic-updater",
+        "Version: 4.0.7-1jammy.20260908.025324",
+        "Architecture: arm64"
+      ],
+      "purpose": "D405 hardware driver missing runtime dependency; downloaded pinned Humble/arm64 archive, no OS/SDK upgrade",
+      "source": "http://mirrors4.tuna.tsinghua.edu.cn/ros2/ubuntu jammy/main arm64"
+    }
+  ],
+  "host_baseline": "existing /opt/ros/humble SDK, compiler and device SDKs remain installed; no SDK upgrade, no bare-OS bootstrap claim",
+  "runtime_downloads": false,
+  "sdk_module_versions": {
+    "rerun_sdk": "0.36.2",
+    "websockets_test_client": "15.0.1"
+  },
+  "new_plugin_abi_evidence": "actual MCAP roundtrip+24 RRD tests, rosbag2 core0.15.15 with additive plugin0.15.17",
+  "sha_policy": "build.sh verifies every archive before extraction; library/SDK environment stays on the detected platform",
+  "d405_existing_sdk_runtime": {
+    "path": "third_party/librealsense/build/release/librealsense2.so.2.58.4",
+    "sha256": "a3c435d5855aa1368bfec19ba6c0f8f0bab3fdac12e6bbfc4f89ff941a19072c",
+    "version": "2.58.4",
+    "source": "pre-existing built SDK, no rebuild/upgrade/download",
+    "library_path_variable": "FIELD_REALSENSE_LIB_DIR",
+    "current_build_directory_is_required_runtime": true
+  }
+}

@@ -1,0 +1,24 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_topic_single_frame_snapshot_is_complete _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-14/test_topic_single_frame_snapsh0')
+
+    @pytest.mark.integration
+    @pytest.mark.ros2
+    def test_topic_single_frame_snapshot_is_complete(tmp_path: Path) -> None:
+        _require()
+        rclpy = pytest.importorskip("rclpy")
+        from cv_bridge import CvBridge
+        from rclpy.executors import SingleThreadedExecutor
+        from rclpy.node import Node
+        from rclpy.qos import qos_profile_sensor_data
+        from sensor_msgs.msg import Image
+        from std_srvs.srv import Trigger
+>       from tank_vision_ros.stable_seam_node import StableSeamNode
+E       ModuleNotFoundError: No module named 'tank_vision_ros'
+
+/home/sunrise/east_eleair/tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py:30: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED ../home/sunrise/east_eleair/tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py::test_topic_single_frame_snapshot_is_complete
+1 failed in 0.45s

@@ -1,0 +1,12 @@
+Processing ./tank_inspection_system/build_core/baseline_staging
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: tank-vision-inspection
+  Building wheel for tank-vision-inspection (pyproject.toml): started
+  Building wheel for tank-vision-inspection (pyproject.toml): finished with status 'done'
+  Created wheel for tank-vision-inspection: filename=tank_vision_inspection-0.1.0-py3-none-any.whl size=122382 sha256=e3db1281bac72b57861cf7151d15aeecb3c7af3d26de6bf3f0b1ea7d21e79627
+  Stored in directory: /tmp/pip-ephem-wheel-cache-ujz4wv1j/wheels/85/2f/e7/0039556a9bc31589f6ba560a83cba27e53d5d72c14e5f249f5
+Successfully built tank-vision-inspection
+Installing collected packages: tank-vision-inspection
+Successfully installed tank-vision-inspection-0.1.0
+Baseline installed. Source scripts/ROS installs unchanged. Use scripts/rollback.sh.

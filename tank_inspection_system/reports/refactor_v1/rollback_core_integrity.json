@@ -1,0 +1,331 @@
+{
+  "all_match": true,
+  "files": [
+    {
+      "source": "tank_vision_inspection/tank_vision/pipeline.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/pipeline.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inspection_pipeline.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inspection_pipeline.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/ros_adapter.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/ros_adapter.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/latest_frame.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/latest_frame.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam_tracking_types.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam_tracking_types.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/config.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/config.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/snapshot_writer.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/snapshot_writer.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/failure_event_recorder.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/failure_event_recorder.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/dataset_tools.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/dataset_tools.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/stable_seam_tracker.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/stable_seam_tracker.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/synthetic.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/synthetic.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/cli.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/cli.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/realtime_pipeline.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/realtime_pipeline.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/metrics.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/metrics.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/roi_validation_recorder.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/roi_validation_recorder.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/geometry_provenance_recorder.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/geometry_provenance_recorder.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/types.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/types.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam_width_reference.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam_width_reference.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/json_writer.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/outputs/json_writer.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/outputs/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/result_writer.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/outputs/result_writer.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/async_writer.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/outputs/async_writer.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/outputs/overlay.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/outputs/overlay.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/subpixel.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/laser/subpixel.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/laser/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/profile_interface.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/laser/profile_interface.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/laser/line_detector.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/laser/line_detector.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/classical_detector.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/classical_detector.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/confidence.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/confidence.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/centerline.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/centerline.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/geometry.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/geometry.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/seam/detector.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/seam/detector.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/s100p.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/platforms/s100p.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/platforms/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/x86.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/platforms/x86.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/detect_platform.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/platforms/detect_platform.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/platforms/rk3588.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/platforms/rk3588.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/undistort.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/calibration/undistort.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/calibration/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/calibration/camera_calibration.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/calibration/camera_calibration.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/opencv_backend.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/opencv_backend.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/base.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/base.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/rknn_backend.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/rknn_backend.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/onnx_backend.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/onnx_backend.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/inference/d_robotics_bpu_backend.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/inference/d_robotics_bpu_backend.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/classical_baseline.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/classical_baseline.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/tiled_inference.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/tiled_inference.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/onnx_backend.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/onnx_backend.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/detector.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/detector.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/defects/postprocess.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/defects/postprocess.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/preprocessing/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/image_quality.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/preprocessing/image_quality.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/roi.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/preprocessing/roi.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/preprocessing/normalize.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/preprocessing/normalize.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/video_source.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/video_source.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/__init__.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/__init__.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/vendor_camera_source.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/vendor_camera_source.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/base.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/base.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/opencv_camera_source.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/opencv_camera_source.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/folder_source.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/folder_source.py",
+      "matches": true
+    },
+    {
+      "source": "tank_vision_inspection/tank_vision/sources/mindvision_probe.py",
+      "baseline_install": "/home/sunrise/east_eleair/tank_inspection_system/core_env_baseline/lib/python3.10/site-packages/tank_vision/sources/mindvision_probe.py",
+      "matches": true
+    }
+  ],
+  "task_new_unreferenced_modules": "may exist in wheel, original modules restored and SHA verified"
+}

@@ -1,0 +1,15 @@
+Starting >>> inspection_tools
+Starting >>> mindvision_camera_driver
+--- stderr: mindvision_camera_driver
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+OK
+---
+Finished <<< mindvision_camera_driver [1.58s]
+[Processing: inspection_tools]
+Finished <<< inspection_tools [31.6s]
+
+Summary: 2 packages finished [32.1s]
+  1 package had stderr output: mindvision_camera_driver

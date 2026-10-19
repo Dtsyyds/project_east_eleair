@@ -1,0 +1,6 @@
+Starting >>> inspection_tools
+Starting >>> mindvision_camera_driver
+Finished <<< mindvision_camera_driver [2.23s]
+Finished <<< inspection_tools [3.68s]
+
+Summary: 2 packages finished [4.13s]

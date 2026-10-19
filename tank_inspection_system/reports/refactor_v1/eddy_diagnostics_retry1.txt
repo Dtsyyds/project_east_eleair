@@ -1,0 +1,9 @@
+not found: "/opt/tros/humble/local_setup.bash"
+Traceback (most recent call last):
+  File "/home/sunrise/east_eleair/tank_inspection_system/tests/ros_native_eddy_e2e.py", line 107, in <module>
+    result={'status':'passed','tests':[run('/eddy/data'),run('/eddy/channel_mean')],'hardware_executed':False}
+  File "/home/sunrise/east_eleair/tank_inspection_system/tests/ros_native_eddy_e2e.py", line 45, in run
+    while time.monotonic()<deadline and not matched():
+  File "/home/sunrise/east_eleair/tank_inspection_system/tests/ros_native_eddy_e2e.py", line 41, in matched
+    and fusion_sub.get_publisher_count() > 0
+AttributeError: 'Subscription' object has no attribute 'get_publisher_count'

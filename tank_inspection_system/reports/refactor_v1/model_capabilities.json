@@ -1,0 +1,14 @@
+{
+  "default_configuration": "configs/default.yaml backend=opencv, model_path=null, model_calibrated=false, defects=classical",
+  "existing_cpu_backends": "ONNX Runtime/OpenCV DNN load_model/infer implemented, no configured model validated",
+  "bpu": "adapter protocol boundary; no SDK-reviewed adapter injected",
+  "rknn": "adapter protocol boundary; no adapter injected",
+  "module_presence": {
+    "onnxruntime": false,
+    "hbm_runtime": true,
+    "hobot_dnn": false,
+    "rknnlite": false,
+    "rknn": false
+  },
+  "new_model_implementations": false
+}

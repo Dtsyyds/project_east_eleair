@@ -1,0 +1,153 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_________________ test_topic_single_frame_snapshot_is_complete _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-16/test_topic_single_frame_snapsh0')
+
+    @pytest.mark.integration
+    @pytest.mark.ros2
+    def test_topic_single_frame_snapshot_is_complete(tmp_path: Path) -> None:
+        _require()
+        rclpy = pytest.importorskip("rclpy")
+        from cv_bridge import CvBridge
+        from rclpy.executors import SingleThreadedExecutor
+        from rclpy.node import Node
+        from rclpy.qos import qos_profile_sensor_data
+        from sensor_msgs.msg import Image
+        from std_srvs.srv import Trigger
+        from tank_vision_ros.stable_seam_node import StableSeamNode
+    
+        if rclpy.ok():
+            raise RuntimeError("rclpy is already initialized")
+        root = Path(__file__).parents[1]
+        image_path = root / "output/s1_real_seam_images/seam_center_lit_quality_01.bmp"
+        image = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+        assert image is not None
+        output_dir = tmp_path / "snapshots"
+        old_domain = os.environ.get("ROS_DOMAIN_ID")
+        old_localhost = os.environ.get("ROS_LOCALHOST_ONLY")
+        os.environ["ROS_DOMAIN_ID"] = "83"
+        os.environ["ROS_LOCALHOST_ONLY"] = "1"
+        old_ros_log_dir = os.environ.get("ROS_LOG_DIR")
+        os.environ["ROS_LOG_DIR"] = str(tmp_path / "ros_log")
+        try:
+            rclpy.init(args=[
+                "--ros-args", "-p", "input_mode:=ros_topic", "-p", f"snapshot_output_dir:={output_dir}",
+            ])
+        except Exception:
+            if old_ros_log_dir is None:
+                os.environ.pop("ROS_LOG_DIR", None)
+            else:
+                os.environ["ROS_LOG_DIR"] = old_ros_log_dir
+            if old_domain is None:
+                os.environ.pop("ROS_DOMAIN_ID", None)
+            else:
+                os.environ["ROS_DOMAIN_ID"] = old_domain
+            if old_localhost is None:
+                os.environ.pop("ROS_LOCALHOST_ONLY", None)
+            else:
+                os.environ["ROS_LOCALHOST_ONLY"] = old_localhost
+            raise
+        executor = SingleThreadedExecutor()
+>       node = StableSeamNode()
+
+tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tank_vision_ros.stable_seam_node.StableSeamNode object at 0xffff87777940>
+
+    def __init__(self) -> None:
+        super().__init__("stable_seam_node")
+        share = Path(get_package_share_directory("tank_vision_ros"))
+        self.declare_parameter("input_mode", "ros_topic")
+        self.declare_parameter("config_file", str(share / "config/s100p_stable_seam_4096x3072.yaml"))
+        self.declare_parameter("reference_file", str(share / "config/seam_width_reference_s100p_v1.json"))
+        self.declare_parameter("image_topic", "/camera/front/image_raw")
+        self.declare_parameter("camera_info_topic", "/camera/front/camera_info")
+        self.declare_parameter("geometry_topic", "/vision/front/seam_geometry")
+        self.declare_parameter("seam_state_topic", "/vision/front/seam_state")
+        self.declare_parameter("debug_image_topic", "/vision/front/debug_image")
+        self.declare_parameter("publish_debug_image", False)
+        self.declare_parameter(
+            "snapshot_output_dir",
+            "/media/mcap_data/vision/stable_seam_failure_snapshots",
+        )
+        self.declare_parameter(
+            "live_session_output_root",
+            "/media/mcap_data/vision/stable_seam_live_sessions",
+        )
+        self.declare_parameter("auto_save_failures", True)
+        self.declare_parameter("failure_snapshot_cooldown_sec", 2.0)
+        self.declare_parameter("failure_snapshot_queue_size", 4)
+        self.declare_parameter("max_failure_snapshots_per_session", 100)
+        self.declare_parameter("save_on_failure_reason_change", True)
+        self.declare_parameter("save_on_state_transition", True)
+        self.declare_parameter("save_on_new_worst_metric", True)
+        self.declare_parameter("auto_save_full_frame", False)
+        self.declare_parameter("auto_save_context_jpeg", True)
+        self.declare_parameter("context_jpeg_quality", 90)
+        self.declare_parameter("save_lossless_roi", True)
+        self.declare_parameter("auto_save_policy", "event")
+        self.declare_parameter("failure_continuous_sec", 2.0)
+        self.declare_parameter("per_frame_metrics_log", True)
+        self.declare_parameter("roi_validation_recording_enabled", False)
+        self.declare_parameter("roi_validation_output_root", "/media/mcap_data/runs/roi_validation")
+        self.declare_parameter("roi_validation_queue_size", 8)
+        self.declare_parameter("roi_validation_max_duration_sec", 0.0)
+        self.declare_parameter("geometry_provenance_sampling_enabled", False)
+        self.declare_parameter("geometry_provenance_output_root", "/media/mcap_data/runs/geometry_provenance")
+        self.declare_parameter("geometry_provenance_queue_size", 8)
+        self.declare_parameter("geometry_provenance_sample_period_sec", 5.0)
+        self.declare_parameter("geometry_provenance_max_events", 30)
+        self.mode = str(self.get_parameter("input_mode").value)
+        if self.mode not in {"ros_topic", "mindvision_direct"}:
+            raise ValueError("input_mode must be ros_topic or mindvision_direct")
+        config_path = str(self.get_parameter("config_file").value)
+        reference_path = str(self.get_parameter("reference_file").value)
+        self.tracker = StableSeamTracker(config_path, reference_path)
+        self._tuning_lock = Lock()
+        self._tunable_parameter_paths = {
+            "tune_minimum_point_count": ("geometry", "minimum_point_count"),
+            "tune_minimum_coverage": ("geometry", "minimum_coverage"),
+            "tune_minimum_effective_span": ("geometry", "minimum_effective_span"),
+            "tune_minimum_inlier_ratio": ("geometry", "minimum_inlier_ratio"),
+            "tune_maximum_fit_residual_px": ("geometry", "maximum_fit_residual_px"),
+            "tune_minimum_path_confidence": ("geometry", "minimum_path_confidence"),
+            "tune_geometry_maximum_missing_run": ("geometry", "maximum_missing_run"),
+            "tune_edge_min_response": ("processing", "edge_min_response"),
+            "tune_edge_percentile": ("processing", "edge_percentile"),
+            "tune_edge_min_separation_px": ("processing", "edge_min_separation_px"),
+            "tune_guided_search_radius_width_scale": ("guided_search", "local_search_radius_width_scale"),
+        }
+        self._tunable_parameter_limits = {
+            "tune_minimum_point_count": (1, 10000, int),
+            "tune_minimum_coverage": (0.0, 1.0, float),
+            "tune_minimum_effective_span": (0.0, 1.0, float),
+            "tune_minimum_inlier_ratio": (0.0, 1.0, float),
+            "tune_maximum_fit_residual_px": (0.0, 1000.0, float),
+            "tune_minimum_path_confidence": (0.0, 1.0, float),
+            "tune_geometry_maximum_missing_run": (0, 10000, int),
+            "tune_edge_min_response": (0.0, 255.0, float),
+            "tune_edge_percentile": (0.0, 100.0, float),
+            "tune_edge_min_separation_px": (0, 1000, int),
+            "tune_guided_search_radius_width_scale": (0.0, 10.0, float),
+        }
+        for parameter_name, path in self._tunable_parameter_paths.items():
+            target = self.tracker.config
+            for key in path:
+>               target = target[key]
+E               KeyError: 'guided_search'
+
+tank_inspection_system/install_vision/tank_vision_ros/lib/python3.10/site-packages/tank_vision_ros/stable_seam_node.py:243: KeyError
+----------------------------- Captured stdout call -----------------------------
+[37;1m2026-10-03 14:56:39.206 [31;1m[[37;1mTRANSPORT[31;1m Error] [37mAll whitelist interfaces were filtered out[34;1m -> Function [36mUDPv4Transport[m
+[37;1m2026-10-03 14:56:39.206 [31;1m[[37;1mTRANSPORT_UDP[31;1m Error] [37mError creating socket: Operation not permitted[34;1m -> Function [36minit[m
+[37;1m2026-10-03 14:56:39.206 [31;1m[[37;1mRTPS_PARTICIPANT[31;1m Error] [37mUser transport failed to register.[34;1m -> Function [36mRTPSParticipantImpl[m
+----------------------------- Captured stderr call -----------------------------
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+getifaddrs: Operation not permitted
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/tests/test_stable_seam_snapshot_ros_e2e.py::test_topic_single_frame_snapshot_is_complete
+1 failed in 0.60s

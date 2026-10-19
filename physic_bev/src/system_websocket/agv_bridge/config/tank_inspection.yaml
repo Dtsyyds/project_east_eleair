@@ -1,0 +1,28 @@
+websocket_bridge_node:
+  ros__parameters:
+    robot_id: tank_inspection_robot
+    server_uri: ""
+    local_server_port: 9001
+    report_period_ms: 20
+    tank_inspection.fisheye_topic: /camera/fisheye/image_raw
+    tank_inspection.mindvision_topic: /camera/front/preview/image_raw
+    tank_inspection.depth_camera_topic: /d405/camera/color/image_raw
+    tank_inspection.eddy_raw_topic: /eddy/data
+    tank_inspection.eddy_mean_topic: /eddy/channel_mean
+    tank_inspection.emat_topic: ""
+    tank_inspection.chassis_status_topic: ""
+    tank_inspection.chassis_status_type: std_msgs/msg/String
+    tank_inspection.chassis_command_topic: ""
+    tank_inspection.chassis_command_type: geometry_msgs/msg/Twist
+    tank_inspection.lidar_topic: /livox/lidar
+    tank_inspection.lidar_pose_topic: /aft_mapped_to_init
+    tank_inspection.device_timeout_sec: 3.0
+    tank_inspection.command_timeout_sec: 0.5
+    tank_inspection.control_enabled: false
+    tank_inspection.control_token: ""
+    tank_inspection.max_linear_m_s: 0.2
+    tank_inspection.max_angular_rad_s: 0.5
+    tank_inspection.video_fps: 15.0
+    tank_inspection.eddy_fps: 10.0
+    tank_inspection.preview_width: 640
+    tank_inspection.jpeg_quality: 70

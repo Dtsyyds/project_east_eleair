@@ -1,0 +1,8 @@
+Starting >>> tank_vision_interfaces
+Starting >>> inspection_rerun
+Finished <<< inspection_rerun [2.21s]
+Finished <<< tank_vision_interfaces [9.53s]
+Starting >>> tank_vision_ros
+Finished <<< tank_vision_ros [2.01s]
+
+Summary: 3 packages finished [12.0s]

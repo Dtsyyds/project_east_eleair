@@ -1,0 +1,26 @@
+# ==============================================================================
+# top_pkg 系统模块默认使能配置文件 (Default Module Enable Configuration)
+# 
+# 说明：
+# 1. 本文件配置的开关项为系统统一启动时的【默认初始配置】。
+# 2. 在执行 ros2 launch 时，所有开关均可以通过命令行参数进行【动态覆盖与强制开关】：
+#    常用命令行覆盖示例：
+#    - 强制关闭 RViz 可视化窗口（后台运行/节省计算资源）：
+#      ros2 launch top_pkg bringup.launch.py enable_rviz:=false
+#    - 调试传感器时仅启动雷达（关闭相机与 RViz）：
+#      ros2 launch top_pkg bringup_sensor.launch.py enable_camera:=false enable_rviz:=false
+#    - 仅启动相机（关闭雷达）：
+#      ros2 launch top_pkg bringup_sensor.launch.py enable_lidar:=false
+# ==============================================================================
+
+bringup:
+  # 是否默认启动 Livox MID-360 激光雷达驱动 (true: 默认开启, false: 默认关闭)
+  enable_lidar: true
+
+  # 是否默认启动 Intel RealSense D405 彩色相机驱动 (true: 默认开启, false: 默认关闭)
+  # FAST-LIVO2 is currently configured with common.img_en: 0 (LIO-only), so
+  # do not start the D405 unnecessarily. Enable it only after enabling LIVO.
+  enable_camera: true
+
+  # 是否默认启动 RViz2 三维可视化界面 (true: 默认开启, false: 默认关闭)
+  enable_rviz: false

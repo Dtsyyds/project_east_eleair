@@ -1,0 +1,11 @@
+uint8 INTERFACE_VERSION=1
+std_msgs/Header header
+float32 mean_brightness
+float32 overexposed_ratio
+float32 underexposed_ratio
+float32 laplacian_variance
+float32 contrast_std
+bool valid_image
+bool valid_for_measurement
+float32 confidence_scale
+string[] warnings

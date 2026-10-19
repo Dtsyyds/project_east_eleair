@@ -1,0 +1,19 @@
+
+==================================== ERRORS ====================================
+__ ERROR collecting ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py __
+ImportError while importing test module '/home/sunrise/east_eleair/tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py:14: in <module>
+    from inspection_rerun.run_rrd_builder import (
+tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/run_rrd_builder.py:38: in <module>
+    from .rerun_session import RerunSession
+tank_vision_inspection/ros2_ws/src/inspection_rerun/inspection_rerun/rerun_session.py:7: in <module>
+    import rerun as rr
+E   ModuleNotFoundError: No module named 'rerun'
+=========================== short test summary info ============================
+ERROR tank_vision_inspection/ros2_ws/src/inspection_rerun/test/test_run_rrd_builder.py
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.27s

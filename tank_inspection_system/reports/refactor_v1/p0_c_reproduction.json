@@ -1,0 +1,157 @@
+{
+  "baseline": {
+    "schema_version": "field_w5_video_validation_v1",
+    "valid": true,
+    "segments": [
+      {
+        "video": "video/front/front_000001.mkv",
+        "sidecar": "video/front/front_000001.frames.jsonl",
+        "valid": true,
+        "ffprobe": {
+          "programs": [],
+          "streams": [
+            {
+              "codec_name": "h264",
+              "width": 64,
+              "height": 48,
+              "avg_frame_rate": "10/1",
+              "nb_read_packets": "19"
+            }
+          ],
+          "format": {
+            "duration": "1.900000",
+            "bit_rate": "47208"
+          }
+        },
+        "video_frame_count": 19,
+        "sidecar_frame_count": 20,
+        "decoded_to_sidecar_ratio": 0.95,
+        "frame_count_difference": 1,
+        "frame_count_explanation": "all H26X access-unit messages are retained in the sidecar; the container packet count excludes leading/non-VCL or discarded access units. Acceptance requires >=95% and sampled first/middle/last timestamps to decode.",
+        "ros_header_span_sec": 1.9,
+        "container_duration_sec": 1.9,
+        "decode_checks": [
+          {
+            "frame_index": 0,
+            "seek_sec": 0.0,
+            "decodable": true,
+            "command": {
+              "argv": [
+                "ffmpeg",
+                "-v",
+                "error",
+                "-ss",
+                "0.000",
+                "-i",
+                "/home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/fixtures/legacy_video_gap/video/front/front_000001.mkv",
+                "-frames:v",
+                "1",
+                "-f",
+                "null",
+                "-"
+              ],
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          },
+          {
+            "frame_index": 9,
+            "seek_sec": 0.95,
+            "decodable": true,
+            "command": {
+              "argv": [
+                "ffmpeg",
+                "-v",
+                "error",
+                "-ss",
+                "0.950",
+                "-i",
+                "/home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/fixtures/legacy_video_gap/video/front/front_000001.mkv",
+                "-frames:v",
+                "1",
+                "-f",
+                "null",
+                "-"
+              ],
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          },
+          {
+            "frame_index": 18,
+            "seek_sec": 0.8999999999999999,
+            "decodable": true,
+            "command": {
+              "argv": [
+                "ffmpeg",
+                "-v",
+                "error",
+                "-ss",
+                "0.900",
+                "-i",
+                "/home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/fixtures/legacy_video_gap/video/front/front_000001.mkv",
+                "-frames:v",
+                "1",
+                "-f",
+                "null",
+                "-"
+              ],
+              "returncode": 0,
+              "stdout": "",
+              "stderr": ""
+            }
+          }
+        ],
+        "first_frame": {
+          "frame_index": 0,
+          "ros_header_stamp_ns": 1000000000
+        },
+        "last_frame": {
+          "frame_index": 19,
+          "ros_header_stamp_ns": 2900000000
+        }
+      }
+    ],
+    "input_frames": 20,
+    "encoded_frames": 19,
+    "encoded_to_input_ratio": 0.95,
+    "queue_drop_count": 0,
+    "write_error_count": 0,
+    "lossless_raw_equivalence": false,
+    "note": "encoded video is observation material, not byte-equivalent raw evidence"
+  },
+  "modified": {
+    "schema_version": "field_w5_video_validation_v2",
+    "valid": false,
+    "segments": [
+      {
+        "video": "video/front/front_000001.mkv",
+        "valid": false,
+        "strict_alignment": false,
+        "video_frame_count": 0,
+        "error": "no verified decoded-frame map; legacy run is not strictly alignable",
+        "status": "not_strictly_alignable"
+      }
+    ],
+    "input_frames": 20,
+    "encoded_frames": 0,
+    "encoded_to_input_ratio": 0.0,
+    "queue_drop_count": 0,
+    "pre_idr_discard_count": 0,
+    "write_error_count": 0,
+    "frame_conservation": {
+      "received": 20,
+      "decoded": 0,
+      "queue_drop": 0,
+      "pre_idr_discard": 0,
+      "unaccounted": 20
+    },
+    "lossless_raw_equivalence": false,
+    "note": "packet counts and 95% ratios never establish frame timestamp alignment"
+  },
+  "old_false_acceptance_reproduced": true,
+  "strict_rejection_verified": true,
+  "fixture_only": true
+}

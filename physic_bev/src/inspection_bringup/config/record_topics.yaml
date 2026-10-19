@@ -1,0 +1,37 @@
+topics:
+  - /camera/front/image_raw
+  - /camera/front/camera_info
+  - /camera/fisheye/image_raw
+  - /camera/fisheye/camera_info
+  - /d405/camera/color/image_raw
+  - /d405/camera/color/camera_info
+  - /d405/camera/depth/image_rect_raw
+  - /d405/camera/depth/camera_info
+  - /d405/camera/infra1/image_rect_raw
+  - /d405/camera/infra2/image_rect_raw
+  - /livox/lidar
+  - /livox/imu_raw
+  - /livox/imu
+  - /robot/odometry
+  - /robot/state
+  - /inspection/ultrasound/raw
+  - /inspection/eddy_current/raw
+  - /eddy/data
+  - /eddy/channel_mean
+  - /eddy/status
+  - /inspection/probe_state
+  - /tf
+  - /tf_static
+  - /diagnostics
+  - /derived/inspection/fusion_index
+  - /aft_mapped_to_init
+production:
+  max_bag_size: 10737418240
+  max_bag_duration: 900
+  # rosbag2 uses two cache buffers, so peak allocation can be about twice this.
+  max_cache_size: 1073741824
+debug:
+  # A 4096x3072 BGR8 frame is 36 MiB. Avoid splitting every few frames.
+  max_bag_size: 2147483648
+  max_bag_duration: 30
+  max_cache_size: 1073741824

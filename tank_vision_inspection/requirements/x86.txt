@@ -1,0 +1,2 @@
+-r core.txt
+onnxruntime>=1.16; python_version < "3.14"

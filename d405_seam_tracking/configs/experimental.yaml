@@ -1,0 +1,24 @@
+# Experimental initial values, NOT field accuracy thresholds. Pixel-center convention: integers.
+roi: [0.20, 0.35, 0.80, 0.95]
+mode: fused
+visual_backend: classical
+geometry_backend: cpu
+checkpoint: null
+surface: quadratic
+depth_range_m: [0.07, 0.60]
+sync_tolerance_ms: 12.0
+min_background_points: 120
+background_stride: 4
+background_exclusion_fraction: 0.24
+noise_multiplier: 3.5
+minimum_height_m: 0.0005
+visual_contrast_u8: 12.0
+probability_threshold: 0.55
+min_coverage: 0.55
+width_fraction: [0.01, 0.30]
+conflict_pixels: 20.0
+max_fit_residual_pixels: 5.0
+temporal_alpha: 0.65
+prediction_lifetime_sec: 0.20
+reset_gap_sec: 0.75
+max_jump_pixels: 55.0

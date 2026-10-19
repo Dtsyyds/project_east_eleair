@@ -1,0 +1,13 @@
+{
+  "initial_failure": "final_metadata_workflow/eddy.txt",
+  "initial_fields_unavailable": true,
+  "root_cause": "not_proven; DDS endpoint discovery/startup race is an inference",
+  "fixture_fix": "unique process node names; require current process endpoints; .5s pre-input discovery settle; preserve original per-frame .05s+.25s pacing and all count/field assertions",
+  "failed_fixture_edit": "eddy_diagnostics_retry1.txt (Humble Subscription API correction)",
+  "confirmed_runs": [
+    "eddy_diagnostics_retry2/eddy.json",
+    "eddy_installed_confirmed/eddy.json"
+  ],
+  "previous_rate_label": "unmeasured 4Hz constant; superseded by measured wall rate and 5Hz header interval; not hardware performance evidence",
+  "hardware_executed": false
+}

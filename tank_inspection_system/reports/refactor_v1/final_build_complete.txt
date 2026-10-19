@@ -1,0 +1,45 @@
+not found: "/opt/tros/humble/local_setup.bash"
+/home/sunrise/east_eleair/tank_inspection_system/core_env
+[0.580s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'eddy_driver' is in: /home/sunrise/east_eleair/physic_bev/install/eddy_driver, /home/sunrise/east_eleair/tank_inspection_system/install_cpp/eddy_driver
+	'inspection_interfaces' is in: /home/sunrise/east_eleair/tank_inspection_system/install_cpp/inspection_interfaces, /home/sunrise/east_eleair/physic_bev/install/inspection_interfaces
+	'inspection_sync' is in: /home/sunrise/east_eleair/physic_bev/install/inspection_sync, /home/sunrise/east_eleair/tank_inspection_system/install_cpp/inspection_sync
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding eddy_driver inspection_interfaces inspection_sync
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> eddy_driver
+Starting >>> inspection_interfaces
+Finished <<< inspection_interfaces [1.09s]
+Finished <<< eddy_driver [1.13s]
+Starting >>> inspection_sync
+Finished <<< inspection_sync [0.17s]
+
+Summary: 3 packages finished [1.74s]
+[0.600s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'mindvision_camera_driver' is in: /home/sunrise/east_eleair/tank_inspection_system/install_physic/mindvision_camera_driver, /home/sunrise/east_eleair/physic_bev/install/mindvision_camera_driver
+	'inspection_tools' is in: /home/sunrise/east_eleair/physic_bev/install/inspection_tools, /home/sunrise/east_eleair/tank_inspection_system/install_physic/inspection_tools
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding inspection_tools mindvision_camera_driver
+
+This may be promoted to an error in a future release of colcon-override-check.
+Starting >>> inspection_tools
+Starting >>> mindvision_camera_driver
+Finished <<< mindvision_camera_driver [2.75s]
+Finished <<< inspection_tools [2.78s]
+
+Summary: 2 packages finished [3.22s]
+Starting >>> tank_vision_interfaces
+Starting >>> inspection_rerun
+Finished <<< tank_vision_interfaces [1.02s]
+Starting >>> tank_vision_ros
+Finished <<< inspection_rerun [2.38s]
+Finished <<< tank_vision_ros [2.23s]
+
+Summary: 3 packages finished [3.68s]

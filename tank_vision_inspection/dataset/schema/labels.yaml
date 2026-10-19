@@ -1,0 +1,14 @@
+version: 1
+labels:
+  - name: weld
+    description: visible weld seam or weld region
+  - name: rust_corrosion
+    description: externally visible corrosion, confirmed by annotation policy
+  - name: scratch
+    description: externally visible surface scratch
+  - name: coating_damage
+    description: externally visible coating damage
+  - name: surface_anomaly
+    description: conservative unknown surface anomaly
+  - name: ignore
+    description: ambiguous, occluded, or out-of-scope region

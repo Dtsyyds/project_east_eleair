@@ -1,0 +1,190 @@
+schema_version: tank_stability_config_v1
+
+# Monitoring a CameraInfo companion avoids copying a 36 MiB image merely to
+# observe the identical Header. PointCloud2 is received serialized and only its
+# leading CDR Header is parsed; payload bytes are never deserialized in Python.
+topics:
+  - topic: /camera/front/image_raw
+    monitored_topic: /camera/front/camera_info
+    message_type: sensor_msgs/msg/CameraInfo
+    source_device: SUS1207GC
+    expected_min_hz: 9.0
+    timestamp_class: software_anchored_device_tick
+  - topic: /camera/front/preview/image_raw
+    monitored_topic: /camera/front/preview/image_raw
+    message_type: sensor_msgs/msg/Image
+    source_device: SUS1207GC_preview
+    expected_min_hz: 0.0
+    timestamp_class: software_anchored_device_tick
+  - topic: /camera/fisheye/image_raw
+    monitored_topic: /camera/fisheye/camera_info
+    message_type: sensor_msgs/msg/CameraInfo
+    source_device: fisheye
+    expected_min_hz: 13.5
+    timestamp_class: host_receive_ros_system_time
+  - topic: /d405/camera/color/image_raw
+    monitored_topic: /d405/camera/color/camera_info
+    message_type: sensor_msgs/msg/CameraInfo
+    source_device: D405
+    expected_min_hz: 27.0
+    timestamp_class: software_anchored_device_clock
+  - topic: /d405/camera/depth/image_rect_raw
+    monitored_topic: /d405/camera/depth/camera_info
+    message_type: sensor_msgs/msg/CameraInfo
+    source_device: D405_depth
+    expected_min_hz: 27.0
+    timestamp_class: software_anchored_device_clock
+  - topic: /livox/lidar
+    monitored_topic: /livox/lidar
+    message_type: sensor_msgs/msg/PointCloud2
+    source_device: MID360
+    expected_min_hz: 9.0
+    timestamp_class: livox_packet_clock
+    source_timestamp_from_header: true
+  - topic: /livox/imu
+    monitored_topic: /livox/imu
+    message_type: sensor_msgs/msg/Imu
+    source_device: MID360_IMU
+    expected_min_hz: 180.0
+    timestamp_class: livox_packet_clock
+    source_timestamp_from_header: true
+  - topic: /eddy/data
+    monitored_topic: /eddy/data
+    message_type: eddy_driver/msg/EddyFrame
+    source_device: ECA_MOCK_OR_REAL
+    expected_min_hz: 0.0
+    timestamp_class: host_uart_frame_completion
+    deserialize_fields: [sequence]
+  - topic: /eddy/channel_mean
+    monitored_topic: /eddy/channel_mean
+    message_type: eddy_driver/msg/EddyChannelMean
+    source_device: ECA_MOCK_OR_REAL
+    expected_min_hz: 0.0
+    timestamp_class: host_uart_frame_completion
+  - topic: /aft_mapped_to_init
+    monitored_topic: /aft_mapped_to_init
+    message_type: nav_msgs/msg/Odometry
+    source_device: FAST_LIVO2
+    expected_min_hz: 0.0
+    timestamp_class: algorithm_output
+
+cross_device_pairs:
+  - [/d405/camera/color/image_raw, /camera/fisheye/image_raw]
+  - [/d405/camera/color/image_raw, /camera/front/image_raw]
+  - [/livox/lidar, /d405/camera/color/image_raw]
+  - [/livox/lidar, /livox/imu]
+
+resources:
+  sample_period_sec: 2.0
+  data_root: /media/mcap_data
+  process_patterns:
+    - mindvision_camera_node
+    - fisheye_camera_node
+    - realsense2_camera_node
+    - livox_ros_driver2_node
+    - livox_imu_adapter_node
+    - livox_continuity_probe
+    - websocket_bridge_node
+    - fastlivo_mapping
+
+recording_profiles:
+  monitor-only:
+    topics: []
+    max_duration_sec: 1800
+    note: No MCAP; timing/resource CSV only.
+  preview-and-diagnostics:
+    topics:
+      - /camera/front/preview/image_raw
+      - /camera/front/camera_info
+      - /camera/fisheye/camera_info
+      - /d405/camera/color/camera_info
+      - /livox/imu
+      - /eddy/channel_mean
+      - /eddy/status
+      - /diagnostics
+    max_duration_sec: 1800
+    max_bag_size_bytes: 2147483648
+  full-raw-burst:
+    topics:
+      - /camera/front/image_raw
+      - /camera/front/camera_info
+      - /camera/fisheye/image_raw
+      - /camera/fisheye/camera_info
+      - /d405/camera/color/image_raw
+      - /d405/camera/color/camera_info
+      - /livox/lidar
+      - /livox/imu
+      - /eddy/data
+      - /eddy/channel_mean
+      - /diagnostics
+    max_duration_sec: 30
+    max_bag_size_bytes: 10737418240
+    estimated_mindvision_bytes_per_sec: 377487360
+
+timestamp_audit:
+  SUS1207GC:
+    category: B
+    clock: SDK uiTimeStamp 0.1 ms tick, software-anchored once to ROS clock
+    epoch: ROS system epoch after software anchoring; not hardware synchronized
+    ros_clock: used once as the anchor and for published Header.stamp
+    steady_clock: used only for capture-duration and host-rate statistics
+    device_clock: 32-bit SDK uiTimeStamp, unwrapped by DeviceClockMapper
+    offset_risk: independent startup anchor differs from every other camera
+    regression_policy: driver rejects non-increasing mapped stamps
+    unified_time_conversion: software epoch mapping only; no physical sync guarantee
+    code: mindvision_camera_driver/mindvision_camera_driver/node.py:454
+  fisheye:
+    category: C
+    clock: ROS clock sampled immediately after V4L2 read/decode completion
+    epoch: ROS system epoch when use_sim_time=false
+    ros_clock: used per frame immediately after capture.read returns
+    steady_clock: used only for interval and processing-duration statistics
+    device_clock: not used
+    offset_risk: includes exposure, USB transfer and MJPG decode latency
+    regression_policy: no explicit correction; monitor detects regressions
+    unified_time_conversion: already ROS system epoch, but is receipt rather than exposure time
+    code: fisheye_camera_driver/fisheye_camera_driver/node.py:145
+  D405:
+    category: B
+    clock: librealsense GLOBAL_TIME when enabled; reset-aware host mapping is the HARDWARE_CLOCK fallback
+    epoch: GLOBAL_TIME/SYSTEM_TIME is used directly as OS Unix epoch; HARDWARE_CLOCK is software anchored
+    ros_clock: used to anchor and rebuild only the HARDWARE_CLOCK fallback
+    steady_clock: records independent receive intervals for mapping/rebuild evidence; never used as Unix Header.stamp
+    device_clock: device hardware milliseconds continuously converted by librealsense when clock_domain=global_time
+    offset_risk: librealsense global-time offset estimation may adjust; hardware fallback has an independent startup anchor
+    regression_policy: GLOBAL_TIME/SYSTEM_TIME regressions are explicitly invalid and logged; large HARDWARE_CLOCK regressions rebuild and log an epoch; small callback reordering is invalid
+    unified_time_conversion: software epoch mapping only; inter-camera sync mode is Off
+    code: realsense-ros/realsense2_camera/include/hardware_clock_mapper.h and src/base_realsense_node.cpp
+  MID360:
+    category: B_OR_C
+    clock: PTP/GPS packet timestamp when time_type is synchronized; otherwise host high_resolution_clock at packet callback
+    epoch: PTP/GPS epoch if synchronized; fallback implementation-dependent system clock
+    ros_clock: not used to create lidar or IMU Header.stamp
+    steady_clock: UNKNOWN because high_resolution_clock alias is implementation dependent
+    device_clock: packet timestamp only for PTP/GPS time_type
+    offset_risk: runtime packet time_type is not exported, so active clock mode is UNKNOWN
+    regression_policy: no driver-level rejection; monitor detects regressions
+    unified_time_conversion: only proven if runtime PTP/GPS state is independently observed
+    code: livox_ros_driver2/src/comm/pub_handler.cpp:273
+  ECA:
+    category: C
+    clock: std::chrono::system_clock after complete UART frame parse
+    epoch: Unix system epoch
+    ros_clock: not used to create Header.stamp
+    steady_clock: not used for Header.stamp
+    device_clock: not available in current protocol
+    offset_risk: includes UART frame accumulation and parsing latency
+    regression_policy: no driver-level correction; monitor detects regressions
+    unified_time_conversion: host Unix epoch only
+    code: eddy_driver/src/eddy_driver.cpp:26
+  FAST_LIVO2:
+    category: UNKNOWN
+    clock: not a sensor acquisition clock; verify only when process is active
+    epoch: UNKNOWN
+    ros_clock: UNKNOWN
+    steady_clock: UNKNOWN
+    device_clock: UNKNOWN
+    offset_risk: process was not active during validation
+    regression_policy: UNKNOWN
+    unified_time_conversion: UNKNOWN
+    code: UNKNOWN

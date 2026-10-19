@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.16)
+project(d405_bpu LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+add_library(d405_bpu SHARED bpu_adapter.cpp)
+target_include_directories(d405_bpu PRIVATE /usr/include)
+target_link_directories(d405_bpu PRIVATE /usr/hobot/lib)
+target_link_libraries(d405_bpu PRIVATE dnn hbucp)
+set_target_properties(d405_bpu PROPERTIES BUILD_RPATH /usr/hobot/lib)

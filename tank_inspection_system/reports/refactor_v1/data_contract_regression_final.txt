@@ -1,0 +1,26 @@
+....................F...................                                 [100%]
+=================================== FAILURES ===================================
+____________ test_handoff_accepts_new_run_identity_and_manifest_rrd ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-9/test_handoff_accepts_new_run_i0')
+config = {'common': {'run_paths': ['run_id.txt', 'run_manifest.json', 'complete.json', 'collection_status.json', 'device_invent...t.json', 'rerun/rrd_validation.json', 'rerun/conversion.log'], 'schema_version': 'field_data_role_handoff_profiles_v1'}
+
+    def test_handoff_accepts_new_run_identity_and_manifest_rrd(tmp_path, config):
+        run=tmp_path / "NEW-RUN"
+        put(run / "complete.json", json.dumps({"complete": True, "finalized": True}).encode())
+        put(run / "run_manifest.json", json.dumps({"run_id": "NEW-RUN"}).encode())
+        put(run / "rerun/rrd_manifest.json", json.dumps({"output_rrd": str(run / "rerun/custom.rrd")}).encode())
+        handoff.ensure_frozen_run(run)
+        assert handoff.rrd_relative_path(run) == "rerun/custom.rrd"
+        assert handoff.resolve_role_path(run, "{rrd_path}.sha256") == "rerun/custom.rrd.sha256"
+        assert handoff.result_manifest_template("NEW-RUN")["source_run_id"] == "NEW-RUN"
+        assert handoff.vision_schema("NEW-RUN")["properties"]["run_id"]["const"] == "NEW-RUN"
+>       assert "custom.rrd" in handoff.usage_document("rerun_viewer", "custom.rrd")
+E       AssertionError: assert 'custom.rrd' in '# Rerun viewer usage\n\nUse Rerun CLI/SDK exactly 0.36.2. No ROS 2 installation is required.\n\n```bash\nsha256sum -c...dows passed. It is a rate-limited/compressed visualization product and must not replace original MCAP or MKV inputs.\n'
+E        +  where '# Rerun viewer usage\n\nUse Rerun CLI/SDK exactly 0.36.2. No ROS 2 installation is required.\n\n```bash\nsha256sum -c...dows passed. It is a rate-limited/compressed visualization product and must not replace original MCAP or MKV inputs.\n' = <function usage_document at 0xffffac6c68c0>('rerun_viewer', 'custom.rrd')
+E        +    where <function usage_document at 0xffffac6c68c0> = handoff.usage_document
+
+physic_bev/tests/test_role_handoff.py:208: AssertionError
+=========================== short test summary info ============================
+FAILED physic_bev/tests/test_role_handoff.py::test_handoff_accepts_new_run_identity_and_manifest_rrd
+1 failed, 39 passed in 2.40s

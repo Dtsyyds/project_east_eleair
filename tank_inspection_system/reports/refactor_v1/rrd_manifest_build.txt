@@ -1,0 +1,4 @@
+Starting >>> inspection_rerun
+Finished <<< inspection_rerun [2.10s]
+
+Summary: 1 package finished [2.53s]

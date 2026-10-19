@@ -1,0 +1,19 @@
+/**:
+  ros__parameters:
+    sdk_root: /home/sunrise/east_eleair/MindVisionlinuxSDK
+    serial_number: "sn_046081820650"
+    frame_id: mindvision_front_optical_frame
+    resolution_index: -1
+    width: 4096
+    height: 3072
+    exposure_mode: auto
+    exposure_us: 0.0
+    ae_min_exposure_us: 100.0
+    ae_max_exposure_us: 50000.0
+    ae_min_analog_gain_raw: 2
+    ae_max_analog_gain_raw: 16
+    warmup_frames: 60
+    timeout_ms: 2000
+    publish_rate_hz: 0.0
+    qos_depth: 1
+    qos_reliability: best_effort

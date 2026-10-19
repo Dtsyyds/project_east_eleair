@@ -1,0 +1,24 @@
+eddy_driver_node:
+  ros__parameters:
+    # STM32 USB 虚拟串口。
+    # 由 udev 规则为本 Eddy 设备（USB 序列号 5B91074919）创建的稳定别名。
+    # 请勿使用会随插拔顺序变化的 /dev/ttyACM0。
+    device: /dev/eddy
+    baud: 4000000
+
+    # 必须与机器人 URDF 中的固定关节/连杆名称一致。
+    frame_id: eddy_probe_link
+
+    # UART 接收线程与 ROS 发布线程之间的有界 FIFO。
+    queue_capacity: 256
+
+    # 低速的监控/查询循环。原始 ADC 帧不受定时器限制；
+    # 每收到一个完整帧都会尽快发布。
+    status_publish_rate: 1.0
+    settings_query_rate: 1.0
+
+    data_topic: /eddy/data
+    # 车辆 MCAP 只记录该精简话题，不记录 /eddy/data 的 160 点原始数组。
+    channel_mean_topic: /eddy/channel_mean
+    status_topic: /eddy/status
+    command_topic: /eddy/cmd

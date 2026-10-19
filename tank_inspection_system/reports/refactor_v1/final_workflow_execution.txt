@@ -1,0 +1,7 @@
+not found: "/opt/tros/humble/local_setup.bash"
+core: exit 0; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/core.txt
+data: exit 0; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/data.txt
+video_consumers: exit 0; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/video_consumers.txt
+rrd_including_mcap: exit 1; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/rrd_including_mcap.txt
+eddy: exit 0; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/eddy.txt
+snapshot: exit 0; report /home/sunrise/east_eleair/tank_inspection_system/reports/refactor_v1/final_workflow/snapshot.txt

@@ -1,0 +1,20 @@
+Starting >>> eddy_driver
+Starting >>> inspection_interfaces
+Finished <<< inspection_interfaces [26.4s]
+Finished <<< eddy_driver [28.8s]
+Starting >>> inspection_sync
+--- stderr: inspection_sync
+/home/sunrise/east_eleair/physic_bev/src/inspection_sync/src/inspection_sync_node.cpp:23:10: fatal error: eddy_driver/msg/eddy_frame.hpp: 没有那个文件或目录
+   23 | #include "eddy_driver/msg/eddy_frame.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+gmake[2]: *** [CMakeFiles/inspection_sync_node.dir/build.make:76：CMakeFiles/inspection_sync_node.dir/src/inspection_sync_node.cpp.o] 错误 1
+gmake[1]: *** [CMakeFiles/Makefile2:157：CMakeFiles/inspection_sync_node.dir/all] 错误 2
+gmake[1]: *** 正在等待未完成的任务....
+gmake: *** [Makefile:146：all] 错误 2
+---
+Failed   <<< inspection_sync [3.04s, exited with code 2]
+
+Summary: 2 packages finished [32.3s]
+  1 package failed: inspection_sync
+  1 package had stderr output: inspection_sync

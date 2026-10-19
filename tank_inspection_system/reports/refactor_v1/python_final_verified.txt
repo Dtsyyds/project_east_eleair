@@ -1,0 +1,4 @@
+ImportError while loading conftest '/home/sunrise/east_eleair/tank_vision_inspection/tests/conftest.py'.
+tank_vision_inspection/tests/conftest.py:7: in <module>
+    from tank_vision.config import AppConfig, load_config
+E   ModuleNotFoundError: No module named 'tank_vision'

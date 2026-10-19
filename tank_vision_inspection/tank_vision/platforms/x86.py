@@ -1,0 +1,3 @@
+PLATFORM_NAME = "x86"
+SUPPORTED_ARCHITECTURES = ("x86_64", "amd64")
+PRIMARY_BACKENDS = ("onnx", "opencv")

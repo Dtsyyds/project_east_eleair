@@ -1,0 +1,134 @@
+........FFFF...........                                                  [100%]
+=================================== FAILURES ===================================
+_____________ test_closing_status_io_is_included_in_whole_deadline _____________
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...st_event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=0))
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-48/test_closing_status_io_is_incl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff891f0130>
+
+    def test_closing_status_io_is_included_in_whole_deadline(config,tmp_path,monkeypatch):
+        import tank_vision.async_status as status_module
+        from tank_vision.outputs import AsyncResultWriter
+        config.storage.disk_low_space_threshold_mb=0
+        p=AsyncResultWriter(tmp_path,config)
+        entered,release=threading.Event(),threading.Event()
+        original=status_module.write_status
+        def blocked(path,status):
+            entered.set();release.wait(2);original(path,status)
+        monkeypatch.setattr(status_module,'write_status',blocked)
+        started=time.monotonic()
+        try:
+>           with pytest.raises(TimeoutError,match='metadata'):p.close(.08)
+
+tank_vision_inspection/tests/test_async_lifecycle.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <_pytest.python_api.RaisesContext object at 0xffff892da530>
+exc_type = None, exc_val = None, exc_tb = None
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> bool:
+        __tracebackhide__ = True
+        if exc_type is None:
+>           fail(self.message)
+
+/usr/lib/python3/dist-packages/_pytest/python_api.py:777: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+msg = "DID NOT RAISE <class 'TimeoutError'>", pytrace = True
+
+    @_with_exception(Failed)
+    def fail(msg: str = "", pytrace: bool = True) -> "NoReturn":
+        """Explicitly fail an executing test with the given message.
+    
+        :param str msg:
+            The message to show the user as reason for the failure.
+        :param bool pytrace:
+            If False, msg represents the full failure information and no
+            python traceback will be reported.
+        """
+        __tracebackhide__ = True
+>       raise Failed(msg=msg, pytrace=pytrace)
+E       Failed: DID NOT RAISE <class 'TimeoutError'>
+
+/usr/lib/python3/dist-packages/_pytest/outcomes.py:153: Failed
+
+During handling of the above exception, another exception occurred:
+
+config = AppConfig(camera=CameraConfig(model=None, vendor=None, width=4096, height=3072, sensor_format=None, color=True, global...st_event_frames=15, compression='jpg', output_queue_size=32, drop_policy='drop_newest', disk_low_space_threshold_mb=0))
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-48/test_closing_status_io_is_incl0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff891f0130>
+
+    def test_closing_status_io_is_included_in_whole_deadline(config,tmp_path,monkeypatch):
+        import tank_vision.async_status as status_module
+        from tank_vision.outputs import AsyncResultWriter
+        config.storage.disk_low_space_threshold_mb=0
+        p=AsyncResultWriter(tmp_path,config)
+        entered,release=threading.Event(),threading.Event()
+        original=status_module.write_status
+        def blocked(path,status):
+            entered.set();release.wait(2);original(path,status)
+        monkeypatch.setattr(status_module,'write_status',blocked)
+        started=time.monotonic()
+        try:
+            with pytest.raises(TimeoutError,match='metadata'):p.close(.08)
+            assert time.monotonic()-started<.3
+            assert entered.is_set() and p.state=='FAILED'
+            assert p.lifecycle_status['metadata_worker_alive'] and p.lifecycle_status['incomplete']
+        finally:
+>           release.set();p._lifecycle.metadata_thread.join(1)
+E           AttributeError: 'AsyncLifecycle' object has no attribute 'metadata_thread'
+
+tank_vision_inspection/tests/test_async_lifecycle.py:174: AttributeError
+_________ test_recorder_final_metadata_io_has_bounded_exit[provenance] _________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-48/test_recorder_final_metadata_i0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff89179a50>
+kind = 'provenance'
+
+    @pytest.mark.parametrize('kind',['provenance','roi','live'])
+    def test_recorder_final_metadata_io_has_bounded_exit(tmp_path,monkeypatch,kind):
+        from pathlib import Path
+        from tank_vision.geometry_provenance_recorder import GeometryProvenanceRecorder
+>       from tank_vision.roi_validation_recorder import RoiValidationRecorder
+E       ImportError: cannot import name 'RoiValidationRecorder' from 'tank_vision.roi_validation_recorder' (/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/roi_validation_recorder.py)
+
+tank_vision_inspection/tests/test_async_lifecycle.py:184: ImportError
+____________ test_recorder_final_metadata_io_has_bounded_exit[roi] _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-48/test_recorder_final_metadata_i1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff892f2200>
+kind = 'roi'
+
+    @pytest.mark.parametrize('kind',['provenance','roi','live'])
+    def test_recorder_final_metadata_io_has_bounded_exit(tmp_path,monkeypatch,kind):
+        from pathlib import Path
+        from tank_vision.geometry_provenance_recorder import GeometryProvenanceRecorder
+>       from tank_vision.roi_validation_recorder import RoiValidationRecorder
+E       ImportError: cannot import name 'RoiValidationRecorder' from 'tank_vision.roi_validation_recorder' (/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/roi_validation_recorder.py)
+
+tank_vision_inspection/tests/test_async_lifecycle.py:184: ImportError
+____________ test_recorder_final_metadata_io_has_bounded_exit[live] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-48/test_recorder_final_metadata_i2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xffff89305c30>
+kind = 'live'
+
+    @pytest.mark.parametrize('kind',['provenance','roi','live'])
+    def test_recorder_final_metadata_io_has_bounded_exit(tmp_path,monkeypatch,kind):
+        from pathlib import Path
+        from tank_vision.geometry_provenance_recorder import GeometryProvenanceRecorder
+>       from tank_vision.roi_validation_recorder import RoiValidationRecorder
+E       ImportError: cannot import name 'RoiValidationRecorder' from 'tank_vision.roi_validation_recorder' (/home/sunrise/east_eleair/tank_inspection_system/core_env/lib/python3.10/site-packages/tank_vision/roi_validation_recorder.py)
+
+tank_vision_inspection/tests/test_async_lifecycle.py:184: ImportError
+=========================== short test summary info ============================
+FAILED tank_vision_inspection/tests/test_async_lifecycle.py::test_closing_status_io_is_included_in_whole_deadline
+FAILED tank_vision_inspection/tests/test_async_lifecycle.py::test_recorder_final_metadata_io_has_bounded_exit[provenance]
+FAILED tank_vision_inspection/tests/test_async_lifecycle.py::test_recorder_final_metadata_io_has_bounded_exit[roi]
+FAILED tank_vision_inspection/tests/test_async_lifecycle.py::test_recorder_final_metadata_io_has_bounded_exit[live]
+4 failed, 19 passed in 4.59s

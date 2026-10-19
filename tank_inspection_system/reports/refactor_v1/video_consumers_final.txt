@@ -1,0 +1,109 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+_________________ test_consumer_mapping_is_identical[indices0] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_consumer_mapping_is_ident0')
+indices = [0, 1, 2, 3, 4]
+
+    @pytest.mark.parametrize('indices',[[0,1,2,3,4],[1,2,3,4],[0,1,3,4]])
+    def test_consumer_mapping_is_identical(tmp_path,indices):
+        v,s=video.fixture(tmp_path/'video/front',indices)
+        create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        validation=validator.validate_video(tmp_path)
+>       assert validation['strict_alignment'] is True,validation
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:22: KeyError
+_________________ test_consumer_mapping_is_identical[indices1] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_consumer_mapping_is_ident1')
+indices = [1, 2, 3, 4]
+
+    @pytest.mark.parametrize('indices',[[0,1,2,3,4],[1,2,3,4],[0,1,3,4]])
+    def test_consumer_mapping_is_identical(tmp_path,indices):
+        v,s=video.fixture(tmp_path/'video/front',indices)
+        create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        validation=validator.validate_video(tmp_path)
+>       assert validation['strict_alignment'] is True,validation
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:22: KeyError
+_________________ test_consumer_mapping_is_identical[indices2] _________________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_consumer_mapping_is_ident2')
+indices = [0, 1, 3, 4]
+
+    @pytest.mark.parametrize('indices',[[0,1,2,3,4],[1,2,3,4],[0,1,3,4]])
+    def test_consumer_mapping_is_identical(tmp_path,indices):
+        v,s=video.fixture(tmp_path/'video/front',indices)
+        create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        validation=validator.validate_video(tmp_path)
+>       assert validation['strict_alignment'] is True,validation
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:22: KeyError
+____________ test_all_consumers_reject_unprovable_alignment[legacy] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_all_consumers_reject_unpr0')
+case = 'legacy'
+
+    @pytest.mark.parametrize('case',['legacy','corrupt','cross_regression'])
+    def test_all_consumers_reject_unprovable_alignment(tmp_path,case):
+        v,s=video.fixture(tmp_path/'video/front')
+        if case!='legacy':create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        if case=='corrupt':v.write_bytes(b'bad fixture video')
+        if case=='cross_regression':
+            import shutil
+            for src in [v,s,v.with_suffix('.frame_map.json')]:
+                dest=src.with_name(src.name.replace('000001','000002'));shutil.copy2(src,dest)
+        report=validator.validate_video(tmp_path)
+>       assert report['strict_alignment'] is False
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:44: KeyError
+___________ test_all_consumers_reject_unprovable_alignment[corrupt] ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_all_consumers_reject_unpr1')
+case = 'corrupt'
+
+    @pytest.mark.parametrize('case',['legacy','corrupt','cross_regression'])
+    def test_all_consumers_reject_unprovable_alignment(tmp_path,case):
+        v,s=video.fixture(tmp_path/'video/front')
+        if case!='legacy':create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        if case=='corrupt':v.write_bytes(b'bad fixture video')
+        if case=='cross_regression':
+            import shutil
+            for src in [v,s,v.with_suffix('.frame_map.json')]:
+                dest=src.with_name(src.name.replace('000001','000002'));shutil.copy2(src,dest)
+        report=validator.validate_video(tmp_path)
+>       assert report['strict_alignment'] is False
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:44: KeyError
+_______ test_all_consumers_reject_unprovable_alignment[cross_regression] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-25/test_all_consumers_reject_unpr2')
+case = 'cross_regression'
+
+    @pytest.mark.parametrize('case',['legacy','corrupt','cross_regression'])
+    def test_all_consumers_reject_unprovable_alignment(tmp_path,case):
+        v,s=video.fixture(tmp_path/'video/front')
+        if case!='legacy':create_frame_map(v,s,v.with_suffix('.frame_map.json'))
+        if case=='corrupt':v.write_bytes(b'bad fixture video')
+        if case=='cross_regression':
+            import shutil
+            for src in [v,s,v.with_suffix('.frame_map.json')]:
+                dest=src.with_name(src.name.replace('000001','000002'));shutil.copy2(src,dest)
+        report=validator.validate_video(tmp_path)
+>       assert report['strict_alignment'] is False
+E       KeyError: 'strict_alignment'
+
+tank_inspection_system/tests/test_video_consumers.py:44: KeyError
+=========================== short test summary info ============================
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_consumer_mapping_is_identical[indices0]
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_consumer_mapping_is_identical[indices1]
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_consumer_mapping_is_identical[indices2]
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_all_consumers_reject_unprovable_alignment[legacy]
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_all_consumers_reject_unprovable_alignment[corrupt]
+FAILED tank_inspection_system/tests/test_video_consumers.py::test_all_consumers_reject_unprovable_alignment[cross_regression]
+6 failed in 2.07s

@@ -1,0 +1,70 @@
+{
+  "topic": "/eddy/data",
+  "installed_node": "inspection_sync_fixture_aaf9589df9a4",
+  "published_anchors": 5,
+  "anchor_wall_times": [
+    22614.493922449,
+    22614.810350346,
+    22615.12632767,
+    22615.442336219,
+    22615.758564522
+  ],
+  "received": [
+    {
+      "stamp_ns": 10000000000,
+      "anchor_sequence": 0,
+      "anchor_topic": "/eddy/data",
+      "camera_valid": true,
+      "lidar_valid": true,
+      "imu_valid": true,
+      "pose_valid": true,
+      "quality_flags": 0,
+      "asset_coordinate_valid": false
+    },
+    {
+      "stamp_ns": 10200000000,
+      "anchor_sequence": 1,
+      "anchor_topic": "/eddy/data",
+      "camera_valid": true,
+      "lidar_valid": true,
+      "imu_valid": true,
+      "pose_valid": true,
+      "quality_flags": 0,
+      "asset_coordinate_valid": false
+    },
+    {
+      "stamp_ns": 10400000000,
+      "anchor_sequence": 2,
+      "anchor_topic": "/eddy/data",
+      "camera_valid": true,
+      "lidar_valid": true,
+      "imu_valid": true,
+      "pose_valid": true,
+      "quality_flags": 0,
+      "asset_coordinate_valid": false
+    },
+    {
+      "stamp_ns": 10600000000,
+      "anchor_sequence": 3,
+      "anchor_topic": "/eddy/data",
+      "camera_valid": true,
+      "lidar_valid": true,
+      "imu_valid": true,
+      "pose_valid": true,
+      "quality_flags": 0,
+      "asset_coordinate_valid": false
+    },
+    {
+      "stamp_ns": 10800000000,
+      "anchor_sequence": 4,
+      "anchor_topic": "/eddy/data",
+      "camera_valid": true,
+      "lidar_valid": true,
+      "imu_valid": true,
+      "pose_valid": true,
+      "quality_flags": 0,
+      "asset_coordinate_valid": false
+    }
+  ],
+  "hardware_executed": false
+}

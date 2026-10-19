@@ -1,0 +1,5 @@
+{
+  "status": "failed",
+  "hardware_executed": false,
+  "error": "'Subscription' object has no attribute 'get_publisher_count'"
+}

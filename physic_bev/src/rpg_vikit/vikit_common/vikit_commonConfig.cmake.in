@@ -1,0 +1,80 @@
+#######################################################
+# vikit_common source dir
+
+set(
+  vikit_common_SOURCE_DIR
+  "@CMAKE_CURRENT_SOURCE_DIR@"
+)
+
+#######################################################
+# vikit_common build dir
+
+set(
+  vikit_common_DIR
+  "@CMAKE_CURRENT_BINARY_DIR@"
+)
+
+#######################################################
+# Include directory
+
+set(
+  vikit_common_INCLUDE_DIR
+  "@vikit_common_INCLUDE_DIR@"
+)
+
+set(
+  vikit_common_INCLUDE_DIRS
+  "@vikit_common_INCLUDE_DIRS@"
+)
+
+
+#######################################################
+# Library
+
+# IMPORTANT:
+#
+# Do NOT use:
+#
+#   $<TARGET_FILE:vikit_common>
+#
+# here.
+#
+# This file is loaded by other CMake projects
+# (for example fast_livo).
+# Those projects do not have a CMake target named
+# "vikit_common".
+#
+# Export the real library path instead.
+
+set(
+  vikit_common_LIBRARIES
+  "@vikit_common_LIBRARIES@"
+)
+
+set(
+  vikit_common_LIBRARY
+  "@vikit_common_LIBRARIES@"
+)
+
+
+#######################################################
+# Library directory
+
+set(
+  vikit_common_LIBRARY_DIR
+  "@vikit_common_LIBRARY_DIR@"
+)
+
+set(
+  vikit_common_LIBRARY_DIRS
+  "@vikit_common_LIBRARY_DIRS@"
+)
+
+
+#######################################################
+# Package status
+
+set(
+  vikit_common_FOUND
+  TRUE
+)

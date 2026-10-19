@@ -1,0 +1,194 @@
+ ### 无 tracker 采集
+
+cd /home/sunrise/east_eleair/physic_bev
+export FIELD_DATA_ROOT=/media/mcap_data
+export FIELD_CAMERA_SERIAL=046081820650
+export FIELD_RUN_ID="FIELD-VEHICLE-$(date +%Y%m%d_%H%M%S)"
+
+scripts/start_vehicle_collection.sh \
+run_id:="$FIELD_RUN_ID" \
+record_core:=true \
+record_mid360:=true \
+record_d405:=true \
+record_front_video:=true \
+enable_tracker:=false \
+auto_save_failures:=false \
+provenance_enabled:=false \
+record_front_raw_burst:=false
+
+### 降帧率采集
+
+  FIELD_D405_ENABLE_INFRA1=true \
+  FIELD_D405_ENABLE_INFRA2=false \
+  FIELD_D405_DEPTH_PROFILE=848,480,15 \
+  FIELD_D405_INFRA_PROFILE=848,480,15 \
+  FIELD_D405_GLOBAL_TIME_ENABLED=false \
+  FIELD_D405_ERROR_POLLING_ENABLED=false \
+  scripts/start_vehicle_collection.sh \
+    record_core:=true \
+    record_mid360:=true \
+    record_d405:=true \
+    record_front_video:=true \
+    enable_tracker:=false \
+    auto_save_failures:=false \
+    provenance_enabled:=false \
+    record_front_raw_burst:=false
+
+scripts/start_vehicle_collection.sh \
+run_id:="$FIELD_RUN_ID" \
+record_core:=true \
+record_mapping:=false \
+record_mid360:=true \
+record_d405:=true \
+record_eddy:=true \
+record_front_video:=true \
+enable_tracker:=false \
+auto_save_failures:=false \
+provenance_enabled:=false \
+record_front_raw_burst:=false
+
+  状态与停止：
+
+  scripts/status_vehicle_collection.sh "$FIELD_RUN_ID"
+  scripts/stop_vehicle_collection.sh "$FIELD_RUN_ID"
+
+  ### 回放之前采集的数据
+
+  完整传感器回放，1×速度，从头回放60秒：
+
+cd /home/sunrise/east_eleair/physic_bev
+export FIELD_DATA_ROOT=/media/mcap_data
+
+scripts/replay_vehicle_collection.sh \
+FIELD-VEHICLE-20260928_115534 \
+full-sensor \
+1.0 \
+0 \
+60
+
+现在直接重新执行完整回放：
+
+cd /home/sunrise/east_eleair/physic_bev
+export FIELD_DATA_ROOT=/media/mcap_data
+
+scripts/replay_vehicle_collection.sh \
+FIELD-VEHICLE-20260928_115534 \
+sensor-only \
+1.0 \
+0 \
+0
+
+  另开终端查看工业相机：
+
+source /opt/ros/humble/setup.bash
+source /home/sunrise/east_eleair/physic_bev/install/setup.bash
+
+ros2 run rqt_image_view rqt_image_view /camera/front/image_raw
+
+  也可以直接查看采集的视频文件：
+
+  ffplay /media/mcap_data/runs/FIELD-VEHICLE-20260928_115534/video/front/front_000001.mkv
+
+  回放时检查传感器频率：
+
+  ros2 topic hz /camera/front/image_raw
+  ros2 topic hz /d405/camera/depth/image_rect_raw
+  ros2 topic hz /d405/camera/infra1/image_rect_raw
+  ros2 topic hz /d405/camera/infra2/image_rect_raw
+  ros2 topic hz /livox/lidar
+  ros2 topic hz /livox/imu
+
+  只看工业相机和轻量 core 数据：
+
+  scripts/replay_vehicle_collection.sh \
+    FIELD-W5-S1-FORMAL-20260922_2242 \
+    perception \
+    1.0 \
+    0 \
+    60
+
+  之前的 run 虽然开了 tracker，但 MindVision、D405、MID-360、视频和 MCAP 均完整
+  可读；新的采集命令不会再启动 tracker。
+  
+  • 是的，FIELD-VEHICLE-20260922_232714 的录制进程已经全部结束：
+
+  - 相机、雷达、D405、编码器和三个 recorder 均已退出
+  - MCAP 已从 .partial 移到 mcap/
+  - 两个 MKV 视频分段已正常关闭
+  - 没有残留采集进程
+
+  你按 Ctrl-C 中断的是停止后的离线校验，所以当前仍显示：
+
+  {
+    "complete": false,
+    "finalized": false,
+    "validation": "pending"
+  }
+
+  无参数停止已经支持。以后直接执行：
+
+  scripts/stop_vehicle_collection.sh
+
+  规则是：
+
+  1. 优先使用当前 shell 中的 FIELD_RUN_ID。
+  2. 没有该变量时，自动查找唯一仍在运行的采集 run。
+  3. 如果同时存在多个活跃 run，会拒绝猜测并要求明确指定。
+  4. 没有活跃 run 时也会安全退出。
+
+  如果只想立即停止录制、不等待数分钟的离线 MCAP 校验：
+
+  FIELD_SKIP_FINALIZE=1 scripts/stop_vehicle_collection.sh
+
+  之后可以单独执行校验：
+
+  python3 scripts/finalize_vehicle_collection.py \
+    /media/mcap_data/runs/FIELD-VEHICLE-20260922_232714
+
+  这个 run 之前受到旧数据回放污染，不建议继续花时间作为正式 run 验收。新采集正常
+  启动后，结束时直接运行：
+
+  scripts/stop_vehicle_collection.sh
+
+  现在停止过程也会先明确显示：
+
+  recording processes stopped
+  MCAP writers sealed; starting offline validation
+
+  看到第一行时，实际录制就已经停止；后面只是离线校验。
+  
+  重新插拔 D405 后，先单独验证，不要直接开始正式采集。
+
+  终端 1 启动 D405：
+
+cd /home/sunrise/east_eleair/physic_bev
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+ros2 launch realsense2_camera rs_launch.py \
+camera_namespace:=d405 \
+camera_name:=camera \
+enable_color:=false \
+enable_depth:=true \
+enable_infra1:=true \
+enable_infra2:=true \
+depth_module.depth_profile:=848,480,30 \
+depth_module.infra_profile:=848,480,30 \
+diagnostics_period:=0.0 \
+publish_tf:=true
+
+  终端 2 执行三路帧率检查：
+
+source /opt/ros/humble/setup.bash
+source /home/sunrise/east_eleair/physic_bev/install/setup.bash
+
+for topic in \
+/d405/camera/depth/camera_info \
+/d405/camera/infra1/camera_info \
+/d405/camera/infra2/camera_info
+do
+echo "===== $topic ====="
+timeout 8s ros2 topic hz "$topic"
+done
+
+

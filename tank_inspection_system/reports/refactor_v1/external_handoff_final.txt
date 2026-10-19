@@ -1,0 +1,32 @@
+.....................F                                                   [100%]
+=================================== FAILURES ===================================
+_______________ test_external_analysis_rrd_handoff_is_read_only ________________
+
+fake_run = PosixPath('/tmp/pytest-of-sunrise/pytest-36/test_external_analysis_rrd_han0/FIELD-VEHICLE-20260928_115534')
+config = {'common': {'run_paths': ['run_id.txt', 'run_manifest.json', 'complete.json', 'collection_status.json', 'device_invent...t.json', 'rerun/rrd_validation.json', 'rerun/conversion.log'], 'schema_version': 'field_data_role_handoff_profiles_v1'}
+tmp_path = PosixPath('/tmp/pytest-of-sunrise/pytest-36/test_external_analysis_rrd_han0')
+
+    def test_external_analysis_rrd_handoff_is_read_only(fake_run, config, tmp_path):
+        out=fake_run.parent.parent/'analysis'/fake_run.name/'analysis-fixture/outputs'
+        out.mkdir(parents=True)
+        rrd=out/'arbitrary-current-name.rrd';rrd.write_bytes(b'verified derived fixture')
+        digest=handoff.sha256_file(rrd)
+        document={'run_id':fake_run.name,'complete':True,'hash_verified':True,
+                  'valid_for_formal_validation':True,'output_path':str(rrd),'rrd_sha256':digest}
+        manifest=out/'rrd_manifest.json';manifest.write_text(json.dumps(document))
+        (out/'rrd_validation.json').write_text('{"success":true}')
+        (out/'conversion.log').write_text('fixture')
+        Path(str(rrd)+'.sha256').write_text(digest+'  '+rrd.name+'\n')
+        before={str(p):handoff.sha256_file(p) for p in fake_run.rglob('*') if p.is_file()}
+        selected=handoff.build_entries(fake_run,'rerun_viewer',config,rrd_manifest_path=manifest)
+        assert {p['package_path'] for p in selected}=={rrd.name,rrd.name+'.sha256','rrd_manifest.json','rrd_validation.json','conversion.log'}
+        assert all(p['origin']=='analysis_rrd' for p in selected)
+        facts=handoff.run_facts(fake_run,manifest)
+        target=tmp_path/'derived_delivery'
+>       handoff.materialize(fake_run,'rerun_viewer',target,selected,facts,copy_method='python')
+E       TypeError: materialize() missing 1 required keyword-only argument: 'resume'
+
+physic_bev/tests/test_role_handoff.py:228: TypeError
+=========================== short test summary info ============================
+FAILED physic_bev/tests/test_role_handoff.py::test_external_analysis_rrd_handoff_is_read_only
+1 failed, 21 passed in 0.47s

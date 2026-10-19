@@ -1,0 +1,9 @@
+noChunkCRC: false
+noChunking: false
+noMessageIndex: false
+noSummary: false
+# Keep chunks larger than a full-resolution frame and amortize Zstd/index overhead.
+chunkSize: 67108864
+compression: Zstd
+compressionLevel: Fast
+forceCompression: false
