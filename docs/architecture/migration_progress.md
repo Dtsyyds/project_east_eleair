@@ -1,10 +1,13 @@
 # 全量迁移进度
 
-初始 HEAD：b34a3c29c62500915c302b340cb4d51880b00980；当前检查点 9495fce，分支 refactor/architecture。
-原工程仅只读。未发现适用 AGENTS.md。用户授权全量迁移及本地提交。
+分支 refactor/architecture；初始 HEAD b34a3c29c62500915c302b340cb4d51880b00980。
+M0 检查点 9495fce；全量实现检查点 712e871；最终报告提交见 HEAD 的 `docs: finalize migration completion and validation handoff`。
+未发现适用 AGENTS.md。原工程仅只读，main 保持 b34a3c2；不推送、不部署、不改系统配置。
 
-已完成：保存 M0；5685 文件去向账本；全仓归位；27 原 ROS 包保留并新增 inspection_operations；业务/EMAT 抽取、纯 Python 元数据、CLI 与 deploy 入口；中央配置和薄兼容入口；311 个依赖文件复制及哈希校验（723804201 字节）。colcon 实际发现 28 包；安全 CLI help、build plan、核心部分导入已执行。
-当前：路径/资源修复完成，正在固化文档和验证报告并准备实现提交。20 项安全入口/导入/计划检查通过，9 份 ROS setup 资源存在。针对性测试 81 passed、1 相机 skipped、2 ROS 测试因未构建而未通过。新增发现并从原工程只读恢复 5 个被 output*/ 错误忽略的 outputs Python 源文件，另有补充映射与 SHA。
-剩余：保存实现提交，完成最终报告和交付提交；完整构建/录放/硬件验证为下一轮，不属于本轮未完成的代码移动。
-阻塞：模型与 3 张粗标定证据图片原工程也缺失；新 ROS 安装产物未构建，ROS 导入检查部分受阻；不影响代码归位。
-本轮不运行设备、全量构建或系统验收。恢复时先读本文件及 git status；不要重跑 /tmp 中迁移脚本。
+本轮代码迁移完成：5,685 原 Git 文件逐项归位；另恢复 5 个被原忽略规则遗漏的 outputs 源文件；原 27 ROS 包保留并新增 inspection_operations；网页/CLI/runtime/EMAT/算法/配置/工具/文档全量归位。没有剩余源目录移动批次。
+新构建、环境、运行、预检、回退及兼容入口已建立；311 个离线/SDK 分发校验完成，未复制旧构建产物或虚拟环境。
+527 Python / 58 Bash / 配置与元数据静态检查通过；28 包实际发现；9 份 ROS Python 安装资源存在；20 项安全 smoke 通过；81 项针对性测试通过，1 项相机跳过，2 项 ROS 测试因未构建受阻。
+
+阻塞/下一轮事项：Node.js、Rerun 独立依赖环境、新 ROS overlay/generated messages、模型与 3 张粗标定证据、历史数据/源码 fixture 显式接入。完整构建、系统 mock/录放、网页、定位、硬件验证本轮未执行。
+准确证据和提交记录见 migration_completion.md；后续命令与判定标准见 docs/validation/post_migration_validation_plan.md。
+恢复后先读本文件、completion 和 git status；不要重跑 /tmp 迁移脚本或重复移动源码。只按下一轮明确的验证范围继续。
