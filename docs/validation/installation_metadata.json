@@ -1,0 +1,103 @@
+[
+  {
+    "setup": "ros2_ws/src/drivers/fisheye_camera_driver/setup.py",
+    "name": "fisheye_camera_driver",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "fisheye_camera_node = fisheye_camera_driver.node:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/drivers/mindvision_camera_driver/setup.py",
+    "name": "mindvision_camera_driver",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "mindvision_camera_node = mindvision_camera_driver.node:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/drivers/realsense-ros/realsense2_ros_mqtt_bridge/setup.py",
+    "name": "realsense2_ros_mqtt_bridge",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "realsense2_ros_mqtt_bridge = src.entry_point:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/functions/communication/inspection_operations/setup.py",
+    "name": "inspection_operations",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "operations_node = inspection_operations.operations_node:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/functions/data/inspection_tools/setup.py",
+    "name": "inspection_tools",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "validate_bag = inspection_tools.validate_bag:main",
+        "finalize_bag = inspection_tools.finalize_bag:main",
+        "estimate_storage = inspection_tools.estimate_storage:main",
+        "depth_to_pointcloud = inspection_tools.depth_to_pointcloud:main",
+        "inspect_latest = inspection_tools.inspect_latest:main",
+        "stability_monitor = inspection_tools.stability_monitor:main",
+        "timestamp_audit = inspection_tools.timestamp_audit:main",
+        "time_sync_analysis = inspection_tools.time_sync_analysis:main",
+        "eca_mock = inspection_tools.eca_mock:main",
+        "websocket_validation = inspection_tools.websocket_validation:main",
+        "livox_continuity = inspection_tools.livox_continuity:main",
+        "time_readiness = inspection_tools.time_readiness:main",
+        "usb_lifecycle = inspection_tools.usb_lifecycle:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/functions/localization/rpg_vikit/vikit_py/setup.py",
+    "name": "vikit_py",
+    "missing_resources": [],
+    "entry_points": {}
+  },
+  {
+    "setup": "ros2_ws/src/functions/perception/d405_seam_ros/setup.py",
+    "name": "d405_seam_ros",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "d405_seam_node = d405_seam_ros:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/functions/perception/tank_vision_ros/setup.py",
+    "name": "tank_vision_ros",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "vision_node = tank_vision_ros.vision_node:main",
+        "stable_seam_node = tank_vision_ros.stable_seam_node:main",
+        "seam_debug_viewer = tank_vision_ros.seam_debug_viewer:main"
+      ]
+    }
+  },
+  {
+    "setup": "ros2_ws/src/functions/visualization/inspection_rerun/setup.py",
+    "name": "inspection_rerun",
+    "missing_resources": [],
+    "entry_points": {
+      "console_scripts": [
+        "rerun_bridge_node = inspection_rerun.rerun_bridge_node:main",
+        "build_run_rrd = inspection_rerun.run_rrd_builder:main"
+      ]
+    }
+  }
+]

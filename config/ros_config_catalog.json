@@ -1,0 +1,14 @@
+[
+  "ros2_ws/src/bringup/inspection_bringup/config",
+  "ros2_ws/src/bringup/top_pkg/config",
+  "ros2_ws/src/drivers/eddy_driver/config",
+  "ros2_ws/src/drivers/fisheye_camera_driver/config",
+  "ros2_ws/src/drivers/livox_ros_driver2/config",
+  "ros2_ws/src/drivers/mindvision_camera_driver/config",
+  "ros2_ws/src/drivers/realsense-ros/realsense2_camera/examples/launch_params_from_file/config",
+  "ros2_ws/src/functions/communication/agv_bridge/config",
+  "ros2_ws/src/functions/data/inspection_tools/config",
+  "ros2_ws/src/functions/localization/FAST-LIVO2/config",
+  "ros2_ws/src/functions/perception/tank_vision_ros/config",
+  "ros2_ws/src/functions/visualization/inspection_rerun/config"
+]

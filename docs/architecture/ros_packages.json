@@ -1,0 +1,113 @@
+{
+  "original_packages": [
+    {
+      "source": "d405_seam_tracking/ros2_ws/src/d405_seam_ros/package.xml",
+      "target": "ros2_ws/src/functions/perception/d405_seam_ros/package.xml"
+    },
+    {
+      "source": "physic_bev/src/FAST-LIVO2/package.xml",
+      "target": "ros2_ws/src/functions/localization/FAST-LIVO2/package.xml"
+    },
+    {
+      "source": "physic_bev/src/eddy_driver/package.xml",
+      "target": "ros2_ws/src/drivers/eddy_driver/package.xml"
+    },
+    {
+      "source": "physic_bev/src/fisheye_camera_driver/package.xml",
+      "target": "ros2_ws/src/drivers/fisheye_camera_driver/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_bringup/package.xml",
+      "target": "ros2_ws/src/bringup/inspection_bringup/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_interfaces/package.xml",
+      "target": "ros2_ws/src/interfaces/inspection_interfaces/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_livox_adapter/package.xml",
+      "target": "ros2_ws/src/drivers/inspection_livox_adapter/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_mock_sensors/package.xml",
+      "target": "ros2_ws/src/drivers/inspection_mock_sensors/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_sync/package.xml",
+      "target": "ros2_ws/src/functions/data/inspection_sync/package.xml"
+    },
+    {
+      "source": "physic_bev/src/inspection_tools/package.xml",
+      "target": "ros2_ws/src/functions/data/inspection_tools/package.xml"
+    },
+    {
+      "source": "physic_bev/src/livox_ros_driver2/package.xml",
+      "target": "ros2_ws/src/drivers/livox_ros_driver2/package.xml"
+    },
+    {
+      "source": "physic_bev/src/mindvision_camera_driver/package.xml",
+      "target": "ros2_ws/src/drivers/mindvision_camera_driver/package.xml"
+    },
+    {
+      "source": "physic_bev/src/realsense-ros/realsense2_camera/package.xml",
+      "target": "ros2_ws/src/drivers/realsense-ros/realsense2_camera/package.xml"
+    },
+    {
+      "source": "physic_bev/src/realsense-ros/realsense2_camera_msgs/package.xml",
+      "target": "ros2_ws/src/drivers/realsense-ros/realsense2_camera_msgs/package.xml"
+    },
+    {
+      "source": "physic_bev/src/realsense-ros/realsense2_description/package.xml",
+      "target": "ros2_ws/src/drivers/realsense-ros/realsense2_description/package.xml"
+    },
+    {
+      "source": "physic_bev/src/realsense-ros/realsense2_rgbd_plugin/package.xml",
+      "target": "ros2_ws/src/drivers/realsense-ros/realsense2_rgbd_plugin/package.xml"
+    },
+    {
+      "source": "physic_bev/src/realsense-ros/realsense2_ros_mqtt_bridge/package.xml",
+      "target": "ros2_ws/src/drivers/realsense-ros/realsense2_ros_mqtt_bridge/package.xml"
+    },
+    {
+      "source": "physic_bev/src/rpg_vikit/vikit_common/package.xml",
+      "target": "ros2_ws/src/functions/localization/rpg_vikit/vikit_common/package.xml"
+    },
+    {
+      "source": "physic_bev/src/rpg_vikit/vikit_py/package.xml",
+      "target": "ros2_ws/src/functions/localization/rpg_vikit/vikit_py/package.xml"
+    },
+    {
+      "source": "physic_bev/src/rpg_vikit/vikit_ros/package.xml",
+      "target": "ros2_ws/src/functions/localization/rpg_vikit/vikit_ros/package.xml"
+    },
+    {
+      "source": "physic_bev/src/system_websocket/agv_bridge/package.xml",
+      "target": "ros2_ws/src/functions/communication/agv_bridge/package.xml"
+    },
+    {
+      "source": "physic_bev/src/system_websocket/agv_protocol/package.xml",
+      "target": "ros2_ws/src/functions/communication/agv_protocol/package.xml"
+    },
+    {
+      "source": "physic_bev/src/top_pkg/package.xml",
+      "target": "ros2_ws/src/bringup/top_pkg/package.xml"
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/inspection_rerun/package.xml",
+      "target": "ros2_ws/src/functions/visualization/inspection_rerun/package.xml"
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_core/package.xml",
+      "target": "ros2_ws/src/functions/perception/tank_vision_core/package.xml"
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_interfaces/package.xml",
+      "target": "ros2_ws/src/interfaces/tank_vision_interfaces/package.xml"
+    },
+    {
+      "source": "tank_vision_inspection/ros2_ws/src/tank_vision_ros/package.xml",
+      "target": "ros2_ws/src/functions/perception/tank_vision_ros/package.xml"
+    }
+  ],
+  "new_package": "inspection_operations"
+}

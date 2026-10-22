@@ -23,7 +23,7 @@ log_*/
 output/
 output_*/
 test_results*/
-rollback/
+/.runtime/*/rollback/
 CMakeFiles/
 CMakeCache.txt
 *.o
@@ -63,3 +63,17 @@ CMakeCache.txt
 *.key
 id_rsa
 id_ed25519
+
+# Migrated local distributions and generated state
+/.runtime/
+/third_party/offline/**/sysroot/
+/third_party/mindvision/*/lib/
+/third_party/mindvision/*/tools/
+/third_party/mindvision/legacy/demo/QT5_Demo/QT_Demo
+/third_party/mindvision/2.1.0.50/demo/python_demo/grab.bmp
+!deploy/rollback/
+!deploy/rollback/**
+
+# outputs is Python source, not output data.
+!packages/tank_vision/tank_vision/outputs/
+!packages/tank_vision/tank_vision/outputs/*.py

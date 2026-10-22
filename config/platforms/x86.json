@@ -1,0 +1,43 @@
+{
+  "platform": "x86",
+  "architecture": "x86_64",
+  "ros_distro": "humble",
+  "packages": [
+    "agv_bridge",
+    "agv_protocol",
+    "eddy_driver",
+    "fast_livo",
+    "fisheye_camera_driver",
+    "inspection_bringup",
+    "inspection_interfaces",
+    "inspection_livox_adapter",
+    "inspection_mock_sensors",
+    "inspection_operations",
+    "inspection_rerun",
+    "inspection_sync",
+    "inspection_tools",
+    "livox_ros_driver2",
+    "mindvision_camera_driver",
+    "realsense2_camera",
+    "realsense2_camera_msgs",
+    "realsense2_description",
+    "tank_vision_core",
+    "tank_vision_interfaces",
+    "tank_vision_ros",
+    "top_pkg",
+    "vikit_common",
+    "vikit_py",
+    "vikit_ros"
+  ],
+  "excluded_packages": {
+    "realsense2_rviz_plugin": "Upstream optional RVIZ_RGBD_PLUGIN defaults OFF; enable explicitly after validating Qt/RViz dependencies.",
+    "realsense2_ros_mqtt_bridge": "Optional MQTT integration, paho/ROS dependencies require separate deployment.",
+    "d405_seam_ros": "Experimental adapter; opt in after configuring a D405 data source and depth units."
+  },
+  "native_dependencies": [
+    "Livox-SDK2",
+    "Sophus",
+    "librealsense"
+  ],
+  "notes": "Package selection only; hardware capability is not implied. No dependency version upgrade."
+}

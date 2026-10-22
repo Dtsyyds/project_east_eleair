@@ -287,3 +287,10 @@ Python 配置加载不会自动替换所有 YAML 内路径；`model_path`/`calib
 | 可迁移性 | 新前缀构建后检查 CMakeCache、cmake 导出、RPATH、shebang、Python origin；移到不同目录/仓库外 CWD 验证 | 未执行 |
 
 只读共享原始 SDK、deb/wheel、标定输入，不代表允许复用旧 build/install/venv。所有新验证保留真实退出码、命令、输入哈希、安装前缀和跳过原因；未运行项目保持“未执行”。
+
+## 全量迁移后的状态（2026-10-22）
+
+以上 M0 内容保留其当时语义；不再作为当前路径清单。原源码已全量迁移，最新去向见 migration_map.md / migration_files.json，验证见 migration_completion.md。
+已修复旧 install/build/venv 引用、统一源码扫描与入口、视觉跨目录安装、业务与 ROS 适配边界、配置加载与资源位置。33 清单归档与两套 SDK 已准备，校验见 third_party/dependency_inventory.json。
+额外发现 M0 Git 清单以外的 5 个 outputs 源文件被原视觉目录 output*/ 忽略规则排除，已从原工程只读恢复、校验并纳入源码；见 migration_supplemental_files.json。
+模型/粗标定证据缺口未伪造解决。历史文档/封存数据字段中仍保留旧路径以保持来源可审计；当前执行命令以 README 与 deploy/README 为准。

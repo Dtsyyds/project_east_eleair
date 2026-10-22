@@ -1,0 +1,20 @@
+{
+  "matches": [
+    "deploy/env.sh:7:  if [[ \"${!_inspection_var:-}\" == *\"/east_eleair_plus/\"* ]]; then",
+    "tests/system/test_portability.py:12:    forbidden = (\"/home/sunrise/east_eleair\", \"/media/mcap_data/east_eleair_plus\")",
+    "tests/system/frozen_comparison.py:14: p=Path(os.environ['INSPECTION_BASELINE_FIXTURES']) / 'tank_vision_inspection/tank_vision/metrics.py'",
+    "tests/system/frozen_comparison.py:27:  p=Path(os.environ['INSPECTION_BASELINE_FIXTURES']) / f'tank_vision_inspection/tank_vision/{name}.py'"
+  ],
+  "classification": {
+    "deploy/env.sh": "old-overlay rejection guard, not fallback",
+    "tests/system/test_portability.py": "negative test patterns",
+    "tests/system/frozen_comparison.py": "explicit INSPECTION_BASELINE_FIXTURES input; historical source snapshots only"
+  },
+  "other_retained_categories": [
+    "M0 and historical documentation (no executable authority)",
+    "vendor example paths such as /home/livox/livox_test.lvx; upstream examples not used by unified runtime",
+    "external data_root defaults /media/mcap_data, configurable",
+    "historical image/annotation paths and hashes in reference JSON; evidence unavailable unless configured"
+  ],
+  "implicit_old_source_or_install_fallback": "none found by this scan; not a functional test"
+}
