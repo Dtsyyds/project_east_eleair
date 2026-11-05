@@ -257,12 +257,32 @@ bool RosSensor::start(const std::vector<stream_profile>& profiles)
     if (get_active_streams().size() > 0)
         return false;
     setupErrorCallback();
+    // librealsense enables error polling when installing the notification
+    // callback. Restore the user's option before opening the streams, including
+    // on profile changes; otherwise a false ROS parameter still polls USB.
+    if (supports(RS2_OPTION_ERROR_POLLING_ENABLED))
+    {
+        const std::string module_name(create_graph_resource_name(rs2_to_ros(get_info(RS2_CAMERA_INFO_NAME))));
+        const auto enabled = _params.getParameters()->getParam<bool>(module_name + ".error_polling_enabled");
+        set_option(RS2_OPTION_ERROR_POLLING_ENABLED, enabled);
+    }
     rs2::sensor::open(profiles);
 
     for (auto& profile : profiles)
     ROS_INFO_STREAM("Open profile: " << ProfilesManager::profile_string(profile));
 
     rs2::sensor::start(_frame_callback);
+
+    // Read back the live sensor's local polling flags after open/start. A ROS
+    // parameter value alone does not prove that an SDK callback kept it intact.
+    for (const auto option : {RS2_OPTION_GLOBAL_TIME_ENABLED, RS2_OPTION_ERROR_POLLING_ENABLED})
+    {
+        if (supports(option))
+        {
+            ROS_INFO_STREAM("RealSense active sensor " << get_info(RS2_CAMERA_INFO_NAME)
+                            << ": " << rs2_option_to_string(option) << "=" << get_option(option));
+        }
+    }
 
     for (auto& profile : profiles)
     {

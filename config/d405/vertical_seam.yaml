@@ -1,0 +1,37 @@
+# Vertical dark seam between brighter shoulders; experimental field profile.
+# Detected contrast-band boundaries are NOT a calibrated physical weld width.
+roi: [0.20, 0.35, 0.80, 0.95]
+mode: fused
+visual_backend: classical
+geometry_backend: cpu
+checkpoint: null
+surface: quadratic
+depth_range_m: [0.07, 0.60]
+sync_tolerance_ms: 12.0
+min_background_points: 120
+background_stride: 4
+background_exclusion_fraction: 0.24
+noise_multiplier: 3.5
+minimum_height_m: 0.0005
+visual_contrast_u8: 12.0
+probability_threshold: 0.55
+min_coverage: 0.55
+width_fraction: [0.01, 0.30]
+conflict_pixels: 20.0
+max_fit_residual_pixels: 5.0
+temporal_alpha: 0.65
+prediction_lifetime_sec: 0.20
+reset_gap_sec: 0.75
+max_jump_pixels: 55.0
+
+# Keep the original ROI, minimum coverage and fit-error limits.
+visual_feature: local_stripe
+visual_polarity: dark
+visual_stripe_width_fraction: 0.024
+visual_smoothing_fraction: 0.01875
+candidate_selection: continuous
+path_max_gap_rows: 2
+path_max_slope: 1.5
+path_position_penalty: 0.15
+path_width_penalty: 0.08
+path_gap_penalty: 0.5

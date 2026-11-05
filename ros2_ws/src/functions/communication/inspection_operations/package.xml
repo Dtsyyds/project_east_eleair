@@ -5,6 +5,7 @@
   <maintainer email="maintainer@example.com">Inspection Team</maintainer><license>Apache-2.0</license>
   <buildtool_depend>ament_python</buildtool_depend>
   <exec_depend>rclpy</exec_depend><exec_depend>sensor_msgs</exec_depend><exec_depend>std_msgs</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend><exec_depend>d405_seam_ros</exec_depend>
   <exec_depend>std_srvs</exec_depend><exec_depend>builtin_interfaces</exec_depend><exec_depend>rosgraph_msgs</exec_depend>
   <exec_depend>eddy_driver</exec_depend><exec_depend>inspection_interfaces</exec_depend><exec_depend>tank_vision_interfaces</exec_depend>
   <exec_depend>inspection_tools</exec_depend><exec_depend>rosbag2_py</exec_depend><exec_depend>rosidl_runtime_py</exec_depend>

@@ -42,6 +42,22 @@ def stop_process(process, timeout=15):
         process.wait(timeout=10)
 
 
+def configure_bridge(params, config):
+    params.update({"local_server_port": int(config["websocket_port"]),
+                   "tank_inspection.operations_topic": "/inspection/operations",
+                   "tank_inspection.emat_topic": "/inspection/ultrasound/raw"})
+    # Do not present deliberately disabled devices as expected live inputs.
+    for flag, names in {
+        "start_mindvision": ("mindvision_topic",),
+        "start_fisheye": ("fisheye_topic",),
+        "start_mid360": ("lidar_topic", "lidar_pose_topic"),
+        "start_eddy": ("eddy_raw_topic", "eddy_mean_topic"),
+    }.items():
+        if not config["hardware"].get(flag, True):
+            for name in names:
+                params["tank_inspection." + name] = ""
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Start the existing hardware, operations, bridge and console supervisor.")
@@ -51,6 +67,10 @@ def main():
         os.environ["INSPECTION_SYSTEM_CONFIG"] = str(Path(args.config).resolve())
     config = load_system_config()
     os.environ["ROS_DOMAIN_ID"] = str(config["ros_domain_id"])
+    # Preserve the former console launcher's transport settings. Full camera
+    # frames exceed Fast DDS's default shared-memory segment size.
+    os.environ.setdefault("RMW_IMPLEMENTATION", "rmw_fastrtps_cpp")
+    os.environ.setdefault("FASTRTPS_DEFAULT_PROFILES_FILE", str(config_path("communication/fastdds.xml")))
     runtime = runtime_root() / "web_console"
     runtime.mkdir(parents=True, exist_ok=True)
     owner = (runtime / "owner.lock").open("a")
@@ -83,9 +103,7 @@ def main():
         raise RuntimeError("已有设备进程正在运行，请关闭原启动终端后重试：" + "、".join(conflicts))
     bridge_config = yaml.safe_load((ROOT / "ros2_ws/src/functions/communication/agv_bridge/config/tank_inspection.yaml").read_text())
     params = bridge_config["websocket_bridge_node"]["ros__parameters"]
-    params.update({"local_server_port": int(config["websocket_port"]),
-                   "tank_inspection.operations_topic": "/inspection/operations",
-                   "tank_inspection.emat_topic": "/inspection/ultrasound/raw"})
+    configure_bridge(params, config)
     (runtime / "bridge.yaml").write_text(yaml.safe_dump(bridge_config), encoding="utf-8")
     processes, logs = {}, []
     server_started = False

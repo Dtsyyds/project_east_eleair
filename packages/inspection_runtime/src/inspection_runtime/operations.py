@@ -8,6 +8,7 @@ import json
 import math
 import os
 from pathlib import Path
+import re
 import shutil
 import signal
 import subprocess
@@ -19,10 +20,12 @@ from types import SimpleNamespace
 
 import yaml
 from inspection_runtime.replay import ReplayController, ACTIVE as REPLAY_ACTIVE
+from inspection_runtime.vision import VisionController, ACTIONS as VISION_ACTIONS, ACTIVE as VISION_ACTIVE
 
 from inspection_runtime.paths import project_root, config_path
 ROOT = project_root()
 MCAP_MAGIC = b"\x89MCAP0\r\n"
+DATA_TIMEOUT_SECONDS = 3.0
 
 
 def mcap_closed(path):
@@ -45,11 +48,18 @@ def save_json(path, value):
 
 class Operations:
     ACTIONS = ("collection.preflight", "collection.start", "collection.stop", "collection.status", "emat.measure", "history.list",
-               "replay.start", "replay.pause", "replay.resume", "replay.stop", "replay.status")
+               "replay.start", "replay.pause", "replay.resume", "replay.stop", "replay.status",
+               "camera.settings.get", "camera.settings.apply", "camera.settings.save") + VISION_ACTIONS
 
-    def __init__(self, config, emit, live_topics, publish_ultrasound=None):
+    def __init__(self, config, emit, live_topics, publish_ultrasound=None, camera_operation=None, vision_service=None):
         self.config, self.emit, self.live_topics = config, emit, live_topics
         self.publish_ultrasound = publish_ultrasound
+        self.camera_operation = camera_operation
+        self.camera_busy = False
+        self.camera_uncertain = False
+        self.camera_settings = {'status': 'idle'}
+        self.vision_busy = False
+        self.vision = VisionController(config, self.storage, live_topics, vision_service) if vision_service else None
         self.lock = threading.RLock()
         self.collection_lock = threading.Lock()
         self.pool = concurrent.futures.ThreadPoolExecutor(max_workers=3)
@@ -66,6 +76,7 @@ class Operations:
         self.measure_cancel = threading.Event()
         self.closed = False
         self.failure_reason = ""
+        self.collection_profile = dict(config.get("collection_profile", {"id": "full_system", "label": "整机采集"}))
         self.replay_start_pending = False
         self.replay = ReplayController(config, self.packet)
         from emat_core import emat_serial_once
@@ -78,8 +89,16 @@ class Operations:
 
     def storage(self):
         root = Path(self.config["data_root"])
-        return {"mounted": root.is_mount(), "free_bytes": shutil.disk_usage(root).free,
-                "minimum_free_bytes": self.config["minimum_free_bytes"], "path": str(root)}
+        result = {"mounted": False, "free_bytes": 0,
+                  "minimum_free_bytes": self.config["minimum_free_bytes"], "path": str(root)}
+        try:
+            result.update(mounted=root.is_mount(), free_bytes=shutil.disk_usage(root).free)
+        except OSError as error:
+            # A removed or failed disk must reach the recording guard and UI;
+            # it must not terminate the ROS timer or mask the original failure.
+            result["error"] = str(error)
+            result["mounted"] = False
+        return result
 
     def snapshot(self):
         with self.lock:
@@ -93,11 +112,18 @@ class Operations:
             if self.started is not None and task["status"] in ("recording", "stopping", "finalizing"):
                 task["elapsed_seconds"] = time.monotonic() - self.started
             if self.run_dir:
-                task["bytes_written"] = sum(p.stat().st_size for p in self.run_dir.glob("bag/*.mcap"))
+                try:
+                    task["bytes_written"] = sum(p.stat().st_size for p in self.run_dir.glob("bag/*.mcap"))
+                except OSError as error:
+                    task["storage_error"] = str(error)
             return {"capabilities": {"protocol_version": 3, "robot_id": "tank_inspection_robot", "mode": "hardware",
-                    "operations": {name: {"supported": True, "timeout_ms": 120000} for name in self.ACTIONS},
-                    "collection": {"profiles": [{"id": "full_system", "label": "整机采集"}]}},
-                    "task": task, "storage": self.storage(), "measurement": measurement, "replay": replay}
+                    "operations": {name: {"supported": True, "timeout_ms": 120000} for name in self.ACTIONS
+                                   if (not name.startswith('camera.') or self.camera_operation is not None)
+                                   and (not name.startswith('vision.') or self.vision is not None)},
+                    "collection": {"profiles": [dict(self.collection_profile)]}},
+                    "vision": dict(self.vision.snapshot() if self.vision else {"status": "unavailable"}, busy=self.vision_busy, revision=self.revision, service_id=self.service_id),
+                    "task": task, "storage": self.storage(), "measurement": measurement, "replay": replay,
+                    "camera_settings": dict(copy.deepcopy(self.camera_settings), revision=self.revision, service_id=self.service_id)}
 
     def response(self, request, status, **extra):
         result = {"request_id": request["request_id"], "client_id": request.get("client_id", ""),
@@ -130,6 +156,41 @@ class Operations:
             if self.closed or action not in self.ACTIONS:
                 self.response(request, "failed", error="不支持该操作")
                 return
+            if action.startswith('vision.'):
+                if self.vision is None:
+                    self.response(request, 'failed', error='视觉巡迹服务未配置'); return
+                if parameters and action not in ('vision.select_candidate', 'vision.clear_selection'):
+                    self.response(request, 'failed', error='视觉巡迹操作不接受路径、命令或模型参数'); return
+                if action == 'vision.status':
+                    self.response(request, 'completed', **self.snapshot()); return
+                if self.vision_busy:
+                    self.response(request, 'failed', error='视觉巡迹操作正在处理，请等待结果'); return
+                if action == 'vision.start' and (self.replay_start_pending or self.replay.snapshot()['status'] in REPLAY_ACTIVE):
+                    self.response(request, 'failed', error='请先停止回放，再启动实时视觉巡迹'); return
+                self.vision_busy = True
+                self.response(request, 'accepted')
+                self.pool.submit(self.work, request)
+                return
+            if action.startswith('camera.settings.'):
+                if self.camera_operation is None or self.camera_busy:
+                    self.response(request, 'failed', error='相机调参服务不可用或正在处理请求')
+                    return
+                if action != 'camera.settings.get' and (
+                        self.recorder is not None or self.task['status'] in ('preflighting', 'starting', 'recording', 'stopping', 'finalizing')
+                        or self.replay_start_pending or self.replay.snapshot()['status'] in REPLAY_ACTIVE):
+                    self.response(request, 'failed', error='请先停止采集和回放，再调整相机参数')
+                    return
+                if self.camera_uncertain and action != 'camera.settings.get':
+                    self.response(request, 'failed', error='上次调参未确认，请先读取当前参数')
+                    return
+                self.camera_busy = True
+                self.camera_settings = dict(self.camera_settings, status='running', request_id=ident, error=None)
+                self.response(request, 'accepted')
+                self.pool.submit(self.work, request)
+                return
+            if (self.camera_busy or self.camera_uncertain) and action in ('collection.start', 'collection.preflight', 'replay.start'):
+                self.response(request, 'failed', error='相机参数正在读取或调整，请稍后重试')
+                return
             if action in ("collection.status", "replay.status"):
                 self.response(request, "completed", **self.snapshot())
                 if action == "replay.status":
@@ -145,6 +206,8 @@ class Operations:
                         continue
                 self.response(request, "completed", history=history)
                 return
+            if action == 'replay.start' and self.vision and (self.vision_busy or self.vision.snapshot()['status'] in VISION_ACTIVE):
+                self.response(request, 'failed', error='请先停止实时视觉巡迹，再启动回放'); return
             if action.startswith("replay."):
                 if action == "replay.start" and self.task["status"] in ("preflighting", "starting", "recording", "stopping", "finalizing"):
                     self.response(request, "failed", error="请先停止采集再回放")
@@ -202,7 +265,21 @@ class Operations:
     def work(self, request):
         action = request["action"]
         try:
-            if action.startswith("replay."):
+            if action.startswith('vision.'):
+                if action == 'vision.start': self.vision.start()
+                elif action == 'vision.stop': self.vision.stop()
+                elif action in ('vision.select_candidate', 'vision.clear_selection'):
+                    self.vision.select_candidate(request.get('parameters', {}), clear=action == 'vision.clear_selection')
+                else:
+                    with self.lock:
+                        run_id = self.task.get('run_id') if self.task.get('status') == 'recording' else None
+                    self.vision.save_sample(run_id)
+            elif action.startswith('camera.settings.'):
+                value = self.camera_operation(action, request.get('parameters', {}))
+                with self.lock:
+                    self.camera_settings = dict(value, status='completed', request_id=request['request_id'])
+                    self.camera_uncertain = bool(value.get('fault'))
+            elif action.startswith("replay."):
                 if action == "replay.start":
                     self.replay.start(request.get("parameters", {}))
                 elif action == "replay.stop":
@@ -229,6 +306,15 @@ class Operations:
                                 self.task.update(status="ready", message="预检通过，可一键启动采集。")
             self.response(request, "completed", **self.snapshot())
         except Exception as error:
+            if action.startswith('vision.'):
+                self.response(request, 'failed', error=str(error), **self.snapshot()); return
+            if action.startswith('camera.settings.'):
+                with self.lock:
+                    self.camera_settings = dict(self.camera_settings, status='failed', error=str(error))
+                    if action != 'camera.settings.get':
+                        self.camera_uncertain = True
+                self.response(request, 'failed', error=str(error), **self.snapshot())
+                return
             if action.startswith("replay."):
                 self.response(request, "failed", error=str(error), **self.snapshot())
                 return
@@ -243,6 +329,11 @@ class Operations:
                     self.persist()
             self.response(request, "failed", error=str(error), **self.snapshot())
         finally:
+            if action.startswith('vision.'):
+                with self.lock: self.vision_busy = False
+            if action.startswith('camera.settings.'):
+                with self.lock:
+                    self.camera_busy = False
             if action == "replay.start":
                 with self.lock:
                     self.replay_start_pending = False
@@ -253,7 +344,7 @@ class Operations:
         live = self.live_topics()
         checks = [{"label": "采集盘", "status": "passed" if storage["mounted"] else "failed"},
                   {"label": "剩余空间", "status": "passed" if storage["free_bytes"] >= self.config["minimum_free_bytes"] else "failed"}]
-        checks += [{"label": topic, "status": "passed" if now - live.get(topic, -math.inf) < 3 else "failed"}
+        checks += [{"label": topic, "status": "passed" if now - live.get(topic, -math.inf) < DATA_TIMEOUT_SECONDS else "failed"}
                    for topic in self.config["required_topics"]]
         with self.lock:
             self.task["preflight_checks"] = checks
@@ -263,22 +354,38 @@ class Operations:
 
     def start(self, parameters):
         profile = parameters.get("profile")
-        if profile not in (None, "", "full_system"):
+        if profile not in (None, "", self.collection_profile["id"]):
             raise ValueError("未知采集方案")
+        share = ROOT / "ros2_ws/src/bringup/inspection_bringup/config"
+        topics = yaml.safe_load((share / "record_topics.yaml").read_text())
+        # Only local configuration selects topics. Browser parameters cannot
+        # expand the recording scope. Old configurations keep their exact list.
+        record_topics = self.config.get("record_topics", topics["topics"] + ["/inspection/emat/result"])
+        if (not isinstance(record_topics, list) or not record_topics
+                or any(not isinstance(topic, str) or not re.fullmatch(r"/[A-Za-z_][A-Za-z0-9_/]*", topic)
+                       for topic in record_topics)
+                or len(set(record_topics)) != len(record_topics)
+                or not set(self.config["required_topics"]).issubset(record_topics)):
+            raise ValueError("录制话题配置无效，必须明确列出全部必需话题且不能重复或使用通配符")
+        camera_settings = self.camera_operation('camera.settings.get', {}) if self.camera_operation else None
+        if camera_settings and camera_settings.get('fault'):
+            raise RuntimeError(camera_settings['fault'])
         run_id = "WS-" + time.strftime("%Y%m%d_%H%M%S") + "-" + uuid.uuid4().hex[:8]
         directory = Path(self.config["data_root"]) / "runs" / run_id
         directory.mkdir(parents=True)
-        share = ROOT / "ros2_ws/src/bringup/inspection_bringup/config"
-        topics = yaml.safe_load((share / "record_topics.yaml").read_text())
         cmd = ["ros2", "bag", "record", "--storage", "mcap", "--output", str(directory / "bag"),
                "--max-bag-size", str(topics["production"]["max_bag_size"]), "--max-bag-duration", "900",
                "--max-cache-size", "268435456", "--storage-config-file", str(share / "mcap_writer_options.yaml"),
-               "--qos-profile-overrides-path", str(share / "qos_overrides.yaml"), *topics["topics"],
-               "/inspection/emat/result"]
+               "--qos-profile-overrides-path", str(share / "qos_overrides.yaml"), *record_topics]
         with self.lock:
             self.run_dir = directory
             self.started = None
             self.task.update(status="starting", run_id=run_id, run_directory=str(directory),
+                             collection_profile=dict(self.collection_profile),
+                             required_topics=list(self.config["required_topics"]),
+                             record_topics=list(record_topics),
+                             hardware=copy.deepcopy(self.config.get("hardware", {})),
+                             camera_settings=camera_settings,
                              started_at=time.strftime("%Y-%m-%dT%H:%M:%S%z"), message="正在创建采集文件…",
                              metadata={key: str(parameters.get(key, ""))[:500] for key in ("task_name", "asset_id", "seam_id", "operator_note")})
             if self.collection_cancel.is_set():
@@ -319,6 +426,16 @@ class Operations:
             process = self.recorder
             if process is None:
                 return
+            # Check before shutting down the writer. A stream may have written
+            # only one frame and then stopped before the periodic guard ran.
+            now, live = time.monotonic(), self.live_topics()
+            stale = [topic for topic in self.config["required_topics"]
+                     if now - live.get(topic, -math.inf) >= DATA_TIMEOUT_SECONDS]
+            if stale and not self.failure_reason:
+                self.failure_reason = "停止时设备数据已中断：" + "、".join(stale)
+            self.task["stream_checks_at_stop"] = [
+                {"label": topic, "status": "failed" if topic in stale else "passed"}
+                for topic in self.config["required_topics"]]
             self.task.update(status="stopping", message="正在正常关闭 MCAP 写入…")
         forced = False
         if process.poll() is None:
@@ -367,8 +484,9 @@ class Operations:
         device = Path(settings["serial_port"])
         if not device.exists():
             raise RuntimeError("电磁超声串口未连接：" + str(device))
-        eddy = Path("/dev/eddy")
-        if eddy.exists() and device.resolve() == eddy.resolve():
+        hardware = self.config.get("hardware", {})
+        eddy = Path(hardware.get("eddy_device", "/dev/eddy"))
+        if hardware.get("start_eddy", True) and eddy.exists() and device.resolve() == eddy.resolve():
             raise RuntimeError("电磁超声与涡流串口冲突")
         count = int(settings["sample_count"])
         if not 256 <= count <= 65536:
@@ -468,7 +586,8 @@ class Operations:
                     reason = "采集盘空间不足，已自动停止"
                 else:
                     now = time.monotonic()
-                    missing = [t for t in self.config["required_topics"] if now - self.live_topics().get(t, -math.inf) > 10]
+                    live = self.live_topics()
+                    missing = [t for t in self.config["required_topics"] if now - live.get(t, -math.inf) >= DATA_TIMEOUT_SECONDS]
                     if missing:
                         reason = "设备数据中断：" + "、".join(missing)
                 if reason:
@@ -492,5 +611,6 @@ class Operations:
             self.collection_cancel.set()
             self.measure_cancel.set()
         self.pool.shutdown(wait=True)
+        if self.vision: self.vision.close()
         self.replay.close()
         self.stop_guarded()

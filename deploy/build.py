@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import shutil
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +49,11 @@ def main():
     if set(selected) - available: parser.error("Unknown packages: " + str(sorted(set(selected) - available)))
     command = ["colcon", "--log-base", str(runtime / "log"), "build", "--base-paths", str(ROOT / "ros2_ws/src"),
                "--build-base", str(runtime / "build"), "--install-base", str(runtime / "install"),
-               "--packages-up-to", *selected, "--cmake-args", "-DBUILD_TESTING=ON", "-DFAST_LIVO_OUTPUT_ROOT=" + str(runtime / "fast_livo"), "-DPython3_EXECUTABLE=" + str(python), "-DPYTHON_EXECUTABLE=" + str(python)]
+               "--continue-on-error", "--packages-up-to", *selected, "--cmake-args", "-DCMAKE_BUILD_TYPE=Release", "-DBUILD_TESTING=ON", "-DFAST_LIVO_OUTPUT_ROOT=" + str(runtime / "fast_livo"), "-DPython3_EXECUTABLE=" + str(python), "-DPYTHON_EXECUTABLE=" + str(python)]
+    # Explicitly replace a cached system SDK selection after the native build.
+    # CMAKE_PREFIX_PATH alone does not override realsense2_DIR in CMakeCache.txt.
+    if not args.skip_native or (native / "lib/cmake/realsense2").is_dir():
+        command += ["-Drealsense2_DIR=" + str(native / "lib/cmake/realsense2")]
     if not args.skip_native:
         command += ["-DLIVOX_LIDAR_SDK_LIBRARY=" + str(native / "lib/liblivox_lidar_sdk_shared.so"),
                     "-DLIVOX_LIDAR_SDK_INCLUDE_DIR=" + str(ROOT / "third_party/Livox-SDK2/include")]
@@ -59,7 +64,12 @@ def main():
     # Re-source selected platform, including newly unpacked offline resources, for colcon.
     for command in commands:
         if command[0] == "colcon":
-            subprocess.run(["bash", "-c", 'source "$1/deploy/env.sh" "$2"; shift 2; exec "$@"', "inspection-build", str(ROOT), args.platform, *command], cwd=ROOT, env=env, check=True)
+            # ament_python inherits colcon's interpreter for console-script
+            # shebangs; CMake Python flags alone do not select the project venv.
+            colcon = shutil.which("colcon")
+            if not colcon:
+                raise RuntimeError("colcon is not installed")
+            subprocess.run(["bash", "-c", 'source "$1/deploy/env.sh" "$2"; shift 2; exec "$@"', "inspection-build", str(ROOT), args.platform, str(python), colcon, *command[1:]], cwd=ROOT, env=env, check=True)
         else:
             command_env = dict(env)
             # setuptools develop must write its .pth even when env.sh exposes source.

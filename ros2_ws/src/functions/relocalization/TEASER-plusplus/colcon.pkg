@@ -1,0 +1,5 @@
+{
+  "cmake-args": [
+    "-DBUILD_TEASER_FPFH=ON"
+  ]
+}

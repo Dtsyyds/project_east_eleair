@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws: wss:; style-src 'self'; script-src 'self'">
+<title>底盘与循迹</title><link rel="stylesheet" href="robot.css"><script defer src="robot.js?v=20261105-tuning-link"></script></head>
+<body><header><h1>底盘与焊缝循迹</h1><span id="connection">未连接</span></header>
+<section><div class="row"><label>底盘连接 <input id="endpoint" type="url" spellcheck="false"></label><button id="connect">连接</button><button id="disconnect">断开</button></div>
+<div class="row"><label>Token <input id="token" type="password" autocomplete="off" placeholder="仅在内存中使用"></label><small>主页加载即自动连接；网页仍为 8080，相机和底盘共用原通信端口 9001，重连不恢复运动授权。</small></div><p id="notice" role="status">等待板端连接</p></section>
+<section><h2>控制状态</h2><div class="grid" id="summary"></div><small>命令速度不等于实测速度；PWM 占空比不等于探头实际转速。零速度不是硬件急停。</small></section>
+<div class="columns"><section><h2>手动底盘</h2><label><input id="manual" type="checkbox">启用本页面手动控制</label>
+<p id="manual-reason">等待反馈</p><div class="row"><label>线速度 m/s <input id="speed" type="number" min="0" max="0.1" step="0.005" value="0.01"></label><label>角速度 rad/s <input id="turn" type="number" min="0" max="0.3" step="0.01" value="0.10"></label></div>
+<div class="pad"><button data-move="0,0" class="blank" disabled></button><button data-move="1,0">▲ 前进 W/I</button><span></span><button data-move="0,1">◀ 左转 A/J</button><button id="manual-stop" class="danger">■ 停止 K</button><button data-move="0,-1">右转 D/L ▶</button><span></span><button data-move="-1,0">▼ 后退 S/,</button></div>
+<small>按住运动、松开停止；A/D 原地差速转向。离开本页或窗口失焦会解除手动控制。自动循迹必须先停止，才允许手动操作。</small></section>
+<section><h2>焊缝循迹</h2><p id="tracking-reason">节点未连接</p><div class="row"><button id="tracking-start" class="primary">启动循迹</button><button id="tracking-stop" class="danger">停止循迹</button></div>
+<p id="tracking-mode">启动系统不等于启用运动；须人工点击启动。</p><dl id="tracking-values"></dl><small>无效帧零速等待；新鲜有效帧按现有规则恢复。超时、故障和人工停用不擅自恢复；遥控优先权仍由 STM32 仲裁。</small></section></div>
+<section><h2>循迹参数</h2><p>先停止循迹，再读取和调整参数。应用后会读取节点实际值；不会启动车辆。仅本次进程有效，重启恢复 YAML 配置。</p>
+<div id="tuning-fields" class="grid"></div><div class="row"><button id="tuning-read">读取当前参数</button><button id="tuning-apply" class="primary" disabled>应用参数（不启动）</button></div><p id="tuning-notice" role="status">尚未读取节点参数；建议初次只调横向 Kp，Ki、Kd 和方向 Kp 设为 0。</p></section>
+<section><h2>探头电机升降</h2><div class="row"><label><input id="probe" type="checkbox">启用本页面探头控制</label><label>速度 / PWM % <input id="duty" type="number" min="1" max="100" step="1" value="50"></label><button id="probe-stop" class="danger">停止两路</button></div><p id="probe-reason">等待反馈</p>
+<div class="row"><strong>探头 1</strong><button data-probe="0,1">按住上升</button><button data-probe="0,-1">按住下降</button><strong>探头 2</strong><button data-probe="1,1">按住上升</button><button data-probe="1,-1">按住下降</button></div><p id="probe-values">实际施加占空比：未提供</p></section>
+<section><h2>录制与诊断</h2><p id="recording-status">录制清单未收到</p><dl id="recording-modules"></dl><p>一键启动默认按模块录制底盘、循迹、探头、驱动、寄存器、里程计与系统信息；相机原始图像仍由原采集任务录制。</p><p>显示最近会话清单，不是实时写盘验收。最终结果见启动终端打印的目录及其中的 INDEX.md、recording_manifest.yaml；本页不把进程启动误报为录制已完成。</p><details><summary>全部底盘 / 驱动 / 权限 / 循迹原始反馈</summary><pre id="raw">未收到</pre></details></section>
+</body></html>

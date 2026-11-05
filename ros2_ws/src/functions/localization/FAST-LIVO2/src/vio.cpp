@@ -1812,7 +1812,7 @@ void VIOManager::dumpDataForColmap()
   std::ostringstream ss;
   ss << std::setw(5) << std::setfill('0') << cnt;
   std::string cnt_str = ss.str();
-  std::string image_path = std::fastLivoOutputRoot() + "Log/Colmap/images/" + cnt_str + ".png";
+  std::string image_path = fastLivoOutputRoot() + "Log/Colmap/images/" + cnt_str + ".png";
   
   cv::Mat img_rgb_undistort;
   pinhole_cam->undistortImage(img_rgb, img_rgb_undistort);

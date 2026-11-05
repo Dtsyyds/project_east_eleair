@@ -8,7 +8,15 @@ topics:
   - /d405/camera/depth/image_rect_raw
   - /d405/camera/depth/camera_info
   - /d405/camera/infra1/image_rect_raw
+  - /d405/camera/infra1/camera_info
   - /d405/camera/infra2/image_rect_raw
+  - /d405/camera/infra2/camera_info
+  - /d405/camera/extrinsics/depth_to_color
+  - /d405/camera/extrinsics/depth_to_infra1
+  - /d405/camera/extrinsics/depth_to_infra2
+  - /vision/d405_seam/result
+  - /vision/d405_seam/path_3d
+  - /vision/d405_seam/diagnostics
   - /livox/lidar
   - /livox/imu_raw
   - /livox/imu

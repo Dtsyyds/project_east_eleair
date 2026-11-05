@@ -1,0 +1,2 @@
+from setuptools import setup, find_packages
+setup(name="inspection-web-console", version="0.1.0", packages=find_packages(), data_files=[("share/inspection_web_console", ["index.html", "console.js", "console_core.js", "replay.js", "camera_tuning.js", "vision.js", "theme.css", "theme.js", "connection_config.js", "robot_embed.js"]), ("share/inspection_web_console/robot", ["robot/index.html", "robot/robot.js", "robot/robot.css"])], install_requires=["inspection-runtime==0.1.0"], entry_points={"console_scripts":["inspection-web = inspection_runtime.supervisor:main"]})

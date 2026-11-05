@@ -205,6 +205,13 @@ class MindVisionCameraSource(VendorCameraSource):
                 setter = getattr(self._mvsdk, "CameraSetAnalogGain", None)
                 if setter is None or setter(self._handle, int(requested_gain)) != self._mvsdk.CAMERA_STATUS_SUCCESS:
                     raise SourceError("Could not set MindVision analog gain")
+        # Use the same serial-specific exposure/ISP preset as the console.
+        # Task-specific resolution, encoding and calibration remain explicit.
+        from inspection_runtime.camera_tuning import load_saved, MindvisionSettings
+        if load_saved(device.GetSn()) is not None:
+            tuning = MindvisionSettings(self._mvsdk, self._handle, capability, device.GetSn())
+            tuning.restore()
+            self._exposure_mode = 'auto' if tuning.read_values()['auto_exposure'] else 'manual'
         if self._mvsdk.CameraPlay(self._handle) != self._mvsdk.CAMERA_STATUS_SUCCESS:
             raise SourceError("Could not start MindVision acquisition")
         channels = 1 if self._is_mono else 3

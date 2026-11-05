@@ -7,7 +7,9 @@ from array import array
 import numpy as np
 from d405_seam_tracking.contracts import Frame, dump, load_config
 from d405_seam_tracking.dataset import Synchronizer, from_camera_info, image_array, stamp_ns
-from d405_seam_tracking.pipeline import Pipeline, overlay
+from d405_seam_tracking.pipeline import overlay
+from d405_seam_tracking.round1_a import create_pipeline, project_file
+from d405_seam_tracking.tracking_error import ErrorReference, invalid_error, tracking_error
 
 
 def image_payload(view):
@@ -25,29 +27,45 @@ def main(argv=None):
     from rclpy.utilities import remove_ros_args
     from sensor_msgs.msg import Image, CameraInfo
     from realsense2_camera_msgs.msg import Extrinsics
-    from std_msgs.msg import String
+    from std_msgs.msg import String, Bool
     from nav_msgs.msg import Path as RosPath
     from geometry_msgs.msg import PoseStamped
     from std_srvs.srv import Trigger
+    from duct_robot_msgs.msg import WeldTrackingError
     parser = argparse.ArgumentParser(description='Passive D405 fusion subscriber, experimental output only')
     parser.add_argument('--config', required=True)
+    parser.add_argument('--runtime-mode', choices=('a','candidate'), default='a')
+    parser.add_argument('--source-timeout', type=float, default=.5)
     parser.add_argument('--stream', choices=('infra1', 'color'), default='infra1')
     parser.add_argument('--namespace', default='/vision/d405_seam')
     parser.add_argument('--camera-prefix', default='/d405/camera')
     parser.add_argument('--depth-scale-m', type=float, required=True)
     parser.add_argument('--duration', type=float, default=0.)
     parser.add_argument('--output', help='New analysis directory. Lightweight results only unless save requested.')
+    parser.add_argument('--session-id', default='live_read_only')
     parser.add_argument('--events', help='New event directory, only explicit save_snapshot requests copy raw inputs')
     parser.add_argument('--overlay', action='store_true')
+    parser.add_argument('--tracking-error-config', default=str(project_file('config/d405/weld_tracking_error.yaml')),
+                        help='Fixed image reference for /weld_tracking/error; independent of A configuration')
     args = parser.parse_args(remove_ros_args(args=argv)[1:] if argv is not None else remove_ros_args()[1:])
     config = load_config(args.config)
+    if args.runtime_mode == 'candidate' and config.get('algorithm') != 'round1_a':
+        parser.error('candidate mode requires frozen round1_a')
+    if args.source_timeout <= 0: parser.error('positive source timeout required')
+    error_reference = ErrorReference.load(args.tracking_error_config)
     if args.depth_scale_m <= 0: parser.error('positive explicit depth scale required')
     rclpy.init(args=argv)
 
     class SeamNode(Node):
         def __init__(self):
             super().__init__('d405_seam_node')
-            self.pipeline = Pipeline(config)
+            if args.runtime_mode == 'candidate':
+                from d405_seam_tracking.candidate_pipeline import CandidatePipeline
+                self.pipeline = CandidatePipeline(config)
+            else:
+                self.pipeline = create_pipeline(config)
+            self.last_image_arrival = None
+            self.last_source_stamp = None
             self.sync = Synchronizer(int(config['sync_tolerance_ms'] * 1e6), 6)
             self.calibration, self.extrinsics, self.latest = {}, None, None
             self.sequence = self.processed = self.latest_dropped = self.invalid = self.missing_calibration = 0
@@ -56,8 +74,10 @@ def main(argv=None):
             self.errors, self.states, self.timings, self.ages = {}, {}, [], []
             self.callback_timings, self.overlay_timings = [], []
             self.overlay_published = 0
+            self.tracking_error_published = 0
+            self.tracking_error_reasons = {}
             self.started = time.monotonic()
-            self.save_requested = False
+            self.capture_request = None
             self.output = None
             if args.output:
                 p = Path(args.output); p.mkdir(parents=True, exist_ok=False)
@@ -65,9 +85,10 @@ def main(argv=None):
                 dump(p / 'result_manifest.json', {'complete': False, 'schema': 'd405_ros_analysis_v1'})
             self.writer = None
             if args.events:
-                from .writer import EventWriter
+                from d405_seam_tracking.writer import EventWriter, SampleCapture
                 self.writer = EventWriter(args.events)
-            qos = QoSProfile(depth=5, reliability=ReliabilityPolicy.BEST_EFFORT)
+                self.capture_request = SampleCapture(self.writer)
+            qos = QoSProfile(depth=1 if args.runtime_mode == 'candidate' else 5, reliability=ReliabilityPolicy.BEST_EFFORT)
             persistent = QoSProfile(depth=1, reliability=ReliabilityPolicy.RELIABLE, durability=DurabilityPolicy.TRANSIENT_LOCAL)
             prefix = args.camera_prefix.rstrip('/')
             image_topic = prefix + ('/color/image_raw' if args.stream == 'color' else '/infra1/image_rect_raw')
@@ -82,10 +103,54 @@ def main(argv=None):
             self.path_pub = self.create_publisher(RosPath, ns + '/path_3d', 10)
             self.diagnostic_pub = self.create_publisher(String, ns + '/diagnostics', 10)
             self.overlay_pub = self.create_publisher(Image, ns + '/overlay', 1)
+            error_qos = QoSProfile(depth=1, reliability=ReliabilityPolicy.BEST_EFFORT,
+                                   durability=DurabilityPolicy.VOLATILE)
+            self.tracking_error_pub = self.create_publisher(WeldTrackingError, '/weld_tracking/error', error_qos)
+            self.source_alive_pub = self.create_publisher(Bool, '/weld_tracking/source_alive', error_qos)
+            self.candidates_pub = self.create_publisher(String, '/weld_tracking/candidates', 1) if args.runtime_mode == 'candidate' else None
+            self.selection_pub = self.create_publisher(String, '/weld_tracking/selection_status', 10) if self.candidates_pub else None
+            if self.candidates_pub:
+                self.subscriptions_owned.append(self.create_subscription(String, '/weld_tracking/select_candidate', self.select_candidate, 10))
+            self.create_timer(.05, self.source_watchdog)
             self.create_service(Trigger, ns + '/save_snapshot', self.save)
+            self.create_service(Trigger, ns + '/sample_status', self.sample_status)
             self.create_timer(.005, self.process)
             self.create_timer(1., self.diagnostics)
-            self.get_logger().info('Passive D405 fusion ready; actual backend=' + config['visual_backend'] + '/' + config['geometry_backend'])
+            import os
+            self.get_logger().info('D405 ready runtime_mode=' + args.runtime_mode + ' backend=' + ('cpu_channels_last_fp32' if args.runtime_mode == 'candidate' else config['visual_backend']) + ' torch_threads=2 model_sha256=' + str(getattr(self.pipeline.visual, 'model_sha256', None)) + ' config=' + str(Path(args.config).resolve()) + ' node_source=' + __file__ + ' install=' + os.environ.get('TANK_INSTALL_ROOT','unknown') + ' image_topic=' + image_topic + ' error_topic=/weld_tracking/error' + ' movement_output=disabled')
+
+        def source_watchdog(self):
+            message = Bool()
+            message.data = self.last_image_arrival is not None and time.monotonic()-self.last_image_arrival <= args.source_timeout
+            self.source_alive_pub.publish(message)
+            if not message.data and args.runtime_mode == 'candidate':
+                self.pipeline.recovery.expire('source_timeout')
+
+        def select_candidate(self, message):
+            request = None
+            try:
+                request = json.loads(message.data)
+                if self.last_image_arrival is None or time.monotonic()-self.last_image_arrival > args.source_timeout:
+                    self.pipeline.recovery.expire('source_timeout')
+                reply = self.pipeline.recovery.command(request)
+            except (ValueError, TypeError) as error:
+                reply = {'request_id': request.get('request_id') if isinstance(request, dict) else None,
+                         'status': 'failed', 'error': str(error)}
+            reply['session_id'] = args.session_id
+            output = String(); output.data = json.dumps(reply, ensure_ascii=False, allow_nan=False)
+            self.selection_pub.publish(output)
+
+        def publish_candidates(self, image, result=None):
+            if self.candidates_pub is None: return
+            payload = {'schema': 'weld_recovery_candidates_v1', 'session_id': args.session_id,
+                       'frame_seq': self.sequence, 'stamp_ns': str(stamp_ns(image)), 'frame_id': image.header.frame_id,
+                       'image_width': image.width, 'image_height': image.height,
+                       'coordinate_space': 'original_image_pixel_centers',
+                       'candidate_set_id': result.get('candidate_set_id') if result else None,
+                       'candidates': result.get('candidates', []) if result else [],
+                       'selection': self.pipeline.recovery.status()}
+            output = String(); output.data = json.dumps(payload, ensure_ascii=False, allow_nan=False)
+            self.candidates_pub.publish(output)
 
         def info(self, kind, message):
             try: self.calibration[kind] = from_camera_info(message, 'live_camera_info:' + kind)
@@ -104,6 +169,10 @@ def main(argv=None):
                 if config['mode'] == 'vision_only':
                     if kind != 'image': return
                     if stamp_ns(message) <= 0: raise ValueError('invalid_source_stamp')
+                    if self.last_source_stamp is not None and stamp_ns(message) <= self.last_source_stamp:
+                        self.reject('duplicate_or_out_of_order_image'); return
+                    self.last_source_stamp = stamp_ns(message)
+                    self.last_image_arrival = time.monotonic()
                     self.sync.counts['image_received'] += 1
                     self.image_only_work_items += 1
                     if self.latest is not None: self.latest_dropped += 1
@@ -120,6 +189,8 @@ def main(argv=None):
             if self.latest is None: return
             callback_started = time.perf_counter()
             image, depth, receive = self.latest; self.latest = None
+            self.sequence += 1
+            error_fields, error_reason = invalid_error(), 'frame_processing_failed'
             if len(self.calibration) != 2 or self.extrinsics is None:
                 self.missing_calibration += 1  # Warning, not a dropped frame: 2D fallback is independent.
             previous_processed, previous_invalid = self.processed, self.invalid
@@ -127,14 +198,18 @@ def main(argv=None):
                 if ('image' in self.calibration and image.header.frame_id != self.calibration['image'].frame_id) or (depth is not None and 'depth' in self.calibration and depth.header.frame_id != self.calibration['depth'].frame_id):
                     raise ValueError('image_header_calibration_frame_mismatch')
                 if depth is not None and depth.encoding.lower() != '16uc1': raise ValueError('live_depth_encoding_requires_explicit_new_unit_contract')
-                self.sequence += 1
                 a, d = image_array(image), None if depth is None else image_array(depth)
                 e = None if self.extrinsics is None or depth is None else dict(self.extrinsics, from_frame=depth.header.frame_id, to_frame=image.header.frame_id)
                 frame = Frame(a, d, None if d is None else np.isfinite(d) & (d > 0), stamp_ns(image), None if depth is None else stamp_ns(depth), self.sequence,
                               self.calibration.get('image'), self.calibration.get('depth'), e, args.depth_scale_m,
-                              {'session': 'live_read_only', 'stream': args.stream, 'image_frame_id': image.header.frame_id,
+                              {'session': args.session_id, 'stream': args.stream, 'image_frame_id': image.header.frame_id,
                                'depth_frame_id': None if depth is None else depth.header.frame_id, 'depth_unit_source': 'explicit_ros_driver_mm_contract'}, receive)
                 result, diagnostic = self.pipeline.process(frame, diagnostic=True)
+                if config.get('algorithm') == 'round1_a':
+                    error_fields, error_reason = tracking_error(result, a.shape[1], a.shape[0], error_reference)
+                else:
+                    error_reason = 'tracking_error_requires_round1_a'
+                result['source'].update(image_width=a.shape[1], image_height=a.shape[0])
                 result['input_age_receive_ms'] = (receive - frame.image_stamp_ns) / 1e6
                 result['processing_completed_host_ns'] = str(time.time_ns())
                 result['input_age_output_ms'] = (int(result['processing_completed_host_ns']) - frame.image_stamp_ns) / 1e6
@@ -145,6 +220,7 @@ def main(argv=None):
                 if len(self.timings) > 300: self.timings.pop(0); self.ages.pop(0)
                 self.states[result['state']] = self.states.get(result['state'], 0) + 1
                 text = String(); text.data = json.dumps(result, ensure_ascii=False, allow_nan=False); self.result_pub.publish(text)
+                self.publish_candidates(image, result)
                 if self.output: self.output.write(text.data + '\n')
                 path = RosPath(); path.header = image.header
                 path.header.frame_id = result['frame_id_3d'] or image.header.frame_id
@@ -164,13 +240,26 @@ def main(argv=None):
                     self.overlay_published += 1
                     self.overlay_timings.append((time.perf_counter() - overlay_started) * 1000)
                     if len(self.overlay_timings) > 300: self.overlay_timings.pop(0)
-                if self.save_requested:
-                    self.save_requested = False
-                    self.writer.request(frame, result, diagnostic)
+                if self.capture_request:
+                    self.capture_request.capture(frame, result, diagnostic)
             except Exception as exc:
                 self.reject(type(exc).__name__ + ':' + str(exc))
                 self.get_logger().error(str(exc))
+                if args.runtime_mode == 'candidate':
+                    self.pipeline.recovery.expire('frame_processing_failed')
+                    self.publish_candidates(image)
             finally:
+                # Exactly one error message for this processed input, including loss/failure.
+                # Copy acquisition stamp and optical frame, never host completion time.
+                error_message = WeldTrackingError()
+                error_message.header = image.header
+                error_message.frame_seq = self.sequence
+                for field, value in error_fields.items():
+                    setattr(error_message, field, value)
+                self.tracking_error_pub.publish(error_message)
+                self.tracking_error_published += 1
+                if error_reason:
+                    self.tracking_error_reasons[error_reason] = self.tracking_error_reasons.get(error_reason, 0) + 1
                 self.callback_timings.append((time.perf_counter() - callback_started) * 1000)
                 if len(self.callback_timings) > 300: self.callback_timings.pop(0)
                 if self.processed == previous_processed and self.invalid == previous_invalid:
@@ -181,13 +270,19 @@ def main(argv=None):
                 response.success = False; response.message = 'events disabled; start with --events NEW_PATH'
             else:
                 try:
-                    self.writer.worker.check(); self.save_requested = True
-                    response.success = True; response.message = 'next matched frame requested; final metadata verifies actual save'
+                    value = self.capture_request.request()
+                    response.success = True; response.message = json.dumps(value, ensure_ascii=False)
                 except Exception as exc: response.success = False; response.message = str(exc)
             return response
 
+        def sample_status(self, request, response):
+            response.success = self.capture_request is not None
+            response.message = json.dumps(self.capture_request.poll(), ensure_ascii=False) if response.success else 'events disabled'
+            return response
+
         def status(self):
-            return {'sync': self.sync.finish(), 'processed': self.processed, 'latest_dropped': self.latest_dropped,
+            if self.capture_request: self.capture_request.poll()
+            return {'runtime_mode': args.runtime_mode, 'actual_inference_backend': 'cpu_channels_last_fp32' if args.runtime_mode == 'candidate' else config['visual_backend'], 'model_sha256': getattr(self.pipeline.visual,'model_sha256',None), 'source_timeout_sec': args.source_timeout, 'session_id': args.session_id, 'sync': self.sync.finish(), 'processed': self.processed, 'latest_dropped': self.latest_dropped,
                     'sync_mode': 'image_only_no_depth_match' if config['mode'] == 'vision_only' else 'two_source_tolerance',
                     'image_only_work_items': self.image_only_work_items,
                     'missing_calibration': self.missing_calibration, 'invalid': self.invalid, 'errors': self.errors, 'states': self.states,
@@ -199,6 +294,11 @@ def main(argv=None):
                     'callback_window_p95_ms': float(np.percentile(self.callback_timings, 95)) if self.callback_timings else None,
                     'overlay_window_p95_ms': float(np.percentile(self.overlay_timings, 95)) if self.overlay_timings else None,
                     'overlay_published': self.overlay_published,
+                    'tracking_error_published': self.tracking_error_published,
+                    'tracking_error_reasons': self.tracking_error_reasons,
+                    'tracking_error_reference': vars(error_reference),
+                    'candidate_selection_supported': args.runtime_mode == 'candidate',
+                    'selection': self.pipeline.recovery.status() if args.runtime_mode == 'candidate' else None,
                     'writer': None if self.writer is None else self.writer.worker.status,
                     'algorithm_accuracy_validated': False, 'hardware_realtime_validated': False, 'production_ready': False}
 

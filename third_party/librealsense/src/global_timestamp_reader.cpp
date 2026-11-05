@@ -444,9 +444,28 @@ namespace librealsense
         return false;
     }
 
+    void time_diff_keeper::add_enabling_opt(std::shared_ptr<global_time_option> option)
+    {
+        std::lock_guard<std::mutex> lock(_options_mtx);
+        _enabling_options.emplace_back(option);
+    }
+
+    bool time_diff_keeper::is_enabled() const
+    {
+        std::lock_guard<std::mutex> lock(_options_mtx);
+        for (auto const& weak_option : _enabling_options)
+            if (auto option = weak_option.lock())
+                if (option->is_true())
+                    return true;
+        return false;
+    }
+
     void time_diff_keeper::polling(dispatcher::cancellable_timer cancellable_timer)
     {
-        update_diff_time();
+        // Opening a UVC stream starts this worker even in hardware-clock mode.
+        // Do not issue firmware USB queries when all global-time options are off.
+        if (is_enabled())
+            update_diff_time();
         unsigned int time_to_sleep = _poll_intervals_ms + _coefs.is_full() * (9 * _poll_intervals_ms);
         if (!cancellable_timer.try_sleep( std::chrono::milliseconds( time_to_sleep )))
         {
@@ -480,6 +499,7 @@ namespace librealsense
         _last_hw_time_ms(-1),
         _last_global_time_ms(0)
     {
+        timediff->add_enabling_opt(enable_option);
     }
 
     double global_timestamp_reader::get_frame_timestamp(const std::shared_ptr<frame_interface>& frame)

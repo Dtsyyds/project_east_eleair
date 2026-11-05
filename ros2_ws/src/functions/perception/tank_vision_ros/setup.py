@@ -1,5 +1,7 @@
 from pathlib import Path
-CONFIG = Path(__file__).resolve().parents[5] / "config/vision"
+import os
+# colcon requires data_files sources relative to the package directory.
+CONFIG = Path(os.path.relpath(Path(__file__).resolve().parents[5] / "config/vision", Path(__file__).resolve().parent))
 from setuptools import find_packages, setup
 
 package_name = "tank_vision_ros"

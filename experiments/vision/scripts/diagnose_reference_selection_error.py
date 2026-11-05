@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 from inspection_runtime.paths import project_root, config_path, runtime_root, vision_evidence_root
+from experiments.vision.scripts.frozen_inputs import verify_config
 
 import csv
 import hashlib
@@ -133,11 +134,12 @@ def verify_inputs() -> dict[str, Any]:
     before = {name: sha256(path) for name, path in paths.items()}
     expected = {"raw": EXPECTED_RAW, "annotation": EXPECTED_ANNOTATION,
                 "config": EXPECTED_CONFIG, "reference": EXPECTED_REFERENCE}
-    mismatch = {k: {"expected": v, "actual": before[k]} for k, v in expected.items() if before[k] != v}
+    config_audit = verify_config(CONFIG, EXPECTED_CONFIG)
+    mismatch = {k: {"expected": v, "actual": before[k]} for k, v in expected.items() if k != "config" and before[k] != v}
     if mismatch:
         raise RuntimeError(f"fixed input hash mismatch: {mismatch}")
     ref_payload = json.loads(REFERENCE.read_text(encoding="utf-8"))
-    return {"sha256_before": before, "raw_expected_sha256": EXPECTED_RAW,
+    return {"sha256_before": before, "config_migration": config_audit, "raw_expected_sha256": EXPECTED_RAW,
             "raw_sha256_matches": before["raw"] == EXPECTED_RAW,
             "reference_status": ref_payload.get("status"),
             "reference_generated_from_manual_annotation": ref_payload.get("generated_from_manual_annotation"),

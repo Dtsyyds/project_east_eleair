@@ -157,49 +157,52 @@ void RealSenseNodeFactory::acquireProcessLock()
         return;
     }
 
-    std::string key = _serial_no.empty() ? "any_device" : _serial_no;
-    std::replace_if(key.begin(), key.end(),
-        [](unsigned char c) { return !std::isalnum(c) && c != '-' && c != '_'; }, '_');
-    _process_lock_path = "/tmp/realsense2_camera_" + key + ".lock";
-    _process_lock_fd = ::open(_process_lock_path.c_str(), O_CREAT | O_RDWR | O_CLOEXEC, 0660);
-    if (_process_lock_fd < 0)
+    // Reserve every allowed serial, so a single-serial launcher cannot race
+    // this node when it switches to the replacement camera.
+    auto keys = _serial_selection.serials();
+    if (keys.empty()) keys.push_back("any_device");
+    std::sort(keys.begin(), keys.end());
+    try
     {
-        throw std::runtime_error(
-            "cannot open RealSense process lock " + _process_lock_path + ": " +
-            std::strerror(errno));
-    }
-    if (::flock(_process_lock_fd, LOCK_EX | LOCK_NB) != 0)
-    {
-        const int lock_errno = errno;
-        ::close(_process_lock_fd);
-        _process_lock_fd = -1;
-        throw std::runtime_error(
-            "RealSense device " + key + " is already owned by another process (lock " +
-            _process_lock_path + "): " + std::strerror(lock_errno));
-    }
-
-    const std::string owner = std::to_string(::getpid()) + "\n";
-    if (::ftruncate(_process_lock_fd, 0) == 0)
-    {
-        const ssize_t bytes_written = ::write(_process_lock_fd, owner.data(), owner.size());
-        if (bytes_written < 0)
+        for (auto key : keys)
         {
-            ROS_WARN_STREAM("Could not write RealSense lock owner: " << std::strerror(errno));
+            std::replace_if(key.begin(), key.end(),
+                [](unsigned char c) { return !std::isalnum(c) && c != '-' && c != '_'; }, '_');
+            const auto path = "/tmp/realsense2_camera_" + key + ".lock";
+            const int fd = ::open(path.c_str(), O_CREAT | O_RDWR | O_CLOEXEC, 0660);
+            if (fd < 0)
+                throw std::runtime_error("cannot open RealSense process lock " + path + ": " + std::strerror(errno));
+            if (::flock(fd, LOCK_EX | LOCK_NB) != 0)
+            {
+                const int lock_errno = errno;
+                ::close(fd);
+                throw std::runtime_error("RealSense device " + key +
+                    " is already owned by another process (lock " + path + "): " + std::strerror(lock_errno));
+            }
+            _process_lock_fds.push_back(fd);
+            const auto owner = std::to_string(::getpid()) + "\n";
+            if (::ftruncate(fd, 0) == 0 && ::write(fd, owner.data(), owner.size()) < 0)
+                ROS_WARN_STREAM("Could not write RealSense lock owner: " << std::strerror(errno));
+            ROS_INFO_STREAM("Acquired RealSense process lock " << path);
         }
     }
-    ROS_INFO_STREAM("Acquired RealSense process lock " << _process_lock_path);
+    catch (...)
+    {
+        releaseProcessLock();
+        throw;
+    }
 #endif
 }
 
 void RealSenseNodeFactory::releaseProcessLock()
 {
 #ifndef _WIN32
-    if (_process_lock_fd >= 0)
+    for (const int fd : _process_lock_fds)
     {
-        (void)::flock(_process_lock_fd, LOCK_UN);
-        ::close(_process_lock_fd);
-        _process_lock_fd = -1;
+        (void)::flock(fd, LOCK_UN);
+        ::close(fd);
     }
+    _process_lock_fds.clear();
 #endif
 }
 
@@ -289,7 +292,7 @@ void RealSenseNodeFactory::getDevice(rs2::device_list list)
                     found_device_type = std::regex_search(name, match_results, device_type_regex);
                 }
 
-                if ((_serial_no.empty() || sn == _serial_no) && (_usb_port_id.empty() || port_id == _usb_port_id) && found_device_type)
+                if (_serial_selection.accepts(sn) && (_usb_port_id.empty() || port_id == _usb_port_id) && found_device_type)
                 {
                     _device = dev;
                     _serial_no = sn;
@@ -301,9 +304,9 @@ void RealSenseNodeFactory::getDevice(rs2::device_list list)
             {
                 std::string msg ("The requested device with ");
                 bool add_and(false);
-                if (!_serial_no.empty())
+                if (!_serial_filter.empty())
                 {
-                    msg += "serial number " + _serial_no;
+                    msg += "serial number " + _serial_filter;
                     add_and = true;
                 }
                 if (!_usb_port_id.empty())
@@ -432,6 +435,8 @@ void RealSenseNodeFactory::init()
 
         // A ROS2 hack: until a better way is found to avoid auto convertion of strings containing only digits to integers:
         if (!_serial_no.empty() && _serial_no.front() == '_') _serial_no = _serial_no.substr(1);    // remove '_' prefix
+        _serial_filter = _serial_no;
+        _serial_selection = SerialSelection(_serial_filter);
 
         // Prevent another wrapper process from opening the same camera.  The SDK's
         // busy error is too late: a competing open can interrupt the active stream.

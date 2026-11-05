@@ -788,7 +788,7 @@ rclcpp::Time BaseRealSenseNode::frameSystemTimeSec(rs2::frame frame)
             std::chrono::steady_clock::now().time_since_epoch()).count();
         std::lock_guard<std::mutex> lock(_hardware_clock_mapper_mutex);
         const auto mapping = _hardware_clock_mapper.map(
-            timestamp_ms, receive_ros_ns, receive_steady_ns);
+            timestamp_ms, receive_ros_ns, receive_steady_ns, frame.get_profile().unique_id());
         if (!mapping.valid)
         {
             _timestamp_invalid_count.fetch_add(1);
@@ -798,6 +798,7 @@ rclcpp::Time BaseRealSenseNode::frameSystemTimeSec(rs2::frame frame)
             }
             ROS_ERROR_STREAM("D405 timestamp conversion invalid; dropping frame_number="
                 << frame.get_frame_number() << " device_ms=" << std::fixed << timestamp_ms
+                << " stream_unique_id=" << frame.get_profile().unique_id()
                 << " reason=" << mapping.reason << " epoch=" << mapping.epoch);
             return rclcpp::Time(0, 0, _node.get_clock()->get_clock_type());
         }

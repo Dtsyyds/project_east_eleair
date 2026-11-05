@@ -9,6 +9,7 @@ directory.
 
 from __future__ import annotations
 from inspection_runtime.paths import project_root, config_path, runtime_root, vision_evidence_root
+from experiments.vision.scripts.frozen_inputs import verify_config
 
 import csv
 import hashlib
@@ -32,7 +33,7 @@ MANIFEST = vision_evidence_root() / 's1_p2c_live_bad_ground_truth_v1/ground_trut
 CONFIG = project_root() / 'config/vision/s100p_guided_seam_4096x3072.yaml'
 REFERENCE = project_root() / 'config/vision/seam_geometry_reference_s100p_live_v1.json'
 TRACKER = project_root() / 'packages/tank_vision/tank_vision/stable_seam_tracker.py'
-TIMING_ARTIFACT = runtime_root() / 'analysis/s1_p2d_simple_guided_search/timing_comparison.json'
+TIMING_ARTIFACT = vision_evidence_root() / 's1_p2d_simple_guided_search/timing_comparison.json'
 
 EXPECTED = {
     "raw": "ada05bfa684cccfa87d54481985ca8614a9f3d9acd140e1af61f5aa80baccd02",
@@ -113,7 +114,11 @@ def verify_inputs() -> dict[str, Any]:
     if missing:
         raise RuntimeError(f"missing frozen input(s): {missing}")
     hashes = {name: sha256(path) for name, path in paths.items() if name in EXPECTED}
-    mismatches = {name: {"expected": EXPECTED[name], "actual": value} for name, value in hashes.items() if value != EXPECTED[name]}
+    config_audit = verify_config(CONFIG, EXPECTED["config"])
+    # The tracker evolved after this historical experiment; record its actual
+    # hash and enforce the numerical/behavioral baseline in reproduce().
+    mismatches = {name: {"expected": EXPECTED[name], "actual": value} for name, value in hashes.items()
+                  if name not in ("config", "tracker") and value != EXPECTED[name]}
     annotation = json.loads(ANNOTATION.read_text(encoding="utf-8"))
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     reference = json.loads(REFERENCE.read_text(encoding="utf-8"))
@@ -127,8 +132,9 @@ def verify_inputs() -> dict[str, Any]:
     )
     if mismatches or not frozen_ok:
         raise RuntimeError(f"frozen input verification failed: mismatches={mismatches}, frozen_ok={frozen_ok}")
-    return {"paths": {key: str(value.relative_to(ROOT)) for key, value in paths.items()},
-            "sha256": hashes, "manifest": {"status": manifest.get("status"),
+    return {"paths": {key: str(value.resolve()) for key, value in paths.items()},
+            "sha256": hashes, "config_migration": config_audit,
+            "historical_tracker_sha256": EXPECTED["tracker"], "manifest": {"status": manifest.get("status"),
             "input_sha256_matches": manifest.get("input_sha256_matches"),
             "human_overlay_approved": manifest.get("human_overlay_approved"),
             "point_count": manifest.get("point_count")},
@@ -196,9 +202,9 @@ def baseline_report(image: np.ndarray, evidence: dict[str, Any]) -> tuple[dict[s
     matches = {key: (actual[key] is not None and abs(actual[key] - value) <= tolerances[key]) if isinstance(value, (float, int)) else actual[key] == value
                for key, value in expected.items()}
     report = {"status": "matched" if all(matches.values()) else "baseline_mismatch", "evidence": evidence,
-              "input_sha256": sha256(RAW), "config": str(CONFIG.relative_to(ROOT)), "reference": str(REFERENCE.relative_to(ROOT)),
+              "input_sha256": sha256(RAW), "config": str(CONFIG.resolve()), "reference": str(REFERENCE.resolve()),
               "three_identical_input_runs": sequence, "expected": expected, "actual": actual, "tolerances": tolerances,
-              "matches": matches, "processing_p95_source": str(TIMING_ARTIFACT.relative_to(ROOT)) if timing_p95 is not None else "missing"}
+              "matches": matches, "processing_p95_source": str(TIMING_ARTIFACT.resolve()) if timing_p95 is not None else "missing"}
     return report, result, diagnostics
 
 

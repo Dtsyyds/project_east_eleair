@@ -31,6 +31,7 @@
 #include <utility>
 #include <vector>
 #include <thread>
+#include "serial_selection.h"
 
 namespace realsense2_camera
 {
@@ -68,6 +69,8 @@ namespace realsense2_camera
         rs2::device _device;
         std::unique_ptr<BaseRealSenseNode> _realSenseNode;
         std::string _serial_no;
+        std::string _serial_filter;
+        SerialSelection _serial_selection;
         std::string _usb_port_id;
         std::string _device_type;
         double _wait_for_device_timeout;
@@ -77,7 +80,6 @@ namespace realsense2_camera
         bool _is_alive;
         rclcpp::Logger _logger;
         std::shared_ptr<Parameters> _parameters;
-        int _process_lock_fd{-1};
-        std::string _process_lock_path;
+        std::vector<int> _process_lock_fds;
     };
 }//end namespace

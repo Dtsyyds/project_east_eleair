@@ -9,22 +9,26 @@ required_topics:
   - /camera/fisheye/image_raw
   - /d405/camera/color/image_raw
   - /d405/camera/depth/image_rect_raw
-  - /livox/lidar
-  - /livox/imu
   - /eddy/data
 hardware:
+  # 本轮现场未接雷达；恢复接入时同时恢复 required_topics 的雷达/IMU 检查。
+  start_mid360: false
+  publish_rough_extrinsics: false
   mindvision_resolution_index: 3
   mindvision_width: 1920
   mindvision_height: 1200
   start_eddy: true
   start_sync: false
-  d405_serial_number: "260322276866"
-  d405_rgb_profile: 1280x720x30
-  d405_depth_profile: 1280x720x30
+  # 使用 librealsense 的设备序列号；USB by-id 字符串中的序列号不同。
+  # 两台 D405 任接一台；逗号分隔允许的 SDK 序列号，换机无需改配置。
+  d405_serial_number: "260322276866,352122271190"
+  # USB 排障暂用低带宽；原工程 1280x720x30 尚未通过稳定性验收。
+  d405_rgb_profile: 640x480x15
+  d405_depth_profile: 640x480x15
 emat:
   saved_waveform: experiments/emat/采集数据.txt
-  # 当前 CH340 无唯一序列号：按已验证的 USB 物理端口绑定，避免同型号 by-id 重名。
-  # 电磁超声须保持连接此端口；换口后需重新确认并更新路径。
+  # 当前 CH340 无唯一序列号：保留现场候选物理端口，避免同型号 by-id 重名。
+  # 此端口尚未通过 EMAT 协议握手，需现场确认接线后更新，不能视为设备已验收。
   serial_port: /dev/serial/by-path/platform-34000000.pcie-pci-0000:07:00.0-usb-0:1.3:1.0-port0
   baudrate: 115200
   sample_count: 4000

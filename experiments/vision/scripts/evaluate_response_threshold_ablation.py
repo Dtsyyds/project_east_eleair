@@ -12,7 +12,7 @@ import numpy as np
 ROOT = project_root() / 'packages/tank_vision'
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(project_root() / 'tools/vision'))
-import audit_candidate_survival_funnel as funnel
+from experiments.vision.scripts import audit_candidate_survival_funnel as funnel
 from tank_vision.seam_width_reference import SeamWidthReference
 from tank_vision.stable_seam_tracker import StableSeamTracker, load_stable_config
 

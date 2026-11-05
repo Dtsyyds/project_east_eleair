@@ -43,6 +43,24 @@ def load_config(path):
     r = config['roi']
     if len(r) != 4 or not (0 <= r[0] < r[2] <= 1 and 0 <= r[1] < r[3] <= 1):
         raise ValueError('ROI must be normalized x0,y0,x1,y1')
+    if config.get('visual_feature', 'row_median') not in ('row_median', 'local_stripe'):
+        raise ValueError('unsupported_visual_feature')
+    if config.get('visual_feature') == 'local_stripe':
+        if config.get('visual_polarity') not in ('dark', 'bright'):
+            raise ValueError('local_stripe_requires_explicit_polarity')
+        for key in ('visual_stripe_width_fraction', 'visual_smoothing_fraction'):
+            if not 0 < config.get(key, 0) < .5:
+                raise ValueError('invalid_local_stripe_config:' + key)
+    if config.get('candidate_selection', 'independent') not in ('independent', 'continuous'):
+        raise ValueError('unsupported_candidate_selection')
+    if config.get('candidate_selection') == 'continuous':
+        gap = config.get('path_max_gap_rows')
+        if type(gap) is not int or not 0 <= gap <= 10:
+            raise ValueError('invalid_path_max_gap_rows')
+        for key in ('path_max_slope', 'path_position_penalty', 'path_width_penalty', 'path_gap_penalty'):
+            value = config.get(key, 0)
+            if not np.isfinite(value) or value <= 0:
+                raise ValueError('invalid_path_config:' + key)
     return config
 
 

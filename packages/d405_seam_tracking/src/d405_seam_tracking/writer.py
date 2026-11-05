@@ -63,3 +63,47 @@ class EventWriter:
 
     def close(self, timeout=5.):
         self.worker.close(timeout)
+
+
+class SampleCapture:
+    """One explicit request; ACK is distinct from persisted metadata completion."""
+    def __init__(self, writer, clock=None):
+        import time
+        self.writer = writer
+        self.clock = clock or time.monotonic
+        self.current = {'status': 'idle'}
+        self.deadline = 0.
+
+    def request(self):
+        import uuid
+        if self.poll()['status'] in ('queued', 'writing'):
+            raise RuntimeError('已有样本正在保存')
+        self.writer.worker.check()
+        self.current = {'status': 'queued', 'request_id': uuid.uuid4().hex, 'message': '等待下一组配对输入'}
+        self.deadline = self.clock() + 8.
+        return dict(self.current)
+
+    def capture(self, frame, result, diagnostics):
+        if self.poll()['status'] != 'queued': return
+        if not self.writer.request(frame, result, diagnostics):
+            self.current.update(status='failed', message='样本保存被限流、队列已满或已达到本次 30 组上限')
+            return
+        self.current.update(status='writing', path=f'event_{frame.sequence:08d}_{frame.image_stamp_ns}',
+                            message='正在写入并校验原始样本')
+
+    def poll(self):
+        import json
+        if self.current['status'] == 'writing':
+            metadata = self.writer.root / self.current['path'] / 'metadata.json'
+            if metadata.exists():
+                try:
+                    value = json.loads(metadata.read_text())
+                    if value.get('complete') is True:
+                        self.current.update(status='completed', message='样本文件已写入', files=value['files'])
+                except (OSError, ValueError, KeyError) as error:
+                    self.current.update(status='failed', message='样本元数据无效：' + str(error))
+            elif self.writer.worker.status['state'] == 'FAILED':
+                self.current.update(status='failed', message='样本写入失败，请检查磁盘和实验日志')
+        if self.current['status'] == 'queued' and self.clock() > self.deadline:
+            self.current.update(status='failed', message='等待配对输入超时，没有保存样本')
+        return dict(self.current)

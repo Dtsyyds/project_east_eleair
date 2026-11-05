@@ -1,5 +1,6 @@
 """Installed C++ sync node + real ROS types/QoS; synthetic messages only."""
-from inspection_runtime.paths import project_root
+from inspection_runtime.paths import project_root, runtime_root
+from ament_index_python.packages import get_package_prefix
 from pathlib import Path
 import os,json,subprocess,time,sys,uuid
 os.environ['ROS_DOMAIN_ID']='186'
@@ -9,7 +10,7 @@ import argparse
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--output',type=Path)
 args=parser.parse_args()
-RESULT=args.output or project_root() / 'docs/history/reports/refactor_v1/ros_native_eddy_e2e.json'
+RESULT=args.output or runtime_root() / 'validation/ros_native_eddy_e2e.json'
 if args.output and RESULT.exists(): parser.error('refusing to overwrite an existing result')
 REPORT=RESULT.parent
 REPORT.mkdir(parents=True,exist_ok=True)
@@ -27,7 +28,7 @@ def stamp(header,ns):
 
 def run(topic):
     sync_name='inspection_sync_fixture_'+uuid.uuid4().hex[:12]
-    process=subprocess.Popen([str(project_root() / 'deploy/install_cpp/inspection_sync/lib/inspection_sync/inspection_sync_node'),
+    process=subprocess.Popen([str(Path(get_package_prefix('inspection_sync')) / 'lib/inspection_sync/inspection_sync_node'),
                              '--ros-args','-r','__node:='+sync_name,'-p','anchor_topic:='+topic],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     node=rclpy.create_node('native_eddy_probe')
     pubs={}

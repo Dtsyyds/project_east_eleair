@@ -2,17 +2,33 @@
 
 本文说明当前目录中的轻量离线操作台如何部署、连接和操作。当前交付由以下文件组成：
 
-- `index.html`：操作台页面和样式。
+- `index.html`：操作台页面、布局和本地 SVG 图标。
+- `theme.css` / `theme.js`：统一颜色、组件、响应式布局与 Canvas 配色（无外部资源）。
 - `console_core.js`：状态、新鲜度、帧匹配、能力门禁等公共逻辑。
 - `console.js`：WebSocket 通信、任务、事件、巡迹、设备与调试界面。
-- `tests/mock_console_server.py`：与 ROS 和真实执行器隔离的本地 mock。
-- `tests/test_console_core.js`、`tests/test_mock_workflow.py`：逻辑和协议工作流测试。
+- `vision.js`：视觉巡迹启停、实验样本保存与状态门禁。
+- `camera_tuning.js`：工业相机参数读取、预览、保存与状态保护。
+- `replay.js`：历史 MCAP 多路回放界面。
+- `tests/web_console/`（工程根目录）：隔离 mock、逻辑和协议工作流测试。
 
-当前工作区没有板端工程、ROS 启动文件、正式部署目录和历史 `final_report.json`。因此本文中的真实板端部分只描述页面所需契约；真实设备、ROS topic、采集脚本、安装副本一致性和算法效果仍需在完整工程及现场环境中验收。
+仅采 D405 用于算法优化和离线训练：在工程根目录执行 `bash system_websocket/run_d405.sh`，确认“采集 profile”为“D405 算法实验采集”。此方案只检查 D405 四路图像及存储，连续 MCAP 仅录 D405 原始流、标定/内部外参和已有巡迹输出；独立样本仍保存 Color + Depth，不额外保存双红外。旧三相机入口保留，启动视觉巡迹不会自动改变当前采集方案。
+
+当前页面已接入本工程 ROS 驱动与操作服务。工程根目录执行 `bash system_websocket/run.sh` 启动三相机上位机，浏览器访问 `http://<板端IP>:8080`；启动终端按 Ctrl+C 正常结束。设备及采集验收情况见 `docs/validation/`，界面可用不等同于所有设备持续采集通过。
+
+## 工业相机调参
+
+1. 在工业相机画面旁点击 **相机调参**，自动读取实际参数。
+2. 修改曝光（ms）、模拟增益、RGB 增益、饱和度、Gamma 等参数；自动曝光启用时改用 AE 目标控制亮度。
+3. 点击 **应用预览**，观察当前画面；可继续调整。
+4. 满意后点击 **保存并沿用**，看到“当前参数已保存”即完成。下次启动上位机以及后续使用该工业相机的视觉任务会自动加载。
+
+“保存并沿用”也会应用当前填写的参数，无需先点预览。保存按相机序列号隔离；分辨率和标定仍沿用任务配置。当前相机不支持自动白平衡，对应选项禁用；可调整 RGB 增益。采集和回放期间调参锁定，停止任务后再修改。失败或超时请点击“读取当前参数”确认结果后再操作。
 
 ## 1. 安全边界
 
-1. 页面启动后不会自动连接，也不会自动发送运动、采集、停止或保存请求。
+整合底盘时使用 `bash system_websocket/run_robot.sh --real --host RDK_IP`，浏览器仍打开原来的 `http://RDK_IP:8080/`，相机与底盘都通过原 WebSocket 端口 9001 通信；只增加底盘与循迹，不改变原来的对外地址和端口。主页加载就自动连接，顶部显示底盘连接状态。无需切页或分别点连接，断线也会自动重连，但不会恢复运动授权。主页面“断开”同时断开底盘控制；再次“连接”只恢复连接，仍需人工启用控制。原相机独立入口与整合入口不能同时占用同一端口，应正常退出本工程旧启动终端后更新。
+
+1. 通过 HTTP 打开页面后沿用现有自动连接行为，连接后查询自检、任务、历史与回放状态；不会自动开始采集、测厚或保存。运动控制仍需能力、权限、实时状态及人工开关共同满足。
 2. 旧协议只使用已有的自检和预览命令。板端没有通过 `capabilities` 明确声明的新功能，页面保持禁用。
 3. 网页断线、刷新或关闭不应停止板端采集。重新连接后，页面只自动查询只读任务状态，不自动重发开始、停止、保存或运动命令。
 4. “发送零速度”不是硬件急停。真实急停必须使用经过验收的独立硬件或板端接口。
@@ -23,37 +39,30 @@
 
 ### 2.1 现场部署
 
-继续沿用现有工程的静态 HTTP 部署方式，把下列三个文件放在同一目录：
+正式启动脚本直接提供本目录的静态页面。单独部署时，把下列八个文件放在同一目录：
 
 ```text
 index.html
+theme.css
+theme.js
 console.js
 console_core.js
+camera_tuning.js
+replay.js
 ```
 
-不要只替换其中一个文件，也不要创建 `index(1).html` 等并行页面。部署前后可用下面的命令核对三个文件是否一致：
+不要只替换其中一个文件，也不要创建 `index(1).html` 等并行页面。部署前后可用下面的命令核对文件是否一致：
 
 ```bash
-sha256sum index.html console.js console_core.js
+sha256sum index.html theme.css theme.js console.js console_core.js camera_tuning.js replay.js
 ```
-
-本工作区当前 SHA-256 为：
-
-```text
-cd4ca43557b32874dd026be85c74e94a664907cccff89066d4872c7b52f6ced0  index.html
-8cd20388b26bb2e02a886c015e6be48c06ba18e74326e1a8b12a1eb6cb272d27  console.js
-d4fa7c2b698b9a1556c01e4cc17dc1d390e8a5933808b6ed5510f0d671e0150e  console_core.js
-```
-
-上述 SHA 只代表当前独立工作区，不能代替完整工程 source/install 一致性证明。
 
 ### 2.2 本机只读预览
 
 在当前目录执行：
 
 ```bash
-cd /home/dts/websocket_console
-python3 -m http.server 8080 --bind 127.0.0.1
+python3 -m http.server 8080 --bind 127.0.0.1 --directory apps/web_console
 ```
 
 浏览器打开：
@@ -72,7 +81,7 @@ http://127.0.0.1:8080/
 4. 只有地址不包含 Token、用户名和密码时，才可勾选“记住非敏感地址”。
 5. 点击“连接”。
 
-也可以用查询参数预填地址，但页面仍不会自动连接：
+也可以用查询参数指定初次自动连接的地址：
 
 ```text
 http://127.0.0.1:8080/?ws=ws%3A%2F%2F192.168.1.20%3A9001
@@ -84,7 +93,7 @@ HTTPS 页面必须使用 `wss://`。浏览器会阻止 HTTPS 页面连接普通 
 
 ## 4. 顶部常驻状态
 
-顶部始终显示：
+桌面常规窗口顶部固定显示（窄屏或低矮窗口改为自然滚动）：
 
 - 机器人身份及身份来源。
 - WebSocket 连接状态。
@@ -404,3 +413,58 @@ curl http://127.0.0.1:18765/mock/state
 - 将实际证据写入现有 `final_report.json` 的独立阶段字段，不由浏览器把正式生产状态设为通过。
 
 建议分别维护：`console_software_verified`、`legacy_protocol_compatible`、`collection_workflow_verified`、`snapshot_workflow_verified` 和 `hardware_field_verified`。
+
+
+## 16. 工业深色界面与视觉回归
+
+五个功能页面保留原有操作。左侧导航切换页面，顶部显示连接、模式、任务与存储状态；快捷操作栏保留采集、停止、回放和测厚。主监控页突出工业相机，鱼眼与 D405 独立显示，侧栏汇总原有物理设备状态、巡迹和告警。传感器摘要与“设备与调试”使用同一套新鲜度判定。
+
+- 主操作用蓝色，正常/警告/故障分别用绿/黄/红，并保留文字说明。灰色表示未知、禁用或待提供；不把连接成功当作整机就绪。
+- “帧信息与诊断”展开后查看原有帧号、时间、尺寸、解码错误和丢帧计数。实时预览和叠加匹配逻辑不变。
+- 涡流图例对应现有通道，保留每像素 min/max 聚合，明确标注各通道独立缩放；不推断未提供的单位。
+- 1920 宽屏采用主相机加双辅助画面的布局，中等窗口将辅助画面放在主画面下方，小屏采用单列。表格在自身区域滚动。
+- 页面完全离线运行，不加载网络字体、图标库或 CDN；主题资源须与其他文件一起部署。
+
+可复用系统现有 Firefox + pytest，并在测试环境准备现有 mock 所需的 aiohttp/Pillow：
+
+```bash
+PYTHONPATH=packages/inspection_runtime/src python3 -m pytest -q tests/web_console/test_visual_console.py
+PYTHONPATH=packages/inspection_runtime/src UI_SOAK_SECONDS=120 python3 -m pytest -q tests/web_console/test_visual_console.py
+```
+
+测试自动启动回环地址隔离 mock，不连接设备，报告与截图写入 `.runtime/s100p/validation/ui_redesign/`。回放可视化测试仅向渲染 API 注入测试包，不是 MCAP/硬件验收。实际修改清单、验证范围和现场待验项见 `docs/validation/20261030_ui_redesign.md`。
+
+
+## 17. 视觉巡迹与实验样本
+
+现场采集请按 [D405 焊缝巡迹实验数据采集操作说明](../../docs/system/d405_experiment_collection_guide.md) 执行，包含完整顺序、结束检查和记录模板。
+
+在“实时巡检 → 巡迹结果”使用三个按钮：
+
+1. **启动视觉巡迹**：检查数据盘和 D405 彩色/深度新鲜度后，启动被动巡迹节点。固定使用 Color + Depth，与现有 D405 彩色预览同源；配置来自 `config/d405/experimental.yaml`，每次启动保存独立配置快照。节点不再次打开相机、不发送运动指令。独立启动的巡迹节点必须先由其原启动终端停止，避免重复节点。
+2. **保存实验样本**：请求下一组配对输入，保存原始图像、无损深度、源时间、已有标定、算法结果及诊断。它不是当前网页截图；缺失标定保持缺失，算法输出不作为人工标签。仅在文件和 SHA 校验完成、索引成功写入后显示已保存。沿用现有写入器每次巡迹最多 30 组、源时间间隔至少 1 秒的限制。
+3. **停止视觉巡迹**：结束本次独立算法进程并关闭样本写入，不停止相机、不停止连续采集，也不是机器人停止或急停。
+
+连续数据仍使用顶部/采集任务页的“一键启动采集”和“一键停止”。MCAP 清单增加巡迹结果、三维路径和诊断话题；采集状态机不变。实时巡迹与历史回放互斥。页面断线不停止巡迹，重连只读取当前状态，不重发启动或保存操作。
+
+数据保存于配置的数据盘下：
+
+```text
+vision_experiments/VISION-时间-唯一标识/
+  session.json                    # 会话来源、配置 SHA；未标注、未硬件验收
+  config.yaml                     # 本次实验配置快照
+  node.log                        # 算法进程日志
+  index.json                      # 成功保存后生成，兼容 d405_dataset_v1
+  samples/
+    result_manifest.json          # 样本写入器状态，正常停止后封存
+    event_序号_源时间/
+      raw.npz                     # 原始图像、深度、有效掩码及元数据
+      result.json                 # 算法结果，不是人工标签
+      diagnostics.npz             # 可用的诊断数组
+      metadata.json               # 文件清单、SHA 与完成标志
+      collection_reference.json   # 保存时正在录制的 run_id；未录制则为 null
+```
+
+“结果详情、观测与阈值”中显示本次实验目录和最近成功样本路径。索引中的样本保持 `split=unassigned`、`annotation=null`；后续使用既有离线标注/数据划分/训练流程，按会话划分避免同一采集泄漏到不同集合。本轮没有新增网页训练或自动标注。
+
+若按钮显示“板端未提供视觉巡迹操作能力”，确认使用本轮构建后的操作服务，并以正常入口重新启动系统。D405 停流仍会阻止启动/保存，本功能不代表解决 USB 问题或通过焊缝精度验收。

@@ -236,9 +236,12 @@ def generate_launch_description():
             "fisheye_config_file", default_value=str(fisheye_share / "config/fisheye.yaml")),
         DeclareLaunchArgument("fisheye_device", default_value=""),
         DeclareLaunchArgument("start_d405", default_value="true"),
-        DeclareLaunchArgument("d405_serial_number", default_value=""),
+        DeclareLaunchArgument(
+            "d405_serial_number", default_value="260322276866,352122271190",
+            description="Allowed D405 SDK serials, comma-separated; a single serial pins one device."),
         DeclareLaunchArgument("d405_rgb_profile", default_value="848x480x30"),
         DeclareLaunchArgument("d405_depth_profile", default_value="848x480x30"),
+        DeclareLaunchArgument("d405_config_file", default_value=str(share / "config/d405_startup.yaml")),
         DeclareLaunchArgument(
             "start_mid360", default_value="true",
             description="Start livox_ros_driver2 in PointCloud2 mode (enabled by default)."),
@@ -412,6 +415,7 @@ def generate_launch_description():
                 # Keep numeric-only serials as strings through the generated
                 # parameter YAML. realsense2_camera removes this prefix.
                 "serial_no": ["_", LaunchConfiguration("d405_serial_number")],
+                "device_type": "D405",
                 "enable_color": "true",
                 "enable_depth": "true",
                 "enable_infra1": "true",
@@ -421,7 +425,8 @@ def generate_launch_description():
                 "depth_module.color_profile": LaunchConfiguration("d405_rgb_profile"),
                 "depth_module.depth_profile": LaunchConfiguration("d405_depth_profile"),
                 "depth_module.infra_profile": LaunchConfiguration("d405_depth_profile"),
-                "diagnostics_period": "1.0",
+                "config_file": LaunchConfiguration("d405_config_file"),
+                "diagnostics_period": "0.0",
             }.items(),
         ),
         Node(

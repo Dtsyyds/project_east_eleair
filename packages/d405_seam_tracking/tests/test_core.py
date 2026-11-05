@@ -1,4 +1,4 @@
-from inspection_runtime.paths import project_root
+from inspection_runtime.paths import project_root, runtime_root
 from dataclasses import replace
 import json
 from pathlib import Path
@@ -226,7 +226,7 @@ def test_explicit_missing_models_fail_without_download():
 def test_projection_matches_installed_realsense_sdk_without_device():
     import ctypes as ct
     from d405_seam_tracking.contracts import project
-    library = project_root() / 'third_party/librealsense/build/release/librealsense2.so.2.58.4'
+    library = runtime_root() / 'native/install/lib/librealsense2.so'
     if not library.exists(): pytest.skip('matching RealSense SDK library unavailable')
     class Intrinsics(ct.Structure):
         _fields_ = [('width', ct.c_int), ('height', ct.c_int), ('ppx', ct.c_float), ('ppy', ct.c_float),

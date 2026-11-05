@@ -24,13 +24,16 @@ from experiments.vision.scripts.diagnose_guided_pair_unary import (  # noqa: E40
     sha256,
 )
 from tank_vision.stable_seam_tracker import StableSeamTracker  # noqa: E402
+from experiments.vision.scripts.frozen_inputs import verify_config
 import yaml  # noqa: E402
 
 
 def test_frozen_inputs_and_generated_baseline_are_verified() -> None:
     assert sha256(RAW) == EXPECTED["raw"]
     assert sha256(ANNOTATION) == EXPECTED["annotation"]
-    assert sha256(CONFIG) == EXPECTED["config"]
+    audit = verify_config(CONFIG, EXPECTED["config"])
+    assert audit["frozen_sha256"] == EXPECTED["config"]
+    assert audit["changed_fields"] in ([], ["camera.sdk_root"])
     assert sha256(REFERENCE) == EXPECTED["reference"]
     report = json.loads((OUT / "baseline_reproduction.json").read_text(encoding="utf-8"))
     assert report["status"] == "matched"

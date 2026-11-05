@@ -84,3 +84,38 @@ TEST(DirectEpochTimestampValidator, ReportsRegressionWithoutInventingTimestamp)
   // Invalid input does not poison subsequent valid timestamps.
   EXPECT_TRUE(validator.validate(1700000000033333333LL).valid);
 }
+
+TEST(HardwareClockMapper, InterleavedStreamsShareAnchorWithoutDroppingFrames)
+{
+  HardwareClockMapper mapper;
+  constexpr int64_t host = 1700000000000000000LL;
+  mapper.map(1000., host, 1000000000LL, 1);
+  const auto color = mapper.map(1067., host + 67000000LL, 1067000000LL, 2);
+  const auto depth = mapper.map(1066., host + 68000000LL, 1068000000LL, 1);
+  const auto infrared = mapper.map(1060., host + 69000000LL, 1069000000LL, 3);
+  EXPECT_TRUE(color.valid);
+  EXPECT_TRUE(depth.valid);
+  EXPECT_TRUE(infrared.valid);
+  EXPECT_EQ(color.stamp_ns - depth.stamp_ns, 1000000LL);
+  EXPECT_EQ(infrared.stamp_ns, host + 60000000LL);
+  EXPECT_EQ(mapper.rebuild_count(), 0U);
+  EXPECT_EQ(mapper.last_mapped_ns(), color.stamp_ns);
+  const auto reordered_depth = mapper.map(1065.5, host + 70000000LL, 1070000000LL, 1);
+  EXPECT_FALSE(reordered_depth.valid);
+  EXPECT_STREQ(reordered_depth.reason, "device_frame_out_of_order");
+}
+
+TEST(HardwareClockMapper, DeviceResetClearsAllStreamHistory)
+{
+  HardwareClockMapper mapper;
+  constexpr int64_t host = 1700000000000000000LL;
+  mapper.map(1000., host, 1000000000LL, 1);
+  mapper.map(1001., host + 1000000LL, 1001000000LL, 2);
+  const auto reset = mapper.map(10., host + 100000000LL, 1100000000LL, 1);
+  const auto color = mapper.map(11., host + 101000000LL, 1101000000LL, 2);
+  EXPECT_TRUE(reset.epoch_rebuilt);
+  EXPECT_TRUE(color.valid);
+  EXPECT_FALSE(color.epoch_rebuilt);
+  EXPECT_EQ(color.stamp_ns - reset.stamp_ns, 1000000LL);
+  EXPECT_EQ(mapper.rebuild_count(), 1U);
+}

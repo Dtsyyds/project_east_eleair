@@ -1,0 +1,58 @@
+# D405 算法优化 / 离线训练数据采集。独立完整配置，不依赖其他传感器。
+ros_domain_id: 77
+http_port: 8080
+websocket_port: 9001
+data_root: /media/mcap_data
+minimum_free_bytes: 5368709120
+collection_profile:
+  id: d405_experiment
+  label: D405 算法实验采集
+required_topics:
+  - /d405/camera/color/image_raw
+  - /d405/camera/depth/image_rect_raw
+  - /d405/camera/infra1/image_rect_raw
+  - /d405/camera/infra2/image_rect_raw
+# 明确列举连续录制范围，不能由网页请求替换或追加。
+# 图像含源时间戳；保留各流标定、相机内部外参与已有巡迹输出。
+record_topics:
+  - /d405/camera/color/image_raw
+  - /d405/camera/color/camera_info
+  - /d405/camera/depth/image_rect_raw
+  - /d405/camera/depth/camera_info
+  - /d405/camera/infra1/image_rect_raw
+  - /d405/camera/infra1/camera_info
+  - /d405/camera/infra2/image_rect_raw
+  - /d405/camera/infra2/camera_info
+  - /d405/camera/extrinsics/depth_to_color
+  - /d405/camera/extrinsics/depth_to_infra1
+  - /d405/camera/extrinsics/depth_to_infra2
+  - /vision/d405_seam/result
+  - /vision/d405_seam/path_3d
+  - /vision/d405_seam/diagnostics
+vision:
+  algorithm_config: d405/vertical_seam.yaml
+hardware:
+  start_mindvision: false
+  start_fisheye: false
+  start_d405: true
+  start_mid360: false
+  publish_rough_extrinsics: false
+  start_eddy: false
+  start_sync: false
+  # 两台 D405 任接一台；逗号分隔允许的 SDK 序列号，换机无需改配置。
+  d405_serial_number: "260322276866,352122271190"
+  # 沿用当前诊断参数；不代表 USB 停流已修复或硬件稳定性已验收。
+  d405_rgb_profile: 640x480x15
+  d405_depth_profile: 640x480x15
+# 保持操作服务配置兼容；不启动测厚，不录制其话题。
+emat:
+  saved_waveform: experiments/emat/采集数据.txt
+  serial_port: /dev/emat
+  baudrate: 115200
+  sample_count: 4000
+  read_interval_ms: 10
+  sound_speed_m_s: 3240.0
+  sampling_rate_hz: 40000000.0
+  adc_zero: 127.0
+  start_sample: 200
+  calibrated: false

@@ -1,4 +1,4 @@
-from inspection_runtime.paths import project_root, runtime_root
+from inspection_runtime.paths import project_root, runtime_root, vision_evidence_root
 import os
 from pathlib import Path
 import sys,json,time,resource,hashlib,dataclasses
@@ -40,7 +40,7 @@ def norm(value):
 def digest(value): return hashlib.sha256(json.dumps(norm(value),sort_keys=True,allow_nan=False).encode()).hexdigest()
 config=project_root() / 'config/vision/s100p_guided_anchor_seam_4096x3072.yaml'
 ref=project_root() / 'config/vision/seam_geometry_reference_s100p_live_v1.json'
-image=cv2.imread(str(project_root() / 'packages/tank_vision/output/s1_real_seam_images/seam_center_lit_quality_01.bmp'))
+image=cv2.imread(str(vision_evidence_root() / 's1_real_seam_images/seam_center_lit_quality_01.bmp'))
 assert image is not None
 images=[image,np.zeros_like(image),image]
 records=[]; timings={}; started=time.perf_counter(); cpu=time.process_time()

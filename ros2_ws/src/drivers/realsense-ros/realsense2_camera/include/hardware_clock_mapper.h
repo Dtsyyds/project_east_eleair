@@ -5,8 +5,10 @@
 #define REALSENSE2_CAMERA_HARDWARE_CLOCK_MAPPER_H
 
 #include <cmath>
+#include <algorithm>
 #include <cstdint>
 #include <string>
+#include <unordered_map>
 
 namespace realsense2_camera
 {
@@ -62,25 +64,28 @@ public:
   {}
 
   HardwareClockMapping map(
-    double device_ms, int64_t receive_ros_ns, int64_t receive_steady_ns)
+    double device_ms, int64_t receive_ros_ns, int64_t receive_steady_ns, int stream_id = 0)
   {
     if (!std::isfinite(device_ms) || receive_ros_ns <= 0 || receive_steady_ns <= 0) {
       return {0, false, false, "invalid_input", epoch_};
     }
 
     if (!initialized_) {
-      return rebuild(device_ms, receive_ros_ns, receive_steady_ns, "initial_anchor");
+      return rebuild(device_ms, receive_ros_ns, receive_steady_ns, stream_id, "initial_anchor");
     }
 
-    const double device_delta_ms = device_ms - last_device_ms_;
-    if (device_delta_ms < -reset_threshold_ms_) {
-      return rebuild(device_ms, receive_ros_ns, receive_steady_ns, "device_clock_regression");
-    }
-    if (device_delta_ms < 0.0) {
-      // A small regression is callback/frame reordering, not an epoch reset.
-      // Its absolute capture time cannot be placed safely in this ordered ROS
-      // stream, so expose it as invalid and leave the mapping state untouched.
-      return {0, false, false, "device_frame_out_of_order", epoch_};
+    // Sensor callbacks interleave: an infrared frame can arrive after a newer
+    // color frame. Only compare timestamps belonging to the same ROS stream;
+    // all streams still use the single device-to-host anchor below.
+    const auto previous = last_device_ms_by_stream_.find(stream_id);
+    if (previous != last_device_ms_by_stream_.end()) {
+      const double device_delta_ms = device_ms - previous->second;
+      if (device_delta_ms < -reset_threshold_ms_) {
+        return rebuild(device_ms, receive_ros_ns, receive_steady_ns, stream_id, "device_clock_regression");
+      }
+      if (device_delta_ms < 0.0) {
+        return {0, false, false, "device_frame_out_of_order", epoch_};
+      }
     }
 
     const double base_delta_ms = device_ms - base_device_ms_;
@@ -89,11 +94,9 @@ public:
       return {0, false, false, "mapped_time_out_of_range", epoch_};
     }
 
-    // A small device-time reordering is preserved as such.  It is not a clock
-    // epoch reset and must remain observable to callers.
-    last_device_ms_ = device_ms;
+    last_device_ms_by_stream_[stream_id] = device_ms;
     last_receive_steady_ns_ = receive_steady_ns;
-    last_mapped_ns_ = mapped_ns;
+    last_mapped_ns_ = std::max(last_mapped_ns_, mapped_ns);
     return {mapped_ns, true, false, "mapped", epoch_};
   }
 
@@ -104,7 +107,7 @@ public:
 private:
   HardwareClockMapping rebuild(
     double device_ms, int64_t receive_ros_ns, int64_t receive_steady_ns,
-    const char * reason)
+    int stream_id, const char * reason)
   {
     // Re-anchoring to the independently observed host receive time preserves
     // the timestamp meaning after a device epoch reset.  If the system clock
@@ -115,7 +118,8 @@ private:
     }
     base_device_ms_ = device_ms;
     base_ros_ns_ = receive_ros_ns;
-    last_device_ms_ = device_ms;
+    last_device_ms_by_stream_.clear();
+    last_device_ms_by_stream_[stream_id] = device_ms;
     last_receive_steady_ns_ = receive_steady_ns;
     last_mapped_ns_ = receive_ros_ns;
     initialized_ = true;
@@ -129,7 +133,7 @@ private:
   double reset_threshold_ms_;
   bool initialized_{false};
   double base_device_ms_{0.0};
-  double last_device_ms_{0.0};
+  std::unordered_map<int, double> last_device_ms_by_stream_;
   int64_t base_ros_ns_{0};
   int64_t last_receive_steady_ns_{0};
   int64_t last_mapped_ns_{0};

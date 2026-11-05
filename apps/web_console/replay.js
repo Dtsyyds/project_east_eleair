@@ -1,8 +1,9 @@
 /* Sensor playback panels. No framework, external assets or live-topic mixing. */
 "use strict";
 (() => {
+  const theme = window.ConsoleTheme;
   const $ = id => document.getElementById(id);
-  const COLORS = ["#70ddb1", "#8fcaff", "#ffd080", "#ff9393", "#bc9fff", "#ffab76", "#70dce0", "#eeeeee"];
+  const COLORS = theme.channels;
   const LABELS = {idle:"未回放",starting:"正在打开",playing:"正在回放",paused:"已暂停",stopping:"正在停止",stopped:"已停止",complete:"回放结束",failed:"回放失败"};
   const SPECS = [
     ["mindvision","工业相机","image"],["fisheye","鱼眼相机","image"],
@@ -124,24 +125,24 @@
 
   function chart(panel, rows, labels) {
     const canvas=panel.canvas,ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height;
-    ctx.fillStyle="#050a10";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=theme.background;ctx.fillRect(0,0,w,h);
     const all=rows.flat().filter(Number.isFinite);
     if(!all.length)return;
     const low=Math.min(...all),high=Math.max(...all),range=Math.max(1e-9,high-low);
-    ctx.strokeStyle="#26384c";for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,i*h/4);ctx.lineTo(w,i*h/4);ctx.stroke();}
+    ctx.strokeStyle=theme.grid;for(let i=1;i<4;i++){ctx.beginPath();ctx.moveTo(0,i*h/4);ctx.lineTo(w,i*h/4);ctx.stroke();}
     rows.forEach((row,c)=>{ctx.strokeStyle=COLORS[c%COLORS.length];ctx.beginPath();let pen=false;row.forEach((v,i)=>{if(!Number.isFinite(v)){pen=false;return;}const x=i/Math.max(1,row.length-1)*(w-20)+10,y=h-20-(v-low)/range*(h-55);if(!pen)ctx.moveTo(x,y);else ctx.lineTo(x,y);pen=true;});ctx.stroke();ctx.fillStyle=COLORS[c%COLORS.length];ctx.fillText(labels[c]||"CH"+(c+1),10+c*76,15);});
-    ctx.fillStyle="#adbdcd";ctx.fillText(fixed(high),w-90,32);ctx.fillText(fixed(low),w-90,h-6);
+    ctx.fillStyle=theme.text;ctx.fillText(fixed(high),w-90,32);ctx.fillText(fixed(low),w-90,h-6);
   }
 
   function cloud(panel) {
     const data=panel.data,xyz=data.xyz||[],ctx=panel.canvas.getContext("2d"),w=panel.canvas.width,h=panel.canvas.height;
-    ctx.fillStyle="#050a10";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=theme.background;ctx.fillRect(0,0,w,h);
     if(!xyz.length)return;
     let bound=1;
     const distances=[];for(let i=0;i<xyz.length;i+=3)distances.push(Math.hypot(xyz[i],xyz[i+1],xyz[i+2]));
     distances.sort((a,b)=>a-b);bound=Math.max(.1,distances[Math.floor(distances.length*.95)]||1);
     const scale=Math.min(w,h)*.42/bound*zoom,ca=Math.cos(angle),sa=Math.sin(angle),ct=Math.cos(tilt),st=Math.sin(tilt);
-    ctx.strokeStyle="#34465c";ctx.beginPath();ctx.moveTo(w/2,0);ctx.lineTo(w/2,h);ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
+    ctx.strokeStyle=theme.grid;ctx.beginPath();ctx.moveTo(w/2,0);ctx.lineTo(w/2,h);ctx.moveTo(0,h/2);ctx.lineTo(w,h/2);ctx.stroke();
     for(let i=0;i<xyz.length;i+=3){const x=ca*xyz[i]-sa*xyz[i+1],y=sa*xyz[i]+ca*xyz[i+1],z=xyz[i+2];const px=w/2+x*scale,py=h/2-(ct*z-st*y)*scale;if(px<0||px>w||py<0||py>h)continue;ctx.fillStyle="hsl("+(180+Math.max(-1,Math.min(1,z/bound))*80)+",80%,65%)";ctx.fillRect(px,py,2,2);}
     panel.values.textContent="原始 "+text(data.point_count)+" 点 · 显示 "+text(data.displayed_points)+" 点 · 单位 m\n拖动旋转，滚轮缩放；显示单帧雷达点云。";
   }

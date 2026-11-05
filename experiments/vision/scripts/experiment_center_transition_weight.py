@@ -280,7 +280,7 @@ def exact_negative_suite(weight: float, image: np.ndarray) -> dict[str, Any]:
             continue
         tracker = StableSeamTracker(config_for(weight), REFERENCE)
         result = tracker.process(frame)
-        snapshots.append({"input": str(raw_path.relative_to(ROOT)), "detected": result.detected,
+        snapshots.append({"input": str(raw_path.resolve()), "detected": result.detected,
                           "state": result.tracking_state.name, "crossing": crosses(result), "precision_claimed": False})
     entries["saved_failure_snapshots"] = snapshots
     rng = np.random.default_rng(12345)
@@ -337,15 +337,15 @@ def make_montage(image: np.ndarray, results: list[dict[str, Any]]) -> None:
 
 def verify_inputs() -> dict[str, Any]:
     paths = [RAW, ANNOTATION, GUIDED_CONFIG, STABLE_CONFIG, REFERENCE, project_root() / 'packages/tank_vision/tank_vision/stable_seam_tracker.py']
-    missing = [str(p.relative_to(ROOT)) for p in paths if not p.exists()]
+    missing = [str(p.resolve()) for p in paths if not p.exists()]
     if missing:
         raise RuntimeError(f"missing fixed input(s): {missing}")
     manifest = vision_evidence_root() / 's1_p2c_live_bad_ground_truth_v1/ground_truth_manifest.json'
     return {"exists": not missing, "missing": missing,
-            "sha256_before": {str(p.relative_to(ROOT)): sha256(p) for p in paths},
+            "sha256_before": {str(p.resolve()): sha256(p) for p in paths},
             "raw_expected_sha256": "ada05bfa684cccfa87d54481985ca8614a9f3d9acd140e1af61f5aa80baccd02",
             "raw_sha256_matches": sha256(RAW) == "ada05bfa684cccfa87d54481985ca8614a9f3d9acd140e1af61f5aa80baccd02",
-            "ground_truth_manifest": {"path": str(manifest.relative_to(ROOT)), "exists": manifest.exists(),
+            "ground_truth_manifest": {"path": str(manifest.resolve()), "exists": manifest.exists(),
                                       "sha256": sha256(manifest) if manifest.exists() else None}}
 
 
@@ -447,7 +447,7 @@ def main() -> int:
                          "recovered": actual.get("selected_pair_id") == target["target_manual_near_pair_id"],
                          "selected_near_25": actual.get("selected_near"), "target_classification": target["classification"]})
         recovery.append({"weight": item["weight"], "rows": rows, "recovered_count": sum(r["recovered"] for r in rows)})
-    write_json("dp_lost_band_recovery.json", {"source": str(P2E1_FORCED.relative_to(ROOT)), "bands": recovery})
+    write_json("dp_lost_band_recovery.json", {"source": str(P2E1_FORCED.resolve()), "bands": recovery})
     write_json("signed_error_comparison.json", {f"{x['weight']:.2f}": x["errors"] for x in results})
     focus = []
     for x in results:
@@ -494,7 +494,7 @@ def main() -> int:
         "negative_suite_note": "The exact P2D suite is retained; only no_seam_negative is a hard negative acceptance case.",
         "production_changes": {"yaml": False, "algorithm_behavior": False, "ros": False,
                                 "only_in_memory_override": "path.center_transition_weight"}})
-    after = {str(p.relative_to(ROOT)): sha256(p) for p in [RAW, ANNOTATION, GUIDED_CONFIG, STABLE_CONFIG, REFERENCE, project_root() / 'packages/tank_vision/tank_vision/stable_seam_tracker.py']}
+    after = {str(p.resolve()): sha256(p) for p in [RAW, ANNOTATION, GUIDED_CONFIG, STABLE_CONFIG, REFERENCE, project_root() / 'packages/tank_vision/tank_vision/stable_seam_tracker.py']}
     write_json("input_sha256_after.json", {"before": fixed["sha256_before"], "after": after,
                                             "unchanged": fixed["sha256_before"] == after})
     return 0

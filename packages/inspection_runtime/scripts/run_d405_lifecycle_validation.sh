@@ -104,7 +104,7 @@ PY
   event LAUNCH_BEGIN "hardware_pipeline mode=$MODE" | tee -a "$events"
   setsid ros2 launch inspection_bringup hardware_pipeline.launch.py \
     record:=false start_sync:=false start_eddy:=false \
-    d405_serial_number:=260322276866 \
+    d405_serial_number:=260322276866,352122271190 \
     d405_rgb_profile:=1280x720x30 d405_depth_profile:=1280x720x30 \
     "${DEVICE_ARGS[@]}" >"$cycle_dir/launch_console.log" 2>&1 &
   launch_pid=$!

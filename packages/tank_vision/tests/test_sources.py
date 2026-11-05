@@ -54,6 +54,11 @@ class _FakeMindVisionSdk:
     CAMERA_MEDIA_TYPE_BGR8 = 2
 
     def __init__(self) -> None:
+        self.data_directory = None
+        def set_data_directory(directory):
+            self.data_directory = os.fsdecode(directory)
+            return self.CAMERA_STATUS_SUCCESS
+        self._sdk = SimpleNamespace(CameraSetDataDirectory=set_data_directory)
         self.device = _FakeMindVisionDevice()
         self.resolutions = [_FakeResolution(4, 3), _FakeResolution(2, 2)]
         self.buffer = None
@@ -137,6 +142,7 @@ def test_mindvision_source_preserves_hardware_metadata(monkeypatch: pytest.Monke
     frame = next(source)
     source.close()
     assert sdk.selected_resolution is sdk.resolutions[1]
+    assert Path(sdk.data_directory) == runtime_root() / 'mindvision'
     assert sdk.ae_state == 1
     assert sdk.released == 1 and sdk.freed and sdk.uninitialized
     assert frame.timestamp_ns == 4_200_000

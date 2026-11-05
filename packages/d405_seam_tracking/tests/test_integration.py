@@ -1,5 +1,5 @@
 """Real MCAP plugin/CDR and independent DDS recipient, installed adapter, no hardware."""
-from inspection_runtime.paths import project_root
+from inspection_runtime.paths import project_root, runtime_root, config_path
 import json
 import os
 from pathlib import Path
@@ -81,7 +81,7 @@ def test_installed_ros_dds_exact_count_and_exit(tmp_path):
     from nav_msgs.msg import Path as RosPath
     if os.environ.get('ROS_DOMAIN_ID') != '187': pytest.fail('run fixture with isolated ROS_DOMAIN_ID=187')
     project = project_root() / 'packages/d405_seam_tracking'
-    executable = project / 'ros2_ws/install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
+    executable = runtime_root() / 'install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
     assert executable.is_file(), 'build installed ROS adapter first'
     rclpy.init(); node = rclpy.create_node('d405_fixture_sender_receiver')
     qos = QoSProfile(depth=20, reliability=ReliabilityPolicy.BEST_EFFORT)
@@ -92,20 +92,27 @@ def test_installed_ros_dds_exact_count_and_exit(tmp_path):
                      node.create_subscription(RosPath, '/vision/d405_seam/path_3d', paths.append, 20),
                      node.create_subscription(Image, '/vision/d405_seam/overlay', overlays.append, qos)]
     log = (tmp_path / 'node.log').open('w')
-    process = subprocess.Popen([str(executable), '--config', str(project / 'configs/experimental.yaml'), '--camera-prefix', '/fixture/camera',
+    process = subprocess.Popen([str(executable), '--config', str(config_path('d405/experimental.yaml')), '--camera-prefix', '/fixture/camera',
                                 '--depth-scale-m', '.001', '--duration', '6', '--output', str(tmp_path / 'output'), '--overlay'], stdout=log, stderr=subprocess.STDOUT)
     try:
         deadline = time.monotonic() + 4
-        while not all(p.get_subscription_count() for p in pubs.values()) and time.monotonic() < deadline:
+        def discovered():
+            return (all(p.get_subscription_count() for p in pubs.values())
+                    and all(node.count_publishers(s.topic_name) for s in subscriptions))
+        while not discovered() and time.monotonic() < deadline:
             rclpy.spin_once(node, timeout_sec=.02)
-        assert all(p.get_subscription_count() for p in pubs.values())
-        time.sleep(.15)
+        assert discovered()
         for i in range(10):
             frame = synthetic_frame(stamp=1_000_000_000 + i * 50_000_000, sequence=i)
             image, depth, info, extrinsic = messages(frame)
             for role, message in [('image_info', info), ('depth_info', info), ('extrinsics', extrinsic), ('image', image), ('depth', depth)]: pubs[role].publish(message)
-            until = time.monotonic() + .05
-            while time.monotonic() < until: rclpy.spin_once(node, timeout_sec=.001)
+            # This fixture tests exact semantic delivery, not throughput. The
+            # production adapter intentionally replaces pending work under load;
+            # a fixed 20 Hz burst can drop a frame on a busy ARM host.
+            until = time.monotonic() + 2
+            while min(len(results), len(paths), len(overlays)) <= i and time.monotonic() < until:
+                rclpy.spin_once(node, timeout_sec=.01)
+            assert len(results) == len(paths) == len(overlays) == i + 1
         deadline = time.monotonic() + 8
         while process.poll() is None and time.monotonic() < deadline: rclpy.spin_once(node, timeout_sec=.02)
         assert process.wait(timeout=1) == 0
@@ -127,9 +134,9 @@ def test_installed_ros_dds_exact_count_and_exit(tmp_path):
 
 def test_empty_installed_ros_analysis_never_claims_complete(tmp_path):
     project = project_root() / 'packages/d405_seam_tracking'
-    executable = project / 'ros2_ws/install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
+    executable = runtime_root() / 'install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
     if os.environ.get('ROS_DOMAIN_ID') != '187': pytest.fail('run fixture with isolated ROS_DOMAIN_ID=187')
-    result = subprocess.run([str(executable), '--config', str(project / 'configs/experimental.yaml'), '--camera-prefix', '/empty/camera',
+    result = subprocess.run([str(executable), '--config', str(config_path('d405/experimental.yaml')), '--camera-prefix', '/empty/camera',
                              '--depth-scale-m', '.001', '--duration', '.1', '--output', str(tmp_path / 'empty')], capture_output=True, text=True, timeout=5)
     assert result.returncode == 0, result.stderr
     manifest = json.loads((tmp_path / 'empty/result_manifest.json').read_text())
@@ -168,14 +175,14 @@ def test_ros_visual_fallback_without_factory_calibration(tmp_path, mode):
     from std_msgs.msg import String
     from rclpy.qos import qos_profile_sensor_data
     project = project_root() / 'packages/d405_seam_tracking'
-    config = yaml.safe_load((project / 'configs/experimental.yaml').read_text()); config['mode'] = mode
+    config = yaml.safe_load((config_path('d405/experimental.yaml')).read_text()); config['mode'] = mode
     (tmp_path / 'config.yaml').write_text(yaml.safe_dump(config))
     rclpy.init(); node = rclpy.create_node('uncalibrated_visual_fixture'); received = []
     pub = node.create_publisher(Image, '/uncalibrated/camera/infra1/image_rect_raw', qos_profile_sensor_data)
     dep = node.create_publisher(Image, '/uncalibrated/camera/depth/image_rect_raw', qos_profile_sensor_data)
     sub = node.create_subscription(String, '/vision/d405_seam/result', lambda m: received.append(json.loads(m.data)), 10)
     log = (tmp_path / 'fallback.log').open('w')
-    executable = project / 'ros2_ws/install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
+    executable = runtime_root() / 'install/d405_seam_ros/lib/d405_seam_ros/d405_seam_node'
     process = subprocess.Popen([str(executable), '--config', str(tmp_path / 'config.yaml'), '--depth-scale-m', '.001', '--camera-prefix', '/uncalibrated/camera', '--duration', '4', '--output', str(tmp_path / 'analysis')], stdout=log, stderr=subprocess.STDOUT)
     try:
         deadline = time.monotonic() + 2

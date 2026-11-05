@@ -43,8 +43,10 @@ RECORD
 }
 run_check core python3 -m pytest --import-mode=importlib -q packages/tank_vision/tests/test_async_lifecycle.py packages/tank_vision/tests/test_async_writer.py packages/tank_vision/tests/test_failure_event_recorder.py packages/tank_vision/tests/test_geometry_provenance_recorder.py packages/tank_vision/tests/test_roi_validation_recorder.py packages/tank_vision/tests/test_stable_seam_tracker.py packages/tank_vision/tests/test_snapshot_writer.py packages/tank_vision/tests/test_stable_seam_ros_contract.py
 run_check data python3 -m pytest -q ros2_ws/src/functions/data/inspection_tools/test tests/data/test_timestamp_acceptance.py tests/data/test_mapping_eddy_collection.py tests/data/test_role_handoff.py tests/system/test_wrappers.py
-run_check video_consumers "$FIELD_RRD_PYTHON" -m pytest -q -s tests/system/test_video_consumers.py
-run_check rrd_including_mcap "$FIELD_RRD_PYTHON" -m pytest -q ros2_ws/src/functions/visualization/inspection_rerun/test/test_run_rrd_builder.py
+# These tests need no pytest plugins. Keep ROS launch_testing's auto-loaded
+# plugin (and its system-only Python dependencies) out of the Rerun venv.
+run_check video_consumers env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$FIELD_RRD_PYTHON" -m pytest -q -s tests/system/test_video_consumers.py
+run_check rrd_including_mcap env PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 "$FIELD_RRD_PYTHON" -m pytest -q ros2_ws/src/functions/visualization/inspection_rerun/test/test_run_rrd_builder.py
 run_check wireless env ROS_DOMAIN_ID=198 ROS_LOCALHOST_ONLY=1 HTTP_PROXY=http://127.0.0.1:9 HTTPS_PROXY=http://127.0.0.1:9 ALL_PROXY=http://127.0.0.1:9 python3 -m pytest -q -s ros2_ws/src/functions/communication/agv_bridge/test/test_inspection_bridge.py
 # Every independent check runs even with an environment blocker; final exit remains nonzero.
 run_check eddy env ROS_DOMAIN_ID=186 ROS_LOCALHOST_ONLY=1 python3 "$ROOT/tests/system/ros_native_eddy_e2e.py" --output "$OUT/eddy.json"

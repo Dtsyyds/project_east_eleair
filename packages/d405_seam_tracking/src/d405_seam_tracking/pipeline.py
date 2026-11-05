@@ -34,6 +34,9 @@ class Pipeline:
         if self.accelerator: self.accelerator.close()
         if self.visual: self.visual.close()
 
+    def decode_visual(self, probability, config, bounds):
+        return candidate(probability, config, bounds)
+
     def process(self, frame, diagnostic=False):
         start = time.perf_counter()
         frame.validate()
@@ -71,7 +74,7 @@ class Pipeline:
             else:
                 probability = classical_probability(frame.image, config)
                 result['actual_backends']['visual'] = 'classical_cpu'
-            visual = candidate(probability, config, bounds)
+            visual = self.decode_visual(probability, config, bounds)
         result['timing_ms']['visual'] = (time.perf_counter() - tick) * 1000
         depth = {'valid': False, 'reasons': ['depth_disabled']}
         z = measured = height = None
@@ -176,6 +179,11 @@ def overlay(frame, result, diagnostic=None):
     if len(p):
         for x in (p[:, 1], p[:, 2], p[:, 1:].mean(1)):
             cv2.polylines(image, [np.rint(np.column_stack((x, p[:, 0]))).astype(np.int32)], False, color, 2)
+    center = np.asarray(result.get('points_2d_y_center', []))
+    if result.get('state') == 'CENTER_2D' and len(center):
+        for first, second in zip(center, center[1:]):
+            if second[0] - first[0] == 3:
+                cv2.line(image, (round(first[1]), round(first[0])), (round(second[1]), round(second[0])), (0, 220, 0), 2)
     cv2.putText(image, result['state'], (10, 25), cv2.FONT_HERSHEY_SIMPLEX, .6, color, 2)
     cv2.putText(image, ','.join(result['reasons'])[:100], (10, 45), cv2.FONT_HERSHEY_SIMPLEX, .35, color, 1)
     if diagnostic is not None and image.shape[0] >= 120:

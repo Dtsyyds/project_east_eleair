@@ -8,6 +8,7 @@ trace; it does not create a second candidate generator or DP implementation.
 
 from __future__ import annotations
 from inspection_runtime.paths import project_root, config_path, runtime_root, vision_evidence_root
+from experiments.vision.scripts.frozen_inputs import verify_config
 
 import json
 import math
@@ -47,10 +48,12 @@ def verify_inputs() -> dict[str, Any]:
     mismatch = {key: {"expected": EXPECTED[key], "actual": value} for key, value in hashes.items() if value != EXPECTED[key]}
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     annotation = json.loads(ANNOTATION.read_text(encoding="utf-8"))
-    fixed_mismatch = {key: value for key, value in mismatch.items() if key != "tracker"}
+    config_audit = verify_config(CONFIG, EXPECTED["config"])
+    fixed_mismatch = {key: value for key, value in mismatch.items() if key not in ("tracker", "config")}
     if fixed_mismatch or manifest.get("status") != "frozen" or not manifest.get("input_sha256_matches") or not manifest.get("human_overlay_approved") or annotation.get("input_sha256") != EXPECTED["raw"]:
         raise RuntimeError(f"fixed input verification failed: {mismatch}")
-    return {"paths": {key: str(path.relative_to(ROOT)) for key, path in paths.items()}, "sha256": hashes,
+    return {"paths": {key: str(path.resolve()) for key, path in paths.items()}, "sha256": hashes,
+            "config_migration": config_audit,
             "manifest_status": manifest.get("status"), "manifest_input_sha256_matches": manifest.get("input_sha256_matches"),
             "manifest_human_overlay_approved": manifest.get("human_overlay_approved"), "annotation_point_count": annotation.get("point_count"),
             "tracker_sha256_before_trace_hook": TRACKER_SHA256_BEFORE_TRACE_HOOK, "tracker_sha256_current": hashes["tracker"]}
@@ -134,7 +137,7 @@ def run_baseline_and_trace(image: np.ndarray, evidence: dict[str, Any]) -> tuple
     report = {"status": "matched" if all(matches.values()) and all(trace_equal.values()) else "baseline_mismatch", "evidence": evidence,
               "three_standard_runs": standard_results, "expected": expected, "actual": actual, "matches": matches,
               "trace_false_true_field_equality": trace_equal, "trace_false_result": core_result(false_result), "trace_true_result": core_result(true_result),
-              "fit_false_recomputed_from_real_fit": fit_false, "processing_p95_source": str(TIMING_ARTIFACT.relative_to(ROOT))}
+              "fit_false_recomputed_from_real_fit": fit_false, "processing_p95_source": str(TIMING_ARTIFACT.resolve())}
     return report, trace_true, true_result, true_diag, trace_true.last_provenance
 
 

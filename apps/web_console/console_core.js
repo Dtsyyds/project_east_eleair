@@ -41,7 +41,8 @@
 
   const TRACKING_LABELS = Object.freeze({
     FUSED_CANDIDATE: "融合候选",
-    VISION_2D: "二维视觉",
+    VISION_2D: "A 完整二维输出",
+    CENTER_2D: "二维中线",
     GEOMETRY_CANDIDATE: "几何候选",
     CONFLICT_2D: "二维冲突",
     PREDICTED: "预测",

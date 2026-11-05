@@ -32,7 +32,7 @@ REFERENCE = project_root() / 'config/vision/seam_geometry_reference_s100p_live_v
 STABLE_CONFIG = project_root() / 'config/vision/s100p_stable_seam_4096x3072.yaml'
 TRACKER = project_root() / 'packages/tank_vision/tank_vision/stable_seam_tracker.py'
 EXPECTED_RAW = "ada05bfa684cccfa87d54481985ca8614a9f3d9acd140e1af61f5aa80baccd02"
-SNAPSHOT_ROOT = runtime_root() / 'analysis/stable_seam_failure_snapshots'
+SNAPSHOT_ROOT = vision_evidence_root() / 'stable_seam_failure_snapshots'
 SNAPSHOTS = [
     "20260910_160926_591_stamp_21705_511000000",
     "20260910_161005_409_stamp_21744_357800000",

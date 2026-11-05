@@ -189,8 +189,10 @@ def test_latest_frame_only_overwrites_and_closes() -> None:
 
 
 def test_frozen_reference_source_hashes() -> None:
-    root = project_root() / 'packages/tank_vision'
     manifest = json.loads((vision_evidence_root() / 's1_d7_manual_ground_truth_v2/ground_truth_manifest.json').read_text())
-    assert sha256_file(root / manifest["input_image_relative"]) == manifest["input_sha256"]
+    # The frozen manifest records the old package-relative output path. Its
+    # bytes now live under the explicitly selected external evidence root.
+    relative = Path(manifest["input_image_relative"]).relative_to("output")
+    assert sha256_file(vision_evidence_root() / relative) == manifest["input_sha256"]
     assert sha256_file(vision_evidence_root() / 's1_d7_manual_ground_truth_v2/seam_center_lit_quality_01_annotation_v2.json') == manifest["json_sha256"]
     assert sha256_file(vision_evidence_root() / 's1_d7_manual_ground_truth_v2/seam_center_lit_quality_01_annotation_overlay_v2.png') == manifest["overlay_sha256"]

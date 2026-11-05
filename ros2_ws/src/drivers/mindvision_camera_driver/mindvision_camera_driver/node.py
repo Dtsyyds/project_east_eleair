@@ -8,6 +8,7 @@ import ctypes
 import array
 import fcntl
 import importlib.util
+import json
 import os
 from pathlib import Path
 import sys
@@ -23,6 +24,9 @@ from diagnostic_msgs.msg import DiagnosticArray, DiagnosticStatus, KeyValue
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import CameraInfo, Image
+from rcl_interfaces.msg import SetParametersResult
+from std_srvs.srv import Trigger
+from inspection_runtime.camera_tuning import FIELDS, MindvisionSettings
 
 from .buffer import copy_uint8_buffer
 from .camera_settings import configure_exposure
@@ -130,6 +134,9 @@ class MindVisionCameraNode(Node):
         self.declare_parameter("timeout_ms", 2000)
         self.declare_parameter("qos_depth", 1)
         self.declare_parameter("qos_reliability", "best_effort")
+        self.declare_parameter("save_tuning", False)
+        self.declare_parameter("tuning_serial", "")
+        self.declare_parameter("tuning_revision", "")
 
         self._sdk: Any | None = None
         self._handle: Any | None = None
@@ -161,6 +168,7 @@ class MindVisionCameraNode(Node):
         self._preview_last_ns = 0
         self._preview_count = 0
         self._raw_bayer_pub = None
+        self._tuning = None
 
         try:
             self._configure_qos()
@@ -173,12 +181,45 @@ class MindVisionCameraNode(Node):
             self._timer = self.create_timer(timer_period, self._capture_once)
             description = "camera maximum" if publish_rate_hz == 0.0 else f"{publish_rate_hz:g} Hz"
             self.get_logger().info(f"MindVision publish rate: {description}")
+            self.add_on_set_parameters_callback(self._set_tuning)
+            self._settings_service = self.create_service(Trigger, '~/get_settings', self._get_settings)
         except Exception:
             self.close()
             raise
 
     def _value(self, name: str) -> Any:
         return self.get_parameter(name).value
+
+    def _get_settings(self, request, response):
+        try:
+            if self._tuning is None:
+                raise RuntimeError('当前相机不支持彩色调参')
+            result = self._tuning.snapshot()
+            resolution = self._sdk.CameraGetImageResolution(self._handle)
+            legacy_rate = float(self._value('publish_rate_hz'))
+            result.update(width=int(resolution.iWidth), height=int(resolution.iHeight),
+                          publish_rate_hz=legacy_rate if legacy_rate >= 0 else float(self._value('target_fps')))
+            response.success, response.message = True, json.dumps(result, ensure_ascii=False, allow_nan=False)
+        except Exception as error:
+            response.success, response.message = False, str(error)
+        return response
+
+    def _set_tuning(self, parameters):
+        try:
+            values = {p.name: p.value for p in parameters}
+            if len(values) != len(parameters) or set(values) - set(FIELDS) - {'save_tuning', 'tuning_serial', 'tuning_revision'}:
+                raise ValueError('仅曝光和色彩参数支持在线调整；其他参数需在启动时配置')
+            if self._tuning is None or values.pop('tuning_serial', None) != self._tuning.serial:
+                raise ValueError('相机序列号已改变，请重新读取参数')
+            if values.pop('tuning_revision', None) != self._tuning.snapshot()['settings_revision']:
+                raise ValueError('相机参数已被其他操作修改，请重新读取后调整')
+            save = values.pop('save_tuning', False)
+            if type(save) is not bool:
+                raise ValueError('保存标志类型无效')
+            self._tuning.apply(values, save=save)
+            return SetParametersResult(successful=True)
+        except Exception as error:
+            return SetParametersResult(successful=False, reason=str(error))
 
     def _configure_qos(self) -> None:
         depth, reliability_name = validate_qos(self._value("qos_depth"), self._value("qos_reliability"))
@@ -364,6 +405,12 @@ class MindVisionCameraNode(Node):
         if self._sdk.CameraSetTriggerMode(self._handle, 0) != self._sdk.CAMERA_STATUS_SUCCESS:
             raise RuntimeError("could not enable MindVision continuous acquisition")
         self._configure_exposure()
+        if not self._is_mono:
+            self._tuning = MindvisionSettings(self._sdk, self._handle, capability, self._device.GetSn())
+            saved = self._tuning.restore()
+            if saved:
+                self.set_parameters([rclpy.parameter.Parameter(name, value=value) for name, value in saved['values'].items()])
+                self.get_logger().info(f"Restored saved camera tuning for {self._device.GetSn()}")
         if self._sdk.CameraPlay(self._handle) != self._sdk.CAMERA_STATUS_SUCCESS:
             raise RuntimeError("could not start MindVision acquisition")
         self._playing = True
@@ -458,6 +505,9 @@ class MindVisionCameraNode(Node):
 
     def _capture_once(self) -> None:
         if self._closed or not rclpy.ok(context=self.context):
+            return
+        if getattr(self, '_tuning', None) is not None and self._tuning.fault:
+            self._publish_error_diagnostics(self._tuning.fault, DiagnosticStatus.ERROR)
             return
         read_started_ns = time.monotonic_ns()
         try:

@@ -1,0 +1,45 @@
+# Round-1 A: original candidate scores/gates, RGB, frame-local output.
+# Fold 1 is fixed by index, not selected by held-out accuracy; no ensemble.
+roi:
+- 0.2
+- 0.35
+- 0.8
+- 0.95
+mode: vision_only
+visual_backend: round1_a_rgb
+geometry_backend: cpu
+checkpoint: .runtime/s100p/analysis/d405_unet_round1_20261102/models/fold_1/checkpoint.pt
+surface: quadratic
+depth_range_m:
+- 0.07
+- 0.6
+sync_tolerance_ms: 12.0
+min_background_points: 120
+background_stride: 4
+background_exclusion_fraction: 0.24
+noise_multiplier: 3.5
+minimum_height_m: 0.0005
+visual_contrast_u8: 12.0
+probability_threshold: 0.55
+min_coverage: 0.55
+width_fraction:
+- 0.01
+- 0.3
+conflict_pixels: 20.0
+max_fit_residual_pixels: 5.0
+temporal_alpha: 0.65
+prediction_lifetime_sec: 0.2
+reset_gap_sec: 0.75
+max_jump_pixels: 55.0
+visual_feature: local_stripe
+visual_polarity: dark
+visual_stripe_width_fraction: 0.024
+visual_smoothing_fraction: 0.01875
+candidate_selection: continuous
+path_max_gap_rows: 2
+path_max_slope: 1.5
+path_position_penalty: 0.15
+path_width_penalty: 0.08
+path_gap_penalty: 0.5
+algorithm: round1_a
+checkpoint_sha256: 15dbdde88dc26eba86adda212a146786b624a23bd57929f0bfb1a0152ca4327f

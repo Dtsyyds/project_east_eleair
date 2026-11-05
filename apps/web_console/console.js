@@ -2,12 +2,13 @@
 "use strict";
 (() => {
   const C = window.TankConsoleCore;
+  const theme = window.ConsoleTheme;
   if (!C) throw new Error("console_core.js was not loaded");
   const DEFAULT_ROBOT = "tank_inspection_robot";
   const MAX_LOG = 200, MAX_MESSAGE = 1024 * 1024, MAX_BUFFER = 64 * 1024;
   const STREAM_IDS = ["mindvision", "fisheye", "depth_camera"];
   const TASK_STAGES = ["preflighting", "ready", "starting", "recording", "stopping", "finalizing", "complete"];
-  const SIDE_EFFECTS = new Set(["collection.start", "collection.stop", "emat.measure", "replay.start", "replay.pause", "replay.resume", "replay.stop", "evidence.save_displayed", "evidence.save_next", "event.mark", "chassis.move", "chassis.stop"]);
+  const SIDE_EFFECTS = new Set(["vision.start", "vision.stop", "vision.save_sample", "vision.select_candidate", "vision.clear_selection", "collection.start", "collection.stop", "emat.measure", "replay.start", "replay.pause", "replay.resume", "replay.stop", "evidence.save_displayed", "evidence.save_next", "event.mark", "chassis.move", "chassis.stop", "camera.settings.apply", "camera.settings.save"]);
   const $ = id => document.getElementById(id);
   const monoNow = () => performance.now();
   const isoNow = () => new Date().toISOString();
@@ -29,7 +30,8 @@
       dimensionErrors:0, clientReplaced:0, hiddenDropped:0, outOfOrder:0, crossConnectionDiscarded:0,
       serverDropped:null, receiveTimes:[], displayTimes:[], decoding:false, pending:null, hiddenPending:null,
       lastSourceStamp:null, lastReceived:null, lastDisplayed:previous?.lastDisplayed || null,
-      overlayVisible:previous?.overlayVisible !== false, latestResultState:"none"
+      overlayVisible:previous?.overlayVisible !== false, latestResultState:"none",
+      frameCache:new Map(), frameCacheBytes:0, lastMatchedAt:null, lastMatchedKey:null, matchedDisplays:0
     };
   }
 
@@ -75,13 +77,18 @@
   function currentRecord(item) {return item && item.connectionId === state.connectionId ? item : null;}
 
   function resetConnectionScope() {
+    window.CameraTuning.reset();
+    window.VisionControls.reset();
     state.connectionId++;
     state.capabilities = null; state.capabilitiesAt = null; state.mode = null; state.bridge = null;
     state.task = null; state.measurement = null; state.storage = null;
     state.response = null; state.requests.clear(); state.uncertainActions.clear(); restoringReadStateFor = 0;
     $("response").textContent = "尚无 response";
     $("capabilities").textContent = "板端尚未提供 capabilities";
-    for (const id of STREAM_IDS) state.streams[id] = emptyStream(id, state.streams[id]);
+    for (const id of STREAM_IDS) {
+      state.streams[id] = emptyStream(id, state.streams[id]);
+      const canvas = $(id + "-overlay"); canvas.getContext("2d").clearRect(0,0,canvas.width,canvas.height);
+    }
     state.trackingByFrame.clear(); state.trajectory = []; state.trajectoryFrame = null;
     $("control-token").value = ""; $("enable-control").checked = false;
   }
@@ -138,6 +145,11 @@
     if (request.sideEffect) state.uncertainActions.add(request.action);
     log("error", "请求超时，结果未知；不自动重试 " + request.action, {request_id:id});
     state.requests.delete(id);
+    if (request.action.startsWith('camera.settings.')) window.CameraTuning.timeout(id);
+    if (request.action.startsWith("vision.")) {
+      window.VisionControls.timeout();
+      if(operationGate("vision.status").allowed && !actionInFlight("vision.status"))sendOperation("vision.status",{});
+    }
     if (request.action.startsWith("collection.") && operationGate("collection.status").allowed && !actionInFlight("collection.status")) sendOperation("collection.status", {});
     renderButtons();
   }
@@ -174,6 +186,7 @@
     ws.onclose = event => {
       if (own !== sequence) return;
       state.connected = false; socket = null; $("control-token").value = ""; $("enable-control").checked = false;
+      releaseTrackingFrames();
       log("info", "连接关闭", {code:event.code, reason:event.reason});
       if (state.desired && $("reconnect").checked) {
         updateConnectionUi("等待重连…", "warn");
@@ -198,11 +211,21 @@
     clearTimeout(retryTimer); retryTimer = null; sequence++;
     if (socket) {socket.onclose = null;socket.close(1000, userInitiated ? "operator_disconnect" : "page_hidden");socket = null;}
     state.connected = false; $("control-token").value = ""; $("enable-control").checked = false;
+    releaseTrackingFrames();
     updateConnectionUi("已断开", "warn");render();
     if (userInitiated) log("info", "用户断开；自动重连已取消");
   }
 
   function disconnect() {closeSocket(true, false);}
+
+  function releaseTrackingFrames() {
+    for (const stream of Object.values(state.streams)) {
+      stream.frameCache.clear(); stream.frameCacheBytes=0;
+      stream.lastMatchedAt=null; stream.lastMatchedKey=null;
+      stream.pending=null; stream.hiddenPending=null;
+    }
+    state.trackingByFrame.clear();
+  }
 
   function acceptCapabilities(value) {
     if (!C.isObject(value)) return;
@@ -215,6 +238,7 @@
     updateProfiles(); renderButtons();
     if (restoringReadStateFor !== state.connectionId) {
       restoringReadStateFor = state.connectionId;
+      if (operationGate("vision.status").allowed) sendOperation("vision.status", {});
       if (operationGate("collection.status").allowed) sendOperation("collection.status", {});
       if (operationGate("history.list").allowed) sendOperation("history.list", {});
       if (operationGate("replay.status").allowed) sendOperation("replay.status", {});
@@ -307,12 +331,33 @@
     const validStates = Object.hasOwn(C.TRACKING_LABELS, String(value.status || "").toUpperCase());
     state.tracking = record(value, validStates && value.valid !== false, validStates ? "" : "未知巡迹状态");
     const key = C.frameKey(value, state.robotId);
+    // A missing measurement clears the last trajectory immediately, even if the
+    // matching JPEG is late or absent. Also invalidate queued old tracking draws.
+    if (validStates && C.sourceIdentity(value)?.source === "depth_camera" &&
+        (String(value.status).toUpperCase() === "LOST" || value.vision_2d_valid === false)) {
+      const stream = state.streams.depth_camera;
+      const canvas = $("depth_camera-overlay");
+      const shownResult = stream.lastDisplayed && matchingResult(stream.lastDisplayed);
+      // Keep proposals on their own displayed source frame until the next JPEG
+      // is committed. Clearing them between every pair of frames makes a real
+      // pointer click race with disabled buttons. Measured/stale lines still
+      // clear immediately, and a blank proposal set also clears old choices.
+      const keepProposals = value.candidates?.length && shownResult?.valid &&
+        shownResult.data.vision_2d_valid === false && shownResult.data.candidates?.length;
+      if (!keepProposals) {
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        stream.lastMatchedAt = null; stream.lastMatchedKey = null;
+        stream.latestResultState = "no_measurement";
+      }
+      stream.noMeasurementAt = state.tracking.receivedAt;
+    }
     if (key) {
       state.trackingByFrame.set(key, state.tracking);
       while (state.trackingByFrame.size > 80) state.trackingByFrame.delete(state.trackingByFrame.keys().next().value);
       for (const id of STREAM_IDS) {
         const displayed = state.streams[id].lastDisplayed;
-        if (displayed && C.frameKey(displayed, state.robotId) === key) drawOverlay(id, displayed, state.tracking);
+        if (id === "depth_camera") presentTrackingFrame(state.streams[id], state.tracking);
+        else if (displayed && C.frameKey(displayed, state.robotId) === key) drawOverlay(id, displayed, state.tracking);
       }
     }
   }
@@ -325,8 +370,17 @@
     if (packet.header.robot_id !== state.robotId && packet.payload.robot_id !== state.robotId) {state.foreign++;return;}
     state.rx++; state.lastPacket = monoNow();
     const payload = packet.payload, kind = packet.header.msg_type;
+    window.CameraTuning.receive(packet);
+    window.VisionControls.receive(packet);
+    if (payload.camera_settings?.status === 'completed') {
+      state.uncertainActions.delete('camera.settings.apply');
+      state.uncertainActions.delete('camera.settings.save');
+    }
     window.TankReplay.receive(packet);
     if(kind==="replay_sensor")return;
+    if(payload.action==="vision.status" && payload.status==="completed" && payload.vision && payload.vision.busy===false) {
+      for(const action of ["vision.start","vision.stop","vision.save_sample"])state.uncertainActions.delete(action);
+    }
     if (C.isObject(payload.capabilities)) acceptCapabilities(payload.capabilities);
     if (C.isObject(payload.task)) acceptTask(payload.task);
     if (C.isObject(payload.storage)) acceptStorage(payload.storage);
@@ -389,11 +443,48 @@
     if (C.finite(video.preview_dropped)) stream.serverDropped = video.preview_dropped;
     state.streamHealth[video.camera_id] = record(Object.assign({}, meta, {status:"active"}), true);
     const frame = {meta, data:video.data, connectionId:state.connectionId};
+    cacheTrackingFrame(stream, frame);
     if (document.hidden) {
       if (stream.hiddenPending) stream.hiddenDropped++;
       stream.hiddenPending = frame; return;
     }
-    enqueueDecode(stream, frame);
+    if (presentTrackingFrame(stream, matchingResult(meta))) return;
+    if (!holdingTrackingFrame(stream)) enqueueDecode(stream, frame);
+  }
+
+  function cacheTrackingFrame(stream, frame) {
+    if (stream.id !== "depth_camera") return;
+    const key = C.frameKey(frame.meta, state.robotId);
+    if (!key) return;
+    const old = stream.frameCache.get(key);
+    if (old) stream.frameCacheBytes -= old.data.length;
+    stream.frameCache.set(key, frame); stream.frameCacheBytes += frame.data.length;
+    for (const [oldKey, cached] of stream.frameCache) {
+      if (stream.frameCache.size <= 48 && stream.frameCacheBytes <= 8*1024*1024 && monoNow()-cached.meta.receivedAt <= 2500) break;
+      stream.frameCache.delete(oldKey); stream.frameCacheBytes -= cached.data.length;
+    }
+  }
+
+  function holdingTrackingFrame(stream) {
+    return stream.id === "depth_camera" && stream.overlayVisible && stream.lastMatchedAt !== null && monoNow()-stream.lastMatchedAt < 1000;
+  }
+
+  function presentTrackingFrame(stream, resultRecord) {
+    if (!state.connected || stream.id !== "depth_camera" || !stream.overlayVisible || document.hidden || !resultRecord?.valid || !currentRecord(resultRecord)) return false;
+    if (stream.noMeasurementAt != null && resultRecord.receivedAt < stream.noMeasurementAt) return false;
+    const result = resultRecord.data, key = C.frameKey(result, state.robotId), frame = stream.frameCache.get(key);
+    if (!frame || frame.connectionId !== state.connectionId || monoNow()-frame.meta.receivedAt > 1500 ||
+        monoNow()-resultRecord.receivedAt > freshnessFor("tracking", result) || result.coordinate_space !== "image_pixels" ||
+        (C.finite(result.image_width) && result.image_width !== frame.meta.width) ||
+        (C.finite(result.image_height) && result.image_height !== frame.meta.height)) return false;
+    if (stream.lastMatchedKey === key) return true;
+    stream.lastMatchedAt = monoNow(); stream.lastMatchedKey = key;
+    if (stream.lastDisplayed && C.sameFrame(stream.lastDisplayed, frame.meta, state.robotId)) {
+      stream.lastDisplayed.presentation = "tracking";
+      stream.matchedDisplays++;
+      drawOverlay(stream.id, stream.lastDisplayed, resultRecord);
+    } else enqueueDecode(stream, Object.assign({}, frame, {trackingKey:key}));
+    return true;
   }
 
   function enqueueDecode(stream, frame) {
@@ -415,15 +506,20 @@
     };
     image.onload = () => {
       if (frame.connectionId !== state.connectionId || state.streams[stream.id] !== stream) {state.lifecycleDiscards++;return;}
+      if (!state.connected) {finish();return;}
       if (image.naturalWidth !== frame.meta.width || image.naturalHeight !== frame.meta.height) {
         stream.dimensionErrors++; log("error", "jpeg_dimensions_mismatch " + stream.id); finish(); return;
       }
+      if ((frame.trackingKey && (!stream.overlayVisible || stream.lastMatchedKey !== frame.trackingKey)) ||
+          (!frame.trackingKey && holdingTrackingFrame(stream))) {finish(); return;}
       try {
         const canvas = $(stream.id + "-canvas"), context = canvas.getContext("2d", {alpha:false});
         canvas.width = image.naturalWidth; canvas.height = image.naturalHeight; context.drawImage(image, 0, 0);
         const overlay = $(stream.id + "-overlay");overlay.width = image.naturalWidth;overlay.height = image.naturalHeight;
         const displayedAt = monoNow(); stream.displayed++; C.boundedPush(stream.displayTimes, displayedAt, 180);
-        stream.lastDisplayed = Object.assign({}, frame.meta, {displayedAt, displayedAtIso:isoNow()});
+        stream.lastDisplayed = Object.assign({}, frame.meta, {displayedAt, displayedAtIso:isoNow(), presentation:frame.trackingKey ? "tracking" : "raw"});
+        if (frame.trackingKey) stream.matchedDisplays++;
+        else {stream.lastMatchedAt = null; stream.lastMatchedKey = null;}
         drawOverlay(stream.id, stream.lastDisplayed, matchingResult(stream.lastDisplayed));
       } catch (error) {stream.decodeErrors++;log("error", "canvas_commit_failed " + stream.id, {message:error.message});}
       finish();
@@ -455,15 +551,19 @@
     const canvas = $(id + "-overlay"), context = canvas.getContext("2d");context.clearRect(0,0,canvas.width,canvas.height);
     const stream = state.streams[id];stream.latestResultState = resultRecord ? "matched" : state.tracking ? "unmatched" : "none";
     if (!resultRecord || !resultRecord.valid) return;
+    if (stream.noMeasurementAt != null && resultRecord.receivedAt < stream.noMeasurementAt) return;
     const result = resultRecord.data;
     if (result.coordinate_space !== "image_pixels") {stream.latestResultState = "unsupported_coordinates";return;}
     if ((C.finite(result.image_width) && result.image_width !== displayed.width) || (C.finite(result.image_height) && result.image_height !== displayed.height)) {stream.latestResultState = "dimension_mismatch";return;}
     const status = String(result.status || "").toUpperCase(), predicted = status === "PREDICTED";
-    drawPolyline(context, result.left_boundary, predicted ? "#ffd080" : "#72d7ff", 3, predicted);
-    drawPolyline(context, result.right_boundary, predicted ? "#ffd080" : "#72d7ff", 3, predicted);
-    drawPolyline(context, result.centerline, status === "CONFLICT_2D" ? "#ff7070" : "#70ddb1", 4, predicted);
+    if (id === "depth_camera" && !result.vision_2d_valid) window.VisionControls.drawCandidates(context, result);
+    if (status === "LOST" || result.vision_2d_valid === false) return;
     const coverage = points(result.reliable_coverage || result.coverage_region);
     if (coverage.length >= 3) {context.save();context.fillStyle="rgba(112,221,177,.15)";context.beginPath();context.moveTo(coverage[0].x,coverage[0].y);coverage.slice(1).forEach(point=>context.lineTo(point.x,point.y));context.closePath();context.fill();context.restore();}
+    const d405 = id === "depth_camera";
+    drawPolyline(context, result.left_boundary, d405 ? "#3399ff" : predicted ? "#ffd080" : "#72d7ff", 3, predicted);
+    drawPolyline(context, result.right_boundary, d405 ? "#32d17d" : predicted ? "#ffd080" : "#72d7ff", 3, predicted);
+    drawPolyline(context, result.centerline, d405 ? "#ff4040" : status === "CONFLICT_2D" ? "#ff7070" : "#70ddb1", d405 ? 3 : 4, predicted);
   }
 
   function fps(samples) {
@@ -488,10 +588,30 @@
       $(id + "-kind").textContent = C.contentLabel(shown || received);
       const stateNode = $(id + "-state");
       const staleMs = freshnessFor(id, shown || received);
-      const stale = !state.connected || !shown || shown.connectionId !== state.connectionId || monoNow() - shown.displayedAt > staleMs;
+      const stale = !state.connected || !shown || shown.connectionId !== state.connectionId || monoNow() - shown.receivedAt > staleMs;
       if (!shown) {stateNode.className="screen-state";stateNode.textContent="尚未成功显示预览";}
       else if (stale) {stateNode.className="screen-state stale";stateNode.textContent="画面已过期 · 最后显示于 " + shown.displayedAtIso + " · " + ageText(shown.displayedAt) + "前";}
       else {stateNode.className="screen-state hidden";stateNode.textContent="";}
+      if (stale && stream.latestResultState === "matched") {
+        const canvas = $(id+"-overlay");canvas.getContext("2d").clearRect(0,0,canvas.width,canvas.height);
+        stream.latestResultState = "expired";
+      }
+      if (id === "depth_camera") {
+        window.VisionControls.renderReference(shown, stale, stream.overlayVisible);
+        const matched = !stale && stream.overlayVisible && stream.latestResultState === "matched";
+        const result = shown && matchingResult(shown);
+        window.VisionControls.renderCandidates(result, Boolean(matched && result?.valid && currentRecord(result) &&
+          monoNow()-result.receivedAt < freshnessFor("tracking",result.data) &&
+          result.data.coordinate_space === "image_pixels" && result.data.image_width === shown.width && result.data.image_height === shown.height));
+        $("depth_camera-tracking-display").textContent = matched ?
+          (result?.data.vision_2d_valid ? (result.data.status === "CENTER_2D" ? "红线：二维中线；不提供有效左右边界" : "蓝线：左边线拟合 · 绿线：右边线拟合 · 红线：二维中心线") :
+            result?.data.candidates?.length ? "疑似候选虚线：1 紫色 · 2 青色 · 3 橙色；请在巡迹面板选择" : "当前识别帧未检出有效焊缝") +
+          " · 同帧显示延迟约 " + Math.round(shown.displayedAt-shown.receivedAt) + " ms" :
+          stale && shown ? "画面已过期，等待新鲜图像；拟合线已清除" :
+          stream.latestResultState === "no_measurement" ? "最新结果无测量；上一帧轨迹已清除" :
+          !stream.overlayVisible ? "叠加已隐藏，点击“显示叠加”查看焊缝线" :
+          "当前为原始预览；等待新鲜的同帧巡迹结果";
+      }
       if (shown) {
         const receivedLine = received ? "最后接收 frame=" + valueText(received.frame_id) + " stamp_ns=" + valueText(C.stamp(received.stamp_ns)) + " 本地=" + received.receivedAtIso : "最后接收 未知";
         const shownLine = "当前显示 frame=" + valueText(shown.frame_id) + " stamp_ns=" + valueText(C.stamp(shown.stamp_ns)) + " 本地=" + shown.displayedAtIso;
@@ -509,7 +629,12 @@
       const status=document.createElement("span");status.className="device-status";
       const reason=document.createElement("div");reason.className="device-reason";
       const detail=document.createElement("div");detail.className="device-detail";
-      card.append(title,status,reason,detail);$("devices").appendChild(card);deviceNodes[key]={card,status,reason,detail};
+      card.append(title,status,reason,detail);$("devices").appendChild(card);
+      const summary=document.createElement("div");summary.className="sensor-row";
+      const summaryName=document.createElement("span");summaryName.textContent=name;
+      const summaryStatus=document.createElement("span");summaryStatus.className="sensor-status";
+      summary.append(summaryName,summaryStatus);$("sensor-overview").appendChild(summary);
+      deviceNodes[key]={card,status,reason,detail,summary,summaryStatus};
     }
   }
 
@@ -518,6 +643,9 @@
       const item=state.devices[key], assessment=assess(item,key), data=item?.data;
       node.card.className="device "+(assessment.state==="active"?"good":["device_error","invalid"].includes(assessment.state)?"bad":["stale","bridge_disconnected"].includes(assessment.state)?"warn":"");
       node.status.textContent=assessment.label;
+      node.summary.className=node.card.className.replace("device", "sensor-row");
+      node.summaryStatus.textContent=assessment.label;
+      node.summary.title=data?C.clip(data.reason || item.reason || assessment.label):"等待板端自检";
       node.reason.textContent=data?C.clip(data.reason || item.reason || "未提供最近原因"):"等待板端自检";
       node.detail.textContent=data?"topic: "+valueText(data.topic)+"\ntype: "+valueText(data.message_type)+"\n收到/有效/无效: "+[valueText(data.received),valueText(data.accepted),valueText(data.invalid)].join("/")+"\nstamp_ns: "+valueText(C.stamp(data.stamp_ns))+"\n接收年龄: "+(assessment.ageMs==null?"未知":(assessment.ageMs/1000).toFixed(1)+"s")+" · 新鲜阈值 "+(freshnessFor(key,data)/1000).toFixed(1)+"s": "";
     }
@@ -553,25 +681,38 @@
   }
 
   function drawTrajectory() {
-    const {context,width,height}=setupCanvas($("trajectory"));context.clearRect(0,0,width,height);context.strokeStyle="#2c4156";context.lineWidth=1;
+    const {context,width,height}=setupCanvas($("trajectory"));context.clearRect(0,0,width,height);context.strokeStyle=theme.grid;context.lineWidth=1;
     for(let i=1;i<5;i++){context.beginPath();context.moveTo(i*width/5,0);context.lineTo(i*width/5,height);context.stroke();context.beginPath();context.moveTo(0,i*height/5);context.lineTo(width,i*height/5);context.stroke();}
-    if(state.trajectory.length<2)return;
+    if(state.trajectory.length<2){
+      context.fillStyle=theme.text;context.font="12px sans-serif";context.textAlign="center";
+      context.fillText("等待有效位姿轨迹 · 单位 m",width/2,height/2);context.textAlign="start";return;
+    }
     const xs=state.trajectory.map(p=>p.x),ys=state.trajectory.map(p=>p.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys),rangeX=Math.max(maxX-minX,.01),rangeY=Math.max(maxY-minY,.01),pad=18;
-    context.strokeStyle="#70ddb1";context.lineWidth=2;context.beginPath();state.trajectory.forEach((p,i)=>{const x=pad+(p.x-minX)/rangeX*(width-2*pad),y=height-pad-(p.y-minY)/rangeY*(height-2*pad);if(i)context.lineTo(x,y);else context.moveTo(x,y);});context.stroke();
-    context.fillStyle="#ffd080";const end=state.trajectory[state.trajectory.length-1],ex=pad+(end.x-minX)/rangeX*(width-2*pad),ey=height-pad-(end.y-minY)/rangeY*(height-2*pad);context.beginPath();context.arc(ex,ey,5,0,Math.PI*2);context.fill();
+    context.strokeStyle=theme.cyan;context.lineWidth=2;context.beginPath();state.trajectory.forEach((p,i)=>{const x=pad+(p.x-minX)/rangeX*(width-2*pad),y=height-pad-(p.y-minY)/rangeY*(height-2*pad);if(i)context.lineTo(x,y);else context.moveTo(x,y);});context.stroke();
+    context.fillStyle=theme.warning;const end=state.trajectory[state.trajectory.length-1],ex=pad+(end.x-minX)/rangeX*(width-2*pad),ey=height-pad-(end.y-minY)/rangeY*(height-2*pad);context.beginPath();context.arc(ex,ey,5,0,Math.PI*2);context.fill();
   }
 
   function drawEddy() {
     const canvas=$("eddy-chart"),{context,width,height}=setupCanvas(canvas);context.clearRect(0,0,width,height);
-    if(!state.eddySamples.length)return;
-    const channels=Math.min(8,state.eddySamples[0].values.length),colors=["#70ddb1","#8fcaff","#ffd080","#ff9393","#c2a5ff","#74e1e8","#e9a4cb","#d4e37c"];
+    if(!state.eddySamples.length){
+      context.fillStyle=theme.text;context.font="12px sans-serif";context.textAlign="center";
+      context.fillText("等待涡流通道均值",width/2,height/2);context.textAlign="start";return;
+    }
+    const channels=Math.min(8,state.eddySamples[0].values.length),colors=theme.channels;
+    const legend=$("eddy-legend");
+    if(legend.childElementCount!==channels){
+      legend.replaceChildren(...Array.from({length:channels},(_,c)=>{
+        const label=document.createElement("span");label.textContent="CH"+(c+1);label.style.color=colors[c];return label;
+      }));
+    }
     for(let c=0;c<channels;c++){
       const values=state.eddySamples.map(s=>s.values[c]).filter(C.finite);if(values.length<2)continue;
       const min=Math.min(...values),max=Math.max(...values),range=Math.max(max-min,1e-9),buckets=Math.min(Math.floor(width),values.length),step=values.length/buckets;
-      context.strokeStyle=colors[c];context.lineWidth=1;context.beginPath();
+      // Single-sample/constant buckets have zero span; round caps keep those points visible.
+      context.strokeStyle=colors[c];context.lineWidth=1;context.lineCap="round";context.beginPath();
       for(let b=0;b<buckets;b++){const slice=values.slice(Math.floor(b*step),Math.max(Math.floor((b+1)*step),Math.floor(b*step)+1)),lo=Math.min(...slice),hi=Math.max(...slice),x=b/(buckets-1||1)*(width-1),y1=height-4-(lo-min)/range*(height-8),y2=height-4-(hi-min)/range*(height-8);context.moveTo(x,y1);context.lineTo(x,y2);}context.stroke();
     }
-    const d=state.eddyMeta?.data;$("eddy-meta").textContent="channel_mean 预览 · 通道 "+channels+" · 样本时间 "+valueText(C.stamp(d?.stamp_ns))+" · 单位 "+valueText(d?.unit)+" · 采用每像素 min/max 保峰聚合；不等同原始波形。";
+    const d=state.eddyMeta?.data;$("eddy-meta").textContent="channel_mean 预览 · 通道 "+channels+" · 样本时间 "+valueText(C.stamp(d?.stamp_ns))+" · 单位 "+valueText(d?.unit)+" · 各通道独立纵向缩放，不比较跨通道幅值 · 每像素 min/max 保峰；非原始波形。";
   }
 
   function fillDefinitionList(node, entries) {
@@ -584,22 +725,45 @@
     $("tracking-age").textContent=item?"接收年龄 "+(a.ageMs/1000).toFixed(1)+"s · "+a.label:"未收到";
     $("tracking-state").textContent=d?C.trackingLabel(status):"状态未知";
     $("tracking-reason").textContent=d?C.clip(d.reason||d.failure_reason||(a.fresh?"板端未提供简短说明":"结果已过期"),500):"等待板端结果；页面不重新计算巡迹算法。";
-    $("tracking-summary").className="tracking-summary "+(["LOST","CONFLICT_2D"].includes(status)?"bad":["PREDICTED","FUSED_CANDIDATE","GEOMETRY_CANDIDATE"].includes(status)?"warn":status==="VISION_2D"?"good":"");
+    $("tracking-summary").className="tracking-summary "+(["LOST","CONFLICT_2D"].includes(status)?"bad":!a.fresh&&d?"warn":["PREDICTED","FUSED_CANDIDATE","GEOMETRY_CANDIDATE"].includes(status)?"warn":status==="VISION_2D"?"good":"");
     fillDefinitionList($("tracking-core"),d?[["结果来源",d.source],["后端/模型版本",[d.backend_version,d.model_version].filter(Boolean).join(" / ")||null],["模式",d.mode],["二维有效",d.vision_2d_valid],["三维有效",d.geometry_3d_valid],["身份确认",d.identity_confirmed],["预测",d.predicted],["坐标",d.coordinate_space],["源时间",C.stamp(d.stamp_ns||d.source_stamp_ns)],["匹配帧",d.frame_ref?.frame_id||d.frame_id]]:[]);
     const metricEntries=C.metricEntries(d||{}).map(([k,v])=>[k,v]);
     const diagnostics=C.isObject(d?.diagnostics)?Object.entries(d.diagnostics).slice(0,30):[];
     fillDefinitionList($("tracking-metrics"),metricEntries.concat(diagnostics).length?metricEntries.concat(diagnostics):[["状态","未提供"]]);
   }
 
+  // Presentation-only retention: a disconnect/reconnect is not a fault recovery.
+  // Two bounded entries; only a fresh valid source can replace or resolve them.
+  const retainedLocalAlerts = new Map();
   function renderAlerts() {
     const active=[];
-    for(const [id,item] of state.alerts){const d=item.data;if(d.active===false||d.recovered===true)continue;active.push({id,data:d,local:false});}
-    const storage=state.storage?.data;if(currentRecord(state.storage)&&storage?.mounted===false)active.push({id:"local-storage-unmounted",data:{severity:"critical",message:"采集盘未挂载：任务写盘必须阻断"},local:true});
-    const tracking=state.tracking?.data;if(currentRecord(state.tracking)&&["LOST","CONFLICT_2D"].includes(String(tracking?.status).toUpperCase()))active.push({id:"local-tracking-"+tracking.status,data:{severity:tracking.status==="LOST"?"error":"warning",message:"巡迹 "+C.trackingLabel(tracking.status)+"："+C.clip(tracking.reason||"等待后端说明")},local:true});
+    const resolved=item=>item.valid&&item.data.valid!==false&&(item.data.active===false||item.data.recovered===true);
+    const trusted=(item,key)=>Boolean(state.connected&&currentRecord(item)&&item.valid&&item.data.valid!==false&&assess(item,key).fresh);
+    for(const [id,item] of state.alerts){
+      if(resolved(item))continue;
+      active.push({id,data:item.data,uncertain:!state.connected||!trusted(item,"alerts")});
+    }
+    const storage=state.storage?.data;
+    if(trusted(state.storage,"storage")){
+      if(storage.mounted===false)retainedLocalAlerts.set("storage",{id:"local-storage-unmounted",data:{severity:"critical",message:"采集盘未挂载：任务写盘必须阻断"},record:state.storage});
+      else if(storage.mounted===true)retainedLocalAlerts.delete("storage");
+    }
+    const tracking=state.tracking?.data;
+    if(trusted(state.tracking,"tracking")){
+      if(["LOST","CONFLICT_2D"].includes(String(tracking.status).toUpperCase()))retainedLocalAlerts.set("tracking",{id:"local-tracking-"+tracking.status,data:{severity:tracking.status==="LOST"?"error":"warning",message:"巡迹 "+C.trackingLabel(tracking.status)+"："+C.clip(tracking.reason||"等待后端说明")},record:state.tracking});
+      else retainedLocalAlerts.delete("tracking");
+    }
+    for(const [key,item] of retainedLocalAlerts)active.push({...item,uncertain:!state.connected||!trusted(item.record,key)});
     const priority={critical:4,error:3,warning:2,info:1};active.sort((a,b)=>(priority[b.data.severity]||0)-(priority[a.data.severity]||0));
-    if(!active.length){const p=document.createElement("p");p.className="muted";p.textContent="当前无活动告警（不代表正式验收通过）";$("alert-list").replaceChildren(p);$("top-alert").textContent="";return;}
-    const nodes=active.slice(0,30).map(({id,data})=>{const row=document.createElement("div");row.className="alert-item";const severity=document.createElement("span");severity.className="severity "+(data.severity||"warning");severity.textContent=String(data.severity||"warning").toUpperCase();const body=document.createElement("span");body.textContent=C.clip(data.message||data.reason||data.code,500);const button=document.createElement("button");button.className="quiet";button.textContent=state.acknowledged.has(id)?"本页已读":"确认已读";button.disabled=state.acknowledged.has(id);button.onclick=()=>{state.acknowledged.add(id);renderAlerts();};row.append(severity,body,button);return row;});
-    $("alert-list").replaceChildren(...nodes);$("top-alert").textContent="最高告警："+C.clip(active[0].data.message||active[0].data.reason||active[0].data.code,300);
+    if(!active.length){
+      const p=document.createElement("p");p.className="muted";
+      // alerts is an incremental list: []/omission cannot prove global all-clear.
+      const knownResolved=state.alerts.size>0&&[...state.alerts.values()].every(item=>resolved(item)&&trusted(item,"alerts"));
+      p.textContent=!state.connected?"告警状态待确认：连接已断开。":knownResolved?"已收告警已确认恢复；整体状态待确认。":"告警状态待确认：尚无完整有效依据。";
+      $("alert-list").replaceChildren(p);$("top-alert").textContent="";delete $("top-alert").dataset.severity;return;
+    }
+    const nodes=active.slice(0,30).map(({id,data,uncertain})=>{const row=document.createElement("div");row.className="alert-item";const severity=document.createElement("span");severity.className="severity "+(data.severity||"warning");severity.textContent=String(data.severity||"warning").toUpperCase();const body=document.createElement("span");body.textContent=(uncertain?"状态待确认（保留告警）：":"")+C.clip(data.message||data.reason||data.code,500);const button=document.createElement("button");button.className="quiet";button.textContent=state.acknowledged.has(id)?"本页已读":"确认已读";button.disabled=state.acknowledged.has(id);button.onclick=()=>{state.acknowledged.add(id);renderAlerts();};row.append(severity,body,button);return row;});
+    $("alert-list").replaceChildren(...nodes);$("top-alert").dataset.severity=active[0].data.severity||"warning";$("top-alert").textContent=(active[0].uncertain?"保留告警（状态待确认）：":"最高告警：")+C.clip(active[0].data.message||active[0].data.reason||active[0].data.code,300);
   }
 
   function checkNodes(containerId, checks, emptyText) {
@@ -690,7 +854,13 @@
     const history=operationGate("history.list");$("query-history").disabled=!history.allowed||actionInFlight("history.list");$("history-reason").textContent=history.allowed?"列表来自板端配置的数据根/登记索引；封存源 run 只读。":history.reason;
     const control=controlGate();$("move").disabled=!control.allowed||actionInFlight("chassis.move");$("stop").disabled=!control.allowed||actionInFlight("chassis.stop");$("control-status").textContent=control.reason+"；零速度不是硬件急停。";
     const axes=Array.isArray(state.capabilities?.control?.axes)?state.capabilities.control.axes:[];for(const axis of ["vx","vy","wz"]){$(axis+"-field").classList.toggle("hidden",!axes.includes(axis));const limit=state.capabilities?.control?.limits?.[axis];if(C.finite(limit)){$(axis).min=-limit;$(axis).max=limit;}}
+    window.VisionControls.render(state.connected,replayBusy);
     window.TankReplay.render(state.connected);
+    if (["starting","running","stopping"].includes(window.VisionControls.snapshot()?.status)||actionInFlight("vision.start")) {
+      $("replay-start").disabled=true;$("quick-replay").disabled=true;
+      $("replay-message").textContent="实时视觉巡迹正在运行，请先停止视觉巡迹再回放。";
+    }
+    window.CameraTuning.render(state.connected, state.task?.data?.status, window.TankReplay.snapshot().state?.status);
   }
 
   function renderTop() {
@@ -708,8 +878,8 @@
   }
 
   function snapshot() {
-    const streamSnapshot=Object.fromEntries(STREAM_IDS.map(id=>{const s=state.streams[id];return [id,{counts_scope:"current_connection",received:s.received,displayed:s.displayed,decode_errors:s.decodeErrors,dimension_errors:s.dimensionErrors,client_replaced_before_decode:s.clientReplaced,hidden_not_decoded:s.hiddenDropped,out_of_order:s.outOfOrder,server_preview_dropped:s.serverDropped,receive_fps_2s:fps(s.receiveTimes),display_fps_2s:fps(s.displayTimes),last_received_frame:s.lastReceived?C.redact(s.lastReceived):null,last_displayed_frame:s.lastDisplayed?C.redact(s.lastDisplayed):null,overlay_match:s.latestResultState}];}));
-    return C.redact({schema_version:"tank_inspection_console_delivery_v1",exported_at:isoNow(),endpoint:state.endpoint,robot_id:state.robotId,robot_identity_source:state.robotSource,mode:state.mode,connected:state.connected,connection_count:state.connectionCount,counts_scope:"page_lifetime",counts:{received:state.rx,sent:state.tx,invalid:state.invalid,foreign:state.foreign,lifecycle_old_callback_discarded:state.lifecycleDiscards},capabilities:state.capabilities,task:state.task?.data,measurement:state.measurement?.data,storage:state.storage?.data,devices:Object.fromEntries(Object.entries(state.devices).map(([k,v])=>[k,v.data])),streams:streamSnapshot,pose:state.pose?.data,tracking:state.tracking?.data,events:state.events,history:state.history,request_history:state.requestHistory.slice(-50),last_response:state.response?.data,legacy_protocol_compatible:true,response_correlation:state.capabilities?"request_id_when_provided; uncorrelated otherwise":"unavailable_no_request_id",console_software_verified:false,collection_workflow_verified:false,snapshot_workflow_verified:false,hardware_field_verified:false,production_status_source:"formal_project_acceptance_not_browser",logs:state.logs});
+    const streamSnapshot=Object.fromEntries(STREAM_IDS.map(id=>{const s=state.streams[id];return [id,{counts_scope:"current_connection",received:s.received,displayed:s.displayed,decode_errors:s.decodeErrors,dimension_errors:s.dimensionErrors,client_replaced_before_decode:s.clientReplaced,hidden_not_decoded:s.hiddenDropped,out_of_order:s.outOfOrder,server_preview_dropped:s.serverDropped,receive_fps_2s:fps(s.receiveTimes),display_fps_2s:fps(s.displayTimes),last_received_frame:s.lastReceived?C.redact(s.lastReceived):null,last_displayed_frame:s.lastDisplayed?C.redact(s.lastDisplayed):null,overlay_match:s.latestResultState,presentation:s.lastDisplayed?.presentation||"raw",matched_displays:s.matchedDisplays,cached_frames:s.frameCache.size,cached_bytes:s.frameCacheBytes}];}));
+    return C.redact({schema_version:"tank_inspection_console_delivery_v1",exported_at:isoNow(),endpoint:state.endpoint,robot_id:state.robotId,robot_identity_source:state.robotSource,mode:state.mode,connected:state.connected,connection_count:state.connectionCount,counts_scope:"page_lifetime",counts:{received:state.rx,sent:state.tx,invalid:state.invalid,foreign:state.foreign,lifecycle_old_callback_discarded:state.lifecycleDiscards},capabilities:state.capabilities,task:state.task?.data,vision:window.VisionControls.snapshot(),measurement:state.measurement?.data,storage:state.storage?.data,devices:Object.fromEntries(Object.entries(state.devices).map(([k,v])=>[k,v.data])),streams:streamSnapshot,pose:state.pose?.data,tracking:state.tracking?.data,events:state.events,history:state.history,request_history:state.requestHistory.slice(-50),last_response:state.response?.data,legacy_protocol_compatible:true,response_correlation:state.capabilities?"request_id_when_provided; uncorrelated otherwise":"unavailable_no_request_id",console_software_verified:false,collection_workflow_verified:false,snapshot_workflow_verified:false,hardware_field_verified:false,production_status_source:"formal_project_acceptance_not_browser",logs:state.logs});
   }
 
   function exportSnapshot() {
@@ -721,7 +891,9 @@
   function restartRenderLoop(){stopRenderLoop();startRenderLoop();}
 
   function bindUi() {
-    document.querySelectorAll("nav button[data-view]").forEach(button=>button.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===button));document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id==="view-"+button.dataset.view));render();});
+    window.VisionControls.init({send:sendOperation, gate:operationGate, inFlight:actionInFlight});
+    window.CameraTuning.init({send:sendOperation, gate:operationGate, inFlight:actionInFlight});
+    document.querySelectorAll("nav button[data-view]").forEach(button=>button.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>{x.classList.toggle("active",x===button);x.setAttribute("aria-current",x===button?"page":"false");});document.querySelectorAll(".view").forEach(x=>x.classList.toggle("active",x.id==="view-"+button.dataset.view));window.scrollTo(0,0);render();});
     $("connect").onclick=connect;$("disconnect").onclick=disconnect;
     $("check").onclick=()=>sendLegacy("check",{});
     $("start-stream").onclick=()=>sendLegacy("command",{camera:{command:"start_stream"}});
@@ -741,7 +913,16 @@
     $("query-history").onclick=()=>sendOperation("history.list",{page_size:50});
     $("enable-control").onchange=renderButtons;$("move").onclick=()=>sendControl(false);$("stop").onclick=()=>sendControl(true);
     $("clear-log").onclick=()=>{state.logs=[];$("log").replaceChildren();};$("export").onclick=exportSnapshot;
-    document.querySelectorAll("[data-overlay]").forEach(button=>button.onclick=()=>{const id=button.dataset.overlay,stream=state.streams[id];stream.overlayVisible=!stream.overlayVisible;$(id+"-screen").classList.toggle("raw-only",!stream.overlayVisible);button.textContent=stream.overlayVisible?"隐藏叠加":"显示叠加";});
+    document.querySelectorAll("[data-overlay]").forEach(button=>button.onclick=()=>{
+      const id=button.dataset.overlay,stream=state.streams[id];stream.overlayVisible=!stream.overlayVisible;
+      $(id+"-screen").classList.toggle("raw-only",!stream.overlayVisible);button.textContent=stream.overlayVisible?"隐藏叠加":"显示叠加";
+      stream.lastMatchedAt=null;stream.lastMatchedKey=null;
+      if (id === "depth_camera") {
+        if (stream.overlayVisible) presentTrackingFrame(stream, state.tracking);
+        else {const latest=Array.from(stream.frameCache.values()).at(-1);if(latest)enqueueDecode(stream,latest);}
+      }
+      renderStreams();
+    });
     document.querySelectorAll("[data-fullscreen]").forEach(button=>button.onclick=()=>{const node=$(button.dataset.fullscreen+"-screen");if(node.requestFullscreen)node.requestFullscreen();});
     window.addEventListener("resize",()=>{drawTrajectory();drawEddy();});
     document.addEventListener("visibilitychange",()=>{restartRenderLoop();if(!document.hidden){for(const id of STREAM_IDS){const stream=state.streams[id];if(stream.hiddenPending){const frame=stream.hiddenPending;stream.hiddenPending=null;enqueueDecode(stream,frame);}}render();}});
@@ -753,6 +934,7 @@
     const query=new URLSearchParams(location.search),remembered=(()=>{try{return localStorage.getItem("tank_console_endpoint");}catch(_){return null;}})();
     if(query.has("ws"))$("endpoint").value=query.get("ws");
     else if(remembered){$("endpoint").value=remembered;$("remember-endpoint").checked=true;}
+    else if(window.RobotConnectionDefaults?.inspection){$("endpoint").value=window.RobotConnectionDefaults.inspection;}
     else if(location.hostname){const host=location.hostname.includes(":")?"["+location.hostname+"]":location.hostname;$("endpoint").value=(location.protocol==="https:"?"wss://":"ws://")+host+":9001";}
   }
 

@@ -23,7 +23,10 @@ EXPECTED_ANNOTATION_SHA256 = "f960bf210508e011d3646d64a181df01d10ad4e416834e42cf
 def build(annotation_path: Path, manifest_path: Path, output_path: Path, sample_count: int = 64) -> dict:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     annotation = json.loads(annotation_path.read_text(encoding="utf-8"))
-    source_image = ROOT / manifest.get("input_image_relative", "")
+    # Frozen manifests retain their historical output/... paths and hashes.
+    # Resolve the image against the explicit evidence root after migration.
+    relative = Path(manifest.get("input_image_relative", "")).relative_to("output")
+    source_image = vision_evidence_root() / relative
     overlay_path = manifest_path.parent / "seam_center_lit_quality_01_annotation_overlay_v2.png"
     checks = {
         "manifest_status_frozen": manifest.get("status") == "frozen",
@@ -65,7 +68,7 @@ def build(annotation_path: Path, manifest_path: Path, output_path: Path, sample_
     )}
     result = {
         "schema_version": "1.0", "source_image_path": annotation["input_path"],
-        "source_image_sha256": annotation["input_sha256"], "annotation_path": str(annotation_path.relative_to(ROOT)),
+        "source_image_sha256": annotation["input_sha256"], "annotation_path": str(annotation_path.resolve()),
         "annotation_sha256": sha256_file(annotation_path), "source_width": w, "source_height": h,
         "reference_samples": samples, "width_statistics_px": stats, "common_y_range_original_px": [float(y0), float(y1)],
         "generated_at": datetime.now(timezone.utc).isoformat(), "reference_is_manual": True,

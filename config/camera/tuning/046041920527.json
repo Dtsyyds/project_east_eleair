@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "serial_number": "046041920527",
+  "values": {
+    "auto_exposure": false,
+    "exposure_time_us": 70876.9765625,
+    "analog_gain": 4.0,
+    "ae_target": 70,
+    "white_balance": "off",
+    "rgb_gain_r": 131,
+    "rgb_gain_g": 110,
+    "rgb_gain_b": 147,
+    "saturation": 100,
+    "gamma": 100,
+    "contrast": 100
+  },
+  "saved_at": "2026-10-29T17:48:35+0800"
+}
