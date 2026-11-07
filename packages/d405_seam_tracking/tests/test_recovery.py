@@ -87,7 +87,7 @@ def test_choice_tracks_new_measurement_not_new_highest_rank_or_old_frame(monkeyp
     lost=process(3,[(420,.95,456)])
     assert lost['state']=='LOST' and not lost['points_2d_y_center']
     assert not tracking_error(lost,640,480,ErrorReference())[0]['valid']
-    clock[0]=.8
+    clock[0]=5.2
     still_lost=process(4,[(228,.9,456),(420,.95,456)])
     assert not still_lost['valid_2d'] and still_lost['selection']['state']=='RESELECT_REQUIRED'
     assert pipe.recovery.command(dict(request_id='clear',session_id='test',action='clear'))['status']=='completed'
@@ -130,3 +130,18 @@ def test_ambiguous_branches_and_resolution_change_require_reselection(monkeypatc
     # Regressed acquisition time invalidates target identity and pending offers.
     result=process(1,[(320,.9,456)])
     assert result['selection']['state']=='RESELECT_REQUIRED' and not result['valid_2d']
+
+
+def test_selected_target_survives_brief_loss_without_old_measurements(monkeypatch,config):
+    pipe,clock,process=pipeline_fixture(monkeypatch,config)
+    initial=process(1,[(220,.4,456)])
+    pipe.recovery.command(request(initial))
+    clock[0]=.8
+    lost=process(2,[])
+    assert not lost['valid_2d'] and lost['selection']['state']=='LOST'
+    assert lost['points_2d_y_center']==[]
+    clock[0]=1.2
+    measured=process(3,[(223,.9,456)])
+    assert measured['valid_2d'] and measured['selection']['state']=='TRACKING'
+    assert measured['confidence']>.8  # Preserve the stronger normal measurement.
+    assert np.allclose(np.array(measured['points_2d_y_center'])[:,1],223)

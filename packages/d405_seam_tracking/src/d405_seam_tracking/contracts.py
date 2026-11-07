@@ -61,6 +61,12 @@ def load_config(path):
             value = config.get(key, 0)
             if not np.isfinite(value) or value <= 0:
                 raise ValueError('invalid_path_config:' + key)
+    for key, default in (('selected_target_memory_sec', 5.), ('single_boundary_width_lifetime_sec', 2.)):
+        if not np.isfinite(config.get(key, default)) or config.get(key, default) <= 0:
+            raise ValueError('invalid_positive_config:' + key)
+    width = config.get('single_boundary_width_px', 0.)
+    if not np.isfinite(width) or width < 0:
+        raise ValueError('invalid_single_boundary_width_px')
     return config
 
 

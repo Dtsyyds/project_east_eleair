@@ -20,7 +20,7 @@ MIN_PROPOSAL_COVERAGE = .20
 ASSOCIATION_DISTANCE_PX = 24.
 ASSOCIATION_MARGIN_PX = 8.
 OFFER_LIFETIME_SEC = 5.
-TARGET_LOSS_SEC = .5
+TARGET_LOSS_SEC = 5.  # Target identity memory; missing measurements remain invalid.
 
 
 def longest_support(points, mask, max_gap):
@@ -107,7 +107,10 @@ def path_distance(first, second):
 
 
 class RecoveryTracker:
-    def __init__(self, clock=time.monotonic):
+    def __init__(self, clock=time.monotonic, target_loss_sec=TARGET_LOSS_SEC):
+        if not math.isfinite(target_loss_sec) or target_loss_sec <= 0:
+            raise ValueError('invalid_target_memory')
+        self.target_loss_sec = target_loss_sec
         self.clock = clock
         self.epoch = uuid.uuid4().hex
         self.offers = OrderedDict()
@@ -188,13 +191,23 @@ class RecoveryTracker:
         self.signature, self.last_stamp = frame.signature, frame.image_stamp_ns
         result.update(candidate_set_id=None, candidates=[])
         candidates = propose(probability, config, bounds) if self.manual or not result['valid_2d'] else []
+        if self.manual and result['valid_2d']:
+            # Associate the stronger normal/single-edge measurement too; do not
+            # discard it and substitute a weaker .30-threshold proposal.
+            points = result.get('points_2d_y_center')
+            if not points:
+                p = np.asarray(result['points_2d_y_left_right'])
+                points = np.column_stack((p[:, 0], p[:, 1:].mean(axis=1))).tolist()
+            current = dict(points_2d_y_center=points, confidence=result['confidence'],
+                           measurement_supported=True, measurement_kind=result['measurement_kind'])
+            candidates = [current] + [c for c in candidates if path_distance(points, c['points_2d_y_center']) >= 12.]
         if self.manual:
             # An explicit choice stays in charge, even if another seam becomes
             # brighter and the unconstrained A decoder prefers it.
             result.update(state='LOST', valid_2d=False, center_2d_valid=False,
                 points_2d_y_left_right=[], points_2d_y_center=[], confidence=0.,
                 metric_valid=False, predicted_only=False, measurement_kind='NONE')
-            if self.anchor is not None and now-self.last_measurement_at > TARGET_LOSS_SEC:
+            if self.anchor is not None and now-self.last_measurement_at > self.target_loss_sec:
                 self.expire('selected_target_timeout')
             distances = sorted((path_distance(self.anchor, c['points_2d_y_center']), i)
                                for i, c in enumerate(candidates)) if self.anchor is not None else []
@@ -207,13 +220,14 @@ class RecoveryTracker:
                 self.last_measurement_at = now
                 self.selection.update(state='TRACKING', reason='current_image_selected_center')
                 result.update(state='CENTER_2D', valid_2d=True, center_2d_valid=True,
-                    measurement_kind='SELECTED_CENTER_2D', points_2d_y_center=self.anchor,
+                    measurement_kind=('SELECTED_SINGLE_BOUNDARY_2D' if matched.get('measurement_kind') == 'SINGLE_BOUNDARY_2D' else 'SELECTED_CENTER_2D'), points_2d_y_center=self.anchor,
                     confidence=matched['confidence'], reasons=[],
                     evidence_source=['current_frame_operator_selected_center'])
             else:
                 if self.anchor is not None:
                     self.selection.update(state='LOST', reason='selected_target_ambiguous_or_unsupported')
                 result['reasons'] = [self.selection['reason']]
+        candidates = [c for c in candidates if 'candidate_id' in c]
         if not result['valid_2d'] and candidates:
             set_id = f'{self.epoch}:{frame.sequence}'
             self.offers[set_id] = (now, copy.deepcopy(candidates))

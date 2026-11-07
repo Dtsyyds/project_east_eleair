@@ -43,3 +43,9 @@ path_width_penalty: 0.08
 path_gap_penalty: 0.5
 algorithm: round1_a
 checkpoint_sha256: 15dbdde88dc26eba86adda212a146786b624a23bd57929f0bfb1a0152ca4327f
+# Candidate runtime only: remember selection without emitting stale measurements.
+selected_target_memory_sec: 5.0
+# 0 learns pixel width from three consistent complete detections; positive is a
+# manually measured right-minus-left width in original-image pixels.
+single_boundary_width_px: 0.0
+single_boundary_width_lifetime_sec: 2.0
