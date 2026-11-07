@@ -183,12 +183,6 @@ DriverNode::DriverNode(const rclcpp::NodeOptions & node_options)
 
   pointclouddata_poll_thread_ = std::make_shared<std::thread>(&DriverNode::PointCloudDataPollThread, this);
   imudata_poll_thread_ = std::make_shared<std::thread>(&DriverNode::ImuDataPollThread, this);
-  diagnostics_started_steady_ns_ = std::chrono::duration_cast<std::chrono::nanoseconds>(
-    std::chrono::steady_clock::now().time_since_epoch()).count();
-  diagnostics_publisher_ = create_publisher<diagnostic_msgs::msg::DiagnosticArray>(
-    "/diagnostics", rclcpp::QoS(10).reliable().durability_volatile());
-  diagnostics_timer_ = create_wall_timer(
-    std::chrono::seconds(1), std::bind(&DriverNode::PublishContinuityDiagnostics, this));
 }
 
 }  // namespace livox_ros

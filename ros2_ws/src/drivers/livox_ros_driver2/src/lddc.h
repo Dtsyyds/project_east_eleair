@@ -30,8 +30,6 @@
 #include "driver_node.h"
 #include "lds.h"
 
-#include <atomic>
-
 namespace livox_ros {
 
 /** Send pointcloud message Data to ros subscriber or save them in rosbag file */
@@ -94,10 +92,6 @@ class Lddc final {
 
   // void SetRosPub(ros::Publisher *pub) { global_pub_ = pub; };  // NOT USED
   void SetPublishFrq(uint32_t frq) { publish_frq_ = frq; }
-  uint64_t LidarPublishCount() const { return lidar_publish_count_.load(); }
-  uint64_t ImuPublishCount() const { return imu_publish_count_.load(); }
-  int64_t LastLidarPublishSteadyNs() const { return last_lidar_publish_steady_ns_.load(); }
-  int64_t LastImuPublishSteadyNs() const { return last_imu_publish_steady_ns_.load(); }
 
  public:
   Lds *lds_;
@@ -162,10 +156,6 @@ class Lddc final {
 #endif
 
   livox_ros::DriverNode *cur_node_;
-  std::atomic<uint64_t> lidar_publish_count_{0};
-  std::atomic<uint64_t> imu_publish_count_{0};
-  std::atomic<int64_t> last_lidar_publish_steady_ns_{0};
-  std::atomic<int64_t> last_imu_publish_steady_ns_{0};
 };
 
 }  // namespace livox_ros

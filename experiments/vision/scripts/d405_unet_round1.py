@@ -42,8 +42,29 @@ def write_lines(path, values):
             stream.write(json.dumps(value, allow_nan=False)+'\n')
 
 
-def capture_segment(number):
-    return next(f'segment_{i:02d}' for i, (first, last) in enumerate(SEGMENTS, 1) if first <= number <= last)
+def capture_segment(number, segments=SEGMENTS):
+    return next(f'segment_{i:02d}' for i, (first, last) in enumerate(segments, 1) if first <= number <= last)
+
+
+def validate_split_spec(spec, sample_count=30):
+    """Require exhaustive disjoint segments and exactly one held-out fold per segment."""
+    segments, folds = spec['segments'], spec['folds']
+    if not isinstance(spec.get('basis'), str) or not spec['basis'].strip():
+        raise ValueError('split_basis_required')
+    frames = []
+    for segment in segments:
+        if (len(segment) != 2 or any(type(x) is not int for x in segment)
+                or not 1 <= segment[0] <= segment[1] <= sample_count):
+            raise ValueError('invalid_capture_segment_range')
+        frames.extend(range(segment[0], segment[1] + 1))
+    if sorted(frames) != list(range(1, sample_count + 1)):
+        raise ValueError('segments_must_cover_each_frame_once')
+    names = [f'segment_{i:02d}' for i in range(1, len(segments) + 1)]
+    if len(folds) < 2 or any(not fold or len(fold) >= len(names) for fold in folds):
+        raise ValueError('folds_require_nonempty_train_and_test')
+    if sorted(name for fold in folds for name in fold) != names:
+        raise ValueError('each_segment_must_be_held_out_once')
+    return segments, folds
 
 
 def clip_annotation_y(annotation, first, last):
@@ -62,7 +83,11 @@ def clip_annotation_y(annotation, first, last):
     return result
 
 
-def prepare(source_index, labels, output):
+def prepare(source_index, labels, output, split_spec=None):
+    spec = (json.loads(Path(split_spec).read_text()) if split_spec else
+            dict(segments=SEGMENTS, folds=FOLDS,
+                 basis='consecutive capture-order blocks at visible scene/pose changes; defined without using annotation coordinates'))
+    segments, fold_segments = validate_split_spec(spec)
     out = Path(output).resolve()
     if (out/'protocol.json').exists() or (out/'dataset').exists():
         raise FileExistsError('prepare_requires_new_dataset_and_protocol')
@@ -109,7 +134,7 @@ def prepare(source_index, labels, output):
         np.save(mask_dir/f'{i:02d}.npy', target, allow_pickle=False)
         cv2.imwrite(str(mask_dir/f'{i:02d}.png'), np.where(target < 0, 128, target*255).astype(np.uint8))
         _, rows = annotation_mask(record['annotation'], frame.image.shape)
-        record['capture_segment'] = capture_segment(i)
+        record['capture_segment'] = capture_segment(i, segments)
         audit.append(dict(id=i, sample=record['sample'], source_sample=raw['sample'], sha256=raw['sha256'],
                           encoding=metadata['image_encoding'], shape=list(frame.image.shape), dtype=str(frame.image.dtype),
                           channel_mean_rgb=frame.image.mean(axis=(0,1)).tolist(),
@@ -129,7 +154,7 @@ def prepare(source_index, labels, output):
         record['annotation'] = clip_annotation_y(record['annotation'], y0, y1-1)
     dump(root/'index_common_roi.json', common)
     folds = []
-    for f, held_segments in enumerate(FOLDS, 1):
+    for f, held_segments in enumerate(fold_segments, 1):
         fold = copy.deepcopy(dataset)
         training_ids, held_ids = [], []
         for i, record in enumerate(fold['samples'], 1):
@@ -153,8 +178,9 @@ def prepare(source_index, labels, output):
                                sample_count=30, rgb_verified=True, coordinates='original pixels; never rescaled on import',
                                source_files_unchanged=True, protected=protected))
     protocol = dict(schema='d405_rgb_unet_round1_v1', training=TRAINING, judgement=JUDGEMENT, folds=folds,
-                    segment_basis='consecutive capture-order blocks at visible scene/pose changes; defined without using annotation coordinates',
-                    segments=SEGMENTS, real_session_count=len({r['session'] for r in dataset['samples']}),
+                    segment_basis=spec['basis'],
+                    split_spec_sha256=sha256(split_spec) if split_spec else None,
+                    segments=segments, real_session_count=len({r['session'] for r in dataset['samples']}),
                     same_physical_part_may_recur_across_segments=True, independent_generalization=False,
                     pretrained_file=str(weights.relative_to(out)), pretrained_sha256=expected_weights_sha,
                     pretrained_repo='smp-hub/mobilenet_v2.imagenet', pretrained_revision='877efe26185b998af32b04bd7b3ca77e9496eafc',
@@ -361,9 +387,10 @@ if __name__=='__main__':
     parser.add_argument('action',choices=['prepare','run','report'])
     parser.add_argument('--output',required=True)
     parser.add_argument('--source-index');parser.add_argument('--labels')
+    parser.add_argument('--split-spec', help='JSON with segments, folds and basis for a new acquisition')
     args=parser.parse_args()
     if args.action=='prepare':
         if not args.source_index or not args.labels:parser.error('prepare requires --source-index and --labels')
-        prepare(args.source_index,args.labels,args.output)
+        prepare(args.source_index,args.labels,args.output,args.split_spec)
     elif args.action=='run':run(args.output)
     else:report(args.output)

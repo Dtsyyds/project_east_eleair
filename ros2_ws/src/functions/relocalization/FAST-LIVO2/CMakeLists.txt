@@ -223,6 +223,9 @@ install(
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(DIRECTORY include/fast_livo DESTINATION include/${PROJECT_NAME})
+ament_export_include_directories(include/${PROJECT_NAME})
+
 # Export dependencies
 ament_export_dependencies(
   rclcpp
@@ -243,4 +246,4 @@ ament_export_dependencies(
 
 install(PROGRAMS scripts/mesh.py scripts/colmap_output.sh DESTINATION lib/${PROJECT_NAME})
 ament_export_dependencies(rosidl_default_runtime)
-ament_package()
+ament_package(CONFIG_EXTRAS cmake/fast_livo-source-root.cmake.in)

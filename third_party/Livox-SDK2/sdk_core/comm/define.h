@@ -238,6 +238,19 @@ static const uint16_t kAvia2HostPointCloudPort = 56301;
 static const uint16_t kAvia2HostImuDataPort    = 56401;
 static const uint16_t kAvia2HostLogPort        = 56501;
 
+static const uint16_t kMid360lLidarCmdPort             = 56100;
+static const uint16_t kMid360lLidarPushMsgPort         = 56200;
+static const uint16_t kMid360lLidarPointCloudPort      = 56300;
+static const uint16_t kMid360lLidarImuDataPort         = 56400;
+static const uint16_t kMid360lLidarLogPort             = 56500;
+static const uint16_t kMid360lLidarDebugPointCloudPort = 60301;
+
+static const uint16_t kMid360lHostCmdPort        = 56101;
+static const uint16_t kMid360lHostPushMsgPort    = 56201;
+static const uint16_t kMid360lHostPointCloudPort = 56301;
+static const uint16_t kMid360lHostImuDataPort    = 56401;
+static const uint16_t kMid360lHostLogPort        = 56501;
+
 typedef enum {
   kCmd = 0,
   kPush = 1,

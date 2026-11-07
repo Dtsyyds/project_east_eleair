@@ -17,6 +17,7 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <fast_livo/srv/set_initial_pose.hpp>
+#include <fast_livo/workspace_root.hpp>
 #include <unistd.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
@@ -132,13 +133,15 @@ public:
             "prior_map", rclcpp::QoS(1).transient_local().reliable());
         transformed_cloud_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("transformed_cloud", 10);
 
-        const auto workspace_root = this->declare_parameter<std::string>("workspace_root", "");
+        const auto configured_root = this->declare_parameter<std::string>("workspace_root", "auto");
+        const auto workspace_root = fast_livo::resolveWorkspaceRoot(configured_root, FAST_LIVO2_SOURCE_DIR);
+        const auto root_result = this->set_parameter(rclcpp::Parameter("workspace_root", workspace_root.string()));
+        if (!root_result.successful)
+            throw std::runtime_error("Cannot publish resolved workspace_root parameter: " + root_result.reason);
+        RCLCPP_INFO(this->get_logger(), "workspace_root (%s): %s",
+                    configured_root == "auto" ? "auto" : "manual", workspace_root.c_str());
         std::filesystem::path directory(prior_map_path_);
-        if (!workspace_root.empty()) {
-            const std::filesystem::path root(workspace_root);
-            if (!root.is_absolute()) throw std::invalid_argument("workspace_root must be an absolute directory path.");
-            if (!directory.empty() && !directory.is_absolute()) directory = root / directory;
-        }
+        if (!directory.empty() && !directory.is_absolute()) directory = workspace_root / directory;
         const std::filesystem::path filename(this->get_parameter("prior_map_name").as_string());
         if (!directory.is_absolute() || filename.empty() || filename.has_parent_path() ||
             filename == "." || filename == "..") {

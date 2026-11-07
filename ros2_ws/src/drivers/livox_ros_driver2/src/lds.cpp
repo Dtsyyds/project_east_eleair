@@ -74,12 +74,7 @@ void Lds::ResetLds(uint8_t data_src) {
 }
 
 void Lds::RequestExit() {
-  request_exit_.store(true);
-  // The distributor threads may be asleep with no incoming packets.  Wake
-  // both waits so DriverNode destruction can join deterministically instead
-  // of depending on another hardware callback arriving during shutdown.
-  pcd_semaphore_.Signal();
-  imu_semaphore_.Signal();
+  request_exit_ = true;
 }
 
 bool Lds::IsAllQueueEmpty() {

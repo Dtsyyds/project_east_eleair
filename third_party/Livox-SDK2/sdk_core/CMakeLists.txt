@@ -6,14 +6,6 @@ set(SDK_LIBRARY_SHARED livox_lidar_sdk_shared)
 add_library(${SDK_LIBRARY_STATIC} STATIC "")
 add_library(${SDK_LIBRARY_SHARED} SHARED "")
 
-# The SDK embeds a header-only spdlog, while ROS 2 loads the distro's shared
-# libspdlog into the same process. Bind SDK-internal references locally so an
-# incompatible system spdlog destructor cannot interpose on the SDK's global
-# logger during normal process exit.
-if(UNIX AND NOT APPLE)
-  target_link_options(${SDK_LIBRARY_SHARED} PRIVATE "-Wl,-Bsymbolic")
-endif()
-
 set(LIVOX_SDK_MAJOR_VERSION "0")
 set(LIVOX_SDK_MINOR_VERSION "0")
 set(LIVOX_SDK_PATCH_VERSION "2")
@@ -119,6 +111,7 @@ set(COMMAND_HANDLER_SOURCES
         command_handler/parse_lidar_state_info.cpp
         command_handler/mid360s_command_handler.cpp
         command_handler/avia2_command_handler.cpp
+        command_handler/mid360l_command_handler.cpp
         )
 set(DEBUG_POINT_CLOUD_HANDLER_SOURCES
         debug_point_cloud_handler/debug_point_cloud_manager.cpp

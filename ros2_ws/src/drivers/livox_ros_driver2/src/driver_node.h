@@ -27,10 +27,6 @@
 
 #include "include/ros_headers.h"
 
-#ifdef BUILDING_ROS2
-#include "diagnostic_msgs/msg/diagnostic_array.hpp"
-#endif
-
 namespace livox_ros {
 
 class Lddc;
@@ -68,16 +64,12 @@ class DriverNode final : public rclcpp::Node {
  private:
   void PointCloudDataPollThread();
   void ImuDataPollThread();
-  void PublishContinuityDiagnostics();
 
   std::unique_ptr<Lddc> lddc_ptr_;
   std::shared_ptr<std::thread> pointclouddata_poll_thread_;
   std::shared_ptr<std::thread> imudata_poll_thread_;
   std::shared_future<void> future_;
   std::promise<void> exit_signal_;
-  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr diagnostics_publisher_;
-  rclcpp::TimerBase::SharedPtr diagnostics_timer_;
-  int64_t diagnostics_started_steady_ns_{0};
 };
 #endif
 

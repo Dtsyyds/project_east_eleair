@@ -11,6 +11,7 @@ which is included as part of this source code package.
 */
 
 #include "LIVMapper.h"
+#include <fast_livo/workspace_root.hpp>
 #include <algorithm>
 #include <cerrno>
 #include <cmath>
@@ -136,11 +137,13 @@ void LIVMapper::readParameters(rclcpp::Node::SharedPtr &node)
     }
   };
 
-  const auto default_workspace_root = (std::filesystem::path(ROOT_DIR) / "../..").lexically_normal();
-  const std::filesystem::path workspace_root(try_declare.template operator()<std::string>(
-      "workspace_root", default_workspace_root.string()));
-  if (workspace_root.empty() || !workspace_root.is_absolute())
-    throw std::invalid_argument("workspace_root must be a non-empty absolute directory path.");
+  const auto configured_root = try_declare.template operator()<std::string>("workspace_root", "auto");
+  const auto workspace_root = fast_livo::resolveWorkspaceRoot(configured_root, ROOT_DIR);
+  const auto root_result = node->set_parameter(rclcpp::Parameter("workspace_root", workspace_root.string()));
+  if (!root_result.successful)
+    throw std::runtime_error("Cannot publish resolved workspace_root parameter: " + root_result.reason);
+  RCLCPP_INFO(node->get_logger(), "workspace_root (%s): %s",
+      configured_root == "auto" ? "auto" : "manual", workspace_root.c_str());
   const auto resolve_directory = [&workspace_root](const std::string &value) {
     const std::filesystem::path directory(value);
     if (directory.empty()) return value;  // Preserve validation of empty enabled paths below.

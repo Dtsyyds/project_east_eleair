@@ -60,10 +60,13 @@ def inspect_launch(name,config,driver_config):
     assert len(records)==len(expected) and set(nodes)==expected,nodes.keys()
     assert nodes['livox_ros_driver2_node']['frame_id']=='bringup_driver_frame'
     mapping=nodes['fastlivo_mapping']
+    configured=yaml.safe_load(Path(config).read_text())['/**']['ros__parameters']
+    expected_root=configured.get('workspace_root','auto')
+    assert mapping.get('workspace_root','auto')==expected_root
     assert mapping['prior_map_name']=='prior.pcd' and mapping['locate_in_prior_map']==(name=='relocate_mapping.launch.py')
     assert mapping['prior_map_update_en'] is True
     if 'teaser_gicp_node' in nodes:
-        assert nodes['teaser_gicp_node']['workspace_root']==mapping['workspace_root']
+        assert nodes['teaser_gicp_node']['workspace_root']==expected_root
         assert nodes['teaser_gicp_node']['prior_map_path']==mapping['prior_map_path']
         assert nodes['teaser_gicp_node']['prior_map_name']==mapping['prior_map_name']
         assert 'locate_in_prior_map' not in nodes['teaser_gicp_node']
@@ -158,6 +161,15 @@ def main():
         driver_config=directory/'driver.yaml';driver_config.write_text(yaml.safe_dump(driver))
         names=['collect_prior.launch.py','relocate_mapping.launch.py']
         for name,config in zip(names,configs):inspect_launch(name,config,driver_config)
+        for root in ('auto',None):
+            for name,config in zip(names,configs):
+                data=yaml.safe_load(config.read_text())
+                parameters=data['/**']['ros__parameters']
+                if root is None:parameters.pop('workspace_root')
+                else:parameters['workspace_root']=root
+                variant=directory/(name+('-missing.yaml' if root is None else '-auto.yaml'))
+                variant.write_text(yaml.safe_dump(data))
+                inspect_launch(name,variant,driver_config)
         reject_no_prior(configs[0],directory)
         if args.inspect_only:return
         rclpy.init();runner=Runner(args.install,directory)
@@ -168,6 +180,6 @@ def main():
             runner.write_map(runner.map,runner.cloud_points)
             for name,config,prior in zip(names,configs,(False,True)):runtime_check(runner,name,config,prior)
         finally:runner.close();rclpy.shutdown()
-    print('PASS 5 combined-launch regression scenarios',flush=True)
+    print('PASS combined-launch regression scenarios',flush=True)
 
 if __name__=='__main__':main()

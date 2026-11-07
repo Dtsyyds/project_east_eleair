@@ -16,7 +16,7 @@ def configuration(name):
     return yaml.safe_load((ROOT / f'config/communication/{name}.yaml').read_text())
 
 
-@pytest.mark.parametrize('name', ['d405_experiment', 'cameras', 'system'])
+@pytest.mark.parametrize('name', ['d405_experiment', 'cameras', 'system', 'robot_all'])
 def test_field_profiles_accept_both_d405_serials(name):
     serials = configuration(name)['hardware']['d405_serial_number']
     assert isinstance(serials, str)
@@ -54,7 +54,7 @@ def test_only_d405_required_and_missing_stream_still_fails(d405):
         ops.preflight()
 
 
-@pytest.mark.parametrize('name', ['d405_experiment', 'cameras', 'system'])
+@pytest.mark.parametrize('name', ['d405_experiment', 'cameras', 'system', 'robot_all'])
 def test_exact_recorder_scope_and_metadata(d405, monkeypatch, name):
     ops, events, live = d405
     config = configuration(name)
@@ -81,6 +81,11 @@ def test_exact_recorder_scope_and_metadata(d405, monkeypatch, name):
         expected = config['record_topics']
         assert len(actual) == 14
         assert all(t.startswith(('/d405/camera/', '/vision/d405_seam/')) for t in actual)
+    elif name == 'robot_all':
+        expected = config['record_topics']
+        assert '/livox/imu' in actual and '/eddy/data' in actual
+        assert '/camera/front/image_raw' in actual and '/camera/fisheye/image_raw' in actual
+        assert '/weld_tracking/error' in actual
     else:
         expected = yaml.safe_load((ROOT / 'ros2_ws/src/bringup/inspection_bringup/config/record_topics.yaml').read_text())['topics'] + ['/inspection/emat/result']
     assert actual == expected

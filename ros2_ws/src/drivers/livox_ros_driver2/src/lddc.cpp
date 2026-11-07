@@ -27,7 +27,6 @@
 #include "comm/comm.h"
 
 #include <inttypes.h>
-#include <chrono>
 #include <iostream>
 #include <iomanip>
 #include <math.h>
@@ -343,10 +342,6 @@ void Lddc::PublishPointcloud2Data(const uint8_t index, const uint64_t timestamp,
 
   if (kOutputToRos == output_type_) {
     publisher_ptr->publish(cloud);
-    lidar_publish_count_.fetch_add(1);
-    last_lidar_publish_steady_ns_.store(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()).count());
   } else {
 #ifdef BUILDING_ROS1
     if (bag_ && enable_lidar_bag_) {
@@ -412,10 +407,6 @@ void Lddc::PublishCustomPointData(const CustomMsg& livox_msg, const uint8_t inde
 
   if (kOutputToRos == output_type_) {
     publisher_ptr->publish(livox_msg);
-    lidar_publish_count_.fetch_add(1);
-    last_lidar_publish_steady_ns_.store(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()).count());
   } else {
 #ifdef BUILDING_ROS1
     if (bag_ && enable_lidar_bag_) {
@@ -523,10 +514,6 @@ void Lddc::PublishImuData(LidarImuDataQueue& imu_data_queue, const uint8_t index
 
   if (kOutputToRos == output_type_) {
     publisher_ptr->publish(imu_msg);
-    imu_publish_count_.fetch_add(1);
-    last_imu_publish_steady_ns_.store(
-      std::chrono::duration_cast<std::chrono::nanoseconds>(
-        std::chrono::steady_clock::now().time_since_epoch()).count());
   } else {
 #ifdef BUILDING_ROS1
     if (bag_ && enable_imu_bag_) {

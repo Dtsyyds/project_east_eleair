@@ -92,3 +92,31 @@ def test_protocol_frame_categories_and_evaluation_clip():
     original=annotation();clipped=module.clip_annotation_y(original,20,40)
     assert original['left_xy']==[[30,10],[30,50]]
     assert clipped['left_xy']==[[30.,20.],[30.,40.]]
+
+
+def test_new_capture_split_is_exhaustive_and_never_reuses_held_out_segments():
+    directory=Path(__file__).resolve().parents[2]/'experiments/vision/scripts'
+    sys.path.insert(0,str(directory))
+    try:
+        spec=importlib.util.spec_from_file_location('rgb_round1_splits',directory/'d405_unet_round1.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    finally:
+        sys.path.pop(0)
+    split=dict(segments=[[1,3],[4,8],[9,16],[17,26],[27,30]],
+               folds=[['segment_01','segment_04'],['segment_02'],['segment_03','segment_05']],
+               basis='Visual pose groups before training')
+    segments,folds=module.validate_split_spec(split)
+    assert module.capture_segment(8,segments)=='segment_02'
+    assert module.capture_segment(30,segments)=='segment_05'
+    import copy
+    overlap=copy.deepcopy(split);overlap['segments'][1][0]=3
+    with pytest.raises(ValueError,match='cover_each_frame_once'):
+        module.validate_split_spec(overlap)
+    missing=copy.deepcopy(split);missing['segments'][-1][1]=29
+    with pytest.raises(ValueError,match='cover_each_frame_once'):
+        module.validate_split_spec(missing)
+    repeated=copy.deepcopy(split);repeated['folds'][2][0]='segment_02'
+    with pytest.raises(ValueError,match='held_out_once'):
+        module.validate_split_spec(repeated)
+    with pytest.raises(ValueError,match='nonempty_train_and_test'):
+        module.validate_split_spec(dict(split,folds=[sum(folds,[])]))

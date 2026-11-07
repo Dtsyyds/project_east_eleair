@@ -28,7 +28,8 @@ def arguments(argv=None):
                         '/home/sunrise/Desktop/Robot_Chassis_Code/robot_chassis_ros2ctrl')))
     parser.add_argument('--platform', choices=('s100p', 'rk3588', 'x86'),
                         default=os.environ.get('INSPECTION_PLATFORM', 's100p'))
-    parser.add_argument('--camera-mode', choices=('d405', 'cameras'), default='d405')
+    parser.add_argument('--camera-mode', choices=('all', 'd405', 'cameras'), default='all',
+                        help='默认 all 启动三相机、MID360/IMU 和涡流；d405/cameras 用于单设备或三相机调试')
     parser.add_argument('--web-root', type=Path, default=ROOT / 'apps/web_console',
                         help='网页目录，可选择独立的 web_console_chassis_tracking 扩展版')
     parser.add_argument('--no-camera', action='store_true', help='相机由其他终端启动；本入口只提供新网页和底盘')
@@ -125,7 +126,8 @@ def bridge_config(args):
 def camera_config(args):
     """只改变运行副本的后台端口；算法/车型参数不变，不覆盖权威源 YAML。"""
     import yaml
-    name = 'd405_candidate.yaml' if args.camera_mode == 'd405' else 'cameras.yaml'
+    name = {'all': 'robot_all.yaml', 'd405': 'd405_candidate.yaml',
+            'cameras': 'cameras.yaml'}[args.camera_mode]
     try:
         data = yaml.safe_load((ROOT / 'config/communication' / name).read_text())
     except yaml.YAMLError as error:
@@ -215,7 +217,9 @@ def main(argv=None):
         print('网页（同一服务，可任选可达地址）：\n' + urls)
         print('底盘桥接配置：' + bridge_config(args))
         if not args.no_camera:
-            print(f'相机运行副本使用后台端口 {args.camera_port}，不改写原配置')
+            config = json.loads(camera_config(args))
+            print(f'传感器模式：{args.camera_mode}；运行副本使用后台端口 {args.camera_port}')
+            print('硬件启动配置：' + json.dumps(config['hardware'], ensure_ascii=False))
         for name, command in launch_plan(args, Path('/tmp/robot-session/bridge.json')):
             print(name + ': ' + shlex.join(command))
         return 0

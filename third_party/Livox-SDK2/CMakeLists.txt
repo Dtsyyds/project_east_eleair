@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.0)
 
 project(livox_sdk2)
 
-option(LIVOX_BUILD_SAMPLES "Build Livox SDK examples" ON)
-
 set(CMAKE_CXX_STANDARD 11)
 
 message(STATUS "main project dir: " ${PROJECT_SOURCE_DIR})
@@ -19,6 +17,4 @@ if (UNIX)
 endif(UNIX)
 
 add_subdirectory(sdk_core)
-if(LIVOX_BUILD_SAMPLES)
-	add_subdirectory(samples)
-endif()
+add_subdirectory(samples)

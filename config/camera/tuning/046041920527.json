@@ -3,8 +3,8 @@
   "serial_number": "046041920527",
   "values": {
     "auto_exposure": false,
-    "exposure_time_us": 70876.9765625,
-    "analog_gain": 4.0,
+    "exposure_time_us": 120000.0,
+    "analog_gain": 8.0,
     "ae_target": 70,
     "white_balance": "off",
     "rgb_gain_r": 131,
@@ -14,5 +14,5 @@
     "gamma": 100,
     "contrast": 100
   },
-  "saved_at": "2026-10-29T17:48:35+0800"
+  "saved_at": "2026-11-07T16:24:51+0800"
 }

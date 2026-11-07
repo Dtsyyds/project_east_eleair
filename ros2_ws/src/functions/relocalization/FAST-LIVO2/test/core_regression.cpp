@@ -1,5 +1,7 @@
 #include "LIVMapper.h"
+#include <fast_livo/workspace_root.hpp>
 #include <filesystem>
+#include <fstream>
 #include <stdexcept>
 #include <unistd.h>
 
@@ -28,6 +30,28 @@ int main(int argc, char **argv) {
     });
     rclcpp::Node::SharedPtr node;
     LIVMapper mapper(node,"core_regression",options);
+    const auto automatic_root=mapper.node->get_parameter("workspace_root").as_string();
+    check(std::filesystem::equivalent(automatic_root,ROOT_DIR),"Default workspace_root is not the FAST-LIVO2 source package"); ++count;
+    check(mapper.prior_map_path==automatic_root+"/PCD/map","Default prior directory is not inside the source package"); ++count;
+    mapper.node->set_parameter(rclcpp::Parameter("workspace_root","auto"));
+    mapper.readParameters(mapper.node);
+    check(mapper.node->get_parameter("workspace_root").as_string()==automatic_root,"Explicit auto did not publish the resolved root"); ++count;
+
+    const auto fixture=std::filesystem::temp_directory_path()/("ultra-workspace-root-"+std::to_string(getpid()));
+    struct Cleanup {
+      std::filesystem::path directory;
+      ~Cleanup() { std::error_code error; std::filesystem::remove_all(directory,error); }
+    } cleanup{fixture};
+    for (const auto *layout : {"Desktop/FAST_LIVO2_Ultra/src/FAST-LIVO2",
+                               "whole project/ros2_ws/src/functions/relocalization/FAST-LIVO2"}) {
+      const auto source=fixture/layout;
+      std::filesystem::create_directories(source);
+      std::ofstream(source/"package.xml")<<"<package><name>fast_livo</name></package>\n";
+      check(fast_livo::resolveWorkspaceRoot("auto",source/"")==source,"Automatic source root depends on workspace nesting"); ++count;
+    }
+    rejects([&]{fast_livo::resolveWorkspaceRoot("auto",fixture/"missing source");},"Missing automatic source package was accepted"); ++count;
+    rejects([&]{fast_livo::resolveWorkspaceRoot("auto",fixture);},"Automatic root without package.xml was accepted"); ++count;
+    check(fast_livo::resolveWorkspaceRoot("/tmp/manual root",fixture/"missing")=="/tmp/manual root","Manual override still requires the compiled source package"); ++count;
     check(mapper.vio_manager->cam==nullptr,"LIO initialized a camera"); ++count;
     mapper.initializeSubscribersAndPublishers(node);
     check(!mapper.sub_img,"LIO created an image subscription"); ++count;
@@ -84,7 +108,7 @@ int main(int argc, char **argv) {
     mapper.node->set_parameter(rclcpp::Parameter("image_save.output_dir","/tmp/absolute-images"));
     read_profile(true,-1);
     check(mapper.prior_map_path=="/tmp/ultra-input/prior map.pcd" && mapper.pcd_output_dir=="/tmp/ultra-relocate" && mapper.image_output_dir=="/tmp/absolute-images","Absolute path overrides were prefixed unexpectedly"); ++count;
-    for (const char *root : {"", "relative/workspace", "~/Desktop/FAST_LIVO2_Ultra"}) {
+    for (const char *root : {"", "relative/workspace", "~/Desktop/FAST_LIVO2_Ultra", "AUTO"}) {
       mapper.node->set_parameter(rclcpp::Parameter("workspace_root",root));
       rejects([&]{mapper.readParameters(mapper.node);},"Non-absolute workspace_root was accepted"); ++count;
     }

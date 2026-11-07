@@ -77,7 +77,7 @@ def _launch_setup(context):
         output="screen",
         parameters=[
             # 基础配置
-            {"workspace_root": ParameterValue(parameters.get("workspace_root", ""), value_type=str)},
+            {"workspace_root": ParameterValue(parameters.get("workspace_root", "auto"), value_type=str)},
             {"prior_map_path": ParameterValue(prior_map_path, value_type=str)},
             {"prior_map_name": ParameterValue(prior_map_name, value_type=str)},
             {"map_frame_id": parameters.get("publish", {}).get("map_frame_id", "map")},

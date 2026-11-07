@@ -179,8 +179,88 @@ bool BuildRequest::BuildSetNTPserverIPInfoRequest(const NTPServerIpInfo& server_
   return true;
 }
 
-bool BuildRequest::BuildUpdateAvia2LidarCfgRequest(const LivoxLidarCfg& lidar_cfg, uint8_t* req_buf, uint16_t& req_len) {
-  
+bool BuildRequest::BuildUpdateMid360lLidarCfgRequest(const LivoxLidarCfg& lidar_cfg,
+  uint8_t* req_buf, uint16_t& req_len) {
+
+  uint16_t key_num = 3;
+  memcpy(&req_buf[req_len], &key_num, sizeof(key_num));
+  req_len = sizeof(key_num) + sizeof(uint16_t);
+
+  LivoxLidarKeyValueParam * state_kv = (LivoxLidarKeyValueParam *)&req_buf[req_len];
+  state_kv->key = static_cast<uint16_t>(kKeyStateInfoHostIpCfg);
+  state_kv->length = sizeof(uint8_t) * 8;
+  HostIpInfoValue* host_state_ip_info_val = (HostIpInfoValue*)&state_kv->value;
+  if (!InitHostIpAddr(lidar_cfg.host_net_info.host_ip, host_state_ip_info_val)) {
+    LOG_ERROR("Build update lidar cfg request failed, init host ip addr failed.");
+    return false;
+  }
+
+  if (lidar_cfg.host_net_info.multicast_ip.empty()) {
+    if (!InitHostIpAddr(lidar_cfg.host_net_info.host_ip, host_state_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init host ip addr failed.");
+      return false;
+    }
+  } else {
+    if (!InitMulticastHostIpAddr(lidar_cfg.host_net_info.multicast_ip, host_state_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init pointcloud multicast ip addr failed.");
+      return false;
+    }
+  }
+
+  uint16_t lidar_state_port = kMid360lLidarPushMsgPort;
+  memcpy(&(host_state_ip_info_val->host_port), &lidar_cfg.host_net_info.push_msg_port, sizeof(lidar_cfg.host_net_info.push_msg_port));
+  memcpy(&(host_state_ip_info_val->lidar_port), &lidar_state_port, sizeof(lidar_state_port));
+  req_len += sizeof(LivoxLidarKeyValueParam) - sizeof(uint8_t) + sizeof(HostIpInfoValue);
+
+  LivoxLidarKeyValueParam * point_kv = (LivoxLidarKeyValueParam *)&req_buf[req_len];
+  point_kv->key = static_cast<uint16_t>(kKeyLidarPointDataHostIpCfg);
+  point_kv->length = sizeof(uint8_t) * 8;
+  HostIpInfoValue* host_point_ip_info_val = (HostIpInfoValue*)&point_kv->value;
+  if (lidar_cfg.host_net_info.multicast_ip.empty()) {
+    if (!InitHostIpAddr(lidar_cfg.host_net_info.host_ip, host_point_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init pointcloud host ip addr failed.");
+      return false;
+    }
+  } else {
+    if (!InitMulticastHostIpAddr(lidar_cfg.host_net_info.multicast_ip, host_point_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init pointcloud multicast ip addr failed.");
+      return false;
+    }
+  }
+
+  uint16_t lidar_point_port = kMid360lLidarPointCloudPort;
+  memcpy(&(host_point_ip_info_val->host_port), &lidar_cfg.host_net_info.point_data_port, sizeof(lidar_cfg.host_net_info.point_data_port));
+  memcpy(&(host_point_ip_info_val->lidar_port), &lidar_point_port, sizeof(lidar_point_port));
+  req_len += sizeof(LivoxLidarKeyValueParam) - sizeof(uint8_t) + sizeof(HostIpInfoValue);
+
+  LivoxLidarKeyValueParam * imu_kv = (LivoxLidarKeyValueParam *)&req_buf[req_len];
+  imu_kv->key = static_cast<uint16_t>(kKeyLidarImuHostIpCfg);
+  imu_kv->length = sizeof(uint8_t) * 8;
+  HostIpInfoValue* host_imu_ip_info_val = (HostIpInfoValue*)&imu_kv->value;
+
+  if (lidar_cfg.host_net_info.multicast_ip.empty()) {
+    if (!InitHostIpAddr(lidar_cfg.host_net_info.host_ip, host_imu_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init imu host ip addr failed.");
+      return false;
+    }
+  } else {
+    if (!InitMulticastHostIpAddr(lidar_cfg.host_net_info.multicast_ip, host_imu_ip_info_val)) {
+      LOG_ERROR("Build update lidar cfg request failed, init imu multicast ip addr failed.");
+      return false;
+    }
+  }
+
+  uint16_t lidar_imu_port = kMid360lLidarImuDataPort;
+  memcpy(&(host_imu_ip_info_val->host_port), &lidar_cfg.host_net_info.imu_data_port, sizeof(lidar_cfg.host_net_info.imu_data_port));
+  memcpy(&(host_imu_ip_info_val->lidar_port), &lidar_imu_port, sizeof(lidar_imu_port));
+  req_len += sizeof(LivoxLidarKeyValueParam) - sizeof(uint8_t) + sizeof(HostIpInfoValue);
+
+  return true;
+}
+
+bool BuildRequest::BuildUpdateAvia2LidarCfgRequest(const LivoxLidarCfg& lidar_cfg,
+  uint8_t* req_buf, uint16_t& req_len) {
+
   uint16_t key_num = 3;
   memcpy(&req_buf[req_len], &key_num, sizeof(key_num));
   req_len = sizeof(key_num) + sizeof(uint16_t);

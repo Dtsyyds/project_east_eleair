@@ -1,0 +1,2 @@
+# Keep dependent registration nodes tied to this FAST-LIVO2 source package.
+set(fast_livo_SOURCE_ROOT [==[@CMAKE_CURRENT_SOURCE_DIR@]==])

@@ -243,6 +243,14 @@ bool ParseLidarStateInfo::ParseStateInfo(const CommPacket& packet,
         key_mask.insert(kKeySetFogNoiseFilter);
         memcpy(&info.fog_noise_filter, &packet.data[offset], val_len);
         break;
+      case static_cast<uint16_t>(kKeySetTimeFilterMode) :
+        key_mask.insert(kKeySetTimeFilterMode);
+        memcpy(&info.time_filter_mode, &packet.data[offset], val_len);
+        break;
+      case static_cast<uint16_t>(kKeySetPclFreqMod) :
+        key_mask.insert(kKeySetPclFreqMod);
+        memcpy(&info.pcl_freq_mode, &packet.data[offset], val_len);
+        break;
       case static_cast<uint16_t>(kKeySetImuRange) :
         key_mask.insert(kKeySetImuRange);
         memcpy(&info.imu_range, &packet.data[offset], val_len);
@@ -606,7 +614,7 @@ void ParseLidarStateInfo::LivoxLidarStateInfoToJson(const DirectLidarStateInfo& 
     write.Uint(info.esc_mode);
   }
 
-    if (key_mask.find(kKeySetFovMode) != key_mask.end()) {
+  if (key_mask.find(kKeySetFovMode) != key_mask.end()) {
     write.Key("fov_mode");
     write.Uint(info.fov_mode);
   }
@@ -631,6 +639,16 @@ void ParseLidarStateInfo::LivoxLidarStateInfoToJson(const DirectLidarStateInfo& 
     write.Uint(info.fog_noise_filter);
   }
 
+  if (key_mask.find(kKeySetPclFreqMod) != key_mask.end()) {
+    write.Key("pcl_freq_mode");
+    write.Uint(info.pcl_freq_mode);
+  }
+
+  if (key_mask.find(kKeySetTimeFilterMode) != key_mask.end()) {
+    write.Key("time_filter_mode");
+    write.Uint(info.time_filter_mode);
+  }
+
   if (key_mask.find(kKeySetImuRange) != key_mask.end()) {
     write.Key("imu_range");
     write.StartObject();
@@ -642,7 +660,7 @@ void ParseLidarStateInfo::LivoxLidarStateInfoToJson(const DirectLidarStateInfo& 
     write.Uint(info.imu_range.gyro_range);
     write.EndObject();
   }
-
+  
   if (key_mask.find(kKeySn) != key_mask.end()) {
     write.Key("sn");
     write.String(info.sn);

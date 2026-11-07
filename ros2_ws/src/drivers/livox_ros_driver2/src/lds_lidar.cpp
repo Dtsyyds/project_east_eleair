@@ -202,13 +202,7 @@ int LdsLidar::DeInitLdsLidar(void) {
   }
 
   if (lidar_summary_info_.lidar_type & kLivoxLidarType) {
-    // Remove the SDK observer and join the callback-processing thread while
-    // the SDK is still alive.  Leaving this to PubHandler's static destructor
-    // calls into an already-uninitialized SDK and can intermittently segfault
-    // after Ctrl+C.
-    pub_handler().Uninit();
     LivoxLidarSdkUninit();
-    is_initialized_ = false;
     printf("Livox Lidar SDK Deinit completely!\n");
   }
 
