@@ -81,7 +81,13 @@ def load_mvsdk(configured_root: str = "") -> tuple[Any, Path, Path]:
             # to the same SDK root even when an older SONAME is globally visible.
             module._sdk = library_handle
             return module, root, library
-    raise RuntimeError("MindVision SDK root not found; checked: " + ", ".join(checked))
+    raise RuntimeError(
+        "MindVision SDK incomplete; required demo/python_demo/mvsdk.py and "
+        "lib/<host-architecture>/libMVSDK.so; checked: " + ", ".join(checked)
+        + ". Native libraries are not included in Git clones. Restore the matching "
+        "SDK with python3 deploy/restore_mindvision_sdk.py /path/to/sdk, "
+        "or set MINDVISION_SDK_ROOT to a complete SDK root."
+    )
 
 
 def _ros_time(nanoseconds: int) -> Time:

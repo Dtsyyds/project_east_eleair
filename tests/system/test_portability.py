@@ -2,6 +2,8 @@ from inspection_runtime.paths import project_root
 from pathlib import Path
 import os
 import subprocess
+import pytest
+import shutil
 
 
 ROOT = project_root()
@@ -43,4 +45,32 @@ def test_environment_derives_roots_from_script_location(tmp_path):
     assert Path(root) == ROOT
     expected = ROOT / ".runtime" / os.environ.get("INSPECTION_PLATFORM", "s100p")
     assert Path(actual_runtime) == expected
-    assert Path(install) == expected / "install"
+    expected_install = expected / "install"
+    if not (expected_install / 'local_setup.bash').is_file() and (ROOT / 'ros2_ws/install/local_setup.bash').is_file():
+        expected_install = ROOT / 'ros2_ws/install'
+    assert Path(install) == expected_install
+
+
+@pytest.mark.parametrize('layouts,selected', [
+    (['ros2_ws/install'], 'ros2_ws/install'),
+    (['.runtime/s100p/install'], '.runtime/s100p/install'),
+    (['ros2_ws/install', '.runtime/s100p/install'], '.runtime/s100p/install'),
+])
+def test_environment_loads_selected_overlay_without_inherited_ros(tmp_path, layouts, selected):
+    root = tmp_path / 'checkout'
+    (root / 'deploy').mkdir(parents=True)
+    shutil.copyfile(ROOT / 'deploy/env.sh', root / 'deploy/env.sh')
+    for layout in layouts:
+        directory = root / layout
+        directory.mkdir(parents=True)
+        (directory / 'local_setup.bash').write_text(f'export TEST_LOADED_OVERLAY="{layout}"\n')
+    result = subprocess.run([
+        'bash', '-c', 'set -eu; source "$1/deploy/env.sh" s100p; '
+        'printf "%s\\n%s\\n%s\\n" "$TANK_INSTALL_ROOT" "$TEST_LOADED_OVERLAY" "$FIELD_WIRELESS_INSTALL"',
+        'overlay-test', str(root)],
+        env={'PATH': '/usr/bin:/bin', 'HOME': os.environ['HOME']},
+        capture_output=True, text=True, check=True)
+    install, loaded, wireless = result.stdout.strip().splitlines()[-3:]
+    assert Path(install) == root / selected
+    assert loaded == selected
+    assert wireless == install

@@ -318,3 +318,25 @@ pre { margin: 10px 0 0; padding: 14px; background: var(--canvas); border-radius:
 .vision-controls { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .vision-controls button { flex: 1 1 118px; font-size: 13px; padding: 7px 9px; }
 #vision-message, #vision-directory, #vision-sample-path { overflow-wrap: anywhere; }
+
+/* Equal camera/lidar quadrants; the lidar stays directly below D405. */
+.camera-grid.preview-grid {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-areas: "depth fisheye" "lidar mindvision";
+  align-items: stretch;
+}
+.preview-grid > [data-stream="depth_camera"] { grid-area: depth; }
+.preview-grid > [data-stream="fisheye"] { grid-area: fisheye; }
+.preview-grid > [data-stream="mindvision"] { grid-area: mindvision; }
+.preview-grid > #lidar-preview-panel { grid-area: lidar; }
+.preview-grid .video-title { min-height: 32px; }
+.camera-grid.preview-grid .screen { height: auto; aspect-ratio: 16 / 10; }
+.camera-grid.preview-grid .screen:fullscreen { height: 100%; aspect-ratio: auto; }
+.preview-grid #lidar-preview { display: block; width: 100%; height: 100%; touch-action: none; }
+.preview-grid #lidar-preview-meta { overflow-wrap: anywhere; font-size: 12px; }
+@media (max-width: 720px) {
+  .camera-grid.preview-grid {
+    grid-template-columns: minmax(0,1fr);
+    grid-template-areas: "depth" "lidar" "fisheye" "mindvision";
+  }
+}

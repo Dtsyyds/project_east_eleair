@@ -7,7 +7,8 @@ import pytest
 import rclpy
 from ament_index_python.packages import get_package_prefix
 from rclpy.qos import qos_profile_sensor_data
-from sensor_msgs.msg import Image,PointCloud2
+from sensor_msgs.msg import Image
+from livox_ros_driver2.msg import CustomMsg, CustomPoint
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist,Pose2D
 from std_msgs.msg import String,Float64MultiArray
@@ -53,7 +54,7 @@ def test_real_wireless_bridge_devices_streams_pose_controls_and_exit(tmp_path,co
     rclpy.init();node=rclpy.create_node('wireless_fixture');received=[]
     status_class=Pose2D if control=='std_msgs/msg/Float64MultiArray' else String
     def chassis_msg():return Pose2D(x=1.,y=2.,theta=.3) if status_class==Pose2D else String(data='online')
-    topics={'fisheye':Image,'mindvision':Image,'depth':Image,'eddy':EddyFrame,'eddy_mean':EddyChannelMean,'emat':UltrasoundFrame,'chassis':status_class,'lidar':PointCloud2,'pose':Odometry}
+    topics={'fisheye':Image,'mindvision':Image,'depth':Image,'eddy':EddyFrame,'eddy_mean':EddyChannelMean,'emat':UltrasoundFrame,'chassis':status_class,'lidar':CustomMsg,'pose':Odometry}
     pubs={name:node.create_publisher(cls,'/fixture/'+name,qos_profile_sensor_data) for name,cls in topics.items()}
     cls=Float64MultiArray if control=='std_msgs/msg/Float64MultiArray' else Twist
     node.create_subscription(cls,'/fixture/cmd',received.append,10)
@@ -64,7 +65,7 @@ def test_real_wireless_bridge_devices_streams_pose_controls_and_exit(tmp_path,co
             try:ws=connect(f'ws://127.0.0.1:{port}',proxy=None,open_timeout=.3);break
             except (OSError,TimeoutError):time.sleep(.05)
         assert ws is not None and proc.poll() is None
-        required=['fisheye','mindvision','depth_camera','eddy_current','emat','chassis']
+        required=['lidar','fisheye','mindvision','depth_camera','eddy_current','emat','chassis']
         initial=command(ws,{},'check');assert all(initial[k]['status']=='unverified' for k in required)
         mismatch=command(ws,{},'check','unregistered_robot');assert mismatch['error']['reason']=='robot_id_mismatch'
         until=time.monotonic()+4
@@ -81,12 +82,13 @@ def test_real_wireless_bridge_devices_streams_pose_controls_and_exit(tmp_path,co
             pubs['eddy_mean'].publish(stamp(EddyChannelMean(channel_mean=[float(i)]*8),value))
             pubs['emat'].publish(stamp(UltrasoundFrame(channel_count=1,sample_count=2,sampling_rate_hz=1000.,samples=[3,4]),value))
             pubs['chassis'].publish(chassis_msg())
-            pubs['lidar'].publish(stamp(PointCloud2(height=1,width=1,point_step=4,row_step=4,data=b'\0'*4),value))
+            pubs['lidar'].publish(stamp(CustomMsg(timebase=value,point_num=1,points=[CustomPoint(x=1.,y=2.,z=3.)]),value))
             pose=stamp(Odometry(),value);pose.child_frame_id='body';pose.pose.pose.position.x=1.25
             pose.pose.pose.orientation.z=math.sqrt(.5);pose.pose.pose.orientation.w=math.sqrt(.5);pubs['pose'].publish(pose)
             until=time.monotonic()+.05
             while time.monotonic()<until:rclpy.spin_once(node,timeout_sec=.01)
         checked=command(ws,{},'check');assert all(checked[k]['status']=='verified' for k in required),checked
+        assert checked['lidar']['message_type']=='livox_ros_driver2/msg/CustomMsg'
         for key in required:
             assert checked[key]['device_id']==key and checked[key]['connection_state']=='connected'
             assert checked[key]['running_state']=='running' and checked[key]['data_state']=='streaming'

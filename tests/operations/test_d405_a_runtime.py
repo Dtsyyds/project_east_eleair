@@ -1,5 +1,8 @@
 """A integration is frame-local; legacy temporal/fused behavior stays explicit."""
 import json
+import hashlib
+import sys
+import yaml
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -56,8 +59,13 @@ def test_a_no_smoothing_no_stale_prediction_with_close_source_times(monkeypatch)
 
 
 def test_controller_a_uses_original_environment_passive_node_and_no_recorder(tmp_path):
+    # Process construction is a unit test; do not depend on an ignored field checkpoint.
+    checkpoint=tmp_path/'checkpoint.pt';checkpoint.write_bytes(b'fixture checkpoint')
+    algorithm=yaml.safe_load((ROOT/'config/d405/round1_a.yaml').read_text())
+    algorithm.update(checkpoint=str(checkpoint),checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest())
+    algorithm_path=tmp_path/'algorithm.yaml';algorithm_path.write_text(yaml.safe_dump(algorithm))
     config={'data_root':str(tmp_path),'minimum_free_bytes':1,
-            'vision':{'algorithm_config':'d405/round1_a.yaml','python':'.runtime/s100p/d405_prototype_venv/bin/python'}}
+            'vision':{'algorithm_config':str(algorithm_path),'python':sys.executable}}
     commands=[]
     def start(command,**kw):
         commands.append(command)

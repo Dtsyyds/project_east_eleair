@@ -1,6 +1,7 @@
 #include "agv_bridge/tank_inspection_robot.hpp"
+#include "agv_bridge/lidar_preview.hpp"
 #include <sensor_msgs/msg/image.hpp>
-#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <livox_ros_driver2/msg/custom_msg.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <geometry_msgs/msg/pose2_d.hpp>
@@ -46,6 +47,8 @@ struct TankInspectionRobot::Impl {
     eddy_driver::msg::EddyChannelMean::ConstSharedPtr eddy_mean;
     std::map<std::string,uint64_t> last_preview, preview_drops;
     nav_msgs::msg::Odometry::ConstSharedPtr pose;
+    livox_ros_driver2::msg::CustomMsg::ConstSharedPtr lidar;
+    uint64_t last_lidar_preview=0;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr twist_pub;
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr array_pub;
     bool control_enabled=false, moving=false, streaming=true;
@@ -198,11 +201,11 @@ void TankInspectionRobot::init(rclcpp::Node* node) {
             [heartbeat](geometry_msgs::msg::Pose2D::ConstSharedPtr msg){heartbeat(std::isfinite(msg->x)&&std::isfinite(msg->y)&&std::isfinite(msg->theta));}));
         else throw std::invalid_argument("unsupported chassis_status_type");
     }
-    auto lidar=d.param<std::string>("lidar_topic","/livox/lidar");d.states["lidar"].topic=lidar;d.states["lidar"].type="sensor_msgs/msg/PointCloud2";
-    if(!lidar.empty())d.subscriptions.push_back(node->create_subscription<sensor_msgs::msg::PointCloud2>(lidar,sensor_qos,
-        [this](sensor_msgs::msg::PointCloud2::ConstSharedPtr msg) {auto& d=*impl_;std::lock_guard<std::mutex> lock(d.mutex);
-            const bool valid=msg->height>0&&msg->width>0&&msg->point_step>0&&msg->row_step>=static_cast<uint64_t>(msg->point_step)*msg->width&&msg->data.size()==static_cast<uint64_t>(msg->row_step)*msg->height;
-            d.mark("lidar",msg->header,valid,"invalid_pointcloud_layout");}));
+    auto lidar=d.param<std::string>("lidar_topic","/livox/lidar");d.states["lidar"].topic=lidar;d.states["lidar"].type="livox_ros_driver2/msg/CustomMsg";
+    if(!lidar.empty())d.subscriptions.push_back(node->create_subscription<livox_ros_driver2::msg::CustomMsg>(lidar,sensor_qos,
+        [this](livox_ros_driver2::msg::CustomMsg::ConstSharedPtr msg) {auto& d=*impl_;std::lock_guard<std::mutex> lock(d.mutex);
+            const bool valid=validLivoxCustom(*msg);
+            if(d.mark("lidar",msg->header,valid,"invalid_livox_custom_msg"))d.lidar=msg;}));
     auto pose=d.param<std::string>("lidar_pose_topic","/aft_mapped_to_init");d.states["lidar_pose"].topic=pose;d.states["lidar_pose"].type="nav_msgs/msg/Odometry";
     if(!pose.empty())d.subscriptions.push_back(node->create_subscription<nav_msgs::msg::Odometry>(pose,rclcpp::QoS(10).best_effort(),
         [this](nav_msgs::msg::Odometry::ConstSharedPtr msg) {auto& d=*impl_;std::lock_guard<std::mutex> lock(d.mutex);
@@ -285,6 +288,7 @@ std::vector<std::string> TankInspectionRobot::generateReports(agv_protocol::Comm
     std::map<std::string,uint64_t> pending_received,pending_accepted,pending_dropped;
     eddy_driver::msg::EddyFrame::ConstSharedPtr pending_raw;
     eddy_driver::msg::EddyChannelMean::ConstSharedPtr pending_mean;
+    livox_ros_driver2::msg::CustomMsg::ConstSharedPtr pending_lidar;
     Json::Value payload;
     bool status_due=false;
     {
@@ -294,6 +298,10 @@ std::vector<std::string> TankInspectionRobot::generateReports(agv_protocol::Comm
         if(status_due) {
         d.next_status=now+std::chrono::milliseconds(200);
         payload["devices"]=d.checks();
+        // Latest-only preview, at most 5 Hz / 2000 points. Raw ROS data is unchanged.
+        if(d.streaming && d.lidar && d.fresh("lidar") && d.states["lidar"].accepted!=d.last_lidar_preview) {
+            pending_lidar=d.lidar;d.last_lidar_preview=d.states["lidar"].accepted;
+        }
         payload["schema_version"]="tank_inspection_v2";
         payload["control_enabled"]=d.control_enabled;payload["watchdog_stops"]=Json::UInt64(d.watchdog_stops);
         payload["calibration_status"]="unverified";payload["hardware_revalidated"]=false;
@@ -351,6 +359,14 @@ std::vector<std::string> TankInspectionRobot::generateReports(agv_protocol::Comm
         }
     }
     if(status_due)result.push_back(parser.buildRawMessage(getRobotId(),"status_update",payload));
+    if(pending_lidar) {
+        Json::Value envelope;auto& cloud=envelope["lidar_cloud"];
+        try {cloud=lidarPreview(*pending_lidar);}
+        catch(const std::exception& error){cloud["error"]=error.what();}
+        cloud["frame_id"]=pending_lidar->header.frame_id;
+        cloud["stamp_ns"]=std::to_string(stamp(pending_lidar->header));
+        result.push_back(parser.buildRawMessage(getRobotId(),"status_sensor",envelope));
+    }
     if(pending_raw || pending_mean) {
         Json::Value envelope;auto& e=envelope["eca"];
         e["preview_dropped"]=Json::UInt64(d.eddy_drops);e["visualization_only"]=true;

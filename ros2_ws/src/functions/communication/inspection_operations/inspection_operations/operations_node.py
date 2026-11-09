@@ -8,7 +8,9 @@ import time
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data, QoSProfile, DurabilityPolicy, ReliabilityPolicy
-from sensor_msgs.msg import Image, Imu, PointCloud2
+from sensor_msgs.msg import Image, Imu
+from livox_ros_driver2.msg import CustomMsg
+from inspection_tools.validators import validate_livox_custom
 from std_msgs.msg import String
 from std_srvs.srv import Trigger
 from rcl_interfaces.srv import SetParametersAtomically
@@ -48,7 +50,7 @@ class OperationsNode(Node):
                                      self.vision_call if vision_enabled else None)
         self.subscriptions_owned = []
         for topic in config["required_topics"]:
-            kind = EddyFrame if topic == "/eddy/data" else PointCloud2 if topic == "/livox/lidar" else Imu if topic == "/livox/imu" else Image
+            kind = EddyFrame if topic == "/eddy/data" else CustomMsg if topic == "/livox/lidar" else Imu if topic == "/livox/imu" else Image
             self.subscriptions_owned.append(self.create_subscription(kind, topic, lambda msg, t=topic: self.seen(t, msg), qos_profile_sensor_data))
         for topic in ('/d405/camera/color/image_raw', '/d405/camera/depth/image_rect_raw'):
             if topic not in config['required_topics']:
@@ -151,11 +153,15 @@ class OperationsNode(Node):
         return json.loads(reply.message)
 
     def seen(self, topic, msg):
+        if topic == "/livox/lidar":
+            if not isinstance(msg, CustomMsg) or validate_livox_custom(msg):
+                return
+            with self.live_lock:
+                self.live[topic] = time.monotonic()
+            return
         if msg.header.stamp.sec <= 0:
             return
         if isinstance(msg, Image) and (not msg.data or msg.width <= 0 or msg.height <= 0):
-            return
-        if isinstance(msg, PointCloud2) and (not msg.data or msg.width * msg.height <= 0):
             return
         with self.live_lock:
             self.live[topic] = time.monotonic()

@@ -68,7 +68,10 @@ ros2 launch mindvision_camera_driver mindvision_camera.launch.py \
 ## SUS1207GC / SDK 2.1.0.50
 
 SDK selection order is `sdk_root`, `MINDVISION_SDK_ROOT`, workspace-relative
-`third_party/mindvision/2.1.0.50`, then legacy `/opt`/`/usr/local` fallbacks. The
+`third_party/mindvision/2.1.0.50`. Explicit roots are authoritative; the driver
+does not silently fall back to a system SDK. Native libraries are excluded
+from Git; after cloning, run `python3 deploy/restore_mindvision_sdk.py /path/to/sdk`
+from the project root with a complete matching SDK 2.1.0.50 distribution. The
 driver loads the selected native library by absolute path, pins the official
 Python binding to that handle, and reports both path and SDK version in logs
 and `/diagnostics`. It never overwrites a system SDK.

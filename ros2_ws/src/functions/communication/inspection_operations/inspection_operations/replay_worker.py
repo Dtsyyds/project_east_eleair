@@ -16,6 +16,9 @@ import time
 import cv2
 import numpy as np
 import rosbag2_py
+from livox_ros_driver2.msg import CustomMsg
+from sensor_msgs.msg import PointCloud2
+from inspection_tools.validators import validate_livox_custom
 from rclpy.serialization import deserialize_message
 from rosidl_runtime_py.convert import message_to_ordereddict
 from rosidl_runtime_py.utilities import get_message
@@ -110,11 +113,29 @@ def pointcloud_preview(msg):
             "displayed_points": len(points), "unit": "m"}
 
 
+def custommsg_preview(msg):
+    errors = validate_livox_custom(msg)
+    if errors:
+        raise ValueError("invalid_livox_custom_msg: " + "; ".join(errors))
+    stride = max(1, (msg.point_num + 4999) // 5000)
+    xyz = []
+    for i in range(0, msg.point_num, stride):
+        p = msg.points[i]
+        if all(math.isfinite(v) for v in (p.x, p.y, p.z)):
+            xyz.extend((p.x, p.y, p.z))
+    return {"kind": "cloud", "xyz": xyz, "point_count": msg.point_num,
+            "displayed_points": len(xyz) // 3, "unit": "m", "timebase": str(msg.timebase)}
+
+
 def sensor_preview(sensor_id, msg):
     if sensor_id.startswith("d405_") or sensor_id in ("mindvision", "fisheye"):
         return image_preview(msg)
     if sensor_id == "lidar":
-        return pointcloud_preview(msg)
+        if isinstance(msg, CustomMsg):
+            return custommsg_preview(msg)
+        if isinstance(msg, PointCloud2):
+            return pointcloud_preview(msg)
+        raise ValueError(f"unsupported lidar message type: {type(msg).__module__}.{type(msg).__name__}")
     if sensor_id in ("imu", "imu_raw"):
         return {"kind": "imu", "acceleration": finite_list([msg.linear_acceleration.x, msg.linear_acceleration.y, msg.linear_acceleration.z]),
                 "gyro": finite_list([msg.angular_velocity.x, msg.angular_velocity.y, msg.angular_velocity.z]),

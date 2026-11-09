@@ -140,7 +140,7 @@ def test_offline_browser_actual_installed_bridge_and_ros(browser, tmp_path, cont
     port = free_port()
     topics = {"fisheye": fixture.Image, "mindvision": fixture.Image, "depth": fixture.Image,
               "eddy": fixture.EddyFrame, "emat": fixture.UltrasoundFrame, "chassis": fixture.String,
-              "lidar": fixture.PointCloud2, "pose": fixture.Odometry}
+              "lidar": fixture.CustomMsg, "pose": fixture.Odometry}
     params = {"robot_id": "tank_inspection_robot", "server_uri": "", "local_server_port": port,
               "tank_inspection.device_timeout_sec": 1.4, "tank_inspection.control_enabled": control,
               "tank_inspection.control_token": "fixture-browser-secret" if control else "",
@@ -168,7 +168,7 @@ def test_offline_browser_actual_installed_bridge_and_ros(browser, tmp_path, cont
         pubs["eddy"].publish(fixture.stamp(fixture.EddyFrame(channel_count=8, samples_per_channel=20, data=list(range(160))), value))
         pubs["emat"].publish(fixture.stamp(fixture.UltrasoundFrame(channel_count=1, sample_count=2, sampling_rate_hz=1000., samples=[3, 4]), value))
         pubs["chassis"].publish(fixture.String(data="online"))
-        pubs["lidar"].publish(fixture.stamp(fixture.PointCloud2(height=1, width=1, point_step=4, row_step=4, data=b"\0" * 4), value))
+        pubs["lidar"].publish(fixture.stamp(fixture.CustomMsg(timebase=value, point_num=1, points=[fixture.CustomPoint(x=1., y=2., z=3.)]), value))
         pose = fixture.stamp(fixture.Odometry(), value)
         pose.pose.pose.position.x = 1.25
         pose.pose.pose.position.y = -.5
@@ -195,10 +195,11 @@ def test_offline_browser_actual_installed_bridge_and_ros(browser, tmp_path, cont
             assert all(p.get_subscription_count() for p in pubs.values())
             for _ in range(5):
                 publish()
-            browser.wait("['fisheye','mindvision','depth_camera','eddy_current','emat','chassis'].every(k=>window.tankConsole.snapshot().devices[k].status==='verified')")
+            browser.wait("['lidar','fisheye','mindvision','depth_camera','eddy_current','emat','chassis'].every(k=>window.tankConsole.snapshot().devices[k].status==='verified')")
             browser.wait("['fisheye','depth_camera'].every(k=>window.tankConsole.snapshot().streams[k].decoded>0)")
             browser.wait("document.getElementById('pose-x').textContent==='1.2500'")
             valid = browser.js("return window.tankConsole.snapshot();")
+            assert valid['devices']['lidar']['message_type'] == 'livox_ros_driver2/msg/CustomMsg'
             assert valid["streams"]["depth_camera"]["last_source"]["source_encoding"] == "rgb8"
             pixel = browser.js("const c=document.createElement('canvas');c.width=8;c.height=8;const x=c.getContext('2d');x.drawImage(document.getElementById('depth_camera-image'),0,0);return Array.from(x.getImageData(4,4,1,1).data);")
             assert abs(pixel[0]-180)<12 and abs(pixel[1]-40)<12 and abs(pixel[2]-20)<12, pixel
@@ -252,7 +253,7 @@ def test_offline_browser_actual_installed_bridge_and_ros(browser, tmp_path, cont
             browser.click("connect")
             browser.wait("window.tankConsole.snapshot().connection_count>" + str(count))
             browser.click("disconnect")
-            print(json.dumps({"console_actual_e2e": {"browser": browser.capabilities["browserVersion"], "six_devices_verified": True, "two_jpeg_streams_decoded": True, "lidar_units_frame_stamp_verified": True, "stream_commands_verified": True, "fixture_control_enabled": control, "control_result": "published_in_isolated_fixture_with_watchdog_zero" if control else "control_disabled_rejection", "motion_publications": len(motion), "token_not_exported": True, "stale_pose_cleared": True, "manual_disconnect_cancels_reconnect": True, "hardware_revalidated": False}}, ensure_ascii=False))
+            print(json.dumps({"console_actual_e2e": {"browser": browser.capabilities["browserVersion"], "seven_devices_verified": True, "two_jpeg_streams_decoded": True, "lidar_units_frame_stamp_verified": True, "stream_commands_verified": True, "fixture_control_enabled": control, "control_result": "published_in_isolated_fixture_with_watchdog_zero" if control else "control_disabled_rejection", "motion_publications": len(motion), "token_not_exported": True, "stale_pose_cleared": True, "manual_disconnect_cancels_reconnect": True, "hardware_revalidated": False}}, ensure_ascii=False))
         finally:
             browser.click("disconnect")
             node.destroy_node()

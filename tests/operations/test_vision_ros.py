@@ -14,7 +14,8 @@ from test_operations import request
 
 
 @pytest.mark.skipif(os.environ.get('ROS_DOMAIN_ID') != '187' or os.environ.get('ROS_LOCALHOST_ONLY') != '1', reason='explicit isolated ROS domain 187 required')
-def test_isolated_ros_start_save_stop(tmp_path):
+@pytest.mark.parametrize('capture_only', [False, True])
+def test_isolated_ros_start_save_stop(tmp_path, capture_only):
     assert os.environ.get('ROS_DOMAIN_ID')=='187' and os.environ.get('ROS_LOCALHOST_ONLY')=='1'
     import rclpy
     from rclpy.node import Node
@@ -32,6 +33,8 @@ def test_isolated_ros_start_save_stop(tmp_path):
     config['data_root']=str(tmp_path);config['minimum_free_bytes']=1
     config['required_topics']=['/d405/camera/color/image_raw','/d405/camera/depth/image_rect_raw']
     config['hardware']['start_mindvision']=False
+    if capture_only:
+        config['vision'] = {'python': '/missing/python', 'algorithm_config': '/missing/checkpoint.yaml'}
     rclpy.init()
     fixture=Node('vision_controls_isolated_fixture')
     events=[];ticks=[0]
@@ -71,12 +74,14 @@ def test_isolated_ros_start_save_stop(tmp_path):
         return matches[-1] if matches else None
     try:
         wait(lambda:all(t in node.operations.live_topics() for t in config['required_topics']))
-        node.operations.handle(request('vision.start','ros-start'))
+        node.operations.handle(request('vision.capture_start' if capture_only else 'vision.start','ros-start'))
         wait(lambda:result('ros-start'))
         assert result('ros-start')['status']=='completed',result('ros-start')
-        wait(lambda:any('tracking_result' in e['payload'] for e in events))
-        tracking=[e['payload']['tracking_result'] for e in events if 'tracking_result' in e['payload']][-1]
-        assert tracking['frame_ref']['camera_id']=='depth_camera' and tracking['image_width']==160
+        tracking = None
+        if not capture_only:
+            wait(lambda:any('tracking_result' in e['payload'] for e in events))
+            tracking=[e['payload']['tracking_result'] for e in events if 'tracking_result' in e['payload']][-1]
+            assert tracking['frame_ref']['camera_id']=='depth_camera' and tracking['image_width']==160
         node.operations.handle(request('vision.save_sample','ros-save'))
         wait(lambda:result('ros-save'))
         assert result('ros-save')['status']=='completed',result('ros-save')
@@ -90,8 +95,17 @@ def test_isolated_ros_start_save_stop(tmp_path):
         assert result('ros-stop')['status']=='completed'
         wait(lambda:ticks[0]>tick+2)  # Passive stop did not stop the camera fixture.
         assert json.loads((session/'samples/result_manifest.json').read_text())['complete'] is True
+        if capture_only:
+            from tools.vision.prepare_d405_review import prepare
+            report = prepare(session/'index.json', tmp_path/'review')
+            assert report['samples'] == 1
+            review = json.loads((tmp_path/'review/review.json').read_text())
+            assert review['samples'][0]['state'] == 'CAPTURE_ONLY'
+            assert review['samples'][0]['points'] == []
+            assert not any('tracking_result' in e['payload'] for e in events)
+            assert node.operations.vision.snapshot()['capture_only'] is True
         evidence=project_root()/'.runtime/s100p/validation/vision_controls';evidence.mkdir(parents=True,exist_ok=True)
-        (evidence/'ros-workflow.json').write_text(json.dumps({'isolated_ros_domain':187,'synthetic_input':True,
+        (evidence/('capture-workflow.json' if capture_only else 'ros-workflow.json')).write_text(json.dumps({'isolated_ros_domain':187,'synthetic_input':True,
             'start':result('ros-start'),'save':result('ros-save'),'stop':result('ros-stop'),
             'tracking':tracking,'sample_index':index,'camera_continued':True},ensure_ascii=False,indent=2))
     finally:

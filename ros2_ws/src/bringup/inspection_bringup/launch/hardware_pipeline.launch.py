@@ -55,7 +55,7 @@ def _start_mid360(context):
 
     return [
         LogInfo(msg=(
-            "Starting livox_ros_driver2 in PointCloud2 PointXYZRTLT mode; "
+            "Starting livox_ros_driver2 in CustomMsg mode; "
             f"config={config_path}"
         )),
         Node(
@@ -65,7 +65,7 @@ def _start_mid360(context):
             output="screen",
             emulate_tty=True,
             parameters=[{
-                "xfer_format": 0,
+                "xfer_format": 1,
                 "multi_topic": 0,
                 "data_src": 0,
                 "publish_freq": publish_freq,
@@ -244,7 +244,7 @@ def generate_launch_description():
         DeclareLaunchArgument("d405_config_file", default_value=str(share / "config/d405_startup.yaml")),
         DeclareLaunchArgument(
             "start_mid360", default_value="true",
-            description="Start livox_ros_driver2 in PointCloud2 mode (enabled by default)."),
+            description="Start livox_ros_driver2 in CustomMsg mode (enabled by default)."),
         DeclareLaunchArgument(
             "mid360_config_path", default_value=str(default_mid360_config),
             description="Vendor JSON config path; defaults to the verified local MID-360 config."),

@@ -83,7 +83,16 @@ def clip_annotation_y(annotation, first, last):
     return result
 
 
-def prepare(source_index, labels, output, split_spec=None):
+def resolve_visual_config(source, visual_config=None):
+    path = Path(visual_config) if visual_config else Path(source)/'config.yaml'
+    if visual_config is None:
+        import yaml
+        if yaml.safe_load(path.read_text()).get('algorithm') == 'capture_only':
+            raise ValueError('capture_only_requires_explicit_visual_config')
+    return path.resolve(), load_config(path)
+
+
+def prepare(source_index, labels, output, split_spec=None, visual_config=None):
     spec = (json.loads(Path(split_spec).read_text()) if split_spec else
             dict(segments=SEGMENTS, folds=FOLDS,
                  basis='consecutive capture-order blocks at visible scene/pose changes; defined without using annotation coordinates'))
@@ -93,6 +102,7 @@ def prepare(source_index, labels, output, split_spec=None):
         raise FileExistsError('prepare_requires_new_dataset_and_protocol')
     out.mkdir(parents=True, exist_ok=True)
     source, original = load_index(source_index)
+    config_path, cfg = resolve_visual_config(source, visual_config)
     label_data = json.loads(Path(labels).read_text())
     if len(original['samples']) != 30 or len(label_data['samples']) != 30:
         raise ValueError('round1_requires_all_30_samples')
@@ -145,9 +155,9 @@ def prepare(source_index, labels, output, split_spec=None):
                           negative_pixels=int((target == 0).sum()), ignore_pixels=int((target < 0).sum()),
                           target_sha256=sha256(mask_dir/f'{i:02d}.npy')))
     dump(root/'index.json', dataset)
-    cfg = load_config(source/'config.yaml')
     dump(out/'visual_config.json', cfg)
     shutil.copy2(source/'config.yaml', out/'source_visual_config.yaml')
+    shutil.copy2(config_path, out/'decoder_config.yaml')
     _, y0, _, y1 = roi_bounds((480,640), cfg)
     common = copy.deepcopy(dataset)
     for record in common['samples']:
@@ -187,6 +197,8 @@ def prepare(source_index, labels, output, split_spec=None):
                     checkpoint_selection='fixed final epoch; no held-out labels used for epoch or threshold selection',
                     fixed_center='x=(width-1)/2; one-pixel proxy for center scoring only; no width estimate',
                     common_eval_y=[y0,y1-1], decoder='existing geometry.candidate with frozen source visual config',
+                    decoder_config_source=str(config_path), decoder_config_sha256=sha256(out/'decoder_config.yaml'),
+                    visual_config_sha256=sha256(out/'visual_config.json'),
                     production_ready=False, protected=protected,
                     code_sha256={p:sha256(p) for p in [__file__, 'packages/d405_seam_tracking/src/d405_seam_tracking/learning.py',
                                                       'packages/d405_seam_tracking/src/d405_seam_tracking/geometry.py',
@@ -213,6 +225,9 @@ def infer_rgb(model, image, input_size):
 
 def verify_protocol(out):
     protocol = json.loads((out/'protocol.json').read_text())
+    for name, key in [('decoder_config.yaml', 'decoder_config_sha256'), ('visual_config.json', 'visual_config_sha256')]:
+        if key in protocol and sha256(out/name) != protocol[key]:
+            raise ValueError('frozen_visual_config_changed:'+name)
     for path, digest in protocol['protected'].items():
         if sha256(path) != digest:
             raise ValueError('production_file_changed:'+path)
@@ -388,9 +403,10 @@ if __name__=='__main__':
     parser.add_argument('--output',required=True)
     parser.add_argument('--source-index');parser.add_argument('--labels')
     parser.add_argument('--split-spec', help='JSON with segments, folds and basis for a new acquisition')
+    parser.add_argument('--visual-config', help='Explicit decoder configuration for capture-only sessions')
     args=parser.parse_args()
     if args.action=='prepare':
         if not args.source_index or not args.labels:parser.error('prepare requires --source-index and --labels')
-        prepare(args.source_index,args.labels,args.output,args.split_spec)
+        prepare(args.source_index,args.labels,args.output,args.split_spec,args.visual_config)
     elif args.action=='run':run(args.output)
     else:report(args.output)

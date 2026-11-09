@@ -32,7 +32,8 @@ def main():
         checks[name] = {"status": "available" if shutil.which(name) else "dependency_blocked", "path": shutil.which(name)}
     sdk = __import__("pathlib").Path(os.environ.get("MINDVISION_SDK_ROOT", root / "third_party/mindvision/2.1.0.50"))
     arch = "arm64" if platform.machine() in ("aarch64", "arm64") else "x64"
-    for name, path in {"mindvision_library": sdk / "lib" / arch / "libMVSDK.so", "mindvision_binding": sdk / "demo/python_demo/mvsdk.py", "system_config": config_path("communication/system.yaml"), "ros_overlay": runtime_root() / "install/local_setup.bash"}.items():
+    install = __import__("pathlib").Path(os.environ.get("TANK_INSTALL_ROOT", runtime_root() / "install"))
+    for name, path in {"mindvision_library": sdk / "lib" / arch / "libMVSDK.so", "mindvision_binding": sdk / "demo/python_demo/mvsdk.py", "system_config": config_path("communication/system.yaml"), "ros_overlay": install / "local_setup.bash"}.items():
         checks[name] = {"status": "available" if path.is_file() else "dependency_blocked", "path": str(path)}
     print(json.dumps({"checks": checks, "hardware": "not_verified", "build": "not_executed_by_preflight", "model_and_calibration": "see config/README.md"}, indent=2))
     return 0 if all(v["status"] == "available" for v in checks.values()) else 2

@@ -20,8 +20,21 @@ from inspection_tools.validators import (
     validate_eddy_current,
     validate_image,
     validate_pointcloud2,
+    validate_livox_custom,
     validate_ultrasound,
 )
+
+
+def test_custommsg_raw_structure_and_positive_subsecond_stamp():
+    msg = SimpleNamespace(point_num=1, points=[SimpleNamespace(x=float('nan'))],
+                          timebase=1800000000000000123,
+                          header=SimpleNamespace(stamp=SimpleNamespace(sec=0, nanosec=1)))
+    assert validate_livox_custom(msg) == []
+    msg.point_num = 2
+    assert 'points length' in validate_livox_custom(msg)[0]
+    msg.point_num = 1
+    msg.header.stamp.nanosec = 0
+    assert 'header stamp' in validate_livox_custom(msg)[0]
 
 
 def test_ros_uint8_normalization_accepts_integer_and_bytes():

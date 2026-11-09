@@ -60,3 +60,22 @@ def test_legacy_entrypoint_forwards_arguments_without_starting_hardware():
     assert '传感器模式：all' in result.stdout
     assert 'tracking_dry_run:=false' in result.stdout
     assert str(ROOT / 'apps/web_console_chassis_tracking') in result.stdout
+
+
+def test_preflight_rejects_missing_camera_backend_before_launch(monkeypatch):
+    args = robot_session.arguments(['--web-root', str(ROOT / 'apps/web_console_chassis_tracking')])
+    calls = []
+    def run(command, **kwargs):
+        calls.append(command)
+        assert command[3] == 'camera-preflight'
+        return subprocess.CompletedProcess(command, 1, '', "Package 'inspection_operations' not found")
+    class AvailablePort:
+        def __enter__(self): return self
+        def __exit__(self, *args): pass
+        def setsockopt(self, *args): pass
+        def bind(self, *args): pass
+    monkeypatch.setattr(robot_session.subprocess, 'run', run)
+    monkeypatch.setattr(robot_session.socket, 'socket', AvailablePort)
+    errors = robot_session.preflight(args)
+    assert any('相机后台 ROS 安装未加载' in error and 'inspection_operations' in error for error in errors)
+    assert len(calls) == 1

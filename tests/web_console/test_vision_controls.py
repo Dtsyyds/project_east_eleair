@@ -25,7 +25,7 @@ def serve(port):
         @property
         def capabilities(self):
             value=super().capabilities
-            for name in ['vision.start','vision.stop','vision.save_sample','vision.status','vision.select_candidate','vision.clear_selection']:
+            for name in ['vision.start','vision.capture_start','vision.stop','vision.save_sample','vision.status','vision.select_candidate','vision.clear_selection']:
                 value['operations'][name]=True;value['permissions'][name]=True
             return value
         def status_payload(self):
@@ -53,7 +53,10 @@ def serve(port):
                 self.vision['busy']=True
                 await self.packet(ws,'response',dict(reply,status='accepted',**self.status_payload()))
                 await asyncio.sleep(.15)
-            if action=='vision.start':
+            if action=='vision.capture_start':
+                self.vision.update(status='running',capture_only=True,algorithm_label='原始图片采集 · Color + Depth',
+                    session_id='mock-vision',directory='MOCK_ONLY/capture',diagnostics={'candidate_selection_supported':False})
+            elif action=='vision.start':
                 self.vision.update(status='running',session_id='mock-vision',directory='MOCK_ONLY/vision-experiment',
                     diagnostics={'candidate_selection_supported':True,'selection':{'state':'AUTO'},'tracking_error_reference': {'image_width':640,'image_height':480,
                         'reference_x':320.,'reference_y':360.,'reference_dx_dy':0.,
@@ -95,6 +98,24 @@ def server(browser,tmp_path):
             browser.click('disconnect');proc.terminate()
             try:proc.wait(timeout=5)
             except subprocess.TimeoutExpired:proc.kill();proc.wait()
+
+
+def test_capture_without_model(browser, server):
+    ui.open_console(browser,server)
+    browser.wait("!document.getElementById('vision-capture-start').disabled")
+    ui.click(browser,'#vision-capture-start')
+    browser.wait("window.VisionControls.snapshot()?.capture_only===true")
+    browser.wait("!document.getElementById('vision-save').disabled")
+    assert browser.js("return document.getElementById('vision-start').disabled")
+    assert browser.js("return document.getElementById('vision-stop').textContent")=='停止图片采集'
+    ui.click(browser,'#vision-save')
+    browser.wait("window.VisionControls.snapshot()?.saved_count===1")
+    ui.click(browser,'#vision-stop')
+    browser.wait("window.VisionControls.snapshot()?.status==='stopped'")
+    state=ui.get_json(server+'/mock/state')
+    assert 'vision.capture_start' in state['actions'] and 'vision.start' not in state['actions']
+    assert state['chassis_requests']==0
+    assert not browser.js('return window.uiErrors')
 
 
 def test_three_controls_and_recording_independence(browser,server):

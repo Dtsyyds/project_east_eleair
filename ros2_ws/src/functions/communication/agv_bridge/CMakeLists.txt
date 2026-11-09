@@ -9,6 +9,9 @@ find_package(std_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(agv_protocol REQUIRED)
+# Load JsonCpp through agv_protocol before Livox's PCL/VTK dependency graph.
+# Ubuntu 22.04's jsoncpp config cannot recreate an existing JsonCpp target.
+find_package(livox_ros_driver2 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system thread)
 find_package(OpenSSL REQUIRED)
 find_package(OpenCV REQUIRED COMPONENTS core imgproc imgcodecs)
@@ -31,6 +34,7 @@ ament_target_dependencies(${PROJECT_NAME}
   std_msgs
   nav_msgs
   sensor_msgs
+  livox_ros_driver2
   eddy_driver
   inspection_interfaces
   agv_protocol
@@ -78,6 +82,7 @@ ament_export_dependencies(
   nav_msgs 
   sensor_msgs 
   agv_protocol
+  livox_ros_driver2
 )
 
 install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})
@@ -85,5 +90,6 @@ install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})
 if(BUILD_TESTING)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(inspection_bridge_e2e test/test_inspection_bridge.py TIMEOUT 90)
+  ament_add_pytest_test(lidar_preview_e2e test/test_lidar_preview.py TIMEOUT 30)
 endif()
 ament_package()

@@ -256,6 +256,8 @@ def make_app(mock: MockConsole) -> web.Application:
     app.router.add_get("/theme.css", lambda _request: static_file("theme.css"))
     app.router.add_get("/theme.js", lambda _request: static_file("theme.js"))
     app.router.add_get("/vision.js", lambda _request: static_file("vision.js"))
+    app.router.add_get("/vehicle_model.js", lambda _request: static_file("vehicle_model.js"))
+    app.router.add_get("/lidar_preview.js", lambda _request: static_file("lidar_preview.js"))
     app.router.add_get("/console.js", lambda _request: static_file("console.js"))
     app.router.add_get("/camera_tuning.js", lambda _request: static_file("camera_tuning.js"))
     app.router.add_get("/replay.js", lambda _request: static_file("replay.js"))

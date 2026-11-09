@@ -165,7 +165,7 @@ class Operations:
                     self.response(request, 'completed', **self.snapshot()); return
                 if self.vision_busy:
                     self.response(request, 'failed', error='视觉巡迹操作正在处理，请等待结果'); return
-                if action == 'vision.start' and (self.replay_start_pending or self.replay.snapshot()['status'] in REPLAY_ACTIVE):
+                if action in ('vision.start', 'vision.capture_start') and (self.replay_start_pending or self.replay.snapshot()['status'] in REPLAY_ACTIVE):
                     self.response(request, 'failed', error='请先停止回放，再启动实时视觉巡迹'); return
                 self.vision_busy = True
                 self.response(request, 'accepted')
@@ -267,6 +267,7 @@ class Operations:
         try:
             if action.startswith('vision.'):
                 if action == 'vision.start': self.vision.start()
+                elif action == 'vision.capture_start': self.vision.start(capture_only=True)
                 elif action == 'vision.stop': self.vision.stop()
                 elif action in ('vision.select_candidate', 'vision.clear_selection'):
                     self.vision.select_candidate(request.get('parameters', {}), clear=action == 'vision.clear_selection')

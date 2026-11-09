@@ -8,7 +8,7 @@
   const MAX_LOG = 200, MAX_MESSAGE = 1024 * 1024, MAX_BUFFER = 64 * 1024;
   const STREAM_IDS = ["mindvision", "fisheye", "depth_camera"];
   const TASK_STAGES = ["preflighting", "ready", "starting", "recording", "stopping", "finalizing", "complete"];
-  const SIDE_EFFECTS = new Set(["vision.start", "vision.stop", "vision.save_sample", "vision.select_candidate", "vision.clear_selection", "collection.start", "collection.stop", "emat.measure", "replay.start", "replay.pause", "replay.resume", "replay.stop", "evidence.save_displayed", "evidence.save_next", "event.mark", "chassis.move", "chassis.stop", "camera.settings.apply", "camera.settings.save"]);
+  const SIDE_EFFECTS = new Set(["vision.start", "vision.capture_start", "vision.stop", "vision.save_sample", "vision.select_candidate", "vision.clear_selection", "collection.start", "collection.stop", "emat.measure", "replay.start", "replay.pause", "replay.resume", "replay.stop", "evidence.save_displayed", "evidence.save_next", "event.mark", "chassis.move", "chassis.stop", "camera.settings.apply", "camera.settings.save"]);
   const $ = id => document.getElementById(id);
   const monoNow = () => performance.now();
   const isoNow = () => new Date().toISOString();
@@ -379,7 +379,7 @@
     window.TankReplay.receive(packet);
     if(kind==="replay_sensor")return;
     if(payload.action==="vision.status" && payload.status==="completed" && payload.vision && payload.vision.busy===false) {
-      for(const action of ["vision.start","vision.stop","vision.save_sample"])state.uncertainActions.delete(action);
+      for(const action of ["vision.start","vision.capture_start","vision.stop","vision.save_sample"])state.uncertainActions.delete(action);
     }
     if (C.isObject(payload.capabilities)) acceptCapabilities(payload.capabilities);
     if (C.isObject(payload.task)) acceptTask(payload.task);
@@ -408,6 +408,7 @@
       if (C.isObject(payload.control)) state.control = record(payload.control, payload.control.valid !== false, payload.control.reason || "");
     } else if (kind === "status_sensor") {
       if (C.isObject(payload.video)) receiveVideo(payload.video);
+      if (C.isObject(payload.lidar_cloud)) {window.LidarPreview.update(state.connected,state.connectionId);window.LidarPreview.receive(payload.lidar_cloud);}
       if (C.isObject(payload.lidar) || C.isObject(payload.pose)) acceptPose(payload.lidar || payload.pose);
       if (C.isObject(payload.channel_mean)) acceptEddy(payload);
     } else if (kind === "response" || kind === "job_update" || kind === "task_update" || kind === "event_update") {
@@ -856,7 +857,8 @@
     const axes=Array.isArray(state.capabilities?.control?.axes)?state.capabilities.control.axes:[];for(const axis of ["vx","vy","wz"]){$(axis+"-field").classList.toggle("hidden",!axes.includes(axis));const limit=state.capabilities?.control?.limits?.[axis];if(C.finite(limit)){$(axis).min=-limit;$(axis).max=limit;}}
     window.VisionControls.render(state.connected,replayBusy);
     window.TankReplay.render(state.connected);
-    if (["starting","running","stopping"].includes(window.VisionControls.snapshot()?.status)||actionInFlight("vision.start")) {
+    window.LidarPreview.update(state.connected,state.connectionId);
+    if (["starting","running","stopping"].includes(window.VisionControls.snapshot()?.status)||actionInFlight("vision.start")||actionInFlight("vision.capture_start")) {
       $("replay-start").disabled=true;$("quick-replay").disabled=true;
       $("replay-message").textContent="实时视觉巡迹正在运行，请先停止视觉巡迹再回放。";
     }

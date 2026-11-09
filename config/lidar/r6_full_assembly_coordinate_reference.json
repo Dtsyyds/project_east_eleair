@@ -1,0 +1,33 @@
+{
+  "STL_units": "mm",
+  "STL_frame": "assembly_cad",
+  "T_assembly_from_lidar": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.15310000000002
+    ],
+    [
+      0.0,
+      -0.859294630550404,
+      0.5114809262399184,
+      -0.1268247952547486
+    ],
+    [
+      0.0,
+      -0.5114809262399184,
+      -0.859294630550404,
+      -0.21194053142687386
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "transform_translation_unit": "m",
+  "conversion": "p_lidar_m = inverse(T_assembly_from_lidar) @ [0.001*p_stl_mm, 1]",
+  "lidar_definition": "geometry bounding-box center with CAD axes; not calibrated measurement frame"
+}

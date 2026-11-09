@@ -7,14 +7,16 @@
 <meta content="no-referrer" name="referrer"/>
 <meta content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; style-src 'self' 'unsafe-inline'; script-src 'self'" http-equiv="Content-Security-Policy"/>
 <title>工业智能巡检 · East Eleair</title>
-<link href="theme.css?v=20261102-edges2" rel="stylesheet"/>
+<link href="theme.css?v=20261109-four-grid-restored" rel="stylesheet"/>
 <script defer="" src="theme.js"></script>
 <script defer="" src="console_core.js"></script>
 <script defer src="connection_config.js?v=chassis-tracking-20261105"></script>
 <script defer="" src="replay.js"></script>
 <script defer="" src="camera_tuning.js"></script>
 <script defer="" src="vision.js?v=20261105-chassis-link"></script>
-<script defer="" src="console.js?v=20261104-recovery"></script>
+<script defer="" src="vehicle_model.js?v=20261109-r6-full-restored"></script>
+<script defer="" src="lidar_preview.js?v=20261109-r6-full-restored"></script>
+<script defer="" src="console.js?v=20261109-lidar-restored"></script>
 <script defer src="robot_embed.js?v=chassis-tracking-20261105"></script>
 </head>
 <body><svg aria-hidden="true" class="icon-sprite" xmlns="http://www.w3.org/2000/svg"><symbol id="icon-brand" viewBox="0 0 24 24"><path d="M12 2 21 7v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"></path><path d="m7.5 4.5 9 5v5"></path></symbol><symbol id="icon-monitor" viewBox="0 0 24 24"><rect height="13" rx="2" width="18" x="3" y="4"></rect><path d="M8 21h8m-4-4v4M6 11h3l2-4 3 7 2-3h2"></path></symbol><symbol id="icon-record" viewBox="0 0 24 24"><rect height="18" rx="2" width="16" x="4" y="3"></rect><path d="M8 7h8M8 11h5M8 15h3"></path><circle cx="16" cy="16" r="2"></circle></symbol><symbol id="icon-play" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="m10 8 6 4-6 4z"></path></symbol><symbol id="icon-events" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4M8 9h5M8 13h3M8 17h8"></path><circle cx="18" cy="6" r="3"></circle></symbol><symbol id="icon-devices" viewBox="0 0 24 24"><rect height="10" rx="2" width="10" x="7" y="7"></rect><path d="M9 3v4m6-4v4M9 17v4m6-4v4M3 9h4m-4 6h4m10-6h4m-4 6h4"></path><path d="M10 10h4v4h-4z"></path></symbol><symbol id="icon-camera" viewBox="0 0 24 24"><rect height="15" rx="2" width="18" x="3" y="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M8 5V3h8v2"></path></symbol><symbol id="icon-stop" viewBox="0 0 24 24"><rect height="12" rx="1" width="12" x="6" y="6"></rect></symbol><symbol id="icon-measure" viewBox="0 0 24 24"><path d="M4 8v8m16-8v8M4 12h16m-4-3 4 3-4 3M8 9l-4 3 4 3"></path></symbol></svg><a class="skip-link" href="#workspace">跳转至工作区</a>
@@ -44,8 +46,29 @@
 <button class="primary" disabled="" id="measure-thickness"><svg aria-hidden="true" class="icon"><use href="#icon-measure"></use></svg>一键测厚</button>
 <strong aria-live="polite" id="thickness-result">厚度：—</strong>
 </div><p class="muted" id="measurement-message" role="status">连接后可启动采集或测厚。</p></section></div>
-<main id="workspace" tabindex="-1"><section aria-labelledby="title-realtime" class="view active" id="view-realtime"><div class="page-heading"><div><h2 id="title-realtime">实时巡检</h2></div></div><div class="monitor-layout"><div class="camera-grid">
-<section class="panel video-card video-primary" data-stream="mindvision">
+<main id="workspace" tabindex="-1"><section aria-labelledby="title-realtime" class="view active" id="view-realtime"><div class="page-heading"><div><h2 id="title-realtime">实时巡检</h2></div></div><div class="monitor-layout"><div class="camera-grid preview-grid">
+<section class="panel video-card video-secondary" data-stream="depth_camera">
+<div class="video-title"><h2><svg aria-hidden="true" class="icon"><use href="#icon-camera"></use></svg>D405</h2><span class="rate-pair">接收 <b id="depth_camera-receive-fps">0.0</b> / 显示 <b id="depth_camera-display-fps">0.0</b> FPS</span></div>
+<div class="screen" id="depth_camera-screen"><canvas aria-label="D405 实时画面" id="depth_camera-canvas"></canvas><canvas aria-hidden="true" class="overlay" id="depth_camera-reference"></canvas><canvas aria-hidden="true" class="overlay" id="depth_camera-overlay"></canvas><div class="screen-state" id="depth_camera-state">尚未收到预览</div></div>
+<div class="toolbar video-tools"><button class="quiet" data-overlay="depth_camera">隐藏叠加</button><button class="quiet" data-fullscreen="depth_camera">全屏</button></div>
+
+<p class="muted tracking-display" id="depth_camera-tracking-display" aria-live="polite">当前为原始预览；等待新鲜的同帧巡迹结果</p>
+<p class="muted tracking-display" id="depth_camera-reference-display">启动视觉巡迹后显示当前生效的参考线</p>
+<details class="frame-details"><summary>帧信息与诊断</summary><p class="frame-kind">画面类型：<span id="depth_camera-kind">内容类型未提供</span></p><p class="video-meta" id="depth_camera-meta">等待 status_sensor</p><small>深度 JPEG 只作为可视化；没有原始深度与有效标定时不提供毫米读数或图面测距。</small></details></section>
+<section class="panel video-card video-secondary" data-stream="fisheye">
+<div class="video-title"><h2><svg aria-hidden="true" class="icon"><use href="#icon-camera"></use></svg>鱼眼相机</h2><span class="rate-pair">接收 <b id="fisheye-receive-fps">0.0</b> / 显示 <b id="fisheye-display-fps">0.0</b> FPS</span></div>
+<div class="screen" id="fisheye-screen"><canvas aria-label="鱼眼相机实时画面" id="fisheye-canvas"></canvas><canvas aria-hidden="true" class="overlay" id="fisheye-overlay"></canvas><div class="screen-state" id="fisheye-state">尚未收到预览</div></div>
+<div class="toolbar video-tools"><button class="quiet" data-overlay="fisheye">隐藏叠加</button><button class="quiet" data-fullscreen="fisheye">全屏</button></div>
+<details class="frame-details"><summary>帧信息与诊断</summary><p class="frame-kind">画面类型：<span id="fisheye-kind">内容类型未提供</span></p><p class="video-meta" id="fisheye-meta">等待 status_sensor</p></details></section>
+<section class="panel video-card" id="lidar-preview-panel">
+<div class="video-title"><h2>雷达实时点云</h2><span class="badge muted" id="lidar-preview-status">等待点云</span></div>
+<div class="screen lidar-screen"><canvas id="lidar-preview" aria-label="雷达实时三维点云，拖动旋转、滚轮缩放"></canvas></div>
+<div class="toolbar video-tools"><button class="quiet" id="lidar-preview-reset">重置视角</button><button class="quiet" id="lidar-preview-top">俯视</button><small>拖动旋转 · 滚轮缩放 · 单帧点云，非累计地图</small></div>
+<div class="toolbar video-tools"><label><input type="checkbox" id="lidar-vehicle-show" checked/>车体模型</label><label><input type="checkbox" id="lidar-vehicle-level" checked/>车体水平显示</label><button class="quiet" id="lidar-vehicle-close">近看车体</button></div>
+<details class="frame-details"><summary>安装关系估计</summary><p class="muted" id="lidar-vehicle-estimate"></p><small>仅调整显示坐标；原始点云、IMU、TF 和录制数据不变。</small></details>
+<p class="muted" id="lidar-preview-meta">等待 /livox/lidar</p>
+</section>
+<section class="panel video-card video-secondary" data-stream="mindvision">
 <div class="video-title"><h2><svg aria-hidden="true" class="icon"><use href="#icon-camera"></use></svg>工业相机</h2><span class="rate-pair">接收 <b id="mindvision-receive-fps">0.0</b> / 显示 <b id="mindvision-display-fps">0.0</b> FPS</span></div>
 <div class="screen" id="mindvision-screen"><canvas aria-label="工业相机实时画面" id="mindvision-canvas"></canvas><canvas aria-hidden="true" class="overlay" id="mindvision-overlay"></canvas><div class="screen-state" id="mindvision-state">尚未收到预览</div></div>
 <div class="toolbar video-tools"><button class="quiet" data-overlay="mindvision">隐藏叠加</button><button class="quiet" data-fullscreen="mindvision">全屏</button><button aria-controls="camera-tuning-panel" aria-expanded="false" class="quiet" id="camera-tuning-toggle">相机调参</button></div>
@@ -69,25 +92,12 @@
 <small>应用后查看上方画面；保存后，后续任务和重启继续使用该相机的曝光与色彩设置。录制期间不可调参。分辨率与帧率由任务配置决定。</small>
 </section>
 <details class="frame-details"><summary>帧信息与诊断</summary><p class="frame-kind">画面类型：<span id="mindvision-kind">内容类型未提供</span></p><p class="video-meta" id="mindvision-meta">等待 status_sensor</p></details></section>
-<section class="panel video-card video-secondary" data-stream="fisheye">
-<div class="video-title"><h2><svg aria-hidden="true" class="icon"><use href="#icon-camera"></use></svg>鱼眼相机</h2><span class="rate-pair">接收 <b id="fisheye-receive-fps">0.0</b> / 显示 <b id="fisheye-display-fps">0.0</b> FPS</span></div>
-<div class="screen" id="fisheye-screen"><canvas aria-label="鱼眼相机实时画面" id="fisheye-canvas"></canvas><canvas aria-hidden="true" class="overlay" id="fisheye-overlay"></canvas><div class="screen-state" id="fisheye-state">尚未收到预览</div></div>
-<div class="toolbar video-tools"><button class="quiet" data-overlay="fisheye">隐藏叠加</button><button class="quiet" data-fullscreen="fisheye">全屏</button></div>
-<details class="frame-details"><summary>帧信息与诊断</summary><p class="frame-kind">画面类型：<span id="fisheye-kind">内容类型未提供</span></p><p class="video-meta" id="fisheye-meta">等待 status_sensor</p></details></section>
-<section class="panel video-card video-secondary" data-stream="depth_camera">
-<div class="video-title"><h2><svg aria-hidden="true" class="icon"><use href="#icon-camera"></use></svg>D405</h2><span class="rate-pair">接收 <b id="depth_camera-receive-fps">0.0</b> / 显示 <b id="depth_camera-display-fps">0.0</b> FPS</span></div>
-<div class="screen" id="depth_camera-screen"><canvas aria-label="D405 实时画面" id="depth_camera-canvas"></canvas><canvas aria-hidden="true" class="overlay" id="depth_camera-reference"></canvas><canvas aria-hidden="true" class="overlay" id="depth_camera-overlay"></canvas><div class="screen-state" id="depth_camera-state">尚未收到预览</div></div>
-<div class="toolbar video-tools"><button class="quiet" data-overlay="depth_camera">隐藏叠加</button><button class="quiet" data-fullscreen="depth_camera">全屏</button></div>
-
-<p class="muted tracking-display" id="depth_camera-tracking-display" aria-live="polite">当前为原始预览；等待新鲜的同帧巡迹结果</p>
-<p class="muted tracking-display" id="depth_camera-reference-display">启动视觉巡迹后显示当前生效的参考线</p>
-<details class="frame-details"><summary>帧信息与诊断</summary><p class="frame-kind">画面类型：<span id="depth_camera-kind">内容类型未提供</span></p><p class="video-meta" id="depth_camera-meta">等待 status_sensor</p><small>深度 JPEG 只作为可视化；没有原始深度与有效标定时不提供毫米读数或图面测距。</small></details></section>
 </div><aside aria-label="巡检辅助信息" class="inspector"><section class="panel alarm-panel">
 <div class="head"><h2>关键告警</h2><small title="确认仅表示已读，恢复状态以板端真实数据为准">已读不表示故障恢复</small></div>
 <div class="alert-list" id="alert-list"><p class="muted">尚无告警数据</p></div>
 </section><section class="panel tracking-panel">
 <div class="head"><h2>巡迹结果</h2><span class="muted" id="tracking-age">未收到</span></div>
-<div class="vision-controls" aria-label="视觉巡迹实验操作"><button class="primary" id="vision-start" disabled>启动视觉巡迹</button><button class="danger" id="vision-stop" disabled>停止视觉巡迹</button><button id="vision-save" disabled>保存实验样本</button></div>
+<div class="vision-controls" aria-label="视觉巡迹实验操作"><button id="vision-capture-start" disabled>开始图片采集（无需模型）</button><button class="primary" id="vision-start" disabled>启动视觉巡迹</button><button class="danger" id="vision-stop" disabled>停止视觉巡迹</button><button id="vision-save" disabled>保存实验样本</button></div>
 <p class="reason muted" id="vision-message" role="status">等待板端巡迹能力</p>
 <div id="vision-candidates" hidden>
 <p class="reason" id="vision-candidate-message" role="status">等待候选线</p>

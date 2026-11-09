@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import signal
 import subprocess
+import sys
 import threading
 import time
 import uuid
@@ -15,9 +16,35 @@ import uuid
 from .paths import config_path, project_root
 
 SELECTION_ACTIONS = ('vision.select_candidate', 'vision.clear_selection')
-ACTIONS = ('vision.start', 'vision.stop', 'vision.save_sample', 'vision.status') + SELECTION_ACTIONS
+ACTIONS = ('vision.start', 'vision.capture_start', 'vision.stop', 'vision.save_sample', 'vision.status') + SELECTION_ACTIONS
 ACTIVE = ('starting', 'running', 'stopping')
 INPUTS = ('/d405/camera/color/image_raw', '/d405/camera/depth/image_rect_raw')
+
+
+def runtime_command(config, capture_only=False):
+    """Check local deployment artifacts before creating an experiment or process."""
+    import yaml
+    if capture_only:
+        return Path(config_path('d405/capture.yaml')), [sys.executable, str(project_root() / 'tools/vision/run_d405_capture.py')]
+    vision = config.get('vision', {})
+    python = vision.get('python')
+    if python:
+        interpreter = project_root() / python
+        if not interpreter.is_file() or not os.access(interpreter, os.X_OK):
+            raise RuntimeError('配置的巡迹 Python 环境不可用：' + str(interpreter))
+        command = [str(interpreter), str(project_root() / 'tools/vision/run_d405_node.py')]
+    else:
+        command = ['ros2', 'run', 'd405_seam_ros', 'd405_seam_node']
+    cfg = Path(config_path(vision.get('algorithm_config', 'd405/experimental.yaml')))
+    algorithm = yaml.safe_load(cfg.read_text())
+    if algorithm.get('algorithm') == 'round1_a':
+        checkpoint = project_root() / algorithm['checkpoint']
+        expected = algorithm['checkpoint_sha256']
+        if not checkpoint.is_file():
+            raise RuntimeError('巡迹模型权重缺失：' + str(checkpoint) + '；需要恢复原文件，SHA256=' + expected)
+        if hashlib.sha256(checkpoint.read_bytes()).hexdigest() != expected:
+            raise RuntimeError('巡迹模型权重校验失败：' + str(checkpoint) + '；期望 SHA256=' + expected)
+    return cfg, command
 
 
 def write_json(path, value):
@@ -91,8 +118,8 @@ class VisionController:
                 return
             self.last_diagnostic = time.monotonic()
             self.state['diagnostics'] = data
-            label = self.config.get('vision', {}).get('label', 'Color + Depth')
-            self.state.update(status='running', algorithm_label=label, message='视觉巡迹运行中 · ' + label + ' · 不控制机器人')
+            label = '原始图片采集 · Color + Depth' if self.state.get('capture_only') else self.config.get('vision', {}).get('label', 'Color + Depth')
+            self.state.update(status='running', algorithm_label=label, message=label + '运行中 · 不控制机器人')
 
     def check_storage(self):
         s = self.storage()
@@ -122,17 +149,21 @@ class VisionController:
             self.state['selection'] = reply['selection']
         return reply
 
-    def start(self):
+    def start(self, capture_only=False):
         with self.lock:
             if self.process and self.process.poll() is None:
                 raise RuntimeError('视觉巡迹已经启动')
             self.check_storage(); self.check_inputs()
             if self.service_call('probe').get('available'):
                 raise RuntimeError('已有独立巡迹节点，请先在其启动终端停止，避免重复进程')
+            try:
+                cfg, command = runtime_command(self.config, capture_only=capture_only)
+            except (OSError, RuntimeError) as error:
+                self.state.update(status='failed', message=str(error))
+                raise
             experiment = 'VISION-' + time.strftime('%Y%m%d_%H%M%S') + '-' + uuid.uuid4().hex[:8]
             self.session = Path(self.config['data_root']) / 'vision_experiments' / experiment
             self.session.mkdir(parents=True, exist_ok=False)
-            cfg = Path(config_path(self.config.get('vision', {}).get('algorithm_config', 'd405/experimental.yaml')))
             frozen = self.session / 'config.yaml'; frozen.write_bytes(cfg.read_bytes())
             write_json(self.session / 'session.json', {'schema': 'vision_experiment_v1', 'session_id': experiment,
                        'config_sha256': hashlib.sha256(frozen.read_bytes()).hexdigest(), 'stream': 'color',
@@ -140,20 +171,12 @@ class VisionController:
             if self.log: self.log.close()
             self.log = (self.session / 'node.log').open('wb')
             self.state = {'status': 'starting', 'session_id': experiment, 'directory': str(self.session),
-                          'message': '正在启动视觉巡迹，等待节点诊断', 'sample': None, 'saved_count': 0}
+                          'message': '正在启动，等待节点诊断', 'sample': None, 'saved_count': 0, 'capture_only': capture_only}
             self.last_diagnostic = 0.
             try:
-                python = self.config.get('vision', {}).get('python')
-                if python:
-                    interpreter = project_root() / python
-                    if not interpreter.is_file() or not os.access(interpreter, os.X_OK):
-                        raise RuntimeError('配置的巡迹 Python 环境不可用：' + str(interpreter))
-                    command = [str(interpreter), str(project_root() / 'tools/vision/run_d405_node.py')]
-                else:
-                    command = ['ros2', 'run', 'd405_seam_ros', 'd405_seam_node']
                 self.process = self.popen(command + [
                     '--config', str(frozen), '--stream', 'color', '--depth-scale-m', '0.001',
-                    '--runtime-mode', self.config.get('vision', {}).get('runtime_mode', 'a'),
+                    '--runtime-mode', 'capture' if capture_only else self.config.get('vision', {}).get('runtime_mode', 'a'),
                     '--session-id', experiment, '--events', str(self.session / 'samples')], stdout=self.log, stderr=subprocess.STDOUT,
                     start_new_session=True)
             except Exception:

@@ -10,6 +10,7 @@ from pathlib import Path
 import shutil
 import hashlib
 import threading
+import time
 from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit
@@ -240,8 +241,26 @@ def main():
     p.add_argument('--output', required=True)
     p.add_argument('--import-labels', help='Import explicitly saved human labels instead of preparing the review')
     p.add_argument('--serve', action='store_true', help='Serve an existing review with validated label synchronization')
-    p.add_argument('--port', type=int, default=8081)
+    p.add_argument('--wait-sealed', action='store_true', help='Wait for capture to stop, prepare review, then serve')
+    p.add_argument('--port', type=int, default=8082, help='Review HTTP port; 8081 is reserved by the robot camera backend')
     args = p.parse_args()
+    if args.wait_sealed:
+        if not args.serve or args.import_labels:
+            p.error('--wait-sealed requires --serve without --import-labels')
+        manifest = Path(args.index).parent / 'samples/result_manifest.json'
+        print('等待停止图片采集并封存，随后自动开放标注网页。', flush=True)
+        while True:
+            try:
+                state = json.loads(manifest.read_text())
+            except (FileNotFoundError, json.JSONDecodeError):
+                state = {}
+            if state.get('complete') is True:
+                break
+            if state.get('worker', {}).get('state') == 'FAILED':
+                raise RuntimeError('capture_writer_failed; inspect capture log')
+            time.sleep(1)
+        if not Path(args.output).exists():
+            print(json.dumps(prepare(args.index, args.output), ensure_ascii=False), flush=True)
     if args.serve:
         if args.import_labels:
             p.error('--serve cannot be combined with --import-labels')

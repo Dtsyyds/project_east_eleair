@@ -1,0 +1,14 @@
+{
+  "stl_sha256": "4368e981e4eb7deb86fd23eed4aa7d546ce3790caa92eed9486690ffea74fd0d",
+  "rotation_display_from_assembly": [[0, 0, -1], [1, 0, 0], [0, -1, 0]],
+  "rotation_lidar_cad_from_livox_assumed": [[0, 1, 0], [0, 0, 1], [1, 0, 0]],
+  "assumptions": [
+    "STL uses millimetres; the supplied assembly-from-lidar transform translation uses metres.",
+    "Display axes: +X = assembly -Z, +Y = assembly +X, +Z = assembly -Y; vehicle forward is a visual CAD assumption.",
+    "Display origin is the horizontal mesh bounding-box centre at its lowest plane, not ROS base_link or measured ground.",
+    "LiDAR origin is the supplied geometry bounding-box centre, not a calibrated optical measurement origin.",
+    "Uncalibrated axis assumption: livox +X -> lidar CAD +Z, livox +Y -> lidar CAD +X, livox +Z -> lidar CAD +Y. Gravity cannot establish yaw.",
+    "Rotation starts from the CAD installation and assumed axes, then minimally aligns the saved stationary IMU acceleration to display +Z. Vehicle mesh stays horizontal.",
+    "The saved stationary observation may include vehicle tilt; this is a display estimate only. No TF, ROS data, driver extrinsics or recordings are changed."
+  ]
+}

@@ -17,6 +17,11 @@ case "$INSPECTION_PLATFORM" in s100p|x86|rk3588) ;; *) echo "Unknown platform: $
 export TANK_RUNTIME_ROOT="$EAST_ELEAIR_ROOT/.runtime/$INSPECTION_PLATFORM"
 export TANK_BUILD_ROOT="$TANK_RUNTIME_ROOT/build"
 export TANK_INSTALL_ROOT="$TANK_RUNTIME_ROOT/install"
+# A conventional colcon build uses ros2_ws/install. Fresh clones may only
+# have that layout; never depend on an overlay inherited from the terminal.
+if [[ ! -f "$TANK_INSTALL_ROOT/local_setup.bash" && -f "$EAST_ELEAIR_ROOT/ros2_ws/install/local_setup.bash" ]]; then
+  export TANK_INSTALL_ROOT="$EAST_ELEAIR_ROOT/ros2_ws/install"
+fi
 export TANK_CORE_ENV="$TANK_RUNTIME_ROOT/venv"
 export TANK_SYSTEM_ROOT="$EAST_ELEAIR_ROOT/deploy"
 export ROS_LOG_DIR="$TANK_RUNTIME_ROOT/ros_logs"

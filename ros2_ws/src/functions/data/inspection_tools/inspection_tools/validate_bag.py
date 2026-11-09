@@ -13,6 +13,7 @@ import yaml
 from inspection_tools.validators import (
     validate_eddy_current,
     validate_image,
+    validate_livox_custom,
     validate_pointcloud2,
     validate_ultrasound,
 )
@@ -199,7 +200,13 @@ def validate(
             structural_errors = validate_image(
                 message, expected_encodings={"rgb8", "bgr8", "rgba8", "bgra8"})
         elif topic == LIDAR_TOPIC:
-            structural_errors = validate_pointcloud2(message)
+            lidar_type = topic_types[topic]
+            if lidar_type == "livox_ros_driver2/msg/CustomMsg":
+                structural_errors = validate_livox_custom(message)
+            elif lidar_type == "sensor_msgs/msg/PointCloud2":
+                structural_errors = validate_pointcloud2(message)
+            else:
+                structural_errors = [f"unsupported lidar message type: {lidar_type}"]
         elif topic == ULTRASOUND_TOPIC:
             structural_errors = validate_ultrasound(message)
         elif topic == EDDY_CURRENT_TOPIC:

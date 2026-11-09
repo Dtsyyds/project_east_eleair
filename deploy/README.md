@@ -1,5 +1,21 @@
 # 部署入口
 
+## 克隆后的工业相机依赖
+
+Git 不包含 `third_party/mindvision/*/lib/`。新克隆即使已经构建 ROS 驱动，
+仍需恢复 MindVision 2.1.0.50 原生库，否则工业相机节点启动即退出，网页无图像。
+从本地完整的同版本 SDK 恢复（路径必须包含 `demo/python_demo/mvsdk.py` 和 `lib/`）：
+
+```bash
+python3 deploy/restore_mindvision_sdk.py /path/to/MindVisionSDK_v2.1.0.50/sdk
+```
+
+脚本核对 Python 绑定、主机架构及复制校验和，只写入本工程被忽略的库目录，
+不安装系统 SDK，不替换已有不同的库；同一来源可重复执行。
+也可在启动前显式设置 `MINDVISION_SDK_ROOT` 为完整 SDK 根目录。
+完成后重新运行原上位机入口。更新驱动错误提示需要重新构建 `mindvision_camera_driver`；
+仅恢复动态库即可解决此次缺库启动失败，无需更改相机参数或算法。
+
 ## RDK 一条命令 + 电脑网页控制
 
 入口：`bash system_websocket/run_robot.sh --real --host RDK_IP`。保留老的 `run.sh`、`run_d405.sh`，不强迫相机单独运行场景启动底盘。整合入口不复制或维护第二份底盘驱动源码，而是复用已构建的 `Duct_Robot_V2_Ros2Control_humble` 工作区。
@@ -51,7 +67,7 @@ MCAP 位于 `DATA_ROOT/robot_bags/会话目录/`，每个模块一个包，根�
 所有主入口可从任意当前目录通过绝对路径调用，`--help` 不启动设备。先阅读 README 与下一轮验证计划。
 
 - 日常上位机启动：项目根目录执行 `bash system_websocket/run.sh`，自动加载环境并默认选择当前三相机配置，无需参数。
-- env.sh：source 设置本工作树与平台路径；拒绝继承原工程路径的环境；已有系统 ROS underlay 可读使用，不安装或修改系统。
+- env.sh：source 设置本工作树与平台路径；优先加载 `.runtime/<platform>/install`，若不存在其 `local_setup.bash` 则加载本工程 `ros2_ws/install`。`TANK_INSTALL_ROOT` 和兼容安装路径变量统一指向实际选中的目录，不依赖终端预先 source。拒绝继承原工程路径的环境；已有系统 ROS underlay 可读使用，不安装或修改系统。
 - build.sh：--plan 只打印命令；默认构建 profile，--packages-select 实际按依赖闭包 packages-up-to 选择；--skip-native 使用明确准备的依赖；--offline 校验原清单并在新 sysroot 解包 ARM64 deb。所有 build/install/log/venv/native/sysroot 在新 `.runtime/<platform>`。
 - run.sh / apps/web_console/run.sh：启动硬件、operations、bridge 和网页 supervisor；`--config config/communication/cameras.yaml` 选择三相机模式。默认整机配置仍检查涡流；启动前先阅读最新实机报告。
 - collect/stop/replay/validate/handoff：转发 inspection CLI；run_id、name:=value 等保持原能力，子命令帮助可查看入口语法。
@@ -63,3 +79,12 @@ MCAP 位于 `DATA_ROOT/robot_bags/会话目录/`，每个模块一个包，根�
 pip 安装步骤去掉 PYTHONPATH，避免旧 setuptools 在源码已可见时省略 editable .pth 导致干净环境不可导入。部署仍使用项目固定源码；不安装旧业务 wheel。
 Rerun 使用独立 `.runtime/<platform>/rerun_venv`（FIELD_RRD_PYTHON 可明确覆盖），保持 0.36.2 与其 NumPy2 需求隔离，不污染 D405 的 NumPy1.26.4。S100P 环境已建立并通过 MCAP/RRD 回归；其他主机仍须准备对应版本依赖。tools/vision/setup_rerun_s100p.sh 仅从本地 wheel 安装。
 兼容脚本列表见 docs/architecture/compatibility_manifest.json。旧 --wireless-only 转译到新 build --packages-select agv_bridge。
+
+### 恢复 D405 巡迹依赖
+
+若提示 `.runtime/s100p/d405_prototype_venv/bin/python` 不可用，可执行
+`bash deploy/restore_d405_environment.sh /实际离线wheel目录`，从本地 wheel 恢复配置所需环境。
+本机离线包位于 `/media/mcap_data/east_eleair_plus/d405_seam_tracking/offline`。
+`.runtime` 中的模型权重需要单独从备份恢复，目标路径和 SHA256 以
+`config/d405/round1_a.yaml` 为准；缺失或不匹配时启动检查会拒绝启动并显示原因。
+本次恢复结果和仍缺的模型见 [验证记录](../docs/validation/20261109_d405_environment_restore.md)。

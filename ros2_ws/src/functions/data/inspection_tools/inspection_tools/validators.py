@@ -113,3 +113,19 @@ def validate_eddy_current(message):
     if not math.isfinite(message.quality_score) or not 0.0 <= message.quality_score <= 1.0:
         errors.append("EddyCurrentFrame quality_score must be finite and in [0, 1]")
     return errors
+
+
+def validate_livox_custom(message):
+    """Validate raw Livox structure/timing, retaining all per-point values for recording."""
+    errors = []
+    if message.point_num <= 0:
+        errors.append("point_num must be positive")
+    if message.point_num != len(message.points):
+        errors.append("point_num does not match points length")
+    if message.timebase <= 0:
+        errors.append("timebase must be positive")
+    stamp = message.header.stamp
+    if (stamp.sec < 0 or not 0 <= stamp.nanosec < 1_000_000_000
+            or stamp.sec * 1_000_000_000 + stamp.nanosec <= 0):
+        errors.append("invalid header stamp")
+    return errors

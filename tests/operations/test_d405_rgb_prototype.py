@@ -120,3 +120,30 @@ def test_new_capture_split_is_exhaustive_and_never_reuses_held_out_segments():
         module.validate_split_spec(repeated)
     with pytest.raises(ValueError,match='nonempty_train_and_test'):
         module.validate_split_spec(dict(split,folds=[sum(folds,[])]))
+
+
+def test_capture_only_requires_explicit_frozen_decoder_config(tmp_path):
+    directory=Path(__file__).resolve().parents[2]/'experiments/vision/scripts'
+    sys.path.insert(0,str(directory))
+    try:
+        spec=importlib.util.spec_from_file_location('rgb_capture_config',directory/'d405_unet_round1.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+    finally:
+        sys.path.pop(0)
+    raw=tmp_path/'config.yaml'
+    raw.write_text('algorithm: capture_only\nsync_tolerance_ms: 12.0\n')
+    before=raw.read_bytes()
+    with pytest.raises(ValueError,match='capture_only_requires_explicit_visual_config'):
+        module.resolve_visual_config(tmp_path)
+    decoder=directory.parents[2]/'config/d405/round1_a.yaml'
+    path,config=module.resolve_visual_config(tmp_path,decoder)
+    assert path==decoder.resolve() and config['candidate_selection']=='continuous'
+    assert raw.read_bytes()==before
+    (tmp_path/'decoder_config.yaml').write_bytes(decoder.read_bytes())
+    (tmp_path/'visual_config.json').write_text(json.dumps(config))
+    (tmp_path/'protocol.json').write_text(json.dumps({
+        'decoder_config_sha256':sha256(tmp_path/'decoder_config.yaml'),
+        'visual_config_sha256':sha256(tmp_path/'visual_config.json')}))
+    (tmp_path/'visual_config.json').write_text('{}')
+    with pytest.raises(ValueError,match='frozen_visual_config_changed'):
+        module.verify_protocol(tmp_path)

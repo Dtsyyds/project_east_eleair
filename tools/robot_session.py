@@ -164,6 +164,17 @@ def preflight(args):
             camera_config(args)
         except (OSError, ValueError, ImportError) as error:
             errors.append(f'相机运行配置不可用：{error}')
+        # Match the camera child's environment, independently of the chassis
+        # overlay. Detect missing backend packages before starting any devices.
+        check = subprocess.run([
+            'bash', '-c', 'set -e; source "$1/deploy/env.sh" "$2"; exec python3 -c "$3"',
+            'camera-preflight', str(ROOT), args.platform,
+            'from ament_index_python.packages import get_package_prefix as p; '
+            '[p(n) for n in ("inspection_bringup", "inspection_operations", "agv_bridge")]; '
+            'import inspection_operations.operations_node'],
+            capture_output=True, text=True, timeout=20)
+        if check.returncode:
+            errors.append('相机后台 ROS 安装未加载或依赖缺失：' + check.stderr[-1500:])
     for port in (args.port, args.http_port, args.robot_port) + (() if args.no_camera else (args.camera_http_port, args.camera_port)):
         try:
             with socket.socket() as check:

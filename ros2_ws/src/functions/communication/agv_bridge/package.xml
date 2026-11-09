@@ -13,6 +13,7 @@
   <depend>std_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>sensor_msgs</depend>
+  <depend>livox_ros_driver2</depend>
   <depend>agv_protocol</depend>
   <depend>eddy_driver</depend>
   <depend>inspection_interfaces</depend>

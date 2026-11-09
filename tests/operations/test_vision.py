@@ -1,6 +1,8 @@
 """Passive experiment controls: no ROS, devices or robot commands."""
 import copy
+import hashlib
 import json
+import sys
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -11,6 +13,30 @@ from d405_seam_tracking.writer import EventWriter, SampleCapture
 from d405_seam_tracking.cli import synthetic_frame
 from d405_seam_tracking.dataset import load_index, read_sample
 from test_operations import controller, request, wait_result
+
+
+def test_missing_or_mismatched_model_stops_before_session_or_process(tmp_path):
+    import yaml
+    from inspection_runtime.vision import runtime_command
+    checkpoint = tmp_path / 'checkpoint.pt'
+    cfg = tmp_path / 'algorithm.yaml'
+    cfg.write_text(yaml.safe_dump({'algorithm': 'round1_a', 'checkpoint': str(checkpoint),
+                                 'checkpoint_sha256': hashlib.sha256(b'expected').hexdigest()}))
+    config = {'data_root': str(tmp_path), 'minimum_free_bytes': 1,
+              'vision': {'python': sys.executable, 'algorithm_config': str(cfg)}}
+    calls=[]
+    v=VisionController(config, lambda:{'mounted':True,'free_bytes':100},
+                       lambda:{t:time.monotonic() for t in INPUTS},
+                       lambda _: {'available':False}, popen=lambda *a,**k:calls.append(a))
+    with pytest.raises(RuntimeError,match='模型权重缺失'):v.start()
+    assert not calls and not (tmp_path/'vision_experiments').exists()
+    assert v.snapshot()['status']=='failed' and 'SHA256' in v.snapshot()['message']
+    checkpoint.write_bytes(b'wrong')
+    with pytest.raises(RuntimeError,match='权重校验失败'):v.start()
+    assert not calls
+    checkpoint.write_bytes(b'expected')
+    path,command=runtime_command(config)
+    assert path==cfg and command[0]==sys.executable
 
 
 def test_sample_waits_for_actual_file_and_preserves_unlabelled_raw(tmp_path):

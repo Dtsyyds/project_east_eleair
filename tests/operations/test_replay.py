@@ -58,6 +58,7 @@ def test_sensor_codecs_handle_endian_padding_and_interleaved_channels():
                        fields=[PointField(name=n, offset=i*4, datatype=PointField.FLOAT32, count=1) for i, n in enumerate(("x", "y", "z"))],
                        data=b"".join(struct.pack(">fffIfffI", 1., 2., 3., 0, 4., 5., 6., 0) + b"\0"*4 for _ in range(2)))
     assert pointcloud_preview(cloud)["xyz"] == [1., 2., 3., 4., 5., 6.] * 2
+    assert sensor_preview("lidar", cloud) == pointcloud_preview(cloud)
     eddy = EddyFrame(channel_count=8, samples_per_channel=20, data=list(range(160)))
     channels = sensor_preview("eddy_raw", eddy)["channels"]
     assert channels[0] == list(range(0, 160, 8))

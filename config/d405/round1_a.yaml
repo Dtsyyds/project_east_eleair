@@ -1,5 +1,5 @@
 # Round-1 A: original candidate scores/gates, RGB, frame-local output.
-# Fold 1 is fixed by index, not selected by held-out accuracy; no ensemble.
+# 2026-11-09 full 30-sample candidate, fixed 24 epochs; no ensemble.
 roi:
 - 0.2
 - 0.35
@@ -8,7 +8,7 @@ roi:
 mode: vision_only
 visual_backend: round1_a_rgb
 geometry_backend: cpu
-checkpoint: .runtime/s100p/analysis/d405_unet_round1_20261102/models/fold_1/checkpoint.pt
+checkpoint: .runtime/s100p/analysis/d405_retrain_20261109_221437/training/models/all_30/checkpoint.pt
 surface: quadratic
 depth_range_m:
 - 0.07
@@ -42,7 +42,7 @@ path_position_penalty: 0.15
 path_width_penalty: 0.08
 path_gap_penalty: 0.5
 algorithm: round1_a
-checkpoint_sha256: 15dbdde88dc26eba86adda212a146786b624a23bd57929f0bfb1a0152ca4327f
+checkpoint_sha256: 2dae931aaf0dc243e9ccacaa3cb7d3a26ac57ed5652ed37a49071492a1668816
 # Candidate runtime only: remember selection without emitting stale measurements.
 selected_target_memory_sec: 5.0
 # 0 learns pixel width from three consistent complete detections; positive is a

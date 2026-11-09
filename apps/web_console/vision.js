@@ -2,7 +2,7 @@
 "use strict";
 (() => {
   const $ = id => document.getElementById(id);
-  const actions = ['vision.start', 'vision.stop', 'vision.save_sample', 'vision.select_candidate', 'vision.clear_selection'];
+  const actions = ['vision.start', 'vision.capture_start', 'vision.stop', 'vision.save_sample', 'vision.select_candidate', 'vision.clear_selection'];
   const candidateColors = ['#e879f9','#22d3ee','#fb923c'];
   const candidateRequests = new Map(), pressedRequests = new Map();
   let selectionSession=null;
@@ -21,14 +21,16 @@
     const busy=actions.some(a=>api.inFlight(a))||value?.busy;
     const status=value?.status;
     $('vision-start').disabled=!fresh||!api.gate('vision.start').allowed||busy||replayBusy||['starting','running','stopping'].includes(status);
+    $('vision-capture-start').disabled=!fresh||!api.gate('vision.capture_start').allowed||busy||replayBusy||['starting','running','stopping'].includes(status);
     $('vision-stop').disabled=!fresh||!api.gate('vision.stop').allowed||busy||!['starting','running','failed'].includes(status);
     $('vision-save').disabled=!fresh||!api.gate('vision.save_sample').allowed||busy||status!=='running'||!value?.diagnostics_fresh;
     $('vision-start').textContent=status==='starting'?'正在启动…':'启动视觉巡迹';
-    $('vision-stop').textContent=status==='stopping'?'正在停止…':'停止视觉巡迹';
-    $('vision-save').textContent=api.inFlight('vision.save_sample')?'正在保存…':'保存实验样本';
+    $('vision-stop').textContent=status==='stopping'?'正在停止…':value?.capture_only?'停止图片采集':'停止视觉巡迹';
+    $('vision-save').textContent=api.inFlight('vision.save_sample')?'正在保存…':value?.capture_only?'保存一组原图':'保存实验样本';
     const sample=value?.sample;
     let message=!connected?'连接断开；巡迹运行状态待确认':!api.gate('vision.start').allowed?'板端未提供视觉巡迹操作能力':!fresh?'等待当前巡迹运行状态':
       (labels[status]||'状态未知')+' · '+(value?.algorithm_label||'Color + Depth')+(value?.saved_count!=null?' · 已保存 '+value.saved_count+'/30 组':'');
+    if(fresh&&status==='failed'&&value.message)message+='；'+value.message;
     if(fresh&&status==='running'&&!value.diagnostics_fresh)message+=' · 节点诊断已过期';
     if(replayBusy)message+=' · 回放期间不可启动';
     if(sample?.message)message+='；'+sample.message;
@@ -39,7 +41,7 @@
   }
   function init(options) {
     api=options;
-    for(const [id,action] of [['vision-start','vision.start'],['vision-stop','vision.stop'],['vision-save','vision.save_sample']]) {
+    for(const [id,action] of [['vision-start','vision.start'],['vision-capture-start','vision.capture_start'],['vision-stop','vision.stop'],['vision-save','vision.save_sample']]) {
       $(id).onclick=()=>{error='';api.send(action,{});};
     }
     for(let i=1;i<=3;i++) {
