@@ -1,0 +1,2838 @@
+{
+  "source_root": "/media/mcap_data/east_eleair_plus",
+  "policy": "Only immutable distributions copied; no build/install/venv/sysroot. Business wheels retained as archive only, never installed by deploy/build.py.",
+  "files": [
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-atomic1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-atomic1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "d1815f60fc8a3e644f49b37446d1a6234e88bd059fb9501f0f143bea82757836",
+      "size": 221508,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-atomic1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-atomic1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "09f9d0427df7e39803fa3c5b87ca9b9ee2b8e138e82e2cb634b303c0f6992cda",
+      "size": 224136,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-chrono1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-chrono1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "b1024f6739b0e9ecb1f7cf055b7fb36bfaa78af29a063bee97e67a6012a35910",
+      "size": 238664,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-chrono1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-chrono1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "2f04cb0a929cbe7f03c1468e07e6f6fcd7d52d32fcafa6fe6b5f03748d47e7d5",
+      "size": 231766,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-date-time1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-date-time1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "91ac225d39ee27af903598335bf15b44eddad2e1151d16fa80ef7cd8b810c755",
+      "size": 225934,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-date-time1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-date-time1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "5ed79b72fc247359bc331d1445e96c95054a50f650e506145d452c2650e02ac7",
+      "size": 220654,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-serialization1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-serialization1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "d5c5a334648fb4b3170b3804449d27b34b13876a863529189806e99b499ccc61",
+      "size": 374296,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-serialization1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-serialization1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "6a19f6130426a429cc2570a23e7b005c9d344a9bff8710180e892751173b5070",
+      "size": 318666,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-system-dev_1.74.0.3ubuntu7_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-system-dev_1.74.0.3ubuntu7_arm64.deb",
+      "sha256": "0a315bfeab41a554709ae1d555be1ed681618cc3832465f216af55c7b768803c",
+      "size": 3390,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-system1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-system1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "fe866c64ee5c826690bc15c4f1d757ddb3e34a87588b6416aaa4c76ef2537b84",
+      "size": 218152,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-system1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-system1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "b6f1761dd35d41759aabba85cc8606f0399cf25c7aeea3ed69cd8db594976ac7",
+      "size": 220832,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-thread-dev_1.74.0.3ubuntu7_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-thread-dev_1.74.0.3ubuntu7_arm64.deb",
+      "sha256": "2d356033d952a41e2483c008e23ed8f949663626b2a8c39b7566d5b13570fc13",
+      "size": 3264,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-thread1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-thread1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "baaf372aaeae988c0c9a7320ae31f0b8b9f09cd0bba023aaefe671c2ffce8765",
+      "size": 274448,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost-thread1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost-thread1.74.0_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "06543f1e187154b51b687778bae0a87705e71fe326b732a9f122f4808715b12d",
+      "size": 260112,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libboost1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "target": "third_party/offline/system/debs/libboost1.74-dev_1.74.0-14ubuntu3_arm64.deb",
+      "sha256": "69a520b3da35320c5443957cf96deb4f444898989523c9428f5494a8a5b5bb37",
+      "size": 9608758,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libjsoncpp-dev_1.9.5-3_arm64.deb",
+      "target": "third_party/offline/system/debs/libjsoncpp-dev_1.9.5-3_arm64.deb",
+      "sha256": "8ee852b0ac0a7c7409282dc1fa5de10cb21a83932b0a6c9940e2e8147463e422",
+      "size": 22912,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libjsoncpp25_1.9.5-3_arm64.deb",
+      "target": "third_party/offline/system/debs/libjsoncpp25_1.9.5-3_arm64.deb",
+      "sha256": "013cf07cb9210e11abbcd07c02f0279fd6e3112a03ee6750afc98fab0e8b1ffa",
+      "size": 76612,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/liblz4-1_1.9.3-2build2_arm64.deb",
+      "target": "third_party/offline/system/debs/liblz4-1_1.9.3-2build2_arm64.deb",
+      "sha256": "3e2274893e0963c758f0d18ba80d033736909373247a7deb211e9ff590a09133",
+      "size": 57640,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/liblz4-dev_1.9.3-2build2_arm64.deb",
+      "target": "third_party/offline/system/debs/liblz4-dev_1.9.3-2build2_arm64.deb",
+      "sha256": "8cdcc5b9493f328d59bf8180c90197a0e859a89643af9e23b9df196c96e28de8",
+      "size": 82106,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-core-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-core-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "3569619eb66eb75177a3c2274b51a2d86543f8219fe21323697829009f48e008",
+      "size": 1729726,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-core4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-core4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "c74e3d57b9ba37675dccda19f808a387372f94933bf3f7cd32c2d0dc26ad6be8",
+      "size": 934172,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-imgcodecs-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-imgcodecs-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "f52dd7e526b3f890982523220949f7c80a68ee956343a7b78bfcdd38ec0b0035",
+      "size": 193708,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-imgcodecs4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-imgcodecs4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "b797e4889828bfe4177a9e5019c81d579fb2b6c928d8d274737fee1f6825caa5",
+      "size": 118020,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-imgproc-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-imgproc-dev_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "7303acb30deb3b924d92f508e17b4191a792b27a9a86b8ccfa3b545065a06122",
+      "size": 1329084,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libopencv-imgproc4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "target": "third_party/offline/system/debs/libopencv-imgproc4.5d_4.5.4+dfsg-9ubuntu4_arm64.deb",
+      "sha256": "411eb38d382a21353ac22b0b640660b41b379bb2ed04431192babcd8e18ff8c3",
+      "size": 1015804,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libwebsocketpp-dev_0.8.2-4_arm64.deb",
+      "target": "third_party/offline/system/debs/libwebsocketpp-dev_0.8.2-4_arm64.deb",
+      "sha256": "229a50ac36550c364519159f62b0f5c392705d8f360e31ee17f0b0549b8ff722",
+      "size": 118502,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libzstd-dev_1.4.8+dfsg-3build1_arm64.deb",
+      "target": "third_party/offline/system/debs/libzstd-dev_1.4.8+dfsg-3build1_arm64.deb",
+      "sha256": "5382229c585552619e1c75210ef07ee5d0e4230351bf388552e6511d053a19c7",
+      "size": 391710,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/libzstd1_1.4.8+dfsg-3build1_arm64.deb",
+      "target": "third_party/offline/system/debs/libzstd1_1.4.8+dfsg-3build1_arm64.deb",
+      "sha256": "0102eb80384c2432c4be819663341a1c4e511d05f13ec1467643696531ec6491",
+      "size": 311026,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/ros-humble-mcap-vendor_0.15.17-1jammy.20260909.220900_arm64.deb",
+      "target": "third_party/offline/system/debs/ros-humble-mcap-vendor_0.15.17-1jammy.20260909.220900_arm64.deb",
+      "sha256": "39f7e20a6b5f39e39e84cffc2332c347cb5a873c63b6d3052e6c512a9139cf5f",
+      "size": 185312,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/ros-humble-rosbag2-storage-mcap_0.15.17-1jammy.20260909.221142_arm64.deb",
+      "target": "third_party/offline/system/debs/ros-humble-rosbag2-storage-mcap_0.15.17-1jammy.20260909.221142_arm64.deb",
+      "sha256": "9230f98f5bdc972762a7ecd378c9191f08354dca22ea6fdab2a89a58ad23f38d",
+      "size": 98506,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/wheels/websockets-15.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/system/wheels/websockets-15.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "0fdfe3e2a29e4db3659dbd5bbf04560cea53dd9610273917799f1cde46aa725e",
+      "size": 182312,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/ros-humble-image-transport_3.1.13-1jammy.20260908.042813_arm64.deb",
+      "target": "third_party/offline/system/debs/ros-humble-image-transport_3.1.13-1jammy.20260908.042813_arm64.deb",
+      "sha256": "966e523f9050f880d9e8cb4b8e9fa6d477e11dcca8475c1423c3be53ad4b04ce",
+      "size": 375258,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "tank_inspection_system/offline/debs/ros-humble-diagnostic-updater_4.0.7-1jammy.20260908.025324_arm64.deb",
+      "target": "third_party/offline/system/debs/ros-humble-diagnostic-updater_4.0.7-1jammy.20260908.025324_arm64.deb",
+      "sha256": "770cdd58c06ffba767a35f266d5889a7424d2681f3102f8c09bfbf019606fa05",
+      "size": 109620,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "d405_seam_tracking/offline/onnx-1.17.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/onnx-1.17.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "d545335cb49d4d8c47cc803d3a805deb7ad5d9094dc67657d66e568610a36d7d",
+      "size": 15908420,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/networkx-3.4.2-py3-none-any.whl",
+      "target": "third_party/offline/d405/networkx-3.4.2-py3-none-any.whl",
+      "sha256": "df5d4365b724cf81b8c6a7312509d0c22386097011ad1abe274afd5e9d3bbc5f",
+      "size": 1723263,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/coloredlogs-15.0.1-py2.py3-none-any.whl",
+      "target": "third_party/offline/d405/coloredlogs-15.0.1-py2.py3-none-any.whl",
+      "sha256": "612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934",
+      "size": 46018,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/setuptools-75.3.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/setuptools-75.3.0-py3-none-any.whl",
+      "sha256": "f2504966861356aa38616760c0f66568e535562374995367b4e69c7143cf6bcd",
+      "size": 1251070,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/hf_xet-1.6.0-cp38-abi3-manylinux_2_28_aarch64.whl",
+      "target": "third_party/offline/d405/hf_xet-1.6.0-cp38-abi3-manylinux_2_28_aarch64.whl",
+      "sha256": "0e6e21fa3cdfcdcd76748564bf593870a5e013f47d97cf10aed63aa222cff5b7",
+      "size": 4262538,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/jinja2-3.1.6-py3-none-any.whl",
+      "target": "third_party/offline/d405/jinja2-3.1.6-py3-none-any.whl",
+      "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+      "size": 134899,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/anyio-4.15.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/anyio-4.15.1-py3-none-any.whl",
+      "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+      "size": 132079,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "1b92ae2c8852208817e6776ba1ea0d6b1e0a1b5431e971a2a0ddd2a8cc398202",
+      "size": 42230439,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/fsspec-2026.9.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/fsspec-2026.9.0-py3-none-any.whl",
+      "sha256": "8dd6e646e99ea382bd85f97a45e6b526a442d79423a7dc673f1e2756d05fcb5f",
+      "size": 221738,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/filelock-4.0.10-py3-none-any.whl",
+      "target": "third_party/offline/d405/filelock-4.0.10-py3-none-any.whl",
+      "sha256": "698048d158dc3c9e18cc5e88b3efdd4bd0e77d76686b22adb4511cc4b2c2f0db",
+      "size": 111193,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/flatbuffers-25.12.19-py2.py3-none-any.whl",
+      "target": "third_party/offline/d405/flatbuffers-25.12.19-py2.py3-none-any.whl",
+      "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4",
+      "size": 26661,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/tomli-1.2.2-py3-none-any.whl",
+      "target": "third_party/offline/d405/tomli-1.2.2-py3-none-any.whl",
+      "sha256": "f04066f68f5554911363063a30b108d2b5a5b1a010aa8b6132af78489fe3aade",
+      "size": 12118,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/click-8.5.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/click-8.5.0-py3-none-any.whl",
+      "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+      "size": 125251,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/segmentation_models_pytorch-0.5.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/segmentation_models_pytorch-0.5.0-py3-none-any.whl",
+      "sha256": "c34e09047771aa4dd8878b4f899e8125700cd1f8f7db16e58c37204154151a05",
+      "size": 154789,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/timm-1.0.15-py3-none-any.whl",
+      "target": "third_party/offline/d405/timm-1.0.15-py3-none-any.whl",
+      "sha256": "5a3dc460c24e322ecc7fd1f3e3eb112423ddee320cb059cc1956fbc9731748ef",
+      "size": 2361373,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/packaging-25.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/packaging-25.0-py3-none-any.whl",
+      "sha256": "29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484",
+      "size": 66469,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/huggingface_hub-2.1.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/huggingface_hub-2.1.1-py3-none-any.whl",
+      "sha256": "d76fa1d8e6a59e01f012b1d88da604c099c7a0f2e26b1cc7d708f0a4283bd2a2",
+      "size": 838033,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/numpy-1.26.4-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/numpy-1.26.4-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "d209d8969599b27ad20994c8e41936ee0964e6da07478d6c35016bc386b66ad4",
+      "size": 14219016,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/MarkupSafe-2.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/MarkupSafe-2.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "2d7d807855b419fc2ed3e631034685db6079889a1f01d5d9dac950f764da3dad",
+      "size": 26830,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/typing_extensions-4.16.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "size": 45571,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/protobuf-7.36.2-cp310-abi3-manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/protobuf-7.36.2-cp310-abi3-manylinux2014_aarch64.whl",
+      "sha256": "e11e1f0180583a2af89db6a2ecd9e8dc40aa6d2988ca175bfd0e6d12ea72d74e",
+      "size": 344219,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/httpx2-2.13.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/httpx2-2.13.1-py3-none-any.whl",
+      "sha256": "6dff50fabc270ee5fd25d845d0b078ed20564579744d6d962850975996d2f9a4",
+      "size": 95597,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/pyyaml-6.0.3-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+      "target": "third_party/offline/d405/pyyaml-6.0.3-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "b30236e45cf30d2b8e7b3e85881719e98507abed1011bf463a8fa23e9c3e98a8",
+      "size": 740646,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/mpmath-1.3.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/mpmath-1.3.0-py3-none-any.whl",
+      "sha256": "a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c",
+      "size": 536198,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/torch-2.5.1-cp310-cp310-manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/torch-2.5.1-cp310-cp310-manylinux2014_aarch64.whl",
+      "sha256": "34bfa1a852e5714cbfa17f27c49d8ce35e1b7af5608c4bc6e81392c352dbc601",
+      "size": 91919522,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/idna-3.20-py3-none-any.whl",
+      "target": "third_party/offline/d405/idna-3.20-py3-none-any.whl",
+      "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c",
+      "size": 69583,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/onnxruntime-1.20.1-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+      "target": "third_party/offline/d405/onnxruntime-1.20.1-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "7b2908b50101a19e99c4d4e97ebb9905561daf61829403061c1adc1b588bc0de",
+      "size": 11954010,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/wheel-0.45.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/wheel-0.45.1-py3-none-any.whl",
+      "sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
+      "size": 72494,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/truststore-0.10.4-py3-none-any.whl",
+      "target": "third_party/offline/d405/truststore-0.10.4-py3-none-any.whl",
+      "sha256": "adaeaecf1cbb5f4de3b1959b42d41f6fab57b2b1666adb59e89cb0b53361d981",
+      "size": 18660,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/sympy-1.13.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/sympy-1.13.1-py3-none-any.whl",
+      "sha256": "db36cdc64bf61b9b24578b6f7bab1ecdd2452cf008f34faa33776680c26d66f8",
+      "size": 6189177,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/httpcore2-2.13.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/httpcore2-2.13.1-py3-none-any.whl",
+      "sha256": "e1e05d4f25f7d7d496bfb96748f6f4b67657b03da069b3a68c36069f3db73d0a",
+      "size": 83423,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/torchvision-0.20.1-cp310-cp310-manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/torchvision-0.20.1-cp310-cp310-manylinux2014_aarch64.whl",
+      "sha256": "75f8a4d51a593c4bab6c9bf7d75bdd88691b00a53b07656678bc55a3a753dd73",
+      "size": 14265343,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/safetensors-0.8.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/safetensors-0.8.0-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "7a46e5ff292c356d6991e60942ba7f79817682d3a2cef0702136448cb9c4d235",
+      "size": 502844,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/exceptiongroup-1.3.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/exceptiongroup-1.3.0-py3-none-any.whl",
+      "sha256": "4d111e6e0c13d0644cad6ddaa7ed0261a0b36971f6d23e7ec9b4b9097da78a10",
+      "size": 16674,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/Pillow-9.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "target": "third_party/offline/d405/Pillow-9.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+      "sha256": "528a2a692c65dd5cafc130de286030af251d2ee0483a5bf50c9348aefe834e8a",
+      "size": 4224154,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/humanfriendly-10.0-py2.py3-none-any.whl",
+      "target": "third_party/offline/d405/humanfriendly-10.0-py2.py3-none-any.whl",
+      "sha256": "1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477",
+      "size": 86794,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/tank_vision_inspection-0.1.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/tank_vision_inspection-0.1.0-py3-none-any.whl",
+      "sha256": "1d29080c2d12f374bdf7fe847cf2df9a010e12e337b36d764a091927d2256fd4",
+      "size": 123210,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/tqdm-4.70.1-py3-none-any.whl",
+      "target": "third_party/offline/d405/tqdm-4.70.1-py3-none-any.whl",
+      "sha256": "c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73",
+      "size": 80199,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "d405_seam_tracking/offline/h11-0.16.0-py3-none-any.whl",
+      "target": "third_party/offline/d405/h11-0.16.0-py3-none-any.whl",
+      "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+      "size": 37515,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/lib/x86/libMVSDK.so",
+      "target": "third_party/mindvision/legacy/lib/x86/libMVSDK.so",
+      "sha256": "85d1b042ec7af3aa53c4c63cd8e0fa6299494f1018aeae33a3e3a620eee38aea",
+      "size": 18390880,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/lib/arm64/libMVSDK.so",
+      "target": "third_party/mindvision/legacy/lib/arm64/libMVSDK.so",
+      "sha256": "bd5ac933fa3772d0cab855584f105740ef70960d96f3b82d0a3d12411d7e392f",
+      "size": 20213224,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "AArch64",
+      "elf_class": 64,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/lib/arm/libMVSDK.so",
+      "target": "third_party/mindvision/legacy/lib/arm/libMVSDK.so",
+      "sha256": "3ff22735d980f63af3339e79b2904592006e8fd58a304ce72f4861c938197b23",
+      "size": 12047402,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/lib/arm_softfp/libMVSDK.so",
+      "target": "third_party/mindvision/legacy/lib/arm_softfp/libMVSDK.so",
+      "sha256": "6a0e1a24e1f031a80d1a8be825993c426de78aab8f75038c4fe1635d339964dd",
+      "size": 13973571,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/lib/x64/libMVSDK.so",
+      "target": "third_party/mindvision/legacy/lib/x64/libMVSDK.so",
+      "sha256": "0396a8572f18be560b0c795d65841701a5fba0917614aa5f34436914f00307f7",
+      "size": 25590960,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/play.sh",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/play.sh",
+      "sha256": "d40ba1a7328ca70482ff98cface759b0ca92771f01035f03f1c568cd79678f46",
+      "size": 204,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/AppRun",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/AppRun",
+      "sha256": "c554d1d27fc6f72d0a00d9f834201efe77e3d2c3b9550dbe8708ffe3ea54cb80",
+      "size": 520787,
+      "status": "copied_verified",
+      "link": "QGeConfigTools",
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/QGeConfigTools",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/QGeConfigTools",
+      "sha256": "c554d1d27fc6f72d0a00d9f834201efe77e3d2c3b9550dbe8708ffe3ea54cb80",
+      "size": 520787,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/default.png",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/default.png",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/qt.conf",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/qt.conf",
+      "sha256": "c5d801fe0d8c5ded1e449e6e92ef31a688384f5b67cd528727e4063c92306c42",
+      "size": 163,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/default.desktop",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/default.desktop",
+      "sha256": "2073b578756d8c90d00ea09296f24fbf752d4d15efededd90d300bef3fdbb085",
+      "size": 123,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_gd.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_gd.qm",
+      "sha256": "0983615cf022b2543993aa6d5f65c16eabf344bd49dad89758a1ac322e036e62",
+      "size": 173572,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_es.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_es.qm",
+      "sha256": "bb440e6b5ad58cb1daa349854e61ffa8f7306760cf00a920a7a3302791db4176",
+      "size": 224992,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_hu.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_hu.qm",
+      "sha256": "d3c07628b68a39691b1ea9175a9cd151489cbc731a57a66c865d62167a5ec0f2",
+      "size": 90989,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_da.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_da.qm",
+      "sha256": "9ab66a82aad11bf30f8fba4d7fc60307445a2efd7397d9a7854ef4aebed72cf2",
+      "size": 233054,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_he.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_he.qm",
+      "sha256": "19a8f435880328f9ccda4fecdfc20bac7afae589c07d0e2b5563366e908ac8e3",
+      "size": 138680,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_ru.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_ru.qm",
+      "sha256": "2f30dd896d85e33b4f225a75d20c151aff49341753e0fb7d59f9f822579ef09d",
+      "size": 222109,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_lv.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_lv.qm",
+      "sha256": "f2189255501c0e3493473d7ca8d23e53c0cba142948383f6cfc767fa21703849",
+      "size": 207489,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_pl.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_pl.qm",
+      "sha256": "79fb2ee88a50f06189cf9f7d6c71aea4146237f2a00ed519b68c101aae21e88d",
+      "size": 210827,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_de.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_de.qm",
+      "sha256": "f30e9bd913d20dd97ad9124cb7a5f734791ce99aa6229ee5df468b42058248f8",
+      "size": 261816,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_fi.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_fi.qm",
+      "sha256": "c10e4f21b48c32d66d4732063145312c77574244fde5cec5d101b438f3214864",
+      "size": 222389,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_fr.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_fr.qm",
+      "sha256": "9b9f136ca116ee8e7606bbd42c49e9d931bece4b00ea5e7eea2519a95ba2bb4b",
+      "size": 227534,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_bg.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_bg.qm",
+      "sha256": "9c297c6fcb0cb6519805dc21599a75b83d18eb27d1719e9c2f4dbfe5a18fedb3",
+      "size": 235439,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_it.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_it.qm",
+      "sha256": "54bdd9856e6007b443f553f03b5b83bca9f08595bf18d3293663517f04e89333",
+      "size": 161129,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_uk.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_uk.qm",
+      "sha256": "4540dcf62e4383ae6ce3b8aa9a51d42121a28e407d3cf4f9924cffc848e93156",
+      "size": 222158,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_cs.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_cs.qm",
+      "sha256": "86e174eff79f096d81146860dd5ca9e946c643a3464c7da8919c972747b8df09",
+      "size": 174691,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_ko.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_ko.qm",
+      "sha256": "2cc42f03dda7dc24e8828ff885927dc83a0368f8ada55337b88ba691a81d3ee0",
+      "size": 182085,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_sk.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_sk.qm",
+      "sha256": "2ead228f8c96d5bee891984035ec3cd52d04117eafc9a5e8c55f1f97de9b2406",
+      "size": 174363,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_ca.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_ca.qm",
+      "sha256": "ef196c601ef5a0af8c77fa62601ee1630ed919cef048b903ba48ffdeab246d3c",
+      "size": 179209,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_ja.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_ja.qm",
+      "sha256": "72d97b18c799663b6870951d31ff005bdaa2110c556cebbc6f8999c955cf40ab",
+      "size": 175172,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/translations/qt_en.qm",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/translations/qt_en.qm",
+      "sha256": "307cef95dd5b36ff215055d427e1885b7fc3650c9224cf76d63056545996ff60",
+      "size": 23,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/bearer/libqconnmanbearer.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/bearer/libqconnmanbearer.so",
+      "sha256": "01b33b7ef2a619d2f6b0f89d20f13f8d6873759715dcb76d19171362d9c5003d",
+      "size": 224960,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/bearer/libqnmbearer.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/bearer/libqnmbearer.so",
+      "sha256": "3dbeae962366d2bbd08e1e939a1bfaef8080740ead2f482cf9d2c6234985a9c5",
+      "size": 245512,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/bearer/libqgenericbearer.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/bearer/libqgenericbearer.so",
+      "sha256": "6dfff5de2165cfc046a061cb665788f87737fcc5fd919a44e2762bf706b9a21b",
+      "size": 89016,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so",
+      "sha256": "0f779bca290c6ca7037ba49088d64b1a0601e267c933ccfe839e01ebb20fe92a",
+      "size": 114496,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so",
+      "sha256": "48d08c178171f9acee6308e9c62fbb2d89a8240aa682280dddd03b349752a68f",
+      "size": 721344,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so",
+      "sha256": "4b293b87071820ed381aebe8485d8caa02a40829e751b79efb14c16c7e38ef7e",
+      "size": 277904,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/platforms/libqxcb.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/platforms/libqxcb.so",
+      "sha256": "ff11d788d252337f75d8416157fd909abf17d6565884fb1d900af2bc8562d210",
+      "size": 10448,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqjpeg.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqjpeg.so",
+      "sha256": "54f6a4f58d2f0c46e36a9170d133ac3b10de349bf8dcf08377cf94084ee1863c",
+      "size": 257024,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqico.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqico.so",
+      "sha256": "e9da4b7f9d1ddf8cbc3de5fee686eb38ee4d6483ab75572cbf9a644d3f4f489d",
+      "size": 31352,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqtga.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqtga.so",
+      "sha256": "d65f72e808ffd48b53d3d0ca768eb74ca82a0519b4bc58e93a9105f0bad36c92",
+      "size": 18808,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqtiff.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqtiff.so",
+      "sha256": "9ff9cae03adfb6e2675ddd662b2acbca2fedcd17de94f6740a5e2557b730a4ed",
+      "size": 380368,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqgif.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqgif.so",
+      "sha256": "5bbee8d7003a86b13712d3d1d7a7fc8d13fa20896d37d89c3509315d01d301c2",
+      "size": 27104,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqjp2.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqjp2.so",
+      "sha256": "12cfba7bcfc6cd6c4eda70112c48e45ec0eab51754dd01eef8da12af16badf09",
+      "size": 31448,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqsvg.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqsvg.so",
+      "sha256": "e780844f17cf79b81c965adb43c4aa8a217ce0b031b538764cf395e9525c513d",
+      "size": 23112,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqwebp.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqwebp.so",
+      "sha256": "6c84947b141001fed3fbe53b46175824d10491d35c7a940ad1e652eaf891d700",
+      "size": 515464,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqwbmp.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqwbmp.so",
+      "sha256": "aeceac1fcc5aa1e3617cce00a271c9f4461fd1a95b4dbb4c882c6328571eff95",
+      "size": 18896,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/imageformats/libqicns.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/imageformats/libqicns.so",
+      "sha256": "13c22e700e3469bd15079490ba17a80e5ce01284015b8a7b60bf8dc256df8bed",
+      "size": 39640,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/iconengines/libqsvgicon.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/iconengines/libqsvgicon.so",
+      "sha256": "f5e9ce7ffdae52ef1c4cd72a4e03cc125d1fa31bf554e06e39d02b6c7efa3b89",
+      "size": 35600,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-egl-integration.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-egl-integration.so",
+      "sha256": "3c8d0bc0ee25a20933a61d3deaf240fdbc939a6d94122c1f859b88a03730a6a1",
+      "size": 81224,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-glx-integration.so",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-glx-integration.so",
+      "sha256": "557545903995feb5e1e84f66c27cf6ed0ca5bc4871644b93e2461135efc4c2ca",
+      "size": 65064,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxdmcp6/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxdmcp6/copyright",
+      "sha256": "1bcbb50f8603fe8b86d330bfa460b772ea04fbd3c70e4499f0768b5340b9fd6e",
+      "size": 1265,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libdbus-1-3/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libdbus-1-3/copyright",
+      "sha256": "a149b1996ff813dfad978b07d362578757083dfb16350d48f3f5e5cf22bb770c",
+      "size": 11158,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libpcre3/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libpcre3/copyright",
+      "sha256": "ac9276490d2fa167442ae1aae33926514ad10c8886baa40046c5e367fccc5938",
+      "size": 2765,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxfixes3/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxfixes3/copyright",
+      "sha256": "a804ba66f69fc217d8f9363405c3eec48be30c2d62b77850990c6cd8a3a0a4b5",
+      "size": 2319,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-xfixes0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-xfixes0/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-shape0-dev/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-shape0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxxf86vm1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxxf86vm1/copyright",
+      "sha256": "8a18884e1be08a37bf1b8fc9a14eba800e65a98d6ea19bb5d8b0ccf35f9bbcc4",
+      "size": 1370,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxext6/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxext6/copyright",
+      "sha256": "bc57e445ca1d9fe082c8d54189dd411ff26caa8552c9c63d44ea06a982f32124",
+      "size": 10421,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-sync1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-sync1/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-glx0-dev/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-glx0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxdamage1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxdamage1/copyright",
+      "sha256": "09182bc7805ff77a41251e450cebd0d33c48a74ba8ec4b734855a22c86f50417",
+      "size": 1221,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libx11-xcb1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libx11-xcb1/copyright",
+      "sha256": "c841b7fc957bbe822d9cababead2ceeda418f62e12897ff2dd7a93e9055e337f",
+      "size": 47104,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libffi6/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libffi6/copyright",
+      "sha256": "7258c8acc378030d8dbe1fcdf394e915769fa31dcbaf3d2991d9a79891f3bcdc",
+      "size": 3440,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-present0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-present0/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxau6/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxau6/copyright",
+      "sha256": "d311410a8af7cfb1b16ae2d22765641ba4e2a1a9431f229f59326bca0f99cdac",
+      "size": 1223,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxcb-render0-dev/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxcb-render0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libwayland-client0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libwayland-client0/copyright",
+      "sha256": "6aaf3b2b98b501b648c780e7c3ee21db786a75deec87b877fc8533b53ae32a32",
+      "size": 1592,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libwayland-server0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libwayland-server0/copyright",
+      "sha256": "6aaf3b2b98b501b648c780e7c3ee21db786a75deec87b877fc8533b53ae32a32",
+      "size": 1592,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxshmfence1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxshmfence1/copyright",
+      "sha256": "6a76b32c9174c0cb9e3d94c323a14d33d6a42bd2a61579b189cbc5addeb94abe",
+      "size": 1215,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libjpeg-turbo8/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libjpeg-turbo8/copyright",
+      "sha256": "193468d9eb043a180f6f9e3386f7205104908dcb8525ad39c8236990dfd452ef",
+      "size": 6101,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libglib2.0-0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libglib2.0-0/copyright",
+      "sha256": "fba5358de01b6b99d385f588714b3b7f64be7074710e4d4152bc3a05dfef1789",
+      "size": 2138,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libjasper1/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libjasper1/copyright",
+      "sha256": "86c11bd7b94d24d6c372bd95f8d8998b8a69c7d82a91dd0247878b28223feabe",
+      "size": 3042,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libxi6/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libxi6/copyright",
+      "sha256": "47404744a0ab1c33b1478940b236ffe4197e7ccb89a32bb3c2deead040076e5e",
+      "size": 4434,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/doc/libpng12-0/copyright",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/doc/libpng12-0/copyright",
+      "sha256": "265723d3bf6c4f4664caac889c62d7155c064713ad56b87a277104a879af273a",
+      "size": 4747,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXext.so.6",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXext.so.6",
+      "sha256": "53a0eb78013178109b4848c6aa57deef384840665a348cace0894ab7feacd61e",
+      "size": 78080,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXi.so.6",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXi.so.6",
+      "sha256": "755b157cee75c025a53bb9b9f317fd355a21aa4205d538491bf433b4993fe6e2",
+      "size": 68680,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libwayland-server.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libwayland-server.so.0",
+      "sha256": "48594dfc7e692ce8752958ea797987e1bf7bcf5aba87ff4a125f0355efb3ef58",
+      "size": 74192,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXdmcp.so.6",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXdmcp.so.6",
+      "sha256": "974845a931bd5ba7245c4882be76db0f9409f4c385895d1b3f9b219d0b892127",
+      "size": 26544,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Svg.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Svg.so.5",
+      "sha256": "b595354ad927b8498893b0e5a9f381d9b5b7dd980aaf6c915019f0dfdca6ebab",
+      "size": 349720,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5DBus.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5DBus.so.5",
+      "sha256": "93af877d1b1f81f02b28b383c34081c1928b065247856ad72a0f61db01a7ec34",
+      "size": 558512,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXau.so.6",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXau.so.6",
+      "sha256": "b6f2f094665d6344437fd00e994b4204cabeb90f25a49e8381b310fb950d355a",
+      "size": 17824,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-present.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-present.so.0",
+      "sha256": "89af53ebe73941d548746e25ca5ffbbc84d8d54d0b71dc2d12bcceca53d41b82",
+      "size": 14024,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-sync.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-sync.so.1",
+      "sha256": "cae4ca08585a89535a6a0334a15bd02333590c1dc9218aa6b4d693fece1d8868",
+      "size": 28016,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libX11-xcb.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libX11-xcb.so.1",
+      "sha256": "eea3dc5f1305ed6bf7feee83f61dfed4469a0993e63bbcc2c0fb5d7dc9959fae",
+      "size": 9352,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxshmfence.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxshmfence.so.1",
+      "sha256": "e8005386f0c02245d439e6372399824d72ca7dcdb05518a916f9a14429b83f9c",
+      "size": 9528,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libicudata.so.56",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libicudata.so.56",
+      "sha256": "b09e468b60b5e07013eac640f61c5d9b21cfea7214be024d94e67303fc1b0d69",
+      "size": 25051640,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5XcbQpa.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5XcbQpa.so.5",
+      "sha256": "70bb1652c23466d96e4089836a2e51ff4195e827927eba80fd71b583b7e1e1f7",
+      "size": 1406088,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-glx.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-glx.so.0",
+      "sha256": "2cadb603beeea47ab15e64503799c67222de219f4981da97a5b37f195681563b",
+      "size": 111688,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-xfixes.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-xfixes.so.0",
+      "sha256": "1416286384a083f7e8f49ed51deb9fecd8f37c59a14e74a27c3f3cfc2e901f1d",
+      "size": 33296,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Gui.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Gui.so.5",
+      "sha256": "4f034a41c072bdf3f6c29a680c4307342d489062cc24b30dbf8705ed89efb705",
+      "size": 5931896,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libjasper.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libjasper.so.1",
+      "sha256": "5aeb7dd7454a664451ae323a52e1aa2ec023e61170f55da8fddfb01f79038900",
+      "size": 340216,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Qml.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Qml.so.5",
+      "sha256": "1e45dbd9bfc6bca0d19857468e6a5bac9b522ada2ba57cdda6dab235082cb45d",
+      "size": 4118648,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Quick.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Quick.so.5",
+      "sha256": "a90eb7bcc258780eb8029cc9de6748ce0a5945e914dfe59ab737434c776799ac",
+      "size": 4397600,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Core.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Core.so.5",
+      "sha256": "43d10b31540b20075f3a72b4dbdc575c43578ac69757ca71003c8e283d6845b9",
+      "size": 5458240,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libgthread-2.0.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libgthread-2.0.so.0",
+      "sha256": "7c860a7419b8976b0d7abc86da121a278d9bf6711a382bfb02d4b1a3199dab06",
+      "size": 9424,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-render.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-render.so.0",
+      "sha256": "0b6b77f0735e5dcdfdc56437cfbb73cff446767ee0f57317ac44524e9b8090ce",
+      "size": 42920,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libpng12.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libpng12.so.0",
+      "sha256": "0b4833aceacba58be9bed34eef4e36a6eb65a5eb1c2d1c5c0a0b84c15440c015",
+      "size": 161056,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libdbus-1.so.3",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libdbus-1.so.3",
+      "sha256": "9dc6e355240794ac98d1dd3cbd011161e980a06ddad23e7c7ee220b2d3f59199",
+      "size": 291320,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXdamage.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXdamage.so.1",
+      "sha256": "69f9d3c4f1e1951ccda778722495f9be116ca6168efb8380d6b894fcb24ed401",
+      "size": 13784,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libicui18n.so.56",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libicui18n.so.56",
+      "sha256": "e1408b175bcb9680926c3ea36fb1401a6e097ab89dde9e61891a1f554efa37f5",
+      "size": 3751384,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libwayland-client.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libwayland-client.so.0",
+      "sha256": "dae2e22bb9384f605ebb814ba35868d3955d31a826066262ffb97630ab06626b",
+      "size": 56616,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libxcb-shape.so.0",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libxcb-shape.so.0",
+      "sha256": "ce03a20a2b359870921e1735de6dd17c09e80e7f96ab304dce04e9869c6ee853",
+      "size": 18424,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Network.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Network.so.5",
+      "sha256": "c144723415a75c6b9beb985e09214b5c3db75a0fc1b21e1486345f8a24c5f6bb",
+      "size": 1637912,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXfixes.so.3",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXfixes.so.3",
+      "sha256": "dcc9ed0026ec25b131b7fce5b36f6be6cc3d776ca8a40850e6faa8f6fbf0f792",
+      "size": 26832,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libjpeg.so.8",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libjpeg.so.8",
+      "sha256": "7c9806033353cc2e9a1347b9a7342aa4b3f0533949e700df2a2357bf09ea6296",
+      "size": 286336,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libpcre.so.3",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libpcre.so.3",
+      "sha256": "65813a24f1e3ac71d1d0cb965e2d485c6377cf3b9be7ade2a083a27b98f06ab5",
+      "size": 256120,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libffi.so.6",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libffi.so.6",
+      "sha256": "1da4b0b6fea53dbbcf4d14f8c9525ad8173e05260c26be6854182ba80b4f6e30",
+      "size": 34808,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libQt5Widgets.so.5",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libQt5Widgets.so.5",
+      "sha256": "9aae141660b8fc8693ca703235a50be754c513842da7ba9a83e0fb212b24bdca",
+      "size": 6491672,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libicuuc.so.56",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libicuuc.so.56",
+      "sha256": "e033e237f49987273390e823280d893f6421eb8d97611de11379fbc4700f3e94",
+      "size": 2200624,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/QGeConfigTools/lib/libXxf86vm.so.1",
+      "target": "third_party/mindvision/legacy/tools/QGeConfigTools/lib/libXxf86vm.so.1",
+      "sha256": "c8294dadff4dae82bba7312a13ebb033b451748e9ba1547c41cad999b7971220",
+      "size": 26456,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GeConfigCmd/x86/GeConfigCmd",
+      "target": "third_party/mindvision/legacy/tools/GeConfigCmd/x86/GeConfigCmd",
+      "sha256": "3467d8dd2e61795b7af7bc3b56f44c5c2468bb461c1f0fa9ced0ac58c08bd8fe",
+      "size": 22228,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GeConfigCmd/arm64/GeConfigCmd",
+      "target": "third_party/mindvision/legacy/tools/GeConfigCmd/arm64/GeConfigCmd",
+      "sha256": "f4a4ce9305022d64bb236217c4ea779e2e20cac52295365da61a27bceb46cc33",
+      "size": 23664,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "AArch64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GeConfigCmd/arm/GeConfigCmd",
+      "target": "third_party/mindvision/legacy/tools/GeConfigCmd/arm/GeConfigCmd",
+      "sha256": "38f11d5bcdabe2f70d49cbd20d89fa7e43a42a8e54f4be0956dc256841817dc0",
+      "size": 62190,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GeConfigCmd/arm_softfp/GeConfigCmd",
+      "target": "third_party/mindvision/legacy/tools/GeConfigCmd/arm_softfp/GeConfigCmd",
+      "sha256": "76897c34f36f5506237693c471cd929127d32b8d40daccea43762490fb8b5c1b",
+      "size": 16763,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GeConfigCmd/x64/GeConfigCmd",
+      "target": "third_party/mindvision/legacy/tools/GeConfigCmd/x64/GeConfigCmd",
+      "sha256": "786fb85b0909b53d1c47dbccaf4775287d269102ce2462fa5f916f7fe31b5f5a",
+      "size": 27272,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GTKGeConfigTools/GeConfigTools",
+      "target": "third_party/mindvision/legacy/tools/GTKGeConfigTools/GeConfigTools",
+      "sha256": "f3e95540a3aca7121af487380841b98c6f3d0db766d17aaf169f891d1ab1ff1f",
+      "size": 152496,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionlinuxSDK/tools/GTKGeConfigTools/ui.glade",
+      "target": "third_party/mindvision/legacy/tools/GTKGeConfigTools/ui.glade",
+      "sha256": "05c32f8410e18944de3f529a15e4cecd026068c88b53d7d00d84b1346543540c",
+      "size": 43409,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/x86/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/x86/libMVSDK.so",
+      "sha256": "77a02dd17e1adcc6881bf51d7d5766ddcf16a8a68864820be60b894f6b989872",
+      "size": 21632556,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/arm64/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/arm64/libMVSDK.so",
+      "sha256": "f53bde08472b4fe307e7b55a5a7206b5064780182e4ad72ad2447a4b42a2a281",
+      "size": 24894352,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "AArch64",
+      "elf_class": 64,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/arm/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/arm/libMVSDK.so",
+      "sha256": "73ed54589b60684e93f6563d70103954a31d9e798022541964bc78bd0138d81b",
+      "size": 15472254,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/arm_musl/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/arm_musl/libMVSDK.so",
+      "sha256": "57b8ee0ca2d9ecf0b044ed11275ba949fae0c91bfb045b0b0a981ae963094f3e",
+      "size": 17346692,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/ite/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/ite/libMVSDK.so",
+      "sha256": "2613909a0440fadbdca3687bfdc926c35b4c7dac1a58dc413d51645dd59a7050",
+      "size": 24629408,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "AArch64",
+      "elf_class": 64,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/arm_softfp/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/arm_softfp/libMVSDK.so",
+      "sha256": "61bb4ae4761d8a4bf6669388ed8bc69cd7101bcaffd8c8bc5c56e70441ed0677",
+      "size": 16804771,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/lib/x64/libMVSDK.so",
+      "target": "third_party/mindvision/2.1.0.50/lib/x64/libMVSDK.so",
+      "sha256": "bbf09608afc1c14da7b34fb28e44e95fd9ff93885fb927e3477c9ecb5265fd38",
+      "size": 45307072,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64,
+      "m0_sha256_verified": true
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/play.sh",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/play.sh",
+      "sha256": "d40ba1a7328ca70482ff98cface759b0ca92771f01035f03f1c568cd79678f46",
+      "size": 204,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/AppRun",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/AppRun",
+      "sha256": "c554d1d27fc6f72d0a00d9f834201efe77e3d2c3b9550dbe8708ffe3ea54cb80",
+      "size": 520787,
+      "status": "copied_verified",
+      "link": "QGeConfigTools",
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/QGeConfigTools",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/QGeConfigTools",
+      "sha256": "c554d1d27fc6f72d0a00d9f834201efe77e3d2c3b9550dbe8708ffe3ea54cb80",
+      "size": 520787,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/default.png",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/default.png",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/qt.conf",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/qt.conf",
+      "sha256": "c5d801fe0d8c5ded1e449e6e92ef31a688384f5b67cd528727e4063c92306c42",
+      "size": 163,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/default.desktop",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/default.desktop",
+      "sha256": "2073b578756d8c90d00ea09296f24fbf752d4d15efededd90d300bef3fdbb085",
+      "size": 123,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_gd.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_gd.qm",
+      "sha256": "0983615cf022b2543993aa6d5f65c16eabf344bd49dad89758a1ac322e036e62",
+      "size": 173572,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_es.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_es.qm",
+      "sha256": "bb440e6b5ad58cb1daa349854e61ffa8f7306760cf00a920a7a3302791db4176",
+      "size": 224992,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_hu.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_hu.qm",
+      "sha256": "d3c07628b68a39691b1ea9175a9cd151489cbc731a57a66c865d62167a5ec0f2",
+      "size": 90989,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_da.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_da.qm",
+      "sha256": "9ab66a82aad11bf30f8fba4d7fc60307445a2efd7397d9a7854ef4aebed72cf2",
+      "size": 233054,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_he.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_he.qm",
+      "sha256": "19a8f435880328f9ccda4fecdfc20bac7afae589c07d0e2b5563366e908ac8e3",
+      "size": 138680,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_ru.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_ru.qm",
+      "sha256": "2f30dd896d85e33b4f225a75d20c151aff49341753e0fb7d59f9f822579ef09d",
+      "size": 222109,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_lv.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_lv.qm",
+      "sha256": "f2189255501c0e3493473d7ca8d23e53c0cba142948383f6cfc767fa21703849",
+      "size": 207489,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_pl.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_pl.qm",
+      "sha256": "79fb2ee88a50f06189cf9f7d6c71aea4146237f2a00ed519b68c101aae21e88d",
+      "size": 210827,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_de.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_de.qm",
+      "sha256": "f30e9bd913d20dd97ad9124cb7a5f734791ce99aa6229ee5df468b42058248f8",
+      "size": 261816,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_fi.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_fi.qm",
+      "sha256": "c10e4f21b48c32d66d4732063145312c77574244fde5cec5d101b438f3214864",
+      "size": 222389,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_fr.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_fr.qm",
+      "sha256": "9b9f136ca116ee8e7606bbd42c49e9d931bece4b00ea5e7eea2519a95ba2bb4b",
+      "size": 227534,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_bg.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_bg.qm",
+      "sha256": "9c297c6fcb0cb6519805dc21599a75b83d18eb27d1719e9c2f4dbfe5a18fedb3",
+      "size": 235439,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_it.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_it.qm",
+      "sha256": "54bdd9856e6007b443f553f03b5b83bca9f08595bf18d3293663517f04e89333",
+      "size": 161129,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_uk.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_uk.qm",
+      "sha256": "4540dcf62e4383ae6ce3b8aa9a51d42121a28e407d3cf4f9924cffc848e93156",
+      "size": 222158,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_cs.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_cs.qm",
+      "sha256": "86e174eff79f096d81146860dd5ca9e946c643a3464c7da8919c972747b8df09",
+      "size": 174691,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_ko.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_ko.qm",
+      "sha256": "2cc42f03dda7dc24e8828ff885927dc83a0368f8ada55337b88ba691a81d3ee0",
+      "size": 182085,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_sk.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_sk.qm",
+      "sha256": "2ead228f8c96d5bee891984035ec3cd52d04117eafc9a5e8c55f1f97de9b2406",
+      "size": 174363,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_ca.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_ca.qm",
+      "sha256": "ef196c601ef5a0af8c77fa62601ee1630ed919cef048b903ba48ffdeab246d3c",
+      "size": 179209,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_ja.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_ja.qm",
+      "sha256": "72d97b18c799663b6870951d31ff005bdaa2110c556cebbc6f8999c955cf40ab",
+      "size": 175172,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/translations/qt_en.qm",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/translations/qt_en.qm",
+      "sha256": "307cef95dd5b36ff215055d427e1885b7fc3650c9224cf76d63056545996ff60",
+      "size": 23,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/bearer/libqconnmanbearer.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/bearer/libqconnmanbearer.so",
+      "sha256": "01b33b7ef2a619d2f6b0f89d20f13f8d6873759715dcb76d19171362d9c5003d",
+      "size": 224960,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/bearer/libqnmbearer.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/bearer/libqnmbearer.so",
+      "sha256": "3dbeae962366d2bbd08e1e939a1bfaef8080740ead2f482cf9d2c6234985a9c5",
+      "size": 245512,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/bearer/libqgenericbearer.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/bearer/libqgenericbearer.so",
+      "sha256": "6dfff5de2165cfc046a061cb665788f87737fcc5fd919a44e2762bf706b9a21b",
+      "size": 89016,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/platforminputcontexts/libibusplatforminputcontextplugin.so",
+      "sha256": "0f779bca290c6ca7037ba49088d64b1a0601e267c933ccfe839e01ebb20fe92a",
+      "size": 114496,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/platforminputcontexts/libqtvirtualkeyboardplugin.so",
+      "sha256": "48d08c178171f9acee6308e9c62fbb2d89a8240aa682280dddd03b349752a68f",
+      "size": 721344,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/platforminputcontexts/libcomposeplatforminputcontextplugin.so",
+      "sha256": "4b293b87071820ed381aebe8485d8caa02a40829e751b79efb14c16c7e38ef7e",
+      "size": 277904,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/platforms/libqxcb.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/platforms/libqxcb.so",
+      "sha256": "ff11d788d252337f75d8416157fd909abf17d6565884fb1d900af2bc8562d210",
+      "size": 10448,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqjpeg.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqjpeg.so",
+      "sha256": "54f6a4f58d2f0c46e36a9170d133ac3b10de349bf8dcf08377cf94084ee1863c",
+      "size": 257024,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqico.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqico.so",
+      "sha256": "e9da4b7f9d1ddf8cbc3de5fee686eb38ee4d6483ab75572cbf9a644d3f4f489d",
+      "size": 31352,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqtga.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqtga.so",
+      "sha256": "d65f72e808ffd48b53d3d0ca768eb74ca82a0519b4bc58e93a9105f0bad36c92",
+      "size": 18808,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqtiff.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqtiff.so",
+      "sha256": "9ff9cae03adfb6e2675ddd662b2acbca2fedcd17de94f6740a5e2557b730a4ed",
+      "size": 380368,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqgif.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqgif.so",
+      "sha256": "5bbee8d7003a86b13712d3d1d7a7fc8d13fa20896d37d89c3509315d01d301c2",
+      "size": 27104,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqjp2.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqjp2.so",
+      "sha256": "12cfba7bcfc6cd6c4eda70112c48e45ec0eab51754dd01eef8da12af16badf09",
+      "size": 31448,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqsvg.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqsvg.so",
+      "sha256": "e780844f17cf79b81c965adb43c4aa8a217ce0b031b538764cf395e9525c513d",
+      "size": 23112,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqwebp.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqwebp.so",
+      "sha256": "6c84947b141001fed3fbe53b46175824d10491d35c7a940ad1e652eaf891d700",
+      "size": 515464,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqwbmp.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqwbmp.so",
+      "sha256": "aeceac1fcc5aa1e3617cce00a271c9f4461fd1a95b4dbb4c882c6328571eff95",
+      "size": 18896,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/imageformats/libqicns.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/imageformats/libqicns.so",
+      "sha256": "13c22e700e3469bd15079490ba17a80e5ce01284015b8a7b60bf8dc256df8bed",
+      "size": 39640,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/iconengines/libqsvgicon.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/iconengines/libqsvgicon.so",
+      "sha256": "f5e9ce7ffdae52ef1c4cd72a4e03cc125d1fa31bf554e06e39d02b6c7efa3b89",
+      "size": 35600,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-egl-integration.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-egl-integration.so",
+      "sha256": "3c8d0bc0ee25a20933a61d3deaf240fdbc939a6d94122c1f859b88a03730a6a1",
+      "size": 81224,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-glx-integration.so",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/plugins/xcbglintegrations/libqxcb-glx-integration.so",
+      "sha256": "557545903995feb5e1e84f66c27cf6ed0ca5bc4871644b93e2461135efc4c2ca",
+      "size": 65064,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxdmcp6/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxdmcp6/copyright",
+      "sha256": "1bcbb50f8603fe8b86d330bfa460b772ea04fbd3c70e4499f0768b5340b9fd6e",
+      "size": 1265,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libdbus-1-3/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libdbus-1-3/copyright",
+      "sha256": "a149b1996ff813dfad978b07d362578757083dfb16350d48f3f5e5cf22bb770c",
+      "size": 11158,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libpcre3/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libpcre3/copyright",
+      "sha256": "ac9276490d2fa167442ae1aae33926514ad10c8886baa40046c5e367fccc5938",
+      "size": 2765,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxfixes3/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxfixes3/copyright",
+      "sha256": "a804ba66f69fc217d8f9363405c3eec48be30c2d62b77850990c6cd8a3a0a4b5",
+      "size": 2319,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-xfixes0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-xfixes0/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-shape0-dev/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-shape0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxxf86vm1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxxf86vm1/copyright",
+      "sha256": "8a18884e1be08a37bf1b8fc9a14eba800e65a98d6ea19bb5d8b0ccf35f9bbcc4",
+      "size": 1370,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxext6/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxext6/copyright",
+      "sha256": "bc57e445ca1d9fe082c8d54189dd411ff26caa8552c9c63d44ea06a982f32124",
+      "size": 10421,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-sync1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-sync1/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-glx0-dev/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-glx0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxdamage1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxdamage1/copyright",
+      "sha256": "09182bc7805ff77a41251e450cebd0d33c48a74ba8ec4b734855a22c86f50417",
+      "size": 1221,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libx11-xcb1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libx11-xcb1/copyright",
+      "sha256": "c841b7fc957bbe822d9cababead2ceeda418f62e12897ff2dd7a93e9055e337f",
+      "size": 47104,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libffi6/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libffi6/copyright",
+      "sha256": "7258c8acc378030d8dbe1fcdf394e915769fa31dcbaf3d2991d9a79891f3bcdc",
+      "size": 3440,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-present0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-present0/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxau6/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxau6/copyright",
+      "sha256": "d311410a8af7cfb1b16ae2d22765641ba4e2a1a9431f229f59326bca0f99cdac",
+      "size": 1223,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxcb-render0-dev/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxcb-render0-dev/copyright",
+      "sha256": "26f8d1e7de951534bec30854f9a3aaa322bfd244c095c74c52c3b20e16638ece",
+      "size": 1780,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libwayland-client0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libwayland-client0/copyright",
+      "sha256": "6aaf3b2b98b501b648c780e7c3ee21db786a75deec87b877fc8533b53ae32a32",
+      "size": 1592,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libwayland-server0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libwayland-server0/copyright",
+      "sha256": "6aaf3b2b98b501b648c780e7c3ee21db786a75deec87b877fc8533b53ae32a32",
+      "size": 1592,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxshmfence1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxshmfence1/copyright",
+      "sha256": "6a76b32c9174c0cb9e3d94c323a14d33d6a42bd2a61579b189cbc5addeb94abe",
+      "size": 1215,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libjpeg-turbo8/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libjpeg-turbo8/copyright",
+      "sha256": "193468d9eb043a180f6f9e3386f7205104908dcb8525ad39c8236990dfd452ef",
+      "size": 6101,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libglib2.0-0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libglib2.0-0/copyright",
+      "sha256": "fba5358de01b6b99d385f588714b3b7f64be7074710e4d4152bc3a05dfef1789",
+      "size": 2138,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libjasper1/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libjasper1/copyright",
+      "sha256": "86c11bd7b94d24d6c372bd95f8d8998b8a69c7d82a91dd0247878b28223feabe",
+      "size": 3042,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libxi6/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libxi6/copyright",
+      "sha256": "47404744a0ab1c33b1478940b236ffe4197e7ccb89a32bb3c2deead040076e5e",
+      "size": 4434,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/doc/libpng12-0/copyright",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/doc/libpng12-0/copyright",
+      "sha256": "265723d3bf6c4f4664caac889c62d7155c064713ad56b87a277104a879af273a",
+      "size": 4747,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXext.so.6",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXext.so.6",
+      "sha256": "53a0eb78013178109b4848c6aa57deef384840665a348cace0894ab7feacd61e",
+      "size": 78080,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXi.so.6",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXi.so.6",
+      "sha256": "755b157cee75c025a53bb9b9f317fd355a21aa4205d538491bf433b4993fe6e2",
+      "size": 68680,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libwayland-server.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libwayland-server.so.0",
+      "sha256": "48594dfc7e692ce8752958ea797987e1bf7bcf5aba87ff4a125f0355efb3ef58",
+      "size": 74192,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXdmcp.so.6",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXdmcp.so.6",
+      "sha256": "974845a931bd5ba7245c4882be76db0f9409f4c385895d1b3f9b219d0b892127",
+      "size": 26544,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Svg.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Svg.so.5",
+      "sha256": "b595354ad927b8498893b0e5a9f381d9b5b7dd980aaf6c915019f0dfdca6ebab",
+      "size": 349720,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5DBus.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5DBus.so.5",
+      "sha256": "93af877d1b1f81f02b28b383c34081c1928b065247856ad72a0f61db01a7ec34",
+      "size": 558512,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXau.so.6",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXau.so.6",
+      "sha256": "b6f2f094665d6344437fd00e994b4204cabeb90f25a49e8381b310fb950d355a",
+      "size": 17824,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-present.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-present.so.0",
+      "sha256": "89af53ebe73941d548746e25ca5ffbbc84d8d54d0b71dc2d12bcceca53d41b82",
+      "size": 14024,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-sync.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-sync.so.1",
+      "sha256": "cae4ca08585a89535a6a0334a15bd02333590c1dc9218aa6b4d693fece1d8868",
+      "size": 28016,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libX11-xcb.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libX11-xcb.so.1",
+      "sha256": "eea3dc5f1305ed6bf7feee83f61dfed4469a0993e63bbcc2c0fb5d7dc9959fae",
+      "size": 9352,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxshmfence.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxshmfence.so.1",
+      "sha256": "e8005386f0c02245d439e6372399824d72ca7dcdb05518a916f9a14429b83f9c",
+      "size": 9528,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libicudata.so.56",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libicudata.so.56",
+      "sha256": "b09e468b60b5e07013eac640f61c5d9b21cfea7214be024d94e67303fc1b0d69",
+      "size": 25051640,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5XcbQpa.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5XcbQpa.so.5",
+      "sha256": "70bb1652c23466d96e4089836a2e51ff4195e827927eba80fd71b583b7e1e1f7",
+      "size": 1406088,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-glx.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-glx.so.0",
+      "sha256": "2cadb603beeea47ab15e64503799c67222de219f4981da97a5b37f195681563b",
+      "size": 111688,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-xfixes.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-xfixes.so.0",
+      "sha256": "1416286384a083f7e8f49ed51deb9fecd8f37c59a14e74a27c3f3cfc2e901f1d",
+      "size": 33296,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Gui.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Gui.so.5",
+      "sha256": "4f034a41c072bdf3f6c29a680c4307342d489062cc24b30dbf8705ed89efb705",
+      "size": 5931896,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libjasper.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libjasper.so.1",
+      "sha256": "5aeb7dd7454a664451ae323a52e1aa2ec023e61170f55da8fddfb01f79038900",
+      "size": 340216,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Qml.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Qml.so.5",
+      "sha256": "1e45dbd9bfc6bca0d19857468e6a5bac9b522ada2ba57cdda6dab235082cb45d",
+      "size": 4118648,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Quick.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Quick.so.5",
+      "sha256": "a90eb7bcc258780eb8029cc9de6748ce0a5945e914dfe59ab737434c776799ac",
+      "size": 4397600,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Core.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Core.so.5",
+      "sha256": "43d10b31540b20075f3a72b4dbdc575c43578ac69757ca71003c8e283d6845b9",
+      "size": 5458240,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libgthread-2.0.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libgthread-2.0.so.0",
+      "sha256": "7c860a7419b8976b0d7abc86da121a278d9bf6711a382bfb02d4b1a3199dab06",
+      "size": 9424,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-render.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-render.so.0",
+      "sha256": "0b6b77f0735e5dcdfdc56437cfbb73cff446767ee0f57317ac44524e9b8090ce",
+      "size": 42920,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libpng12.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libpng12.so.0",
+      "sha256": "0b4833aceacba58be9bed34eef4e36a6eb65a5eb1c2d1c5c0a0b84c15440c015",
+      "size": 161056,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libdbus-1.so.3",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libdbus-1.so.3",
+      "sha256": "9dc6e355240794ac98d1dd3cbd011161e980a06ddad23e7c7ee220b2d3f59199",
+      "size": 291320,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXdamage.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXdamage.so.1",
+      "sha256": "69f9d3c4f1e1951ccda778722495f9be116ca6168efb8380d6b894fcb24ed401",
+      "size": 13784,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libicui18n.so.56",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libicui18n.so.56",
+      "sha256": "e1408b175bcb9680926c3ea36fb1401a6e097ab89dde9e61891a1f554efa37f5",
+      "size": 3751384,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libwayland-client.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libwayland-client.so.0",
+      "sha256": "dae2e22bb9384f605ebb814ba35868d3955d31a826066262ffb97630ab06626b",
+      "size": 56616,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libxcb-shape.so.0",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libxcb-shape.so.0",
+      "sha256": "ce03a20a2b359870921e1735de6dd17c09e80e7f96ab304dce04e9869c6ee853",
+      "size": 18424,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Network.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Network.so.5",
+      "sha256": "c144723415a75c6b9beb985e09214b5c3db75a0fc1b21e1486345f8a24c5f6bb",
+      "size": 1637912,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXfixes.so.3",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXfixes.so.3",
+      "sha256": "dcc9ed0026ec25b131b7fce5b36f6be6cc3d776ca8a40850e6faa8f6fbf0f792",
+      "size": 26832,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libjpeg.so.8",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libjpeg.so.8",
+      "sha256": "7c9806033353cc2e9a1347b9a7342aa4b3f0533949e700df2a2357bf09ea6296",
+      "size": 286336,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libpcre.so.3",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libpcre.so.3",
+      "sha256": "65813a24f1e3ac71d1d0cb965e2d485c6377cf3b9be7ade2a083a27b98f06ab5",
+      "size": 256120,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libffi.so.6",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libffi.so.6",
+      "sha256": "1da4b0b6fea53dbbcf4d14f8c9525ad8173e05260c26be6854182ba80b4f6e30",
+      "size": 34808,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libQt5Widgets.so.5",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libQt5Widgets.so.5",
+      "sha256": "9aae141660b8fc8693ca703235a50be754c513842da7ba9a83e0fb212b24bdca",
+      "size": 6491672,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libicuuc.so.56",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libicuuc.so.56",
+      "sha256": "e033e237f49987273390e823280d893f6421eb8d97611de11379fbc4700f3e94",
+      "size": 2200624,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/QGeConfigTools/lib/libXxf86vm.so.1",
+      "target": "third_party/mindvision/2.1.0.50/tools/QGeConfigTools/lib/libXxf86vm.so.1",
+      "sha256": "c8294dadff4dae82bba7312a13ebb033b451748e9ba1547c41cad999b7971220",
+      "size": 26456,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GeConfigCmd/x86/GeConfigCmd",
+      "target": "third_party/mindvision/2.1.0.50/tools/GeConfigCmd/x86/GeConfigCmd",
+      "sha256": "520618d56435ead9d0204f0ebdb42b4f2476a7ca2112bb4b2d0e340b34d917ff",
+      "size": 26324,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GeConfigCmd/arm64/GeConfigCmd",
+      "target": "third_party/mindvision/2.1.0.50/tools/GeConfigCmd/arm64/GeConfigCmd",
+      "sha256": "93cc33470c2f4364fd1693bc527661180910c7419cf954446ee9f974c0f51f9f",
+      "size": 25952,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "AArch64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GeConfigCmd/arm/GeConfigCmd",
+      "target": "third_party/mindvision/2.1.0.50/tools/GeConfigCmd/arm/GeConfigCmd",
+      "sha256": "06b6ab07cf2369e1ba6988d94b361157bcdc25e55bef506d38ea410a0b9eefe4",
+      "size": 62174,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GeConfigCmd/arm_softfp/GeConfigCmd",
+      "target": "third_party/mindvision/2.1.0.50/tools/GeConfigCmd/arm_softfp/GeConfigCmd",
+      "sha256": "d5651252c28f5d8cd0206c692284bc0eb730e7d974c7a1be284de7b2de89b166",
+      "size": 18443,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "ARM",
+      "elf_class": 32
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GeConfigCmd/x64/GeConfigCmd",
+      "target": "third_party/mindvision/2.1.0.50/tools/GeConfigCmd/x64/GeConfigCmd",
+      "sha256": "fd9bfbf38f8d541dbcc640031b8cf5b3bc82eeb1eb8865cdbf7e760cb105267d",
+      "size": 27272,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GTKGeConfigTools/GeConfigTools",
+      "target": "third_party/mindvision/2.1.0.50/tools/GTKGeConfigTools/GeConfigTools",
+      "sha256": "f3e95540a3aca7121af487380841b98c6f3d0db766d17aaf169f891d1ab1ff1f",
+      "size": 152496,
+      "status": "copied_verified",
+      "link": null,
+      "elf_machine": "x86-64",
+      "elf_class": 64
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/sdk/tools/GTKGeConfigTools/ui.glade",
+      "target": "third_party/mindvision/2.1.0.50/tools/GTKGeConfigTools/ui.glade",
+      "sha256": "05c32f8410e18944de3f529a15e4cecd026068c88b53d7d00d84b1346543540c",
+      "size": 43409,
+      "status": "copied_verified",
+      "link": null
+    },
+    {
+      "source": "MindVisionSDK_v2.1.0.50/linuxSDK_V2.1.0.50_20261009.tar.gz",
+      "target": "third_party/offline/mindvision/linuxSDK_V2.1.0.50_20261009.tar.gz",
+      "sha256": "d77699427623f39152f962b50d2c1e9477cbab891a4853f06ea6dcfdfb823f07",
+      "size": 88610593,
+      "status": "copied_verified",
+      "link": null,
+      "m0_sha256_verified": true
+    }
+  ],
+  "missing": [
+    {
+      "path": "model weights",
+      "function": "ONNX/BPU/RKNN optional inference",
+      "restore": "Provide versioned compatible weights and hash; defaults remain null"
+    },
+    {
+      "path": "正视图.png / 侧视.png / 俯视.png",
+      "function": "rough_extrinsics calibration evidence",
+      "restore": "Recover original images matching recorded hashes; production_valid remains false"
+    }
+  ]
+}

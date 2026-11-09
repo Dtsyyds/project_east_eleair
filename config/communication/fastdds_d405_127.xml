@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Board D405 profile: eth1 and local IPC only; no 192.168.2.100 interface. -->
+<profiles xmlns="http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles">
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>d405_shm</transport_id>
+      <type>SHM</type>
+      <segment_size>268435456</segment_size>
+      <maxMessageSize>67108864</maxMessageSize>
+      <port_queue_capacity>1024</port_queue_capacity>
+    </transport_descriptor>
+    <transport_descriptor>
+      <transport_id>d405_udp_127</transport_id>
+      <type>UDPv4</type>
+      <interfaceWhiteList>
+        <address>192.168.127.10</address>
+        <address>127.0.0.1</address>
+      </interfaceWhiteList>
+    </transport_descriptor>
+  </transport_descriptors>
+  <participant profile_name="d405_127_participant" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>d405_shm</transport_id>
+        <transport_id>d405_udp_127</transport_id>
+      </userTransports>
+      <useBuiltinTransports>false</useBuiltinTransports>
+    </rtps>
+  </participant>
+</profiles>

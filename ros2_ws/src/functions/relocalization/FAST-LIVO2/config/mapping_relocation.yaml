@@ -1,0 +1,163 @@
+/**:
+  ros__parameters:
+    # auto：使用本次编译对应的 FAST-LIVO2 源码包目录，PCD 位于该包下。
+    # 复制／移动源码后在目标位置重新编译，无需手动切换 Desktop／总工程路径。
+    # 也可填写绝对目录覆盖；相对目录基于它解析，不受终端当前目录影响。
+    workspace_root: "auto"
+
+    # false：MID360 + IMU 普通建图；true：先验初始化后定位或继续扩图。
+    # 建图与重定位共用模式和地图路径；本次重力对齐由 uav.gravity_align_en 控制。
+    locate_in_prior_map: true
+    # 仅有先验时生效：false 固定先验定位；true 成功匹配后将新观测加入在线地图。
+    # 代码缺省为 false，保留旧配置行为；本工程显式启用连续扩图，不修改输入 PCD。
+    prior_map_update_en: true
+    # 固定读取目录；将选中的先验放入此目录，通常只需修改文件名。
+    # 建图与重定位共同读取 prior_map_path / prior_map_name。
+    prior_map_path: "PCD/map"
+    prior_map_name: "map_1103_2217.pcd"
+
+    time_check:
+      # 启动时只读校验系统时钟同步状态；失败立即退出，不进入建图。
+      # 关闭后仍可建图，但日期未经校验；不会自动联网校时或修改系统时间。
+      enabled: true
+
+    # MID360 + IMU 算法配置；驱动和相机参数分别管理。
+    common:
+      img_topic: "/camera/camera/color/image_raw"
+      lid_topic: "/livox/lidar"
+      imu_topic: "/livox/imu"
+      img_en: 0
+      lidar_en: 1
+      ros_driver_bug_fix: false
+
+    extrin_calib:
+      # 与 A 相同：p_imu = extrinsic_R * p_lidar + extrinsic_T，平移单位为米。
+      extrinsic_T: [-0.011, -0.02329, 0.04412]
+      extrinsic_R: [1.0, 0.0, 0.0,
+                    0.0, 1.0, 0.0,
+                    0.0, 0.0, 1.0]
+      # LiDAR 到相机外参：p_camera = Rcl * p_lidar + Pcl。
+      # 当前 img_en=0，这组相机外参不参与实时视觉融合。
+      Rcl: [-0.000855966483645, -0.999828172768721, -0.018517350224543,
+             0.598269757782753,  0.014325846918316, -0.801166691165228,
+             0.801294305635542, -0.011764142469066,  0.598154696301903]
+      Pcl: [0.031768816365067, -0.108594539194672, 0.016584619676391]
+
+    time_offset:
+      # IMU 接收时间减去该偏移（秒）。
+      imu_time_offset: 0.0
+      # 沿用 A 的记录值；当前关闭视觉，启用视觉前需重新验证。
+      img_time_offset: 0.1
+      exposure_time_init: 0.0
+
+    preprocess:
+      lidar_type: 1                  # Livox CustomMsg 处理分支，适用于当前 MID360 驱动。
+      scan_line: 4
+      scan_rate: 10
+      blind: 0.6
+      point_filter_num: 3
+      filter_size_surf: 0.1
+      filter_size_map: 0.1            # 仅定位模式加载先验地图时使用。
+      feature_extract_enabled: false
+
+    vio:
+      max_iterations: 5
+      # 接受整数或浮点 YAML 值；内部使用 double。
+      outlier_threshold: 1000
+      img_point_cov: 1000
+      patch_size: 8
+      patch_pyrimid_level: 4
+      grid_size: 5
+      grid_n_height: 17
+      normal_en: true
+      raycast_en: false
+      inverse_composition_en: false
+      exposure_estimate_en: true
+      inv_expo_cov: 0.1
+
+    imu:
+      imu_en: true
+      gravity_est_en: true
+      ba_bg_est_en: true
+      imu_int_frame: 30
+      acc_cov: 0.1
+      gyr_cov: 0.1
+      # IMU 加速度计和陀螺仪偏置噪声协方差，实际传给 IMU 模块。
+      b_acc_cov: 0.0001
+      b_gyr_cov: 0.0001
+
+    lio:
+      # LIO 最大迭代次数；收敛时可以提前结束，与 A 使用相同参数名。
+      max_iterations: 5
+      min_effective_points: 6
+      dept_err: 0.02
+      beam_err: 0.05
+      min_eigen_value: 0.0025
+      sigma_num: 3.0
+      voxel_size: 0.5
+      max_layer: 2
+      max_points_num: 50
+      layer_init_num: [5, 5, 5, 5, 5]
+
+    local_map:
+      # 普通建图／先验扩图遵循此项；固定先验定位强制关闭。关闭时内存随扩图增加。
+      map_sliding_en: false
+      half_map_size: 100
+      sliding_thresh: 8.0
+
+    uav:
+      imu_rate_odom: false
+      # 根据本次 IMU 初始化结果对齐重力；保持静止直到先验体素地图初始化完成。
+      gravity_align_en: true
+
+    publish:
+      dense_map_en: true
+      pub_effect_point_en: false
+      pub_plane_en: true
+      plane_publish_period: 0.2
+      pub_scan_num: 1
+      blind_rgb_points: 0.0
+      map_frame_id: "map"
+
+    evo:
+      seq_name: "Mid360_D405_Mapping_01"
+      pose_output_en: false
+
+    pcd_save:
+      # interval=-1 时退出写盘；可捕获异常也尽力保存此前有效观测。目录自动创建。
+      # 启动时固定 map_MMDD_HHMM 前缀；正数间隔分段追加 _0001 等序号。
+      pcd_save_en:            true
+      # -1=初始化时随模式选择：无先验为0，有先验为2；也可显式选择0/1/2。
+      # 0=局部 camera_init；1=各帧 IMU 系（不能直接叠图）；2=先验 map 系。
+      type:                   -1
+      # 定位模式需总开关和本开关同时开启才保存；普通建图不受本项影响。
+      pcd_save_en_relocate:   true
+      # 固定保存目录：初始化时按 locate_in_prior_map 选择，通常不改。
+      output_dir:             "PCD/priori"
+      output_dir_relocate:    "PCD/relocate"
+      colmap_output_en:       false
+      filter_size_pcd:        0.15
+      interval:               -1
+
+    # 输出日志默认关闭；告警和初始化结果不受这些开关影响。
+    log:
+      sensor: false
+      lio: false
+      timing: false
+      map_sliding: false
+
+    localization:
+      # 连续丢失有效约束后以错误码退出；先检查地图和初值，再重启建图与重定位。
+      max_unconstrained_frames: 5
+
+    image_save:
+      img_save_en: false
+      interval: 1
+      output_dir: "PCD/images"
+
+    relocalization:
+      num_threads: 4
+      max_attempts: 300
+      timeout_seconds: 120.0
+      # 配准成功后，等待建图服务明确接受初值的最长时间；不等待 IMU／先验体素初始化。
+      initial_pose_timeout_seconds: 30.0

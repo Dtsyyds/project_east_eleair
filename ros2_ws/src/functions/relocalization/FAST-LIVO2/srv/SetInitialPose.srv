@@ -1,0 +1,9 @@
+# Reuse the same ID and pose when retrying a timed-out request.
+string request_id
+# Initial IMU pose in the prior-map frame, before mapping's gravity alignment.
+geometry_msgs/PoseWithCovarianceStamped pose
+---
+# True only after validation, storage, and creation of sensor subscriptions.
+# Does not mean IMU or prior voxel-map initialization has finished.
+bool accepted
+string message

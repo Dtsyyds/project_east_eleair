@@ -1,0 +1,15 @@
+# Output geometry only; does not change A's model, candidates, fit or gates.
+# Software reference pending physical probe/body-center confirmation.
+image_width: 640
+image_height: 480
+# Yellow reference overlay in the D405 console uses these active node values.
+# Edit, then stop/start visual tracking to apply (no full camera restart needed).
+reference_x: 320.0  # Reference point x in original RGB pixels; larger moves right.
+reference_y: 360.0  # Reference row; larger moves down. Keep inside heading_y_min/max.
+reference_dx_dy: 0.0  # dx/dy = tan(forward-left angle); 0 is vertical upward.
+# Native RGB: forward is toward decreasing y; left is decreasing x.
+heading_y_min: 336.0
+heading_y_max: 384.0
+min_local_rows: 6  # More than five measured points inside the direction region.
+max_row_gap_px: 9.0  # Legacy field; partial coverage and row gaps are allowed.
+max_local_residual_px: 5.0

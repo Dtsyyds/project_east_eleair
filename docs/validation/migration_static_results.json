@@ -1,0 +1,1339 @@
+{
+  "baseline": "b34a3c29c62500915c302b340cb4d51880b00980",
+  "baseline_files": 5685,
+  "original_ros_packages": 27,
+  "discovered_ros_packages": 28,
+  "counts": {
+    "changed_content": 211,
+    "unchanged_content": 5474,
+    "python": 527,
+    "toml": 6,
+    "bash": 58,
+    "yaml": 46,
+    "json": 21,
+    "package_xml": 28
+  },
+  "packages": {
+    "inspection_bringup": {
+      "path": "ros2_ws/src/bringup/inspection_bringup",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "eddy_driver"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "fisheye_camera_driver"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_mock_sensors"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_livox_adapter"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_sync"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_tools"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "livox_ros_driver2"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "mindvision_camera_driver"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "realsense2_camera"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ros2bag"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "tf2_ros"
+        }
+      ]
+    },
+    "top_pkg": {
+      "path": "ros2_ws/src/bringup/top_pkg",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "fast_livo"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "livox_ros_driver2"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "realsense2_camera"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rviz2"
+        }
+      ]
+    },
+    "eddy_driver": {
+      "path": "ros2_ws/src/drivers/eddy_driver",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ament_index_python"
+        }
+      ]
+    },
+    "fisheye_camera_driver": {
+      "path": "ros2_ws/src/drivers/fisheye_camera_driver",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-opencv"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-pytest"
+        }
+      ]
+    },
+    "inspection_livox_adapter": {
+      "path": "ros2_ws/src/drivers/inspection_livox_adapter",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_cmake_gtest"
+        }
+      ]
+    },
+    "inspection_mock_sensors": {
+      "path": "ros2_ws/src/drivers/inspection_mock_sensors",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "inspection_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "tf2_ros"
+        }
+      ]
+    },
+    "livox_ros_driver2": {
+      "path": "ros2_ws/src/drivers/livox_ros_driver2",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake_auto"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp_components"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rcutils"
+        },
+        {
+          "tag": "depend",
+          "name": "pcl_conversions"
+        },
+        {
+          "tag": "depend",
+          "name": "rcl_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "libpcl-all-dev"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosbag2"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_auto"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_common"
+        },
+        {
+          "tag": "depend",
+          "name": "git"
+        },
+        {
+          "tag": "depend",
+          "name": "apr"
+        }
+      ]
+    },
+    "mindvision_camera_driver": {
+      "path": "ros2_ws/src/drivers/mindvision_camera_driver",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-opencv"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-pytest"
+        }
+      ]
+    },
+    "realsense2_camera": {
+      "path": "ros2_ws/src/drivers/realsense-ros/realsense2_camera",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "eigen"
+        },
+        {
+          "tag": "depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "cv_bridge"
+        },
+        {
+          "tag": "depend",
+          "name": "image_transport"
+        },
+        {
+          "tag": "depend",
+          "name": "librealsense2"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp_lifecycle"
+        },
+        {
+          "tag": "depend",
+          "name": "lifecycle_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp_components"
+        },
+        {
+          "tag": "depend",
+          "name": "realsense2_camera_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_srvs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "tf2"
+        },
+        {
+          "tag": "depend",
+          "name": "tf2_ros"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_updater"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_cmake_gtest"
+        },
+        {
+          "tag": "test_depend",
+          "name": "launch_testing"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_cmake_pytest"
+        },
+        {
+          "tag": "test_depend",
+          "name": "launch_pytest"
+        },
+        {
+          "tag": "test_depend",
+          "name": "sensor_msgs_py"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-tqdm"
+        },
+        {
+          "tag": "test_depend",
+          "name": "sensor_msgs_py"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-requests"
+        },
+        {
+          "tag": "test_depend",
+          "name": "tf2_ros_py"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ros2topic"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        },
+        {
+          "tag": "build_depend",
+          "name": "ros_environment"
+        }
+      ]
+    },
+    "realsense2_camera_msgs": {
+      "path": "ros2_ws/src/drivers/realsense-ros/realsense2_camera_msgs",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "buildtool_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "build_depend",
+          "name": "action_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "build_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "action_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_common"
+        }
+      ]
+    },
+    "realsense2_description": {
+      "path": "ros2_ws/src/drivers/realsense-ros/realsense2_description",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp_components"
+        },
+        {
+          "tag": "depend",
+          "name": "realsense2_camera_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "xacro"
+        }
+      ]
+    },
+    "realsense2_rviz_plugin": {
+      "path": "ros2_ws/src/drivers/realsense-ros/realsense2_rgbd_plugin",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "realsense2_camera_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rviz_common"
+        },
+        {
+          "tag": "depend",
+          "name": "rviz_rendering"
+        },
+        {
+          "tag": "depend",
+          "name": "rviz_default_plugins"
+        },
+        {
+          "tag": "depend",
+          "name": "pluginlib"
+        }
+      ]
+    },
+    "realsense2_ros_mqtt_bridge": {
+      "path": "ros2_ws/src/drivers/realsense-ros/realsense2_ros_mqtt_bridge",
+      "dependencies": [
+        {
+          "tag": "test_depend",
+          "name": "ament_copyright"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_flake8"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_pep257"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-pytest"
+        }
+      ]
+    },
+    "agv_bridge": {
+      "path": "ros2_ws/src/functions/communication/agv_bridge",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "agv_protocol"
+        },
+        {
+          "tag": "depend",
+          "name": "eddy_driver"
+        },
+        {
+          "tag": "depend",
+          "name": "inspection_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "libopencv-dev"
+        },
+        {
+          "tag": "depend",
+          "name": "openssl"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_cmake_pytest"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-websockets"
+        }
+      ]
+    },
+    "agv_protocol": {
+      "path": "ros2_ws/src/functions/communication/agv_protocol",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "jsoncpp"
+        },
+        {
+          "tag": "depend",
+          "name": "boost"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_auto"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_common"
+        }
+      ]
+    },
+    "inspection_operations": {
+      "path": "ros2_ws/src/functions/communication/inspection_operations",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_srvs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosgraph_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "eddy_driver"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "tank_vision_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_tools"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosbag2_py"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_runtime_py"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-opencv"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        }
+      ]
+    },
+    "inspection_sync": {
+      "path": "ros2_ws/src/functions/data/inspection_sync",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "inspection_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "eddy_driver"
+        },
+        {
+          "tag": "depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_cmake_gtest"
+        }
+      ]
+    },
+    "inspection_tools": {
+      "path": "ros2_ws/src/functions/data/inspection_tools",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosbag2_py"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_runtime_py"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "eddy_driver"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_copyright"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_flake8"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_pep257"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-pytest"
+        }
+      ]
+    },
+    "fast_livo": {
+      "path": "ros2_ws/src/functions/localization/FAST-LIVO2",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "fmt"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "build_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "visualization_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "build_depend",
+          "name": "tf2_ros"
+        },
+        {
+          "tag": "build_depend",
+          "name": "pcl_ros"
+        },
+        {
+          "tag": "build_depend",
+          "name": "pcl_conversions"
+        },
+        {
+          "tag": "build_depend",
+          "name": "livox_ros_driver2"
+        },
+        {
+          "tag": "build_depend",
+          "name": "vikit_common"
+        },
+        {
+          "tag": "build_depend",
+          "name": "vikit_ros"
+        },
+        {
+          "tag": "build_depend",
+          "name": "cv_bridge"
+        },
+        {
+          "tag": "build_depend",
+          "name": "image_transport"
+        },
+        {
+          "tag": "build_depend",
+          "name": "libopencv-dev"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "cv_bridge"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "image_transport"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "libopencv-dev"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_auto"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_common"
+        }
+      ]
+    },
+    "vikit_common": {
+      "path": "ros2_ws/src/functions/localization/rpg_vikit/vikit_common",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "build_depend",
+          "name": "cmake_modules"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclcpp"
+        }
+      ]
+    },
+    "vikit_py": {
+      "path": "ros2_ws/src/functions/localization/rpg_vikit/vikit_py",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_auto"
+        },
+        {
+          "tag": "test_depend",
+          "name": "ament_lint_common"
+        }
+      ]
+    },
+    "vikit_ros": {
+      "path": "ros2_ws/src/functions/localization/rpg_vikit/vikit_ros",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "buildtool_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "depend",
+          "name": "rclcpp"
+        },
+        {
+          "tag": "depend",
+          "name": "cmake_modules"
+        },
+        {
+          "tag": "depend",
+          "name": "vikit_common"
+        },
+        {
+          "tag": "depend",
+          "name": "tf2"
+        },
+        {
+          "tag": "depend",
+          "name": "visualization_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        }
+      ]
+    },
+    "d405_seam_ros": {
+      "path": "ros2_ws/src/functions/perception/d405_seam_ros",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "std_srvs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "realsense2_camera_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "launch_ros"
+        }
+      ]
+    },
+    "tank_vision_core": {
+      "path": "ros2_ws/src/functions/perception/tank_vision_core",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake_python"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-opencv"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        }
+      ]
+    },
+    "tank_vision_ros": {
+      "path": "ros2_ws/src/functions/perception/tank_vision_ros",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "depend",
+          "name": "cv_bridge"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_srvs"
+        },
+        {
+          "tag": "depend",
+          "name": "tank_vision_core"
+        },
+        {
+          "tag": "depend",
+          "name": "tank_vision_interfaces"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-opencv"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        }
+      ]
+    },
+    "inspection_rerun": {
+      "path": "ros2_ws/src/functions/visualization/inspection_rerun",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_python"
+        },
+        {
+          "tag": "depend",
+          "name": "ament_index_python"
+        },
+        {
+          "tag": "depend",
+          "name": "diagnostic_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "nav_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "rclpy"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "tf2_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "inspection_tools"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-numpy"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "python3-yaml"
+        },
+        {
+          "tag": "test_depend",
+          "name": "python3-pytest"
+        }
+      ]
+    },
+    "inspection_interfaces": {
+      "path": "ros2_ws/src/interfaces/inspection_interfaces",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "depend",
+          "name": "builtin_interfaces"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        }
+      ]
+    },
+    "tank_vision_interfaces": {
+      "path": "ros2_ws/src/interfaces/tank_vision_interfaces",
+      "dependencies": [
+        {
+          "tag": "buildtool_depend",
+          "name": "ament_cmake"
+        },
+        {
+          "tag": "build_depend",
+          "name": "rosidl_default_generators"
+        },
+        {
+          "tag": "depend",
+          "name": "geometry_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "sensor_msgs"
+        },
+        {
+          "tag": "depend",
+          "name": "std_msgs"
+        },
+        {
+          "tag": "exec_depend",
+          "name": "rosidl_default_runtime"
+        }
+      ]
+    }
+  },
+  "errors": [],
+  "excluded_or_deferred": [
+    "third_party: upstream examples/source unchanged; syntax of all vendor examples is outside project Python support",
+    "docs/history: immutable historical snapshots and archived obsolete tools; not executable entrypoints",
+    "C/C++: no compilation performed; syntax/build deferred",
+    "ROS install resources and generated messages require the next clean build"
+  ],
+  "dependency_blocked_checks": [
+    "apps/web_console/console.js: Node.js unavailable; syntax/test not executed",
+    "apps/web_console/console_core.js: Node.js unavailable; syntax/test not executed",
+    "apps/web_console/replay.js: Node.js unavailable; syntax/test not executed",
+    "tests/web_console/test_console_core.js: Node.js unavailable; syntax/test not executed",
+    "tools/legacy_web_console/console.js: Node.js unavailable; syntax/test not executed"
+  ],
+  "supplemental_files": 5,
+  "status": "passed_available_checks",
+  "scope": "static only; no hardware or full build"
+}

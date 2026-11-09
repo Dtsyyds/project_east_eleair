@@ -1,0 +1,22 @@
+{
+  "CMakeLists.txt": {
+    "before": "6d5096b5e91bf5bf455d06d699a9c6795111f511dce7c87da264865461226d13",
+    "after": "e8414181aefb972ef7ea3538ba78f41e2ea53bd1e4b90c00d19e99d76eded669"
+  },
+  "duct_robot_tracking/core.py": {
+    "before": "133a074019ff978535c3930885b672d19e04da65231c4a80d141b5577eae8c8f",
+    "after": "e31c98c8aa6f479bc3122ed1376df643e486707afd9ea40ea21c2b3adead70e5"
+  },
+  "duct_robot_tracking/node.py": {
+    "before": "672bedb1ec17f8b172dffccb710e592efc5cafa4e9bf23e5323259a8edae4429",
+    "after": "aea1b0ce8340ae4e4dc321c88aa59a6788277e3c3a42460619ef38fe628df516"
+  },
+  "config/weld_tracking.yaml": {
+    "before": "e9deabce9ffc65c2e7565b5ab6a61f750d3b86e9006caafcfb1c0a9e11c50f50",
+    "after": "2141971ec5e93d3c10fed464ae27c6e8d5332c9f43fded96f47c8b774475be60"
+  },
+  "test/test_continuity.py": {
+    "before": null,
+    "after": "a1ebdd33bcbeb81ed9c452a49e10ab2899f6fa9149d67dad5e7a46353aae9ff4"
+  }
+}

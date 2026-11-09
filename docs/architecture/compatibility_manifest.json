@@ -1,0 +1,186 @@
+[
+  {
+    "path": "deploy/compat/system/build.sh",
+    "delegation": "#!/usr/bin/env bash\nif [[ \"${1:-}\" == --wireless-only ]]; then shift; set -- --packages-select agv_bridge \"$@\"; fi\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/build.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/collect.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/collect.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/env.sh",
+    "delegation": "#!/usr/bin/env bash\nsource \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/env.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/handoff.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/handoff.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/preflight.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/preflight.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/replay.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/replay.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/rollback.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/rollback/restore.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/stop.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/stop.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/validate.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/validate.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system/verify_offline.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/verify_offline.sh\" \"$@\""
+  },
+  {
+    "path": "deploy/compat/system_websocket/run.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/run.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/build_role_handoff.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.build_role_handoff.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.build_role_handoff', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/finalize_field_run.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.finalize_field_run.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.finalize_field_run', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/finalize_mapping_eddy_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.finalize_mapping_eddy_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.finalize_mapping_eddy_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/finalize_vehicle_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.finalize_vehicle_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.finalize_vehicle_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/front_h264_recorder.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.front_h264_recorder.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.front_h264_recorder', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/front_video_recorder.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.front_video_recorder.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.front_video_recorder', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/generate_mapping_eddy_summary.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.generate_mapping_eddy_summary.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.generate_mapping_eddy_summary', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/generate_vehicle_collection_summary.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.generate_vehicle_collection_summary.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.generate_vehicle_collection_summary', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/mapping_eddy_live_probe.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.mapping_eddy_live_probe.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.mapping_eddy_live_probe', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/rebuild_compact_trajectory.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.rebuild_compact_trajectory.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.rebuild_compact_trajectory', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/replay_mapping_eddy_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.replay_mapping_eddy_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.replay_mapping_eddy_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/replay_mapping_eddy_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/replay_mapping_eddy_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/replay_vehicle_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.replay_vehicle_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.replay_vehicle_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/replay_vehicle_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/replay_vehicle_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/replay_visual_mcap.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.replay_visual_mcap.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.replay_visual_mcap', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/run_d405_lifecycle_validation.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/run_d405_lifecycle_validation.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/run_stability_validation.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/run_stability_validation.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/start_field_visual.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/start_field_visual.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/start_mapping_eddy_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/start_mapping_eddy_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/start_vehicle_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/start_vehicle_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/status_mapping_eddy_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/status_mapping_eddy_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/status_vehicle_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/status_vehicle_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/stop_field_visual.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/stop_field_visual.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/stop_mapping_eddy_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/stop_mapping_eddy_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/stop_vehicle_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.stop_vehicle_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.stop_vehicle_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/stop_vehicle_collection.sh",
+    "delegation": "#!/usr/bin/env bash\nexec \"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/../..\" && pwd)/packages/inspection_runtime/scripts/stop_vehicle_collection.sh\" \"$@\""
+  },
+  {
+    "path": "tools/data/validate_mapping_eddy_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.validate_mapping_eddy_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.validate_mapping_eddy_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/validate_vehicle_collection.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.validate_vehicle_collection.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.validate_vehicle_collection', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/vehicle_collection_common.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.vehicle_collection_common.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.vehicle_collection_common', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/vehicle_collection_disk_guard.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.vehicle_collection_disk_guard.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.vehicle_collection_disk_guard', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/vehicle_collection_manager.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.vehicle_collection_manager.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.vehicle_collection_manager', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/vehicle_collection_monitor.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_operations.vehicle_collection_monitor.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_operations.vehicle_collection_monitor', run_name=\"__main__\")"
+  },
+  {
+    "path": "tools/data/verify_role_handoff.py",
+    "delegation": "#!/usr/bin/env python3\n\"\"\"Compatibility command; implementation lives in inspection_runtime.data.verify_role_handoff.\"\"\"\nimport runpy\nif __name__ == \"__main__\":\n    runpy.run_module('inspection_runtime.data.verify_role_handoff', run_name=\"__main__\")"
+  },
+  {
+    "path": "packages/d405_seam_tracking/src/d405_seam_tracking/ros_node.py",
+    "canonical": "ros2_ws/src/functions/perception/d405_seam_ros/d405_seam_ros/node.py"
+  },
+  {
+    "path": "ros2_ws/src/functions/data/inspection_tools/inspection_tools/video_index.py",
+    "canonical": "packages/inspection_runtime/src/inspection_runtime/video_index.py"
+  }
+]

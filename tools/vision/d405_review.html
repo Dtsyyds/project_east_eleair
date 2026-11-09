@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D405 样本复核与人工标注</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101820;color:#e4edf4;font:15px system-ui,sans-serif}header,main{max-width:1380px;margin:auto;padding:16px}h1{font-size:23px;margin:0 0 8px}p{line-height:1.6}button,input,select{font:inherit;padding:9px;border-radius:5px;border:1px solid #576b7a;background:#21313e;color:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:default}.bar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:10px 0}.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px}canvas{display:block;width:100%;height:auto;background:#000;border:1px solid #536778;touch-action:none;cursor:crosshair}.panel{background:#1b2731;padding:14px;border-radius:8px}.small{font-size:13px;color:#b2c5d4}#message{min-height:28px;color:#ffce77}#list{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}#list button{padding:7px}#list .current{outline:2px solid #8ecfff}#list .done{background:#255a43}.blue{color:#63b4ff}.green{color:#65e296}#summary{white-space:pre-wrap;line-height:1.6}input[type=checkbox]{width:18px;height:18px}#zoom{width:90px}@media(max-width:850px){.layout{grid-template-columns:1fr}}.viewport{overflow:auto;max-height:78vh}a{color:#8ecfff}
+</style>
+<header><h1>D405 样本复核与人工标注</h1><div id="session" class="small"></div>
+<p>标出<strong>可见焊道与母材的左右交界</strong>，只标清楚可见的区间，避开夹具、遮挡和图像外区域。模糊边界先留空。算法输出仅供对照，不作为真值。</p></header>
+<main><div class="bar"><button id="prev">上一张</button><strong id="position"></strong><button id="next">下一张</button><label>缩放 <select id="zoom"><option value="1">适应</option><option value="1.5">1.5 倍</option><option value="2">2 倍</option></select></label><label><input id="showLive" type="checkbox"> 显示原算法（细线）</label></div>
+<div class="layout"><section><div class="viewport"><canvas id="canvas"></canvas></div><div id="summary" class="small"></div></section>
+<aside class="panel"><div id="list"></div><p id="progress"></p>
+<div class="bar"><button id="left" class="blue">标左边界 [1]</button><button id="right" class="green">标右边界 [2]</button></div>
+<p id="active"></p><p class="small">鼠标点击加点；每侧至少 6 点，按纵向排序。同一侧不要在同一行重复点。U 撤销当前侧最后一点。标注使用原图像素坐标。</p>
+<div class="bar"><button id="undo">撤销 [U]</button><button id="clear">清空本张</button></div>
+<p><label><input id="noSeam" type="checkbox"> 人工确认本张没有目标焊缝</label></p>
+<label>标注人 <input id="author" placeholder="姓名或工号" style="width:100%;margin:6px 0"></label>
+<button id="save">保存本张人工标注</button><p id="message" role="status"></p>
+<button id="sync">同步已保存标注到板端</button><p id="sync-status" class="small" role="status">等待同步</p>
+<button id="export">导出已保存标注 JSON</button><p class="small">已保存标注保留在本浏览器，并尝试同步到板端；未保存草稿在刷新后丢失。原始样本不会被修改。建议同时导出 JSON 留存。</p></aside></div></main>
+<script>
+"use strict";
+const DATA=/*REVIEW_DATA*/null, $=id=>document.getElementById(id);
+const key='d405-review:'+DATA.source_index_sha256;
+let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
+let index=-1,side='left_xy',draft={left_xy:[],right_xy:[],no_seam:false},picture=new Image(),generation=0;
+const canvas=$('canvas'),ctx=canvas.getContext('2d');
+function message(s){$('message').textContent=s}
+function persist(){try{localStorage.setItem(key,JSON.stringify(saved));return true}catch(e){message('浏览器存储失败，请立即导出标注 JSON。');return false}}
+function dirty(){const r=DATA.samples[index];delete saved[r.sample];persist();nav();message('草稿尚未保存');}
+function nav(){const count=Object.keys(saved).length;$('progress').textContent=`已保存 ${count} / ${DATA.samples.length}`;$('position').textContent=`${index+1} / ${DATA.samples.length}`;$('prev').disabled=index===0;$('next').disabled=index===DATA.samples.length-1;
+ $('list').replaceChildren();DATA.samples.forEach((r,i)=>{const b=document.createElement('button');b.textContent=String(r.id).padStart(2,'0');b.className=(i===index?'current ':'')+(saved[r.sample]?'done':'');b.onclick=()=>open(i);$('list').append(b)})}
+function line(points,color,width){if(!points.length)return;ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke()}
+function draw(){const r=DATA.samples[index];ctx.clearRect(0,0,r.width,r.height);if(picture.complete&&picture.naturalWidth)ctx.drawImage(picture,0,0);if($('showLive').checked){line(r.points.map(p=>[p[1],p[0]]),'#3399ff',1);line(r.points.map(p=>[p[2],p[0]]),'#32d17d',1);line(r.points.map(p=>[(p[1]+p[2])/2,p[0]]),'#ff4040',1)}
+ for(const [s,c] of [['left_xy','#63b4ff'],['right_xy','#65e296']]){const points=[...draft[s]].sort((a,b)=>a[1]-b[1]);line(points,c,2);ctx.fillStyle=c;points.forEach(p=>{ctx.beginPath();ctx.arc(...p,2.5,0,Math.PI*2);ctx.fill()})}
+ $('active').textContent=`当前：${side==='left_xy'?'左':'右'}边界；点数 ${draft.left_xy.length} / ${draft.right_xy.length}`;}
+const drafts={};
+function open(i){if(index>=0)drafts[index]=structuredClone(draft);index=i;const r=DATA.samples[i];draft=structuredClone(drafts[i]||saved[r.sample]||{left_xy:[],right_xy:[],no_seam:false});draft.left_xy ||= [];draft.right_xy ||= [];$('noSeam').checked=!!draft.no_seam;
+ if(draft.author)$('author').value=draft.author;canvas.width=r.width;canvas.height=r.height;picture=new Image();const g=++generation;picture.onload=()=>{if(g===generation)draw()};picture.onerror=()=>message('原图读取失败');picture.src=r.image;
+ $('summary').textContent=`原算法：${r.state}；视觉覆盖率 ${(r.visual_coverage*100).toFixed(1)}%；三维有效：${r.metric_valid?'是':'否'}\n视觉原因：${r.visual_reasons.join('、')||'无拒绝原因（不代表正确）'}\n深度原因：${r.depth_reasons.join('、')}；深度阈值 ${r.depth_threshold_mm.toFixed(2)} mm`;
+ nav();draw();message(saved[r.sample]?'已有人工标注，可修改后重新保存':'等待人工标注');}
+canvas.onclick=e=>{if($('noSeam').checked){message('已选择无目标焊缝；请取消该选项后加点');return}const rect=canvas.getBoundingClientRect();const x=(e.clientX-rect.left)/rect.width*canvas.width,y=(e.clientY-rect.top)/rect.height*canvas.height;if(x<0||y<0||x>=canvas.width||y>=canvas.height)return;draft[side].push([+x.toFixed(2),+y.toFixed(2)]);dirty();draw()};
+function interp(points,y){for(let i=1;i<points.length;i++)if(y<=points[i][1]){const a=points[i-1],b=points[i];return a[0]+(b[0]-a[0])*(y-a[1])/(b[1]-a[1])}return points.at(-1)[0]}
+function validate(){const author=$('author').value.trim();if(!author)throw Error('请填写标注人');const noSeam=$('noSeam').checked;const left=[...draft.left_xy].sort((a,b)=>a[1]-b[1]),right=[...draft.right_xy].sort((a,b)=>a[1]-b[1]);if(!noSeam){for(const pts of [left,right]){if(pts.length<6)throw Error('左右边界各需至少 6 点');if(pts.some((p,i)=>i&&p[1]<=pts[i-1][1]))throw Error('同一侧不能有纵坐标相同的点')}
+ const lo=Math.max(left[0][1],right[0][1]),hi=Math.min(left.at(-1)[1],right.at(-1)[1]);if(hi-lo<5)throw Error('左右边界共同可见区间不足');const ys=[lo,hi,...left.map(p=>p[1]),...right.map(p=>p[1])].filter(y=>y>=lo&&y<=hi);if(ys.some(y=>interp(left,y)>=interp(right,y)))throw Error('左右边界交叉，请修改')}
+ return {status:'approved',origin:'human',author,created_at:new Date().toISOString(),no_seam:noSeam,left_xy:noSeam?[]:left,right_xy:noSeam?[]:right,interpolation:'linear_in_original_y'};}
+function exportData(){return {schema:'d405_review_labels_v1',target:'visible_weld_boundaries',source_index_sha256:DATA.source_index_sha256,samples:DATA.samples.filter(r=>saved[r.sample]).map(r=>({sample:r.sample,raw_sha256:r.raw_sha256,annotation:saved[r.sample]}))}}
+let syncing=false;
+async function syncSaved(){if(syncing)return;const value=exportData();if(!value.samples.length){$('sync-status').textContent='尚无已保存标注；已有板端版本不会被删除';return}syncing=true;$('sync').disabled=true;$('sync-status').textContent='正在同步并校验…';try{const response=await fetch('/api/labels',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(value),signal:AbortSignal.timeout(15000)});const reply=await response.json();if(!response.ok)throw Error(reply.error||'同步失败');$('sync-status').textContent=`板端已接收并校验 ${reply.count}/${reply.total} 组标注`;}catch(e){$('sync-status').textContent='未确认同步：'+e.message+'。浏览器标注仍保留，可导出 JSON。'}finally{syncing=false;$('sync').disabled=false}}
+$('sync').onclick=syncSaved;
+$('save').onclick=()=>{try{const label=validate();saved[DATA.samples[index].sample]=label;draft=structuredClone(label);drafts[index]=structuredClone(label);const ok=persist();nav();if(ok)message('已保存本张；正在尝试同步到板端');syncSaved()}catch(e){message(e.message)}};
+$('export').onclick=()=>{const value=exportData();if(!value.samples.length){message('尚无已保存的人工标注');return}const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download='d405-human-labels.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};
+$('left').onclick=()=>{side='left_xy';draw()};$('right').onclick=()=>{side='right_xy';draw()};$('undo').onclick=()=>{draft[side].pop();dirty();draw()};$('clear').onclick=()=>{draft={left_xy:[],right_xy:[],no_seam:false};$('noSeam').checked=false;dirty();draw()};$('noSeam').onchange=()=>{draft.no_seam=$('noSeam').checked;dirty();draw()};$('author').oninput=dirty;$('prev').onclick=()=>open(index-1);$('next').onclick=()=>open(index+1);$('showLive').onchange=draw;$('zoom').onchange=()=>canvas.style.width=Number($('zoom').value)*100+'%';
+document.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;if(e.key==='1')$('left').click();if(e.key==='2')$('right').click();if(e.key.toLowerCase()==='u')$('undo').click()});
+$('session').textContent=DATA.source_session;open(0);syncSaved();
+</script></html>

@@ -1,0 +1,8 @@
+# Keep directories and scripts; ignore map data and other generated output.
+**
+!**/
+!.gitignore
+!**/.gitkeep
+!scripts/**
+**/*.[pP][cC][dD]
+**/__pycache__/

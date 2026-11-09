@@ -1,0 +1,44 @@
+{
+  "total_passed": 81,
+  "hardware_skipped": 1,
+  "dependency_blocked": 2,
+  "results": [
+    {
+      "command": "source deploy/env.sh; python3 -m pytest tests/operations/test_operations.py tests/operations/test_replay.py tests/data/test_role_handoff.py -q -k \"not sensor_codecs and not paused_clock\" --disable-warnings --maxfail=3",
+      "passed": 34,
+      "deselected": 2,
+      "result": "passed_selected",
+      "dependency_blocked": [
+        "test_sensor_codecs_handle_endian_padding_and_interleaved_channels: eddy_driver generated message module absent",
+        "test_paused_clock_waits_and_stop_wakes_reader: inspection_operations not built/installed"
+      ],
+      "note": "Initial two handoff source path failures corrected in config; initial two ROS import failures retained as dependency blockers, not counted passed"
+    },
+    {
+      "command": "source deploy/env.sh; python3 -m pytest packages/tank_vision/tests/test_config.py packages/tank_vision/tests/test_platforms_and_backends.py tests/data/test_mapping_eddy_collection.py tests/data/test_timestamp_acceptance.py -q --disable-warnings --maxfail=5",
+      "passed": 31,
+      "skipped": 1,
+      "result": "passed_selected",
+      "skip_reason": "attached camera and reviewed official adapter required"
+    },
+    {
+      "command": "source deploy/env.sh; .runtime/s100p/metadata_venv/bin/python -m pytest packages/tank_vision/tests/test_pipeline.py packages/tank_vision/tests/test_async_writer.py -q --disable-warnings --maxfail=3",
+      "passed": 8,
+      "result": "passed",
+      "scope": "recovered outputs source; no camera"
+    },
+    {
+      "command": "source deploy/env.sh; .runtime/s100p/metadata_venv/bin/python -m pytest tests/system/test_wrappers.py -q --disable-warnings --maxfail=2",
+      "passed": 6,
+      "result": "passed",
+      "scope": "argument/exit-code/help/SIGTERM propagation using fixture destinations"
+    },
+    {
+      "command": "source deploy/env.sh; .runtime/s100p/metadata_venv/bin/python -m pytest tests/system/test_portability.py -q --disable-warnings",
+      "passed": 2,
+      "result": "passed"
+    }
+  ],
+  "full_suite": "not_executed",
+  "sdk_path_spy": "Passed with fake API object only; ELF symbol presence checked via readelf; no SDK load or devices"
+}

@@ -1,0 +1,11 @@
+# Build context is the repository root: docker build -f deploy/docker/Dockerfile.humble .
+FROM ros:humble-ros-base
+SHELL ["/bin/bash", "-c"]
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3-opencv python3-pip python3-venv python3-toml python3-pytest python3-yaml python3-numpy \
+    ros-humble-cv-bridge ros-humble-rosbag2-storage-mcap \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /workspace/inspection
+COPY . .
+RUN deploy/build.sh --platform x86 --skip-native --packages-select tank_vision_ros
+CMD ["/bin/bash", "-lc", "source deploy/env.sh x86 && python3 -m pytest packages/tank_vision/tests/test_config.py -q"]

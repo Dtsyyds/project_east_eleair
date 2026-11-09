@@ -1,0 +1,13 @@
+{
+  "scope": "Existing upstream warnings outside migration feature changes; no full compilation",
+  "findings": [
+    "ros2_ws/src/functions/localization/rpg_vikit/vikit_py/src/vikit_py/depthmap_utils.py:28:13 undefined name 'MapIOError'",
+    "ros2_ws/src/functions/localization/rpg_vikit/vikit_py/src/vikit_py/depthmap_utils.py:30:13 undefined name 'MapIOError'",
+    "ros2_ws/src/functions/localization/rpg_vikit/vikit_py/src/vikit_py/depthmap_utils.py:40:10 undefined name 'MapIOError'",
+    "ros2_ws/src/drivers/realsense-ros/realsense2_camera/test/utils/pytest_live_camera_utils.py:89:20 undefined name 'false'",
+    "ros2_ws/src/drivers/realsense-ros/realsense2_camera/test/utils/pytest_live_camera_utils.py:115:20 undefined name 'false'",
+    "ros2_ws/src/drivers/realsense-ros/realsense2_camera/test/d500/test_dryrun_triggered_calibration.py:83:5 undefined name 'test_triggered_calibration'",
+    "ros2_ws/src/drivers/realsense-ros/realsense2_camera/test/d500/test_abort_triggered_calibration.py:72:5 undefined name 'test_triggered_calibration'",
+    "ros2_ws/src/drivers/realsense-ros/realsense2_camera/scripts/rs2_listener.py:235:13 undefined name 'rospy'"
+  ]
+}

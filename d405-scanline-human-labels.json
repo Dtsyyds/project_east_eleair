@@ -1,0 +1,105 @@
+{
+  "schema": "d405_scanline_labels_v1",
+  "origin": "human",
+  "index_sha256": "ebf3964a4de3debc952334d39177e0258b5745c6959d5a5aa5aa6e9ca31c817a",
+  "samples": [
+    {
+      "id": "1445",
+      "stamp_ns": "1793627257475436247",
+      "rgb_sha256": "f4d6e00ab68cf55a40cde2e528f5440b09a5e0d0eee82193b748cef767440cd3",
+      "annotation": {
+        "rows": [
+          {
+            "row_id": 1,
+            "y": 213,
+            "left": 299.03,
+            "right": 311.17
+          },
+          {
+            "row_id": 2,
+            "y": 234,
+            "left": 297.93,
+            "right": 308.97
+          },
+          {
+            "row_id": 3,
+            "y": 285,
+            "left": 296.83,
+            "right": 308.97
+          },
+          {
+            "row_id": 4,
+            "y": 309,
+            "left": 294.62,
+            "right": 306.76
+          },
+          {
+            "row_id": 5,
+            "y": 372,
+            "left": 290.21,
+            "right": 309.52
+          },
+          {
+            "row_id": 6,
+            "y": 384,
+            "left": 288,
+            "right": 308.97
+          }
+        ],
+        "reviewed": true,
+        "author": "dts",
+        "origin": "human",
+        "created_at": "2026-11-03T02:34:57.598Z"
+      }
+    },
+    {
+      "id": "1284",
+      "stamp_ns": "1793627246740355247",
+      "rgb_sha256": "655fc780d302cb0004fd48b0f86b87a5daeed1b467e0df20fa18ffe9e0ff03d5",
+      "annotation": {
+        "rows": [
+          {
+            "row_id": 1,
+            "y": 213,
+            "left": 300.14,
+            "right": 311.72
+          },
+          {
+            "row_id": 2,
+            "y": 234,
+            "left": 299.03,
+            "right": 311.17
+          },
+          {
+            "row_id": 3,
+            "y": 276,
+            "left": 297.38,
+            "right": 309.52
+          },
+          {
+            "row_id": 4,
+            "y": 315,
+            "left": 294.07,
+            "right": 308.41
+          },
+          {
+            "row_id": 5,
+            "y": 375,
+            "left": 290.21,
+            "right": 309.52
+          },
+          {
+            "row_id": 6,
+            "y": 393,
+            "left": 285.79,
+            "right": 311.17
+          }
+        ],
+        "reviewed": true,
+        "author": "dts",
+        "origin": "human",
+        "created_at": "2026-11-03T02:36:12.900Z"
+      }
+    }
+  ]
+}

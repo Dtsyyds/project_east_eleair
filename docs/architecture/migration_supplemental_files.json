@@ -1,0 +1,48 @@
+[
+  {
+    "source": "tank_vision_inspection/tank_vision/outputs/result_writer.py",
+    "target": "packages/tank_vision/tank_vision/outputs/result_writer.py",
+    "sha256": "46caf25f5e73567ca9950cab6adefe92297095caa8437acd97a62375690c1af2",
+    "status": "recovered_original_ignored_source",
+    "reason": "old output*/ rule incorrectly ignored outputs Python package",
+    "source_sha256": "46caf25f5e73567ca9950cab6adefe92297095caa8437acd97a62375690c1af2",
+    "target_sha256": "46caf25f5e73567ca9950cab6adefe92297095caa8437acd97a62375690c1af2"
+  },
+  {
+    "source": "tank_vision_inspection/tank_vision/outputs/overlay.py",
+    "target": "packages/tank_vision/tank_vision/outputs/overlay.py",
+    "sha256": "2d038a278ef89288fdb311bc0e97c8da8488b713ea5d02c1eb8d6990320188ea",
+    "status": "recovered_original_ignored_source",
+    "reason": "old output*/ rule incorrectly ignored outputs Python package",
+    "source_sha256": "2d038a278ef89288fdb311bc0e97c8da8488b713ea5d02c1eb8d6990320188ea",
+    "target_sha256": "9eb5f14f4f0fe965eb21227031d83cdbe059790c35421e4ec8d749824a6dde24",
+    "modification": "Removed redundant trailing blank line for diff --check; no code changes"
+  },
+  {
+    "source": "tank_vision_inspection/tank_vision/outputs/json_writer.py",
+    "target": "packages/tank_vision/tank_vision/outputs/json_writer.py",
+    "sha256": "780c6087c2bc834bb6c8edf9ccc6047b835fbb774378cd8a8d6cfbdf8408d5c6",
+    "status": "recovered_original_ignored_source",
+    "reason": "old output*/ rule incorrectly ignored outputs Python package",
+    "source_sha256": "780c6087c2bc834bb6c8edf9ccc6047b835fbb774378cd8a8d6cfbdf8408d5c6",
+    "target_sha256": "780c6087c2bc834bb6c8edf9ccc6047b835fbb774378cd8a8d6cfbdf8408d5c6"
+  },
+  {
+    "source": "tank_vision_inspection/tank_vision/outputs/async_writer.py",
+    "target": "packages/tank_vision/tank_vision/outputs/async_writer.py",
+    "sha256": "d87176d95029b79f2344ed6317e21d602823d0969495ee81639972b97a299b74",
+    "status": "recovered_original_ignored_source",
+    "reason": "old output*/ rule incorrectly ignored outputs Python package",
+    "source_sha256": "d87176d95029b79f2344ed6317e21d602823d0969495ee81639972b97a299b74",
+    "target_sha256": "d87176d95029b79f2344ed6317e21d602823d0969495ee81639972b97a299b74"
+  },
+  {
+    "source": "tank_vision_inspection/tank_vision/outputs/__init__.py",
+    "target": "packages/tank_vision/tank_vision/outputs/__init__.py",
+    "sha256": "38bd92f893e16683f9b7b8b751a437a58ea10f1ce52d51a6c395aaffb5365dd5",
+    "status": "recovered_original_ignored_source",
+    "reason": "old output*/ rule incorrectly ignored outputs Python package",
+    "source_sha256": "38bd92f893e16683f9b7b8b751a437a58ea10f1ce52d51a6c395aaffb5365dd5",
+    "target_sha256": "38bd92f893e16683f9b7b8b751a437a58ea10f1ce52d51a6c395aaffb5365dd5"
+  }
+]

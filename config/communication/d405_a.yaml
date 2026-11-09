@@ -1,0 +1,56 @@
+# Preview never starts recording. Explicit collection.start is required.
+# Legacy fallback: bash system_websocket/run_d405.sh --legacy
+ros_domain_id: 77
+http_port: 8080
+websocket_port: 9001
+data_root: /media/mcap_data
+minimum_free_bytes: 5368709120
+collection_profile:
+  id: d405_experiment
+  label: D405 算法实验采集
+required_topics:
+- /d405/camera/color/image_raw
+- /d405/camera/depth/image_rect_raw
+- /d405/camera/infra1/image_rect_raw
+- /d405/camera/infra2/image_rect_raw
+record_topics:
+- /d405/camera/color/image_raw
+- /d405/camera/color/camera_info
+- /d405/camera/depth/image_rect_raw
+- /d405/camera/depth/camera_info
+- /d405/camera/infra1/image_rect_raw
+- /d405/camera/infra1/camera_info
+- /d405/camera/infra2/image_rect_raw
+- /d405/camera/infra2/camera_info
+- /d405/camera/extrinsics/depth_to_color
+- /d405/camera/extrinsics/depth_to_infra1
+- /d405/camera/extrinsics/depth_to_infra2
+- /vision/d405_seam/result
+- /vision/d405_seam/path_3d
+- /vision/d405_seam/diagnostics
+vision:
+  label: A 原评分 · RGB
+  algorithm_config: d405/round1_a.yaml
+  python: .runtime/s100p/d405_prototype_venv/bin/python
+hardware:
+  start_mindvision: false
+  start_fisheye: false
+  start_d405: true
+  start_mid360: false
+  publish_rough_extrinsics: false
+  start_eddy: false
+  start_sync: false
+  d405_serial_number: 260322276866,352122271190
+  d405_rgb_profile: 640x480x15
+  d405_depth_profile: 640x480x15
+emat:
+  saved_waveform: experiments/emat/采集数据.txt
+  serial_port: /dev/emat
+  baudrate: 115200
+  sample_count: 4000
+  read_interval_ms: 10
+  sound_speed_m_s: 3240.0
+  sampling_rate_hz: 40000000.0
+  adc_zero: 127.0
+  start_sample: 200
+  calibrated: false

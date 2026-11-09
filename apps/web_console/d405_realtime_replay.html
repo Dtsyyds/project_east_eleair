@@ -1,0 +1,31 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>D405 1× 实时推理回放</title><style>body{font:16px system-ui;margin:20px;background:#101923;color:#e8eef5}button{padding:10px;margin-right:10px}#screen{position:relative;width:640px;max-width:100%;aspect-ratio:4/3}canvas{position:absolute;inset:0;width:100%;height:100%}#state{font-size:22px;color:#63e0a9}pre{white-space:pre-wrap;font-size:13px}small{color:#bdc9d7}</style>
+<h2>D405 原始 RGB · 1× 实时推理回放</h2><p>21:45 → 21:49。网络逐帧实时计算；队列保留最新待处理帧。此入口只提供显示。</p><button id="start" disabled>开始两段回放</button><button id="stop">停止回放</button><span id="connection">正在连接</span><p id="state">无测量</p><p id="identity">等待源帧</p><div id="screen"><canvas id="rgb" width="640" height="480"></canvas><canvas id="overlay" width="640" height="480"></canvas></div><p id="counts"></p><small>保持本页可见以记录浏览器实际绘制。板端注入→发送、浏览器接收→绘制分别计时，板端与 PC 未对时。切断连接或结果超时会清线。</small><pre id="summary"></pre>
+<script>
+const el=id=>document.getElementById(id), ctx=el('rgb').getContext('2d'), overlay=el('overlay').getContext('2d');
+let socket,epoch=0,last=0,displayed=0,received=0,skipped=0,lastKey='',connected=false;
+function clear(reason){epoch++;overlay.clearRect(0,0,640,480);el('state').textContent=reason;}
+function draw(points,column,color){if(!points||points.length<1)return;overlay.strokeStyle=color;overlay.lineWidth=2;overlay.beginPath();points.forEach((p,i)=>{let x=p[column],y=p[0];if(i&&y-points[i-1][0]===3)overlay.lineTo(x,y);else overlay.moveTo(x,y)});overlay.stroke();}
+function open(){socket=new WebSocket('ws://'+location.hostname+':__WS_PORT__');
+ socket.onopen=()=>{connected=true;el('connection').textContent='WebSocket 已连接';el('start').disabled=false;};
+ socket.onclose=()=>{connected=false;el('start').disabled=true;el('connection').textContent='已断流';clear('无测量 · 已断流');setTimeout(open,1500)};
+ socket.onerror=()=>{el('connection').textContent='连接失败';};
+ socket.onmessage=event=>{const r=JSON.parse(event.data);if(r.type!=='result'){clear('无测量 · '+(r.type==='end'?'回放结束':'准备新片段'));return;}
+  const receiveAt=performance.now(),token=++epoch;last=receiveAt;received++;
+  if(r.kind==='LOST')overlay.clearRect(0,0,640,480);
+  const image=new Image();image.onload=()=>{requestAnimationFrame(()=>{if(token!==epoch||!connected||document.hidden){skipped++;return;}
+    ctx.drawImage(image,0,0);overlay.clearRect(0,0,640,480);overlay.strokeStyle='#ffd54d';overlay.lineWidth=1;overlay.strokeRect(r.roi[0],r.roi[1],r.roi[2]-r.roi[0],r.roi[3]-r.roi[1]);
+    if(r.kind==='A_UNCHANGED'){draw(r.A_points,1,'#3399ff');draw(r.A_points,2,'#32d17d');draw(r.center_points,1,'#ff4040');}
+    if(r.kind==='CENTER_2D')draw(r.center_points,1,'#50e9b0');
+    el('state').textContent=({'A_UNCHANGED':'A 完整输出','CENTER_2D':'二维中线','LOST':'无测量'})[r.kind]+(r.reason?' · '+r.reason:'');
+    el('identity').textContent=r.session+' · #'+r.frame+' · 源时间戳 '+r.stamp_ns;
+    const key=r.run_id+':'+r.session+':'+r.frame;if(lastKey!==key){displayed++;lastKey=key;}
+    el('counts').textContent=`本页收到 ${received} 条结果，绘制 ${displayed} 个不同结果帧，来不及显示 ${skipped} 条`;
+    const committed=performance.now();requestAnimationFrame(()=>{if(socket.readyState===1&&!document.hidden)socket.send(JSON.stringify({type:'paint_ack',run_id:r.run_id,session:r.session,frame:r.frame,stamp_ns:r.stamp_ns,visible:true,paint_ms:committed,receive_to_paint_ms:committed-receiveAt}));});
+  });};image.onerror=()=>{clear('无测量 · 图像解码失败');};image.src='data:image/jpeg;base64,'+r.jpeg;
+ };
+}
+open();document.addEventListener('visibilitychange',()=>{if(document.hidden)clear('无测量 · 页面隐藏');});setInterval(()=>{if(last&&performance.now()-last>1000){clear('无测量 · 结果已超时');last=0}},100);
+el('start').onclick=async()=>{const r=await fetch('/api/start',{method:'POST'});el('summary').textContent=JSON.stringify(await r.json(),null,2)};
+el('stop').onclick=async()=>{await fetch('/api/stop',{method:'POST'});clear('无测量 · 正在停止');};
+setInterval(async()=>{try{const r=await(await fetch('/api/status')).json();el('summary').textContent=JSON.stringify(r,null,2)}catch{}},2000);
+</script></html>

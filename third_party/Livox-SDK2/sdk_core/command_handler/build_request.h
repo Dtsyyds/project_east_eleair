@@ -50,6 +50,7 @@ class BuildRequest {
   static bool BuildUpdateLidarCfgRequest(const LivoxLidarCfg& lidar_cfg, uint8_t* req_buf, uint16_t& req_len);
   static bool BuildUpdateMid360LidarCfgRequest(const LivoxLidarCfg& lidar_cfg, uint8_t* req_buf, uint16_t& req_len);
   static bool BuildUpdateAvia2LidarCfgRequest(const LivoxLidarCfg& lidar_cfg, uint8_t* req_buf, uint16_t& req_len);
+  static bool BuildUpdateMid360lLidarCfgRequest(const LivoxLidarCfg& lidar_cfg, uint8_t* req_buf, uint16_t& req_len);
   static bool BuildSetLidarIPInfoRequest(const LivoxLidarIpInfo& ip_config, uint8_t* req_buf, uint16_t& req_len);
   static bool BuildSetHostStateInfoIPCfgRequest(const HostStateInfoIpInfo& host_state_info_ipcfg, uint8_t* req_buf, uint16_t& req_len);
   static bool BuildSetHostPointDataIPInfoRequest(const HostPointIPInfo& lidar_ip_config, uint8_t* req_buf, uint16_t& req_len);

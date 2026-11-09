@@ -1,0 +1,262 @@
+[
+  {
+    "check": "build help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/build.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: build.py [-h] [--platform {s100p,x86,rk3588}] [--plan] [--skip-native]\n                [--offline]\n                [--packages-select PACKAGES_SELECT [PACKAGES_SELECT ...]]\n\nBuild only this checkout into .runtime/<platform>; never modifies system SDKs.\n\noptions:\n  -h, --help            show this help message and exit\n  --platform {s100p,x86,rk3588}\n  --plan                Print exact build commands without executing or\n                        creating outputs\n  --skip-native         Use explicitly provisioned system/native dependencies\n                        instead of rebuilding vendored SDKs\n  --offline             Verify system archives and unpack compatible debs into\n                        this runtime sysroot\n  --packages-select PACKAGES_SELECT [PACKAGES_SELECT ...]\n                        Override profile selection with explicitly selected\n                        package names\n",
+    "stderr": ""
+  },
+  {
+    "check": "env help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/env.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "Usage: source /path/to/project/deploy/env.sh [s100p|x86|rk3588]\n",
+    "stderr": ""
+  },
+  {
+    "check": "run help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/run.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: supervisor.py [-h] [--config CONFIG]\n\nStart the existing hardware, operations, bridge and console supervisor.\n\noptions:\n  -h, --help       show this help message and exit\n  --config CONFIG  Explicit system YAML; default INSPECTION_SYSTEM_CONFIG or\n                   config/communication/system.yaml\n",
+    "stderr": ""
+  },
+  {
+    "check": "preflight help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/preflight.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: preflight.py [-h] [--json]\n\nRead-only dependency preflight: never opens devices or starts ROS nodes.\n\noptions:\n  -h, --help  show this help message and exit\n  --json      Emit machine-readable status (also the default)\n",
+    "stderr": ""
+  },
+  {
+    "check": "collect help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/collect.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "Usage: start_vehicle_collection.sh [existing arguments]. See docs/data and deploy/README.md.\n",
+    "stderr": ""
+  },
+  {
+    "check": "stop help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/stop.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "Usage: stop_vehicle_collection.sh [existing arguments]. See docs/data and deploy/README.md.\n",
+    "stderr": ""
+  },
+  {
+    "check": "replay help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/replay.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "Usage: replay_vehicle_collection.sh [existing arguments]. See docs/data and deploy/README.md.\n",
+    "stderr": ""
+  },
+  {
+    "check": "validate help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/validate.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: validate_vehicle_collection.py [-h] [--report-dir REPORT_DIR] run_dir\n\nValidate closed FIELD-W5 MCAP, video, timestamps, snapshots, and processes.\n\npositional arguments:\n  run_dir\n\noptions:\n  -h, --help            show this help message and exit\n  --report-dir REPORT_DIR\n",
+    "stderr": ""
+  },
+  {
+    "check": "handoff help",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/handoff.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: build_role_handoff.py [-h] --run-dir RUN_DIR [--profile PROFILE]\n                             [--profiles PROFILES] [--output-root OUTPUT_ROOT]\n                             [--destination DESTINATION]\n                             [--manifest-only | --materialize | --verify-only]\n                             [--dry-run] [--resume] [--include-rerun]\n                             [--rrd-manifest RRD_MANIFEST]\n                             [--include-optional]\n                             [--copy-method {rsync,python}] [--config CONFIG]\n                             [--audit] [--verify-audit VERIFY_AUDIT]\n                             [--log-level {DEBUG,INFO,WARNING,ERROR}]\n\nBuild role-scoped, verifiable handoff definitions for a frozen field run. The\ndefault mode writes manifests and documentation only. Source payloads are\ncopied only when --materialize and --destination are both explicitly supplied.\n\noptions:\n  -h, --help            show this help message and exit\n  --run-dir RUN_DIR\n  --profile PROFILE\n  --profiles PROFILES\n  --output-root OUTPUT_ROOT\n  --destination DESTINATION\n  --manifest-only\n  --materialize\n  --verify-only\n  --dry-run\n  --resume\n  --include-rerun\n  --rrd-manifest RRD_MANIFEST\n                        verified external analysis RRD manifest for this run\n  --include-optional\n  --copy-method {rsync,python}\n  --config CONFIG\n  --audit               generate full read-only run audit\n  --verify-audit VERIFY_AUDIT\n                        compare source run against current_run_inventory.json\n  --log-level {DEBUG,INFO,WARNING,ERROR}\n",
+    "stderr": ""
+  },
+  {
+    "check": "CLI help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/apps/inspection_cli/inspection",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: __main__.py [-h]\n                   {collect,handoff,history,preflight,replay,run,status,stop,validate,verify-handoff}\n                   ...\n\nInspection commands; use a command to invoke the existing implementation.\n\npositional arguments:\n  {collect,handoff,history,preflight,replay,run,status,stop,validate,verify-handoff}\n  arguments\n\noptions:\n  -h, --help            show this help message and exit\n",
+    "stderr": ""
+  },
+  {
+    "check": "web help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/apps/web_console/run.sh",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: supervisor.py [-h] [--config CONFIG]\n\nStart the existing hardware, operations, bridge and console supervisor.\n\noptions:\n  -h, --help       show this help message and exit\n  --config CONFIG  Explicit system YAML; default INSPECTION_SYSTEM_CONFIG or\n                   config/communication/system.yaml\n",
+    "stderr": ""
+  },
+  {
+    "check": "s100p build plan",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/build.sh",
+      "--platform",
+      "s100p",
+      "--plan"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "{\n  \"platform\": \"s100p\",\n  \"runtime\": \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p\",\n  \"commands\": [\n    [\n      \"/usr/bin/python3\",\n      \"-m\",\n      \"venv\",\n      \"--system-site-packages\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/d405\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/system/wheels\",\n      \"numpy==1.26.4\",\n      \"opencv-python==4.11.0.86\",\n      \"PyYAML==6.0.3\",\n      \"websockets==15.0.1\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/tank_vision\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/inspection_cli\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/web_console\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Livox-SDK2\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/install\",\n      \"-DLIVOX_BUILD_SAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Livox-SDK2\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Livox-SDK2\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Sophus\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Sophus\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/install\",\n      \"-DBUILD_SOPHUS_TESTS=OFF\",\n      \"-DBUILD_SOPHUS_EXAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Sophus\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/Sophus\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/librealsense\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/librealsense\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/install\",\n      \"-DBUILD_EXAMPLES=OFF\",\n      \"-DBUILD_GRAPHICAL_EXAMPLES=OFF\",\n      \"-DBUILD_UNIT_TESTS=OFF\",\n      \"-DBUILD_TOOLS=OFF\",\n      \"-DBUILD_GLSL_EXTENSIONS=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/librealsense\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/build/librealsense\"\n    ],\n    [\n      \"colcon\",\n      \"--log-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/log\",\n      \"build\",\n      \"--base-paths\",\n      \"/media/mcap_data/project_east_eleair_refactor/ros2_ws/src\",\n      \"--build-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/build\",\n      \"--install-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/install\",\n      \"--packages-up-to\",\n      \"agv_bridge\",\n      \"agv_protocol\",\n      \"d405_seam_ros\",\n      \"eddy_driver\",\n      \"fast_livo\",\n      \"fisheye_camera_driver\",\n      \"inspection_bringup\",\n      \"inspection_interfaces\",\n      \"inspection_livox_adapter\",\n      \"inspection_mock_sensors\",\n      \"inspection_operations\",\n      \"inspection_rerun\",\n      \"inspection_sync\",\n      \"inspection_tools\",\n      \"livox_ros_driver2\",\n      \"mindvision_camera_driver\",\n      \"realsense2_camera\",\n      \"realsense2_camera_msgs\",\n      \"realsense2_description\",\n      \"tank_vision_core\",\n      \"tank_vision_interfaces\",\n      \"tank_vision_ros\",\n      \"top_pkg\",\n      \"vikit_common\",\n      \"vikit_py\",\n      \"vikit_ros\",\n      \"--cmake-args\",\n      \"-DBUILD_TESTING=ON\",\n      \"-DFAST_LIVO_OUTPUT_ROOT=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/fast_livo\",\n      \"-DPython3_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-DPYTHON_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/venv/bin/python\",\n      \"-DLIVOX_LIDAR_SDK_LIBRARY=/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/native/install/lib/liblivox_lidar_sdk_shared.so\",\n      \"-DLIVOX_LIDAR_SDK_INCLUDE_DIR=/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2/include\"\n    ]\n  ],\n  \"excluded\": {\n    \"realsense2_rviz_plugin\": \"Upstream optional RVIZ_RGBD_PLUGIN defaults OFF; enable explicitly after validating Qt/RViz dependencies.\",\n    \"realsense2_ros_mqtt_bridge\": \"Optional MQTT integration, paho/ROS dependencies require separate deployment.\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "check": "x86 build plan",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/build.sh",
+      "--platform",
+      "x86",
+      "--plan"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "{\n  \"platform\": \"x86\",\n  \"runtime\": \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86\",\n  \"commands\": [\n    [\n      \"/usr/bin/python3\",\n      \"-m\",\n      \"venv\",\n      \"--system-site-packages\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/d405\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/system/wheels\",\n      \"numpy==1.26.4\",\n      \"opencv-python==4.11.0.86\",\n      \"PyYAML==6.0.3\",\n      \"websockets==15.0.1\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/tank_vision\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/inspection_cli\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/web_console\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Livox-SDK2\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/install\",\n      \"-DLIVOX_BUILD_SAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Livox-SDK2\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Livox-SDK2\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Sophus\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Sophus\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/install\",\n      \"-DBUILD_SOPHUS_TESTS=OFF\",\n      \"-DBUILD_SOPHUS_EXAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Sophus\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/Sophus\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/librealsense\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/librealsense\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/install\",\n      \"-DBUILD_EXAMPLES=OFF\",\n      \"-DBUILD_GRAPHICAL_EXAMPLES=OFF\",\n      \"-DBUILD_UNIT_TESTS=OFF\",\n      \"-DBUILD_TOOLS=OFF\",\n      \"-DBUILD_GLSL_EXTENSIONS=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/librealsense\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/build/librealsense\"\n    ],\n    [\n      \"colcon\",\n      \"--log-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/log\",\n      \"build\",\n      \"--base-paths\",\n      \"/media/mcap_data/project_east_eleair_refactor/ros2_ws/src\",\n      \"--build-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/build\",\n      \"--install-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/x86/install\",\n      \"--packages-up-to\",\n      \"agv_bridge\",\n      \"agv_protocol\",\n      \"eddy_driver\",\n      \"fast_livo\",\n      \"fisheye_camera_driver\",\n      \"inspection_bringup\",\n      \"inspection_interfaces\",\n      \"inspection_livox_adapter\",\n      \"inspection_mock_sensors\",\n      \"inspection_operations\",\n      \"inspection_rerun\",\n      \"inspection_sync\",\n      \"inspection_tools\",\n      \"livox_ros_driver2\",\n      \"mindvision_camera_driver\",\n      \"realsense2_camera\",\n      \"realsense2_camera_msgs\",\n      \"realsense2_description\",\n      \"tank_vision_core\",\n      \"tank_vision_interfaces\",\n      \"tank_vision_ros\",\n      \"top_pkg\",\n      \"vikit_common\",\n      \"vikit_py\",\n      \"vikit_ros\",\n      \"--cmake-args\",\n      \"-DBUILD_TESTING=ON\",\n      \"-DFAST_LIVO_OUTPUT_ROOT=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/fast_livo\",\n      \"-DPython3_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-DPYTHON_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/venv/bin/python\",\n      \"-DLIVOX_LIDAR_SDK_LIBRARY=/media/mcap_data/project_east_eleair_refactor/.runtime/x86/native/install/lib/liblivox_lidar_sdk_shared.so\",\n      \"-DLIVOX_LIDAR_SDK_INCLUDE_DIR=/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2/include\"\n    ]\n  ],\n  \"excluded\": {\n    \"realsense2_rviz_plugin\": \"Upstream optional RVIZ_RGBD_PLUGIN defaults OFF; enable explicitly after validating Qt/RViz dependencies.\",\n    \"realsense2_ros_mqtt_bridge\": \"Optional MQTT integration, paho/ROS dependencies require separate deployment.\",\n    \"d405_seam_ros\": \"Experimental adapter; opt in after configuring a D405 data source and depth units.\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "check": "rk3588 build plan",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/build.sh",
+      "--platform",
+      "rk3588",
+      "--plan"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "{\n  \"platform\": \"rk3588\",\n  \"runtime\": \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588\",\n  \"commands\": [\n    [\n      \"/usr/bin/python3\",\n      \"-m\",\n      \"venv\",\n      \"--system-site-packages\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/d405\",\n      \"--find-links\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/offline/system/wheels\",\n      \"numpy==1.26.4\",\n      \"opencv-python==4.11.0.86\",\n      \"PyYAML==6.0.3\",\n      \"websockets==15.0.1\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/tank_vision\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/inspection_cli\"\n    ],\n    [\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-m\",\n      \"pip\",\n      \"install\",\n      \"--no-index\",\n      \"--no-deps\",\n      \"--no-build-isolation\",\n      \"-e\",\n      \"/media/mcap_data/project_east_eleair_refactor/apps/web_console\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Livox-SDK2\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/install\",\n      \"-DLIVOX_BUILD_SAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Livox-SDK2\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Livox-SDK2\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/Sophus\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Sophus\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/install\",\n      \"-DBUILD_SOPHUS_TESTS=OFF\",\n      \"-DBUILD_SOPHUS_EXAMPLES=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Sophus\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/Sophus\"\n    ],\n    [\n      \"cmake\",\n      \"-S\",\n      \"/media/mcap_data/project_east_eleair_refactor/third_party/librealsense\",\n      \"-B\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/librealsense\",\n      \"-DCMAKE_BUILD_TYPE=Release\",\n      \"-DCMAKE_INSTALL_PREFIX=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/install\",\n      \"-DBUILD_EXAMPLES=OFF\",\n      \"-DBUILD_GRAPHICAL_EXAMPLES=OFF\",\n      \"-DBUILD_UNIT_TESTS=OFF\",\n      \"-DBUILD_TOOLS=OFF\",\n      \"-DBUILD_GLSL_EXTENSIONS=OFF\"\n    ],\n    [\n      \"cmake\",\n      \"--build\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/librealsense\",\n      \"--parallel\",\n      \"6\"\n    ],\n    [\n      \"cmake\",\n      \"--install\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/build/librealsense\"\n    ],\n    [\n      \"colcon\",\n      \"--log-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/log\",\n      \"build\",\n      \"--base-paths\",\n      \"/media/mcap_data/project_east_eleair_refactor/ros2_ws/src\",\n      \"--build-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/build\",\n      \"--install-base\",\n      \"/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/install\",\n      \"--packages-up-to\",\n      \"agv_bridge\",\n      \"agv_protocol\",\n      \"eddy_driver\",\n      \"fast_livo\",\n      \"fisheye_camera_driver\",\n      \"inspection_bringup\",\n      \"inspection_interfaces\",\n      \"inspection_livox_adapter\",\n      \"inspection_mock_sensors\",\n      \"inspection_operations\",\n      \"inspection_rerun\",\n      \"inspection_sync\",\n      \"inspection_tools\",\n      \"livox_ros_driver2\",\n      \"mindvision_camera_driver\",\n      \"realsense2_camera\",\n      \"realsense2_camera_msgs\",\n      \"realsense2_description\",\n      \"tank_vision_core\",\n      \"tank_vision_interfaces\",\n      \"tank_vision_ros\",\n      \"top_pkg\",\n      \"vikit_common\",\n      \"vikit_py\",\n      \"vikit_ros\",\n      \"--cmake-args\",\n      \"-DBUILD_TESTING=ON\",\n      \"-DFAST_LIVO_OUTPUT_ROOT=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/fast_livo\",\n      \"-DPython3_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-DPYTHON_EXECUTABLE=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/venv/bin/python\",\n      \"-DLIVOX_LIDAR_SDK_LIBRARY=/media/mcap_data/project_east_eleair_refactor/.runtime/rk3588/native/install/lib/liblivox_lidar_sdk_shared.so\",\n      \"-DLIVOX_LIDAR_SDK_INCLUDE_DIR=/media/mcap_data/project_east_eleair_refactor/third_party/Livox-SDK2/include\"\n    ]\n  ],\n  \"excluded\": {\n    \"realsense2_rviz_plugin\": \"Upstream optional RVIZ_RGBD_PLUGIN defaults OFF; enable explicitly after validating Qt/RViz dependencies.\",\n    \"realsense2_ros_mqtt_bridge\": \"Optional MQTT integration, paho/ROS dependencies require separate deployment.\",\n    \"d405_seam_ros\": \"Experimental adapter; opt in after configuring a D405 data source and depth units.\"\n  }\n}\n",
+    "stderr": ""
+  },
+  {
+    "check": "core imports and reference without ROS",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/metadata_venv/bin/python",
+      "-c",
+      "\nimport importlib, json, sys\nfrom pathlib import Path\nclass NoROS:\n def find_spec(self, fullname, path=None, target=None):\n  if fullname.split('.')[0] in {'rclpy','rosbag2_py','sensor_msgs','inspection_interfaces'}: raise RuntimeError('Unexpected core ROS import: '+fullname)\nsys.meta_path.insert(0, NoROS())\nnames=['inspection_runtime.operations','inspection_runtime.replay','inspection_runtime.supervisor','inspection_runtime.data.vehicle_collection_manager','inspection_runtime.data.validate_vehicle_collection','inspection_runtime.data.build_role_handoff','emat_core.emat_serial_once','emat_core.measure_thickness','tank_vision','d405_seam_tracking','d405_seam_tracking.cli']\nmodules={name:importlib.import_module(name).__file__ for name in names}\nfrom inspection_runtime.paths import load_system_config, config_path, project_root\nassert all(Path(p).is_relative_to(project_root()) for p in modules.values()),modules\nfrom tank_vision.stable_seam_tracker import StableSeamTracker\ntracker=StableSeamTracker(config_path('vision/s100p_stable_seam_4096x3072.yaml'))\nassert load_system_config()['emat']['sampling_rate_hz']==40000000.0\nimport yaml\nprint(json.dumps({'modules':modules,'yaml_version':yaml.__version__,'reference_loaded':True,'ROS_imports':'forbidden'},indent=2))\n"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "{\n  \"modules\": {\n    \"inspection_runtime.operations\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/operations.py\",\n    \"inspection_runtime.replay\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/replay.py\",\n    \"inspection_runtime.supervisor\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/supervisor.py\",\n    \"inspection_runtime.data.vehicle_collection_manager\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/data/vehicle_collection_manager.py\",\n    \"inspection_runtime.data.validate_vehicle_collection\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/data/validate_vehicle_collection.py\",\n    \"inspection_runtime.data.build_role_handoff\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/data/build_role_handoff.py\",\n    \"emat_core.emat_serial_once\": \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core/src/emat_core/emat_serial_once.py\",\n    \"emat_core.measure_thickness\": \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core/src/emat_core/measure_thickness.py\",\n    \"tank_vision\": \"/media/mcap_data/project_east_eleair_refactor/packages/tank_vision/tank_vision/__init__.py\",\n    \"d405_seam_tracking\": \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking/src/d405_seam_tracking/__init__.py\",\n    \"d405_seam_tracking.cli\": \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking/src/d405_seam_tracking/cli.py\"\n  },\n  \"yaml_version\": \"6.0.3\",\n  \"reference_loaded\": true,\n  \"ROS_imports\": \"forbidden\"\n}\n",
+    "stderr": ""
+  },
+  {
+    "check": "installed inspection help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/metadata_venv/bin/inspection",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: inspection [-h]\n                  {collect,handoff,history,preflight,replay,run,status,stop,validate,verify-handoff}\n                  ...\n\nInspection commands; use a command to invoke the existing implementation.\n\npositional arguments:\n  {collect,handoff,history,preflight,replay,run,status,stop,validate,verify-handoff}\n  arguments\n\noptions:\n  -h, --help            show this help message and exit\n",
+    "stderr": ""
+  },
+  {
+    "check": "installed inspection-web help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/metadata_venv/bin/inspection-web",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: inspection-web [-h] [--config CONFIG]\n\nStart the existing hardware, operations, bridge and console supervisor.\n\noptions:\n  -h, --help       show this help message and exit\n  --config CONFIG  Explicit system YAML; default INSPECTION_SYSTEM_CONFIG or\n                   config/communication/system.yaml\n",
+    "stderr": ""
+  },
+  {
+    "check": "installed tank-vision help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/metadata_venv/bin/tank-vision",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: tank-vision [-h] [--config CONFIG] [--input INPUT] [--output OUTPUT]\n                   [--source {auto,folder,video,camera,mindvision}]\n                   [--camera-device CAMERA_DEVICE]\n                   [--mindvision-sdk-root MINDVISION_SDK_ROOT]\n                   [--max-frames MAX_FRAMES]\n                   [--log-level {DEBUG,INFO,WARNING,ERROR}]\n\nTank weld seam and surface anomaly inspection MVP\n\noptions:\n  -h, --help            show this help message and exit\n  --config CONFIG       YAML configuration path\n  --input INPUT         Input image folder or video file\n  --output OUTPUT       Output directory\n  --source {auto,folder,video,camera,mindvision}\n  --camera-device CAMERA_DEVICE\n                        OpenCV device index or device path\n  --mindvision-sdk-root MINDVISION_SDK_ROOT\n                        Official MindVision Linux SDK root; overrides\n                        camera.sdk_root\n  --max-frames MAX_FRAMES\n                        Stop after N frames; 0 means all\n  --log-level {DEBUG,INFO,WARNING,ERROR}\n",
+    "stderr": ""
+  },
+  {
+    "check": "installed d405-seam help",
+    "command": [
+      "/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/metadata_venv/bin/d405-seam",
+      "--help"
+    ],
+    "returncode": 0,
+    "expected": 0,
+    "status": "passed",
+    "stdout": "usage: d405-seam [-h]\n                 {preflight,fixture,replay,evaluate,train,export,extract,annotate,benchmark,rerun}\n                 ...\n\nIndependent D405 experiment, never starts camera or motion\n\npositional arguments:\n  {preflight,fixture,replay,evaluate,train,export,extract,annotate,benchmark,rerun}\n\noptions:\n  -h, --help            show this help message and exit\n",
+    "stderr": ""
+  },
+  {
+    "check": "safe preflight reports missing new overlay",
+    "command": [
+      "bash",
+      "/media/mcap_data/project_east_eleair_refactor/deploy/preflight.sh",
+      "--json"
+    ],
+    "returncode": 2,
+    "expected": 2,
+    "status": "passed",
+    "stdout": "{\n  \"checks\": {\n    \"tank_vision\": {\n      \"status\": \"available\",\n      \"origin\": \"/media/mcap_data/project_east_eleair_refactor/packages/tank_vision/tank_vision/__init__.py\"\n    },\n    \"d405_seam_tracking\": {\n      \"status\": \"available\",\n      \"origin\": \"/media/mcap_data/project_east_eleair_refactor/packages/d405_seam_tracking/src/d405_seam_tracking/__init__.py\"\n    },\n    \"emat_core\": {\n      \"status\": \"available\",\n      \"origin\": \"/media/mcap_data/project_east_eleair_refactor/packages/emat_core/src/emat_core/__init__.py\"\n    },\n    \"inspection_runtime\": {\n      \"status\": \"available\",\n      \"origin\": \"/media/mcap_data/project_east_eleair_refactor/packages/inspection_runtime/src/inspection_runtime/__init__.py\"\n    },\n    \"rclpy\": {\n      \"status\": \"available\",\n      \"origin\": \"/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py\"\n    },\n    \"rosbag2_py\": {\n      \"status\": \"available\",\n      \"origin\": \"/opt/ros/humble/local/lib/python3.10/dist-packages/rosbag2_py/__init__.py\"\n    },\n    \"inspection_operations\": {\n      \"status\": \"dependency_blocked\",\n      \"origin\": null\n    },\n    \"yaml\": {\n      \"status\": \"available\",\n      \"origin\": \"/usr/lib/python3/dist-packages/yaml/__init__.py\"\n    },\n    \"cv2\": {\n      \"status\": \"available\",\n      \"origin\": \"/usr/local/lib/python3.10/dist-packages/cv2/__init__.py\"\n    },\n    \"numpy\": {\n      \"status\": \"available\",\n      \"origin\": \"/usr/local/lib/python3.10/dist-packages/numpy/__init__.py\"\n    },\n    \"serial\": {\n      \"status\": \"available\",\n      \"origin\": \"/usr/lib/python3/dist-packages/serial/__init__.py\"\n    },\n    \"version:numpy\": {\n      \"status\": \"available\",\n      \"expected\": \"1.26.4\",\n      \"found\": \"1.26.4\"\n    },\n    \"version:opencv-python\": {\n      \"status\": \"available\",\n      \"expected\": \"4.11.0.86\",\n      \"found\": \"4.11.0.86\"\n    },\n    \"version:PyYAML\": {\n      \"status\": \"dependency_blocked\",\n      \"expected\": \"6.0.3\",\n      \"found\": \"5.4.1\"\n    },\n    \"rerun_environment\": {\n      \"status\": \"dependency_blocked\",\n      \"path\": \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/rerun_venv/bin/python\",\n      \"note\": \"existence only, SDK version/ABI still requires validation\"\n    },\n    \"colcon\": {\n      \"status\": \"available\",\n      \"path\": \"/usr/bin/colcon\"\n    },\n    \"cmake\": {\n      \"status\": \"available\",\n      \"path\": \"/usr/bin/cmake\"\n    },\n    \"ffmpeg\": {\n      \"status\": \"available\",\n      \"path\": \"/usr/bin/ffmpeg\"\n    },\n    \"ros2\": {\n      \"status\": \"available\",\n      \"path\": \"/opt/ros/humble/bin/ros2\"\n    },\n    \"mindvision_library\": {\n      \"status\": \"available\",\n      \"path\": \"/media/mcap_data/project_east_eleair_refactor/third_party/mindvision/2.1.0.50/lib/arm64/libMVSDK.so\"\n    },\n    \"mindvision_binding\": {\n      \"status\": \"available\",\n      \"path\": \"/media/mcap_data/project_east_eleair_refactor/third_party/mindvision/2.1.0.50/demo/python_demo/mvsdk.py\"\n    },\n    \"system_config\": {\n      \"status\": \"available\",\n      \"path\": \"/media/mcap_data/project_east_eleair_refactor/config/communication/system.yaml\"\n    },\n    \"ros_overlay\": {\n      \"status\": \"dependency_blocked\",\n      \"path\": \"/media/mcap_data/project_east_eleair_refactor/.runtime/s100p/install/local_setup.bash\"\n    }\n  },\n  \"hardware\": \"not_verified\",\n  \"build\": \"not_executed_by_preflight\",\n  \"model_and_calibration\": \"see config/README.md\"\n}\n",
+    "stderr": ""
+  }
+]

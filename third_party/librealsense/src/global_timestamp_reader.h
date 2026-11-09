@@ -7,6 +7,8 @@
 #include "error-handling.h"
 #include "option.h"
 #include <deque>
+#include <mutex>
+#include <vector>
 
 namespace librealsense
 {
@@ -72,8 +74,8 @@ namespace librealsense
         ~time_diff_keeper();
 
         double get_system_hw_time(double crnt_hw_time, bool& is_ready);
-        void set_enabling_opt(std::shared_ptr<global_time_option> en_opt){ _option_is_enabled=en_opt; }
-        bool is_enabled() const { return _option_is_enabled? _option_is_enabled->is_true() : false; }
+        void add_enabling_opt(std::shared_ptr<global_time_option> en_opt);
+        bool is_enabled() const;
 
     private:
         bool update_diff_time();
@@ -83,7 +85,10 @@ namespace librealsense
         global_time_interface* _device;
         unsigned int _poll_intervals_ms;
         int             _users_count;
-        std::shared_ptr<global_time_option> _option_is_enabled;
+        // Multiple sensors share the device clock fit. Poll if any sensor
+        // requests global time, without keeping destroyed sensors alive.
+        std::vector<std::weak_ptr<global_time_option>> _enabling_options;
+        mutable std::mutex _options_mtx;
         active_object<> _active_object;
         mutable std::recursive_mutex _read_mtx; // Watch only 1 reader at a time.
         mutable std::recursive_mutex _enable_mtx; // Watch only 1 start/stop operation at a time.

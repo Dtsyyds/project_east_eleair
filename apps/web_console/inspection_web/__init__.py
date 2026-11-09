@@ -1,0 +1,1 @@
+"""Thin web application entry."""

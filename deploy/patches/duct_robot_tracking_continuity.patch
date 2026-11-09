@@ -1,0 +1,176 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -15,0 +16,2 @@
++  ament_add_pytest_test(test_continuity test/test_continuity.py
++    ENV "PYTHONPATH=${CMAKE_CURRENT_SOURCE_DIR}:$ENV{PYTHONPATH}")
+--- a/duct_robot_tracking/core.py
++++ b/duct_robot_tracking/core.py
+@@ -24,0 +25,3 @@
++    confidence_hysteresis: float = 0.0
++    # Opt-in bounded deceleration since last valid receipt, never renewed by misses.
++    loss_grace_s: float = 0.0
+@@ -55,0 +59,2 @@
++        if self.loss_grace_s > .3 or self.confidence_hysteresis > self.min_confidence:
++            raise ValueError('invalid loss grace or confidence hysteresis')
+@@ -105,0 +111 @@
++        self.loss_linear = self.loss_angular = 0.0
+@@ -180,14 +186 @@
+-            self.last_frame_received = mono
+-            self.last_frame_stamp = obs.stamp_ns
+-            self.invalid_frame_count += 1
+-            if self.enabled:
+-                if self.invalid_since is None:
+-                    self.invalid_since = mono
+-                # 保留人工启用授权，但立即请求零速；不沿用旧偏差继续运动。
+-                # 有效新帧到达后从零速重新爬升，禁止跨丢线区间保留积分/微分。
+-                self.reason = 'vision_paused'
+-                self.linear = self.angular = 0.0
+-                self.reset_pid()
+-            elif self.observation is None and self.reason == 'waiting_for_enable':
+-                self.reason = 'vision_invalid'
+-            # 无效帧只刷新链路时钟，不刷新丢线起点或最后有效观测的时钟。
++            self.pause_visual(obs, mono)
+@@ -197,2 +189,0 @@
+-        elif not 0.0 <= obs.confidence <= 1.0 or obs.confidence < self.config.min_confidence:
+-            reason = 'low_confidence'
+@@ -202,0 +194,8 @@
++        elif not 0.0 <= obs.confidence <= 1.0:
++            reason = 'low_confidence'
++        elif obs.confidence < self.config.min_confidence - (
++                self.config.confidence_hysteresis if self.enabled and self.observation is not None else 0.):
++            if self.config.loss_grace_s > 0:
++                self.pause_visual(obs, mono)
++                return False
++            reason = 'low_confidence'
+@@ -223,0 +223,21 @@
++
++    def pause_visual(self, obs, mono):
++        """Only an opt-in short dropout can decelerate from the last measured command."""
++        self.last_frame_received, self.last_frame_stamp = mono, obs.stamp_ns
++        self.invalid_frame_count += 1
++        if self.enabled:
++            if self.invalid_since is None:
++                self.invalid_since = mono
++                self.loss_linear, self.loss_angular = self.linear, self.angular
++            self.reason = 'vision_coasting' if self.loss_scale(mono) > 0 else 'vision_paused'
++            if self.reason == 'vision_paused':
++                self.linear = self.angular = 0.0
++            self.reset_pid()
++        elif self.observation is None and self.reason == 'waiting_for_enable':
++            self.reason = 'vision_invalid'
++
++    def loss_scale(self, mono):
++        if self.received_at is None or self.config.loss_grace_s <= 0:
++            return 0.
++        age = mono-self.received_at
++        return max(0., 1.-age/self.config.loss_grace_s) if age >= 0 else 0.
+@@ -306 +326,7 @@
+-                    # 短暂丢线持续请求零速；保持计时，其他超时和安全门禁仍有效。
++                    # Old geometry is never republished as a fresh observation.
++                    # Both speeds decay together, preserving curvature while slowing.
++                    scale = self.loss_scale(mono)
++                    if self.observation_reason(mono, ros_ns):
++                        scale = 0.
++                    self.linear, self.angular = self.loss_linear*scale, self.loss_angular*scale
++                    self.reason = 'vision_coasting' if scale > 0 else 'vision_paused'
+@@ -308 +334 @@
+-                    return Command(0.0, 0.0, True)
++                    return Command(self.linear, self.angular, True)
+--- a/duct_robot_tracking/node.py
++++ b/duct_robot_tracking/node.py
+@@ -38 +38 @@
+-            ('Visual loss duration latch disabled; zero until fresh valid observation; '
++            ('Visual loss duration latch disabled; bounded deceleration then zero until fresh valid observation; '
+@@ -39,0 +40 @@
++            + f'loss_grace_s={self.core.config.loss_grace_s}; '
+--- a/config/weld_tracking.yaml
++++ b/config/weld_tracking.yaml
+@@ -44 +44,5 @@
+-    # valid=false 立即零速等待；恢复新鲜且通过校验的有效帧后自动从零速继续。
++    # 短暂丢线按最后有效观测年龄衰减双速度，最多 0.25s；随后零速等待。
++    # 硬件故障、抢占、时钟异常及断流保护仍立即停车。
++    loss_grace_s: 0.25
++    # 启动要求 0.20，运行允许到 0.16，避免阈值附近反复切换。
++    confidence_hysteresis: 0.04
+--- /dev/null
++++ b/test/test_continuity.py
+@@ -0,0 +1,79 @@
++from dataclasses import replace
++import pytest
++from duct_robot_tracking.core import TrackingCore, TrackingConfig, Observation
++
++BASE=100_000_000_000
++
++def observation(t,seq,**kw):
++    return replace(Observation(BASE+round(t*1e9),seq,'camera_optical_frame',True,-.1,0.,.9),**kw)
++
++def running():
++    c=TrackingCore(TrackingConfig(loss_grace_s=.25,confidence_hysteresis=.04,min_confidence=.2))
++    c.receive(observation(0,1),0,BASE);assert c.enable(0,BASE)[0]
++    for i in range(1,5):
++        t=i*.05;c.receive(observation(t,i+1),t,BASE+round(t*1e9));c.tick(t,BASE+round(t*1e9))
++    return c
++
++
++def test_dropouts_decelerate_without_false_refresh_and_resume_smoothly():
++    c=running();speed=c.linear;turn=c.angular
++    c.receive(observation(.25,6,valid=False),.25,BASE+250_000_000)
++    a=c.tick(.25,BASE+250_000_000)
++    assert 0<a.linear<speed and a.angular/turn==pytest.approx(a.linear/speed)
++    assert c.received_at==.2 and c.observation.frame_seq==5
++    c.receive(observation(.3,7),.3,BASE+300_000_000)
++    b=c.tick(.3,BASE+300_000_000)
++    assert b.linear>0 and abs(b.linear-a.linear)<=c.config.max_linear_acceleration*.05+1e-9
++    assert c.enabled
++
++
++def test_repeated_invalid_frames_do_not_extend_motion_and_recover_from_zero():
++    c=running()
++    for i in range(5,30):
++        t=i*.05;c.receive(observation(t,i+1,valid=False),t,BASE+round(t*1e9))
++        out=c.tick(t,BASE+round(t*1e9))
++        if t>=.45: assert out.linear==out.angular==0
++    assert c.enabled and c.received_at==.2
++
++
++def test_confidence_hysteresis_and_low_confidence_pause_not_latch():
++    c=running()
++    assert c.receive(observation(.25,6,confidence=.18),.25,BASE+250_000_000)
++    assert not c.receive(observation(.3,7,confidence=.1),.3,BASE+300_000_000)
++    assert c.enabled and c.invalid_frame_count==1
++    assert c.receive(observation(.35,8,confidence=.3),.35,BASE+350_000_000)
++    assert c.enabled
++    c.stop('operator_stop')
++    c.receive(observation(.4,9,confidence=.18),.4,BASE+400_000_000)
++    assert not c.enable(.4,BASE+400_000_000)[0]
++
++
++@pytest.mark.parametrize('reason',['external_inhibit','driver_unavailable','remote_control_active'])
++def test_hard_stop_overrides_grace(reason):
++    c=running();c.receive(observation(.25,6,valid=False),.25,BASE+250_000_000)
++    out=c.tick(.25,BASE+250_000_000,reason)
++    assert out.linear==out.angular==0 and not c.enabled
++
++
++def test_no_motion_after_last_valid_image_expires_even_with_longer_grace():
++    c=running();c.receive(observation(.25,6,valid=False),.25,BASE+250_000_000)
++    for i in range(6,10):
++        t=i*.05;c.receive(observation(t,i+1,valid=False),t,BASE+round(t*1e9))
++        out=c.tick(t,BASE+round(t*1e9))
++    assert out.linear==out.angular==0
++
++
++def test_dropout_frequency_no_longer_forces_zero_every_other_frame():
++    c=running();zeros=0
++    for i in range(5,25):
++        t=i*.05;c.receive(observation(t,i+1,valid=i%2==0),t,BASE+round(t*1e9))
++        zeros+=c.tick(t,BASE+round(t*1e9)).linear==0
++    assert zeros==0
++
++
++def test_low_confidence_cannot_mask_invalid_coordinates():
++    c=running()
++    c.receive(observation(.25,6,confidence=.1,lateral=2.),.25,BASE+250_000_000)
++    out=c.tick(.25,BASE+250_000_000)
++    assert not c.enabled and c.reason=='lateral_error_out_of_range'
++    assert out.linear==out.angular==0

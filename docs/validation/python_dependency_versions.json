@@ -1,0 +1,44 @@
+[
+  {
+    "package": "tank-vision-inspection",
+    "requirement": "numpy>=1.24",
+    "installed_version": "1.26.4",
+    "satisfied": true
+  },
+  {
+    "package": "tank-vision-inspection",
+    "requirement": "opencv-python>=4.6",
+    "installed_version": "4.11.0.86",
+    "satisfied": true
+  },
+  {
+    "package": "tank-vision-inspection",
+    "requirement": "PyYAML>=6.0",
+    "installed_version": "5.4.1",
+    "satisfied": false
+  },
+  {
+    "package": "d405-seam-tracking",
+    "requirement": "numpy==1.26.4",
+    "installed_version": "1.26.4",
+    "satisfied": true
+  },
+  {
+    "package": "d405-seam-tracking",
+    "requirement": "opencv-python==4.11.0.86",
+    "installed_version": "4.11.0.86",
+    "satisfied": true
+  },
+  {
+    "package": "d405-seam-tracking",
+    "requirement": "PyYAML==6.0.3",
+    "installed_version": "5.4.1",
+    "satisfied": false
+  },
+  {
+    "package": "d405-seam-tracking",
+    "requirement": "tank-vision-inspection==0.1.0",
+    "installed_version": "0.1.0",
+    "satisfied": true
+  }
+]

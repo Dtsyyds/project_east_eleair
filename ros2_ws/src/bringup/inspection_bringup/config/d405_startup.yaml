@@ -1,0 +1,6 @@
+# Avoid periodic UVC control queries on this S100P D405 connection.
+# USB transfer stalls also occurred with polling disabled: these settings alone
+# are not a validated fix (docs/validation/20261102_d405_longrun.md).
+# Device timestamps use the driver's host clock mapper.
+depth_module.global_time_enabled: false
+depth_module.error_polling_enabled: false
