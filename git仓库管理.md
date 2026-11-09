@@ -6,6 +6,7 @@
 
 - 分支名：`branch---月日英文名---功能说明`，例如 `branch---1109fire---更新仓库管理办法`。
 - 提交说明：`月日英文名---修改说明`，例如 `1109fire---更新仓库管理办法`。
+- 合并提交说明：`月日英文名---merge`，例如 `1109fire---merge`。
 - `1109` 表示 11 月 9 日，`fire` 是开发者英文名。一个任务一个分支，跨天继续使用原分支，提交日期使用实际提交当天。
 
 下文使用上述分支名，操作其他任务时替换即可。
@@ -45,10 +46,10 @@ git push -u origin branch---1109fire---更新仓库管理办法
 git switch main &&
 git pull --ff-only origin main &&
 git merge --no-ff branch---1109fire---更新仓库管理办法 \
-  -m "1109fire---合并仓库管理办法分支"
+  -m "1109fire---merge"
 ```
 
-有新提交需要合入时，`--no-ff` 会新增合并提交，原有历史保留。冲突需手动处理，再执行 `git add . && git merge --continue`；取消未完成的合并用 `git merge --abort`。
+有新提交需要合入时，`--no-ff` 会新增合并提交，原有历史保留。冲突需手动处理，再执行 `git add . && git merge --continue`；取消未完成的合并用 `git merge --abort`，此处的-m ""不必写清楚，因为仅有一个merge操作而已。
 
 ## 5. 再次测试并推送 main
 
