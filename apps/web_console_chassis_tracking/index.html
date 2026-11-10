@@ -10,20 +10,25 @@
 <link href="theme.css?v=20261109-four-grid-restored" rel="stylesheet"/>
 <script defer="" src="theme.js"></script>
 <script defer="" src="console_core.js"></script>
-<script defer src="connection_config.js?v=chassis-tracking-20261105"></script>
+<script defer src="connection_config.js?v=20261110-merged"></script>
 <script defer="" src="replay.js"></script>
 <script defer="" src="camera_tuning.js"></script>
 <script defer="" src="vision.js?v=20261105-chassis-link"></script>
 <script defer="" src="vehicle_model.js?v=20261109-r6-full-restored"></script>
 <script defer="" src="lidar_preview.js?v=20261109-r6-full-restored"></script>
 <script defer="" src="console.js?v=20261109-lidar-restored"></script>
-<script defer src="robot_embed.js?v=chassis-tracking-20261105"></script>
+<link href="takeover_notice.css?v=20261110-merged" rel="stylesheet"/>
+<script defer src="takeover_notice.js?v=20261110-merged"></script>
+<script defer src="robot_embed.js?v=20261110-merged"></script>
+<link href="emat.css?v=20261110-merged" rel="stylesheet"/>
+<script defer src="emat.js?v=20261110-merged"></script>
 </head>
 <body><svg aria-hidden="true" class="icon-sprite" xmlns="http://www.w3.org/2000/svg"><symbol id="icon-brand" viewBox="0 0 24 24"><path d="M12 2 21 7v10l-9 5-9-5V7zM3 7l9 5 9-5M12 12v10"></path><path d="m7.5 4.5 9 5v5"></path></symbol><symbol id="icon-monitor" viewBox="0 0 24 24"><rect height="13" rx="2" width="18" x="3" y="4"></rect><path d="M8 21h8m-4-4v4M6 11h3l2-4 3 7 2-3h2"></path></symbol><symbol id="icon-record" viewBox="0 0 24 24"><rect height="18" rx="2" width="16" x="4" y="3"></rect><path d="M8 7h8M8 11h5M8 15h3"></path><circle cx="16" cy="16" r="2"></circle></symbol><symbol id="icon-play" viewBox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="4"></rect><path d="m10 8 6 4-6 4z"></path></symbol><symbol id="icon-events" viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4M8 9h5M8 13h3M8 17h8"></path><circle cx="18" cy="6" r="3"></circle></symbol><symbol id="icon-devices" viewBox="0 0 24 24"><rect height="10" rx="2" width="10" x="7" y="7"></rect><path d="M9 3v4m6-4v4M9 17v4m6-4v4M3 9h4m-4 6h4m10-6h4m-4 6h4"></path><path d="M10 10h4v4h-4z"></path></symbol><symbol id="icon-camera" viewBox="0 0 24 24"><rect height="15" rx="2" width="18" x="3" y="5"></rect><circle cx="12" cy="12" r="4"></circle><path d="M8 5V3h8v2"></path></symbol><symbol id="icon-stop" viewBox="0 0 24 24"><rect height="12" rx="1" width="12" x="6" y="6"></rect></symbol><symbol id="icon-measure" viewBox="0 0 24 24"><path d="M4 8v8m16-8v8M4 12h16m-4-3 4 3-4 3M8 9l-4 3 4 3"></path></symbol></svg><a class="skip-link" href="#workspace">跳转至工作区</a>
 <div class="shell"><aside class="sidebar"><div class="product-mark"><svg aria-hidden="true" class="icon"><use href="#icon-brand"></use></svg><div><strong>EAST ELEAIR</strong><span>工业智能巡检平台</span></div></div><div class="nav-caption">工作空间</div><nav aria-label="主视图">
 <button aria-controls="view-realtime" aria-current="page" class="active" data-view="realtime"><svg aria-hidden="true" class="icon"><use href="#icon-monitor"></use></svg><span>实时巡检</span></button>
 <button aria-controls="view-collection" aria-current="false" data-view="collection"><svg aria-hidden="true" class="icon"><use href="#icon-record"></use></svg><span>采集任务</span></button>
 <button aria-controls="view-chassis" aria-current="false" data-view="chassis"><svg aria-hidden="true" class="icon"><use href="#icon-devices"></use></svg><span>底盘与循迹</span></button>
+<button aria-controls="view-emat" aria-current="false" data-view="emat"><svg aria-hidden="true" class="icon"><use href="#icon-measure"></use></svg><span>电磁超声</span></button>
 <button aria-controls="view-replay" aria-current="false" data-view="replay"><svg aria-hidden="true" class="icon"><use href="#icon-play"></use></svg><span>数据回放</span></button>
 <button aria-controls="view-events" aria-current="false" data-view="events"><svg aria-hidden="true" class="icon"><use href="#icon-events"></use></svg><span>事件与数据</span></button>
 <button aria-controls="view-devices" aria-current="false" data-view="devices"><svg aria-hidden="true" class="icon"><use href="#icon-devices"></use></svg><span>设备与调试</span></button>
@@ -198,6 +203,16 @@
 </section></main></div>
 <section class="view" id="view-chassis" aria-label="底盘与循迹控制">
 <iframe id="robot-frame" title="底盘、探头与焊缝循迹" src="robot/index.html" style="width:100%;height:1500px;border:0" loading="eager"></iframe>
+</section>
+<section class="view" id="view-emat" aria-labelledby="title-emat">
+<div class="page-heading"><div><span class="eyebrow">EMAT WAVEFORM</span><h2 id="title-emat">电磁超声波形与测厚</h2></div><span class="badge warn" id="emat-link">未连接</span></div>
+<section class="panel"><div class="head"><h2>本帧解算信息</h2><span id="emat-age" class="muted">未收到波形</span></div>
+<div class="emat-metrics"><div><span>解算使用声速</span><strong id="emat-speed">—</strong><small>配置/标定值，不是实时测得的声速</small></div><div><span>厚度候选值</span><strong id="emat-thickness">—</strong><small id="emat-validity">未取得测量有效性</small></div><div><span>原始点数 / 采样率</span><strong id="emat-sampling">—</strong><small>采样率不是串口波特率</small></div><div><span>来源 / 标定</span><strong id="emat-source">—</strong><small id="emat-calibration">标定状态未知</small></div></div>
+<p id="emat-reason" class="reason" role="status">等待采集节点的原始波形及分析结果。</p><p id="emat-frame" class="mono muted">尚无采集标识</p>
+<div class="toolbar"><label>横轴 <select id="emat-axis"><option value="sample">原始采样点下标</option><option value="time">相对采样时间 μs</option></select></label><small>只读显示，不发送采集、升降或底盘命令；完整波形按采集周期更新。</small></div></section>
+<section class="panel"><div class="head"><h2>原始数据波形</h2><small>未归一化的 ADC 字节 · 0–255</small></div><canvas id="emat-raw" aria-label="电磁超声原始 ADC 波形"></canvas><p class="muted" id="emat-raw-hint">尚无原始数据</p></section>
+<section class="panel"><div class="head"><h2>处理与提取后的波形</h2><small>与上方原始波形来自同一采集标识</small></div><div class="emat-legend"><span class="emat-signal">去基线信号</span><span class="emat-envelope">Hilbert 包络 + 21 点平滑</span><span class="emat-peaks">可信底波候选位置</span></div><canvas id="emat-processed" aria-label="电磁超声去基线信号与提取包络"></canvas><p class="muted" id="emat-processed-hint">尚无处理结果</p></section>
+<p class="muted">显示曲线最多预览 2048 点，按分段极值保留窄峰；完整数据仍在 ROS 话题。横轴时间仅按采样率换算，不代表已知的真实触发时刻。候选厚度、回波质量和机械贴合成功不能等同。</p>
 </section>
 </body>
 </html>

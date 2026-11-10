@@ -2,6 +2,7 @@
 "use strict";
 (() => {
   const frame = document.getElementById("robot-frame");
+  const takeoverNotice=window.createTakeoverNotice(document.querySelector(".operations-dock"));
   const section = document.getElementById("view-chassis");
   document.getElementById("workspace").appendChild(section);
   const params = new URLSearchParams(location.search);
@@ -70,7 +71,17 @@
   const post = data => frame.contentWindow?.postMessage(data, location.origin === "null" ? "*" : location.origin);
   frame.addEventListener("load", () => post({type:"robot-page-active", active:section.classList.contains("active")}));
   window.addEventListener("message", event => {
-    if (event.source !== frame.contentWindow || event.data?.type !== "robot-link-state") return;
+    if (event.source !== frame.contentWindow || event.origin !== location.origin) return;
+    if(event.data?.type==="robot-remote-state"){
+      takeoverNotice.update(event.data.snapshot);
+      if(event.data.snapshot?.chassis==="remote"){
+        // 只清除联动启动意图；后台按接管事件停车，不重连、不重放请求。
+        intent=null;linked=false;
+        notice.textContent="遥控器接管中：底盘循迹暂停。回中只停车；确认安全后将CH11从低拨到高交还，再人工重新启动视觉循迹。";
+      }
+      return;
+    }
+    if(event.data?.type !== "robot-link-state")return;
     badge.textContent = "底盘" + event.data.label;
     badge.className = "badge " + (event.data.connected ? "good" : "warn");
     if(!event.data.connected){linked=false;cancel("底盘连接中断；不自动恢复循迹，请检查后重新启动视觉。");}

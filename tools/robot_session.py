@@ -25,7 +25,7 @@ def arguments(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--chassis-workspace', type=Path,
                         default=Path(os.environ.get('CHASSIS_WS',
-                        '/home/sunrise/Desktop/Robot_Chassis_Code/robot_chassis_ros2ctrl')))
+                        '/media/mcap_data/robot_chassis_ros2ctrl')))
     parser.add_argument('--platform', choices=('s100p', 'rk3588', 'x86'),
                         default=os.environ.get('INSPECTION_PLATFORM', 's100p'))
     parser.add_argument('--camera-mode', choices=('all', 'd405', 'cameras'), default='all',
@@ -217,6 +217,7 @@ def stop_children(children):
 
 def main(argv=None):
     args = arguments(argv)
+    print(f'底盘 ROS 工作区：{args.chassis_workspace.resolve()}', flush=True)
     os.environ.update(ROS_DOMAIN_ID=str(args.domain), ROS_LOCALHOST_ONLY='0',
                       RMW_IMPLEMENTATION='rmw_fastrtps_cpp', FIELD_DATA_ROOT=str(args.data_root.resolve()),
                       INSPECTION_PLATFORM=args.platform)

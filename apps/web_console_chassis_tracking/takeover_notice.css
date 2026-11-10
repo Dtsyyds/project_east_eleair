@@ -1,0 +1,8 @@
+/* 同时用于主页与独立底盘页；非模态提示不封锁原停止按钮。 */
+.remote-takeover-banner {margin:8px 12px;padding:10px 14px;color:var(--warn,#ffe1a7);background:var(--panel2,#33291b);border:1px solid var(--warn,#ad8443);border-radius:var(--radius,8px);overflow-wrap:anywhere;}
+.remote-takeover-dialog {position:fixed;inset:90px 20px auto auto;margin:0;z-index:10000;width:460px;max-width:calc(100vw - 32px);max-height:calc(100vh - 110px);overflow:auto;padding:22px;background:var(--panel,#172433);color:var(--text,#eef4fc);border:2px solid var(--warn,#e1ac59);border-radius:var(--radius,12px);box-shadow:0 15px 65px #0009;}
+.remote-takeover-dialog h2 {margin:0 0 14px;font-size:21px;}
+.remote-takeover-dialog p {line-height:1.65;overflow-wrap:anywhere;}
+.remote-takeover-dialog button {width:100%;white-space:normal;min-height:44px;background:var(--raised,#345276);color:var(--text,#fff);border:1px solid var(--line,#8eb8e9);border-radius:7px;cursor:pointer;padding:10px;}
+.remote-takeover-dialog button:focus-visible {outline:3px solid var(--focus,#ffda88);outline-offset:3px;}
+@media(max-width:560px){.remote-takeover-dialog{inset:75px 16px auto 16px;width:auto;}}

@@ -1,11 +1,14 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' ws: wss:; style-src 'self'; script-src 'self'">
-<title>底盘与循迹</title><link rel="stylesheet" href="robot.css"><script defer src="robot.js?v=20261105-tuning-link"></script></head>
+<title>底盘与循迹</title><link rel="stylesheet" href="robot.css">
+<link rel="stylesheet" href="../takeover_notice.css?v=20261110-merged">
+<script defer src="../takeover_notice.js?v=20261110-merged"></script>
+<script defer src="robot.js?v=20261110-merged"></script></head>
 <body><header><h1>底盘与焊缝循迹</h1><span id="connection">未连接</span></header>
 <section><div class="row"><label>底盘连接 <input id="endpoint" type="url" spellcheck="false"></label><button id="connect">连接</button><button id="disconnect">断开</button></div>
 <div class="row"><label>Token <input id="token" type="password" autocomplete="off" placeholder="仅在内存中使用"></label><small>主页加载即自动连接；网页仍为 8080，相机和底盘共用原通信端口 9001，重连不恢复运动授权。</small></div><p id="notice" role="status">等待板端连接</p></section>
-<section><h2>控制状态</h2><div class="grid" id="summary"></div><small>命令速度不等于实测速度；PWM 占空比不等于探头实际转速。零速度不是硬件急停。</small></section>
+<section><h2>控制状态</h2><p id="remote-control-state" role="status">等待控制权反馈</p><div class="grid" id="summary"></div><small>命令速度不等于实测速度；PWM 占空比不等于探头实际转速。零速度不是硬件急停。</small></section>
 <div class="columns"><section><h2>手动底盘</h2><label><input id="manual" type="checkbox">启用本页面手动控制</label>
 <p id="manual-reason">等待反馈</p><div class="row"><label>线速度 m/s <input id="speed" type="number" min="0" max="0.1" step="0.005" value="0.01"></label><label>角速度 rad/s <input id="turn" type="number" min="0" max="0.3" step="0.01" value="0.10"></label></div>
 <div class="pad"><button data-move="0,0" class="blank" disabled></button><button data-move="1,0">▲ 前进 W/I</button><span></span><button data-move="0,1">◀ 左转 A/J</button><button id="manual-stop" class="danger">■ 停止 K</button><button data-move="0,-1">右转 D/L ▶</button><span></span><button data-move="-1,0">▼ 后退 S/,</button></div>
