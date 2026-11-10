@@ -79,3 +79,58 @@ def test_preflight_rejects_missing_camera_backend_before_launch(monkeypatch):
     errors = robot_session.preflight(args)
     assert any('相机后台 ROS 安装未加载' in error and 'inspection_operations' in error for error in errors)
     assert len(calls) == 1
+
+
+def test_slam_opt_in_plan_only_adds_independent_service():
+    base=robot_session.arguments([])
+    enabled=robot_session.arguments(['--slam','--domain','81','--no-camera','--host','robot.local','--slam-config','/tmp/slam.yaml'])
+    ordinary=robot_session.launch_plan(base,Path('/tmp/bridge.json'))
+    assert [name for name,_ in ordinary]==['robot','camera','gateway']
+    plan=robot_session.launch_plan(enabled,Path('/tmp/bridge.json'))
+    assert [name for name,_ in plan]==['robot','gateway','slam']
+    command=dict(plan)['slam']
+    assert command[:2]==['bash',str(ROOT/'system_websocket/run_slam.sh')]
+    assert command[command.index('--domain')+1]=='81'
+    assert command[command.index('--config')+1]=='/tmp/slam.yaml'
+    assert 'robot.local' in command
+    assert not any('chassis' in arg or 'hardware.launch' in arg for arg in command)
+
+
+def test_slam_failure_isolated_once_and_critical_still_stops():
+    class Exited:
+        def poll(self):return 1
+    seen=set()
+    assert robot_session.child_failure('slam',Exited(),seen)=='isolated'
+    assert robot_session.child_failure('slam',Exited(),seen) is None
+    assert robot_session.child_failure('robot',Exited(),seen)=='critical'
+
+
+def test_shutdown_preserves_150_second_slam_budget(monkeypatch):
+    now=[0.0];signals=[]
+    class Process:
+        def __init__(self,pid,finish):self.pid=pid;self.finish=finish
+        def poll(self):return 0 if now[0]>=self.finish else None
+        def wait(self):self.finish=now[0]
+    regular=Process(100,1000);slam=Process(200,20)
+    monkeypatch.setattr(robot_session.time,'monotonic',lambda:now[0])
+    monkeypatch.setattr(robot_session.time,'sleep',lambda n:now.__setitem__(0,now[0]+n))
+    monkeypatch.setattr(robot_session.os,'killpg',lambda pid,sig:signals.append((now[0],pid,sig)))
+    robot_session.stop_children([regular,slam],[slam])
+    assert any(pid==100 and sig==robot_session.signal.SIGTERM and t>=12 for t,pid,sig in signals)
+    assert not any(pid==200 and sig!=robot_session.signal.SIGINT for _,pid,sig in signals)
+    assert now[0]>=20
+
+
+def test_slam_hung_service_escalates_only_after_150_seconds(monkeypatch):
+    now=[0.0];signals=[]
+    class Process:
+        pid=200
+        finished=False
+        def poll(self):return 0 if self.finished else None
+        def wait(self):self.finished=True
+    process=Process()
+    monkeypatch.setattr(robot_session.time,'monotonic',lambda:now[0])
+    monkeypatch.setattr(robot_session.time,'sleep',lambda n:now.__setitem__(0,now[0]+n))
+    monkeypatch.setattr(robot_session.os,'killpg',lambda pid,sig:signals.append((now[0],sig)))
+    robot_session.stop_children([process],[process])
+    assert next(t for t,s in signals if s==robot_session.signal.SIGTERM)>=150

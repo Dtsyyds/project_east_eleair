@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="no-referrer" name="referrer"/>
-<meta content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; style-src 'self' 'unsafe-inline'; script-src 'self'" http-equiv="Content-Security-Policy"/>
+<meta content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' ws: wss:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src 'self' http://*:8082" http-equiv="Content-Security-Policy"/>
 <title>工业智能巡检 · East Eleair</title>
 <link href="theme.css?v=20261109-four-grid-restored" rel="stylesheet"/>
 <script defer="" src="theme.js"></script>
@@ -20,6 +20,7 @@
 <link href="takeover_notice.css?v=20261110-merged" rel="stylesheet"/>
 <script defer src="takeover_notice.js?v=20261110-merged"></script>
 <script defer src="robot_embed.js?v=20261110-merged"></script>
+<script defer src="slam_embed.js?v=20261110-mime-fix"></script>
 <link href="emat.css?v=20261110-merged" rel="stylesheet"/>
 <script defer src="emat.js?v=20261110-merged"></script>
 </head>
@@ -28,6 +29,7 @@
 <button aria-controls="view-realtime" aria-current="page" class="active" data-view="realtime"><svg aria-hidden="true" class="icon"><use href="#icon-monitor"></use></svg><span>实时巡检</span></button>
 <button aria-controls="view-collection" aria-current="false" data-view="collection"><svg aria-hidden="true" class="icon"><use href="#icon-record"></use></svg><span>采集任务</span></button>
 <button aria-controls="view-chassis" aria-current="false" data-view="chassis"><svg aria-hidden="true" class="icon"><use href="#icon-devices"></use></svg><span>底盘与循迹</span></button>
+<button aria-controls="view-slam" aria-current="false" data-view="slam"><svg aria-hidden="true" class="icon"><use href="#icon-devices"></use></svg><span>定位与建图</span></button>
 <button aria-controls="view-emat" aria-current="false" data-view="emat"><svg aria-hidden="true" class="icon"><use href="#icon-measure"></use></svg><span>电磁超声</span></button>
 <button aria-controls="view-replay" aria-current="false" data-view="replay"><svg aria-hidden="true" class="icon"><use href="#icon-play"></use></svg><span>数据回放</span></button>
 <button aria-controls="view-events" aria-current="false" data-view="events"><svg aria-hidden="true" class="icon"><use href="#icon-events"></use></svg><span>事件与数据</span></button>
@@ -213,6 +215,11 @@
 <section class="panel"><div class="head"><h2>原始数据波形</h2><small>未归一化的 ADC 字节 · 0–255</small></div><canvas id="emat-raw" aria-label="电磁超声原始 ADC 波形"></canvas><p class="muted" id="emat-raw-hint">尚无原始数据</p></section>
 <section class="panel"><div class="head"><h2>处理与提取后的波形</h2><small>与上方原始波形来自同一采集标识</small></div><div class="emat-legend"><span class="emat-signal">去基线信号</span><span class="emat-envelope">Hilbert 包络 + 21 点平滑</span><span class="emat-peaks">可信底波候选位置</span></div><canvas id="emat-processed" aria-label="电磁超声去基线信号与提取包络"></canvas><p class="muted" id="emat-processed-hint">尚无处理结果</p></section>
 <p class="muted">显示曲线最多预览 2048 点，按分段极值保留窄峰；完整数据仍在 ROS 话题。横轴时间仅按采样率换算，不代表已知的真实触发时刻。候选厚度、回波质量和机械贴合成功不能等同。</p>
+</section>
+<section class="view" id="view-slam" aria-label="定位与建图">
+<div class="page-heading"><h2>定位与建图</h2><span id="slam-link" class="badge warn">未连接</span></div>
+<div class="toolbar"><button id="slam-retry">重试连接</button><a id="slam-open" class="muted" target="_blank" rel="noopener">独立打开</a><small>切换页面不停止建图，结束时请点击停止并等待保存完成。</small></div>
+<iframe id="slam-frame" title="定位与建图独立控制台" style="display:block;width:100%;height:1400px;border:0"></iframe>
 </section>
 </body>
 </html>

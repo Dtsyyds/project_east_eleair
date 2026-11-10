@@ -47,6 +47,8 @@ def arguments(argv=None):
     parser.add_argument('--data-root', type=Path, default=Path(os.environ.get('FIELD_DATA_ROOT', '/media/mcap_data')))
     parser.add_argument('--mcap-modules', default='all')
     parser.add_argument('--no-record', action='store_true')
+    parser.add_argument('--slam', action='store_true', help='增加独立 SLAM 服务（8082）；点击网页才运行算法')
+    parser.add_argument('--slam-config', type=Path, default=ROOT / 'apps/web_console_slam/config/slam.yaml')
     parser.add_argument('--plan', action='store_true')
     parser.add_argument('--check', action='store_true')
     args = parser.parse_args(argv)
@@ -59,7 +61,9 @@ def arguments(argv=None):
     if not 1 <= args.feedback_timeout_ms <= 5000:
         parser.error('feedback-timeout-ms 必须在 1..5000')
     ports = (args.port, args.http_port, args.camera_http_port, args.camera_port, args.robot_port)
-    if len(set(ports)) != 5 or any(not 1 <= p <= 65535 for p in ports):
+    if args.slam:
+        ports += (8082,)
+    if len(set(ports)) != len(ports) or any(not 1 <= p <= 65535 for p in ports):
         parser.error('网页/通信入口及后台端口必须不同且有效')
     if any(not host or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-:'
                            for c in host) for host in args.hosts):
@@ -106,7 +110,26 @@ def launch_plan(args, bridge_config):
     for host in args.hosts:
         gateway.extend(['--host', host])
     plan.append(('gateway', sourced(args, gateway)))
+    if args.slam:
+        plan.append(('slam', slam_command(args)))
     return plan
+
+
+def slam_command(args):
+    command = ['bash', str(ROOT / 'system_websocket/run_slam.sh'),
+               '--platform', args.platform, '--domain', str(args.domain),
+               '--config', str(args.slam_config.resolve())]
+    for host in dict.fromkeys([*args.hosts, 'localhost', '127.0.0.1']):
+        command.extend(['--host', host])
+    return command
+
+
+def child_failure(name, process, reported):
+    """Optional SLAM failure is reported once, without ending the robot session."""
+    if process.poll() is None or name in reported:
+        return None
+    reported.add(name)
+    return 'isolated' if name == 'slam' else 'critical'
 
 
 def bridge_config(args):
@@ -190,29 +213,42 @@ def preflight(args):
             capture_output=True, text=True)
         if check.returncode:
             errors.append('ROS 工作区/新消息未构建或环境混用：' + check.stderr[-1500:])
+    if args.slam:
+        try:
+            check = subprocess.run([*slam_command(args), '--check'], capture_output=True, text=True, timeout=30)
+            if check.returncode:
+                errors.append('SLAM 静态预检失败：' + check.stderr[-3000:])
+        except (OSError, subprocess.TimeoutExpired) as error:
+            errors.append(f'SLAM 静态预检失败：{error}')
     return errors
 
 
-def stop_children(children):
+def stop_children(children, slam_children=()):
     """只停止本次会话的进程组，先 SIGINT 允许 rosbag2 收尾，不广泛 pkill。"""
     for process in children:
         if process.poll() is None:
             with contextlib.suppress(ProcessLookupError):
                 os.killpg(process.pid, signal.SIGINT)
-    deadline = time.monotonic() + 12
-    while any(p.poll() is None for p in children) and time.monotonic() < deadline:
+    started = time.monotonic()
+    deadlines = {p: started + (150 if p in slam_children else 12) for p in children}
+    terminated = set()
+    while any(p.poll() is None for p in children):
+        now = time.monotonic()
+        for process in children:
+            if process.poll() is not None or now < deadlines[process]:
+                continue
+            if process not in terminated:
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGTERM)
+                terminated.add(process)
+                deadlines[process] = now + 3
+            else:
+                with contextlib.suppress(ProcessLookupError):
+                    os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
         time.sleep(.1)
-    for process in children:
-        if process.poll() is None:
-            with contextlib.suppress(ProcessLookupError):
-                os.killpg(process.pid, signal.SIGTERM)
-    for process in children:
-        try:
-            process.wait(timeout=3)
-        except subprocess.TimeoutExpired:
-            with contextlib.suppress(ProcessLookupError):
-                os.killpg(process.pid, signal.SIGKILL)
-            process.wait()
+    # SLAM launch guardians have independent groups and stdin lifetime pipes.
+    # They also stop on service SIGKILL; no broad process-name cleanup is used.
 
 
 def main(argv=None):
@@ -250,7 +286,7 @@ def main(argv=None):
         except BlockingIOError:
             print('已有集成会话运行，请在原终端 Ctrl+C 后再启动', file=sys.stderr)
             return 2
-        children, logs = [], []
+        children, logs, slam_children = [], [], []
         stopped = False
         def request_stop(signum, frame):
             nonlocal stopped
@@ -273,16 +309,22 @@ def main(argv=None):
                     process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT,
                                                stdin=subprocess.DEVNULL, start_new_session=True)
                     children.append(process)
+                    if name == "slam":
+                        slam_children.append(process)
+                reported = set()
                 while not stopped:
                     for (name, _), process in zip(launch_plan(args, config), children):
-                        if process.poll() is not None:
-                            print(f'{name} 已退出（{process.returncode}），停止其他本次子进程；查看 {log_root}/{name}.log', file=sys.stderr)
-                            result = 1
-                            stopped = True
-                            break
+                        failure = child_failure(name, process, reported)
+                        if failure:
+                            action = '仅记录故障，其他模块继续运行' if failure == 'isolated' else '停止其他本次子进程'
+                            print(f'{name} 已退出（{process.returncode}），{action}；查看 {log_root}/{name}.log', file=sys.stderr)
+                            if failure == 'critical':
+                                result = 1
+                                stopped = True
+                                break
                     time.sleep(.2)
             finally:
-                stop_children(children)
+                stop_children(children, slam_children)
                 for log in logs:
                     log.close()
                 for sig, handler in old.items():

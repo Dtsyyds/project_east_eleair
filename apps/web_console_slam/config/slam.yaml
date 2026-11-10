@@ -1,0 +1,15 @@
+# 相对路径以本配置目录为基准；algorithm_root 内路径以下单独说明。
+algorithm_root: ../../../ros2_ws/src/functions/relocalization/FAST-LIVO2
+# installed 使用 ament 中 fast_livo/config/mapping_relocation.yaml。
+base_config: installed
+prior_directory: PCD/map
+runtime_directory: ../../../.runtime/{platform}/slam_console
+lidar_topic: /livox/lidar
+imu_topic: /livox/imu
+# 上游的单位声明，同时用静止样本的加速度/角速度检查；不是根据包名猜测。
+imu_acceleration_unit: m/s2
+input_max_age: 2.0
+stamp_tolerance: 3.0
+mapping_timeout: 60.0
+relocation_timeout: 180.0
+shutdown_timeout: 130.0

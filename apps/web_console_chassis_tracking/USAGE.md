@@ -556,3 +556,26 @@ STL 毫米转米，雷达几何中心依据配套坐标文件换算；显示轴�
 ## 无模型图片采集
 
 点击“开始图片采集（无需模型）”，调整场景后点击“保存一组原图”，一批最多 30 组。结束时点击“停止图片采集”封存，随后进行网页人工标注和训练。采集与识别互斥，采集不依赖旧权重。详见 [采集与标注说明](../../docs/system/d405_experiment_collection_guide.md)。
+
+
+## 定位与建图（独立 SLAM 服务）
+
+主界面的“定位与建图”嵌入同一设备 `8082` 的独立控制台；也可直接访问 `http://设备IP:8082/`。启动服务后处于空闲状态，点击页面“启动”才运行算法。
+
+```bash
+# 独立服务：只消费已有雷达/IMU，不启动传感器或底盘
+bash system_websocket/run_slam.sh --plan
+bash system_websocket/run_slam.sh --check
+bash system_websocket/run_slam.sh
+
+# 整套模式：原启动链管理传感器，额外启动同一个 SLAM 服务
+bash system_websocket/run_robot.sh --slam --plan
+bash system_websocket/run_robot.sh --slam --check
+bash system_websocket/run_robot.sh --slam
+```
+
+默认支持网线 `192.168.127.10`、无线 `192.168.1.148`，SLAM 的 ROS 域默认 `77`。访问其他地址时用可重复的 `--host 主机或IP`；独立配置用 `--config`，整套入口用 `--slam-config`。已有 `8082` 服务时不要重复启动，可使用不带 `--slam` 的原整套入口。
+
+输入必须是 `/livox/lidar` 的 CustomMsg 和 `/livox/imu` 的米制 Imu，初始化时保持静止；独立模式需提前提供这两路输入并构建安装算法。两种建图模式及保存选项在启动后锁定，停止/Ctrl+C 会按本次选项等待地图保存；切页、刷新、断线不停止任务。SLAM 和 MCAP 分别控制，使用实时输入时不能向相同话题同时回放。
+
+SLAM 未连接或任务失败不会中断其他页面。完整配置、输入启动方法、结果路径和现场验收步骤见 [SLAM 实现方案](../../docs/system/web_console_slam实现方案.md)，文件变更与软件测试见 [修改记录](../web_console_slam/修改.md)。

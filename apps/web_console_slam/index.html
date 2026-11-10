@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>定位与建图 · East Eleair</title>
+  <link rel="stylesheet" href="theme.css?v=20261110-mime-fix">
+  <script defer src="console.js?v=20261110-mime-fix"></script>
+</head>
+<body>
+<main>
+  <header class="page-heading">
+    <div><span class="eyebrow">EAST ELEAIR · SLAM</span><h1>定位与建图</h1></div>
+    <span id="connection" class="badge warn" role="status">正在加载页面资源…</span>
+  </header>
+  <noscript><p class="panel">请启用浏览器 JavaScript，才能连接 SLAM 服务、查询状态和操作建图。</p></noscript>
+
+  <section class="panel">
+    <div class="head"><h2>启动前配置</h2><small>任务启动后锁定本次配置</small></div>
+    <fieldset id="configuration" class="configuration" disabled aria-label="建图配置">
+      <label>建图模式<select id="mode"><option value="mapping">直接建图</option><option value="relocation">重定位建图</option></select></label>
+      <label>先验地图<select id="map" disabled><option value="">无可用先验地图</option></select></label>
+      <button id="refresh-maps" type="button">刷新地图列表</button>
+      <label class="check"><input id="save" type="checkbox" checked>结束任务时保存地图</label>
+      <p id="map-path">直接建图无需先验地图</p>
+    </fieldset>
+    <p class="hint">请保持设备静止直至初始化完成。使用实时雷达与米制 IMU 输入时，请停止向相同话题发布的历史回放。</p>
+  </section>
+
+  <section class="panel task" aria-label="任务控制">
+    <button id="toggle" class="start" disabled>状态未知</button>
+    <div class="task-summary"><strong id="state" class="badge warn" role="status">等待后台状态</strong><p id="session">尚无会话</p></div>
+    <p id="result" role="status"></p>
+    <p id="error" role="alert"></p>
+  </section>
+
+  <section class="panel">
+    <div class="head">
+      <h2>启动日志</h2>
+      <div class="toolbar"><button id="follow">暂停跟随</button><button id="clear-log" class="quiet">清空显示</button><button id="history">从头加载历史</button><button id="next-history" disabled>下一批历史</button><button id="live">返回实时</button></div>
+    </div>
+    <p class="hint" id="log-position">完整 stdout/stderr 保留在后台；页面最多显示约 256 KiB。</p>
+    <pre id="logs" tabindex="0" aria-label="算法启动日志"></pre>
+  </section>
+
+  <section class="panel">
+    <div class="head">
+      <h2>建图可视化</h2>
+      <div class="toolbar cloud-tools">
+        <label>点云<select id="topic"><option value="/cloud_effected">有效点云</option><option value="/cloud_registered">配准点云</option></select></label>
+        <label>最近帧数<input id="frames" type="number" min="1" max="100" value="30"></label>
+        <button id="top">俯视</button><button id="reset">复位</button><button id="clear-cloud" class="quiet">清空点云</button>
+      </div>
+    </div>
+    <p id="cloud-info">等待 /cloud_effected</p>
+    <canvas id="cloud" aria-label="三维点云，拖动旋转，滚轮缩放"></canvas>
+    <p class="hint">拖动旋转，滚轮缩放。最多 5 Hz、2000 点/帧、200000 点总量；按消息实际坐标系显示。</p>
+  </section>
+</main>
+</body>
+</html>
