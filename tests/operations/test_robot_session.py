@@ -60,6 +60,7 @@ def test_legacy_entrypoint_forwards_arguments_without_starting_hardware():
     assert '传感器模式：all' in result.stdout
     assert 'tracking_dry_run:=false' in result.stdout
     assert str(ROOT / 'apps/web_console_chassis_tracking') in result.stdout
+    assert '\nslam: ' in result.stdout
 
 
 def test_preflight_rejects_missing_camera_backend_before_launch(monkeypatch):
@@ -67,6 +68,8 @@ def test_preflight_rejects_missing_camera_backend_before_launch(monkeypatch):
     calls = []
     def run(command, **kwargs):
         calls.append(command)
+        if command[-1] == '--check':
+            return subprocess.CompletedProcess(command, 1, '', '端口 8082 不可绑定')
         assert command[3] == 'camera-preflight'
         return subprocess.CompletedProcess(command, 1, '', "Package 'inspection_operations' not found")
     class AvailablePort:
@@ -78,14 +81,15 @@ def test_preflight_rejects_missing_camera_backend_before_launch(monkeypatch):
     monkeypatch.setattr(robot_session.socket, 'socket', AvailablePort)
     errors = robot_session.preflight(args)
     assert any('相机后台 ROS 安装未加载' in error and 'inspection_operations' in error for error in errors)
-    assert len(calls) == 1
+    assert any('SLAM 静态预检失败' in error and '8082' in error for error in errors)
+    assert len(calls) == 2
 
 
-def test_slam_opt_in_plan_only_adds_independent_service():
+def test_slam_service_is_always_included_and_receives_configuration():
     base=robot_session.arguments([])
-    enabled=robot_session.arguments(['--slam','--domain','81','--no-camera','--host','robot.local','--slam-config','/tmp/slam.yaml'])
+    enabled=robot_session.arguments(['--domain','81','--no-camera','--host','robot.local','--slam-config','/tmp/slam.yaml'])
     ordinary=robot_session.launch_plan(base,Path('/tmp/bridge.json'))
-    assert [name for name,_ in ordinary]==['robot','camera','gateway']
+    assert [name for name,_ in ordinary]==['robot','camera','gateway','slam']
     plan=robot_session.launch_plan(enabled,Path('/tmp/bridge.json'))
     assert [name for name,_ in plan]==['robot','gateway','slam']
     command=dict(plan)['slam']
@@ -134,3 +138,16 @@ def test_slam_hung_service_escalates_only_after_150_seconds(monkeypatch):
     monkeypatch.setattr(robot_session.os,'killpg',lambda pid,sig:signals.append((now[0],sig)))
     robot_session.stop_children([process],[process])
     assert next(t for t,s in signals if s==robot_session.signal.SIGTERM)>=150
+
+
+@pytest.mark.parametrize('option', ['--port', '--http-port', '--camera-http-port', '--camera-port', '--robot-port'])
+def test_default_session_reserves_slam_port(option):
+    with pytest.raises(SystemExit) as error:
+        robot_session.arguments([option, '8082'])
+    assert error.value.code == 2
+
+
+def test_removed_slam_switch_is_rejected():
+    with pytest.raises(SystemExit) as error:
+        robot_session.arguments(['--slam'])
+    assert error.value.code == 2

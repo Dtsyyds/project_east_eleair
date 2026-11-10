@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 整机启动器内部的 SLAM 服务入口；用户统一运行 system/run_robot.sh。
 set -e
 SLAM_PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SLAM_PLATFORM="${INSPECTION_PLATFORM:-s100p}"

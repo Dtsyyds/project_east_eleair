@@ -16,6 +16,8 @@ bash /media/mcap_data/project_east_eleair_refactor/system_websocket/run_robot.sh
 
 传感器默认使用 `config/communication/robot_all.yaml`：启动工业相机、鱼眼、D405、MID360（含 IMU）和涡流，保留 D405 候选循迹算法。`bash system/run_robot.sh --real` 兼容入口也转发到同一启动流程。`--real` 仅决定循迹是否输出实际速度；传感器选择由 `--camera-mode all|d405|cameras` 控制，默认 `all`。临时只接 D405 时可使用 `--camera-mode d405`，三相机调试可使用 `--camera-mode cameras`。
 
+定位与建图默认随 `bash system/run_robot.sh`（或 `system_websocket/run_robot.sh`）启动，打开主页后进入“定位与建图”即可使用。已移除 `--slam` 开关及单独打开入口；SLAM 服务使用 8082，算法仍需在页面点击“启动”。`--plan` 包含 SLAM 服务，`--check` 同时检查其依赖和端口，配置可通过 `--slam-config` 指定。
+
 网页实时回传三路相机预览、涡流数据和雷达数据到达状态；现有网页不提供原始点云或 IMU 波形显示。点击“启动采集”将录制完整传感器话题及循迹输出，启动前会检查所需传感器数据；底盘 MCAP 仍由底盘模块独立录制。MID360 使用当前安装包的网络配置，涡流默认使用 `/dev/eddy`；未接线或缺少设备别名时页面显示无数据。EMAT 继续按需测厚，需在 `robot_all.yaml` 中配置已确认的实际串口。
 
 本地这份副本的 `packages/inspection_runtime/src/inspection_runtime/supervisor.py` 等相机后台为零字节占位文件，不能据此宣称整套相机已可启动。新入口会明确拒绝这种不完整部署；先补齐 RDK 上已能运行的相机后台。`--no-camera` 可仅启动底盘与静态网页，相机/视觉需由其他完整部署提供。详细更新、测试与切换步骤见 [部署说明](deploy/README.md)。

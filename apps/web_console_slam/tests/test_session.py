@@ -22,8 +22,10 @@ PCD = b'VERSION .7\nFIELDS x y z\nSIZE 4 4 4\nTYPE F F F\nCOUNT 1 1 1\nWIDTH 1\n
 
 
 class Bridge:
-    def preflight(self): return []
-    def begin(self, started): self.started=started
+    def preflight_checks(self): return []
+    def health(self, mode): return {"state": "not_ready", "checks": [], "inputs": []}
+    def begin(self, started, map_frame='map'): self.started=started
+    def position_status(self, mode): return {'current': None, 'initial': None, 'fresh': False, 'age': None}
     def ready(self, mode): return False
     def previews(self): return {}
 
@@ -118,7 +120,10 @@ def test_session_config_logs_and_save(manager,tmp_path,monkeypatch,mode,save):
         text=manager.logs(sid)['text']
         assert '中文日志 349' in text and '停止末尾 stdout' in text and '停止末尾 stderr' in text
         assert 'mapping/stdout' in text
-        if mode=='relocation': assert 'relocation/stderr' in text
+        assert 'mapping/stderr' in text
+        assert set(manager.current['processes']) == {'mapping'}
+        command = manager.current['processes']['mapping']['command']
+        assert command[:4] == ['ros2', 'launch', 'relocalization', 'slam.launch.py']
         assert manager.config['base_config'].read_bytes()==original
         assert (manager.directory/'session.json').is_file()
         return sid
@@ -145,7 +150,7 @@ def test_utf8_log_paging_over_64k(manager):
 
 def test_fresh_readiness_ignores_old_transient_state():
     b=RosBridge.__new__(RosBridge);b.lock=threading.RLock();b.config={'input_max_age':2,'stamp_tolerance':3}
-    b.observed={};b.clouds={};b.last_cloud={};now=time.time();b.begin(now)
+    b.inputs={};b.observed={};b.clouds={};b.last_cloud={};now=time.time();b.begin(now)
     b.observe('tracking',True);b.observe('odom',now-10);b.observe('initial',now-10)
     assert not b.ready('mapping')
     b.observe('odom',time.time());assert b.ready('mapping')
@@ -212,23 +217,24 @@ def test_save_inspects_artifacts_and_internal_node_exit(manager, tmp_path, monke
     asyncio.run(scenario())
 
 
-def test_relocation_solver_clean_exit_keeps_mapping_running(manager, tmp_path, monkeypatch):
+@pytest.mark.parametrize('code', [0, 1])
+def test_unified_launch_unexpected_exit_fails_session(manager, tmp_path, monkeypatch, code):
     install_fake_ros(tmp_path, monkeypatch)
     executable = tmp_path / 'ros2'
-    executable.write_text(executable.read_text().replace('config=pathlib.Path',
-        "if sys.argv[2]=='relocalization': raise SystemExit(0)\nconfig=pathlib.Path"))
+    executable.write_text(executable.read_text().replace(
+        'while True: time.sleep(.1)', f'time.sleep(.5); raise SystemExit({code})'))
     manager.bridge.ready = lambda mode: True
     async def scenario():
         await manager.start(dict(mode='relocation', map='prior.pcd', save=False))
         try:
             await wait_ready(manager)
             for _ in range(100):
-                if manager.processes['relocation'].returncode is not None:
+                if manager.current['state'] == 'failed':
                     break
                 await asyncio.sleep(.05)
-            assert manager.processes['relocation'].returncode == 0
-            await asyncio.sleep(.3)
-            assert manager.current['state'] == 'running'
+            assert manager.current['state'] == 'failed'
+            assert '异常退出' in manager.current['error']
+            assert set(manager.processes) == {'mapping'}
         finally:
             await manager.close()
     asyncio.run(scenario())
@@ -247,6 +253,34 @@ def test_log_creation_failure_still_drains_and_finishes(manager, tmp_path, monke
         await asyncio.wait_for(manager.close(), 10)
         assert manager.current['state'] == 'failed'
         assert '日志创建失败' in manager.current['error']
+    asyncio.run(scenario())
+
+
+def test_unified_core_failure_does_not_interrupt_launch_save_twice(manager, tmp_path, monkeypatch):
+    install_fake_ros(tmp_path, monkeypatch)
+    executable = tmp_path / 'ros2'
+    script = executable.read_text().replace('while True: time.sleep(.1)', '''
+signal.signal(signal.SIGINT, lambda *_: print('DUPLICATE SIGINT', flush=True))
+print('[ERROR] [transform_publisher-1]: process has died [pid 1, exit code 1]', flush=True)
+# The unified launch is already saving its surviving mapping node.
+time.sleep(.6)
+pathlib.Path(p['pcd_save']['output_dir'], 'result.pcd').write_bytes(PCD)
+'''.replace('write_bytes(PCD)', f'write_bytes({PCD!r})'))
+    executable.write_text(script)
+    async def scenario():
+        await manager.start(dict(mode='mapping', save=True))
+        try:
+            await wait_ready(manager)
+            for _ in range(100):
+                if manager.current['state'] == 'failed':
+                    break
+                await asyncio.sleep(.05)
+            assert manager.current['state'] == 'failed'
+            assert manager.current['save_result'] == 'failed'
+            assert manager.current['maps']
+            assert 'DUPLICATE SIGINT' not in manager.logs(manager.current['session_id'])['text']
+        finally:
+            await manager.close()
     asyncio.run(scenario())
 
 
@@ -282,3 +316,43 @@ while True:time.sleep(.1)
         assert not Path(f'/proc/{pid}').exists()
     finally:
         if process.poll() is None:process.kill();process.wait()
+
+
+def test_preflight_reports_all_groups_and_blocks_active_probes(manager, monkeypatch):
+    result = manager.preflight(dict(mode='relocation', map='../escape', save=True))
+    checks = {c['id']: c for c in result['checks']}
+    assert not result['ok'] and result['checked_at'] <= time.time()
+    assert checks['options']['status'] == 'fail'
+    assert checks['dependencies']['status'] == 'pass'
+    assert checks['output_directory']['status'] == 'unknown'
+    assert checks['runtime_directory']['status'] == 'pass'
+    manager.current['state'] = 'running'
+    monkeypatch.setattr(manager.bridge, 'preflight_checks', lambda: pytest.fail('active preflight must not scan conflicts'))
+    assert manager.preflight(dict(mode='mapping', save=True))['checks'][0]['id'] == 'session'
+
+
+def test_runtime_health_does_not_change_lifecycle_or_call_preflight(manager, monkeypatch):
+    manager.current.update(state='running', mode='mapping', session_id='one')
+    monkeypatch.setattr(manager.bridge, 'preflight_checks', lambda: pytest.fail('status must not run full preflight'))
+    for state in ('valid', 'tracking_invalid', 'odom_stale'):
+        monkeypatch.setattr(manager.bridge, 'health', lambda mode: {'state': state, 'checks': [], 'inputs': []})
+        result = manager.status()
+        assert result['state'] == 'running'
+        assert result['health']['state'] == state
+    manager.current['state'] = 'starting'
+    manager.started_mono = time.monotonic() - 5
+    result = manager.status()
+    assert 5 <= result['initialization']['elapsed'] < 6
+    assert result['initialization']['timeout'] == 60
+    manager.current['state'] = 'stopped'
+    assert manager.status()['health']['state'] == 'unknown'
+
+
+def test_output_roots_follow_backend_configuration(manager, tmp_path):
+    for root in (tmp_path / 'algorithm', tmp_path / 'other_algorithm'):
+        manager.config['algorithm_root'] = root
+        status = manager.status()
+        assert status['output_roots'] == {
+            'mapping': str(root / 'PCD/priori'),
+            'relocation': str(root / 'PCD/relocate'),
+        }

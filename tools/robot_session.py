@@ -1,4 +1,4 @@
-"""RDK 单入口 supervisor：现有相机系统 + 底盘/循迹/分模块录制。
+"""RDK 单入口 supervisor：现有相机系统 + 底盘/循迹/分模块录制 + SLAM 页面服务。
 
 不自动 enable，不执行任意网页命令，不终止其他终端已有的 launch。
 --plan 不要求 ROS/设备在线；--check 只预检，不打开串口或启动电机。
@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def arguments(argv=None):
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     parser.add_argument('--chassis-workspace', type=Path,
                         default=Path(os.environ.get('CHASSIS_WS',
                         '/media/mcap_data/robot_chassis_ros2ctrl')))
@@ -32,7 +32,7 @@ def arguments(argv=None):
                         help='默认 all 启动三相机、MID360/IMU 和涡流；d405/cameras 用于单设备或三相机调试')
     parser.add_argument('--web-root', type=Path, default=ROOT / 'apps/web_console',
                         help='网页目录，可选择独立的 web_console_chassis_tracking 扩展版')
-    parser.add_argument('--no-camera', action='store_true', help='相机由其他终端启动；本入口只提供新网页和底盘')
+    parser.add_argument('--no-camera', action='store_true', help='相机由其他终端启动；本入口提供网页、底盘和 SLAM 服务')
     parser.add_argument('--drive-mode', choices=('tracked_2wd', 'four_wheel'), default='tracked_2wd')
     parser.add_argument('--real', action='store_true', help='允许实际循迹输出；仍须在网页人工启动')
     parser.add_argument('--domain', type=int, default=77)
@@ -47,7 +47,6 @@ def arguments(argv=None):
     parser.add_argument('--data-root', type=Path, default=Path(os.environ.get('FIELD_DATA_ROOT', '/media/mcap_data')))
     parser.add_argument('--mcap-modules', default='all')
     parser.add_argument('--no-record', action='store_true')
-    parser.add_argument('--slam', action='store_true', help='增加独立 SLAM 服务（8082）；点击网页才运行算法')
     parser.add_argument('--slam-config', type=Path, default=ROOT / 'apps/web_console_slam/config/slam.yaml')
     parser.add_argument('--plan', action='store_true')
     parser.add_argument('--check', action='store_true')
@@ -60,9 +59,7 @@ def arguments(argv=None):
         parser.error('ROS_DOMAIN_ID 应为 0..232；须与相机/电脑一致')
     if not 1 <= args.feedback_timeout_ms <= 5000:
         parser.error('feedback-timeout-ms 必须在 1..5000')
-    ports = (args.port, args.http_port, args.camera_http_port, args.camera_port, args.robot_port)
-    if args.slam:
-        ports += (8082,)
+    ports = (args.port, args.http_port, args.camera_http_port, args.camera_port, args.robot_port, 8082)
     if len(set(ports)) != len(ports) or any(not 1 <= p <= 65535 for p in ports):
         parser.error('网页/通信入口及后台端口必须不同且有效')
     if any(not host or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-:'
@@ -110,8 +107,7 @@ def launch_plan(args, bridge_config):
     for host in args.hosts:
         gateway.extend(['--host', host])
     plan.append(('gateway', sourced(args, gateway)))
-    if args.slam:
-        plan.append(('slam', slam_command(args)))
+    plan.append(('slam', slam_command(args)))
     return plan
 
 
@@ -125,7 +121,7 @@ def slam_command(args):
 
 
 def child_failure(name, process, reported):
-    """Optional SLAM failure is reported once, without ending the robot session."""
+    """SLAM failure is reported once, without ending the robot session."""
     if process.poll() is None or name in reported:
         return None
     reported.add(name)
@@ -169,7 +165,7 @@ def camera_config(args):
 
 def preflight(args):
     errors = []
-    for relative in ('index.html', 'console.js', 'connection_config.js', 'robot_embed.js',
+    for relative in ('index.html', 'console.js', 'connection_config.js', 'robot_embed.js', 'slam_embed.js',
                      'robot/index.html', 'robot/robot.js', 'robot/robot.css'):
         if not (args.web_root / relative).is_file():
             errors.append(f'扩展版网页文件缺失：{args.web_root / relative}')
@@ -213,13 +209,12 @@ def preflight(args):
             capture_output=True, text=True)
         if check.returncode:
             errors.append('ROS 工作区/新消息未构建或环境混用：' + check.stderr[-1500:])
-    if args.slam:
-        try:
-            check = subprocess.run([*slam_command(args), '--check'], capture_output=True, text=True, timeout=30)
-            if check.returncode:
-                errors.append('SLAM 静态预检失败：' + check.stderr[-3000:])
-        except (OSError, subprocess.TimeoutExpired) as error:
-            errors.append(f'SLAM 静态预检失败：{error}')
+    try:
+        check = subprocess.run([*slam_command(args), '--check'], capture_output=True, text=True, timeout=30)
+        if check.returncode:
+            errors.append('SLAM 静态预检失败：' + check.stderr[-3000:])
+    except (OSError, subprocess.TimeoutExpired) as error:
+        errors.append(f'SLAM 静态预检失败：{error}')
     return errors
 
 

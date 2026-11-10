@@ -14,8 +14,8 @@ def observer():
     bridge = RosBridge.__new__(RosBridge)
     bridge.lock = threading.RLock()
     bridge.config = dict(lidar_topic='/livox/lidar', imu_topic='/livox/imu', input_max_age=2, stamp_tolerance=3)
-    now = time.time()
-    bridge.inputs = {key: dict(received=now, stamp=now, advancing=True) for key in ('lidar', 'imu')}
+    now = time.monotonic()
+    bridge.inputs = {key: dict(received=now, stamp=time.time(), advancing=True) for key in ('lidar', 'imu')}
     bridge.imu = deque([(now, 9.81, 0.01)] * 20)
     bridge.node = SimpleNamespace(
         get_topic_names_and_types=lambda: [('/livox/lidar', ['livox_ros_driver2/msg/CustomMsg']),
@@ -41,7 +41,7 @@ def test_input_errors(case, expected):
     elif case == 'stamp':
         bridge.inputs['imu']['stamp'] -= 10
     elif case in ('g_units', 'moving'):
-        bridge.imu = deque([(time.time(), 1 if case == 'g_units' else 9.81, 1 if case == 'moving' else 0)] * 20)
+        bridge.imu = deque([(time.monotonic(), 1 if case == 'g_units' else 9.81, 1 if case == 'moving' else 0)] * 20)
     elif case == 'duplicate':
         bridge.node.count_publishers = lambda topic: 2
     else:
@@ -64,3 +64,57 @@ def test_config_paths_resolve_from_config_directory(tmp_path, monkeypatch):
     path.write_text(path.read_text().replace('m/s2', 'g'))
     with pytest.raises(ValueError, match='米制'):
         load_config(path, 'x86')
+
+
+def test_structured_checks_keep_unknown_stationary_and_stable_ids():
+    bridge = observer()
+    bridge.imu.clear()
+    checks = {c['id']: c for c in bridge.preflight_checks()}
+    assert checks['lidar.type']['status'] == 'pass'
+    assert checks['imu.samples']['status'] == 'fail'
+    assert checks['imu.stationary']['status'] == 'unknown'
+    assert checks['imu.stationary']['suggestion']
+
+
+def test_health_session_evidence_and_monotonic_freshness(monkeypatch):
+    bridge = observer()
+    bridge.observed, bridge.clouds, bridge.last_cloud = {}, {}, {}
+    wall, mono = time.time(), time.monotonic()
+    monkeypatch.setattr('slam_console.ros_bridge.time.time', lambda: wall)
+    monkeypatch.setattr('slam_console.ros_bridge.time.monotonic', lambda: mono)
+    bridge.begin(wall)
+    bridge.observe('tracking', True)
+    bridge.observe('odom', wall)
+    assert bridge.health('mapping')['state'] == 'valid'
+    assert not bridge.ready('relocation')
+    bridge.observe('initial', wall - 10)  # Old transient evidence must not satisfy this session.
+    assert not bridge.ready('relocation')
+    bridge.observe('initial', wall)
+    assert bridge.ready('relocation')
+    bridge.observe('tracking', False)
+    assert bridge.health('mapping')['state'] == 'tracking_invalid'
+    bridge.observe('tracking', True)
+    wall += 20  # Clock step affects stamp validation, not receipt age.
+    health = bridge.health('mapping')
+    assert health['odom_age'] == 0
+    assert health['state'] == 'odom_clock_invalid'
+    assert all(i['status'] == 'pass' for i in health['inputs'])
+    wall -= 20
+    mono += 3
+    assert bridge.health('mapping')['state'] == 'odom_stale'
+    bridge.observe('odom', wall)
+    assert bridge.health('mapping')['state'] == 'tracking_stale'
+    bridge.observe('tracking', True)
+    assert bridge.ready('relocation')  # Prior initialization is one-time evidence.
+    bridge.begin(wall)
+    assert bridge.health('mapping')['state'] == 'not_ready'
+
+
+def test_preflight_receipt_age_does_not_use_sensor_wall_clock(monkeypatch):
+    bridge = observer()
+    wall = time.time()
+    monkeypatch.setattr('slam_console.ros_bridge.time.time', lambda: wall + 100)
+    checks = {c['id']: c for c in bridge.preflight_checks()}
+    assert checks['imu.freshness']['status'] == 'pass'
+    assert checks['imu.stamp']['status'] == 'fail'
+    assert checks['imu.stationary']['status'] == 'pass'

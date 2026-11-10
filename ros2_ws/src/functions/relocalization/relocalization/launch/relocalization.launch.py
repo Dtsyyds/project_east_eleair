@@ -23,8 +23,8 @@ def _launch_setup(context):
     try:
         parameters = config["/**"]["ros__parameters"]
         locate_in_prior_map = parameters["locate_in_prior_map"]
-        prior_map_path = parameters["prior_map_path"]
-        prior_map_name = parameters["prior_map_name"]
+        prior_map_path = parameters.get("prior_map_path", "")
+        prior_map_name = parameters.get("prior_map_name", "")
     except (KeyError, TypeError) as error:
         raise RuntimeError(
             f"配置 {mapping_params_file} 的 /**.ros__parameters 中需要包含 "
@@ -33,32 +33,32 @@ def _launch_setup(context):
 
     if not isinstance(locate_in_prior_map, bool):
         raise RuntimeError("locate_in_prior_map 必须是 YAML 布尔值 true 或 false。")
-    if not locate_in_prior_map:
-        raise RuntimeError("重定位入口仅支持先验模式，请将 locate_in_prior_map 设置为 true。")
-    if not isinstance(prior_map_path, str) or not isinstance(prior_map_name, str):
-        raise RuntimeError("prior_map_path 必须是目录字符串，prior_map_name 必须是文件名字符串。")
+    extrinsic_R, extrinsic_T = [], []
+    if locate_in_prior_map:
+        if not isinstance(prior_map_path, str) or not isinstance(prior_map_name, str):
+            raise RuntimeError("prior_map_path 必须是目录字符串，prior_map_name 必须是文件名字符串。")
 
-    try:
-        extrinsics = parameters["extrin_calib"]
-        extrinsic_R = extrinsics["extrinsic_R"]
-        extrinsic_T = extrinsics["extrinsic_T"]
-    except (KeyError, TypeError) as error:
-        raise RuntimeError(
-            "定位模式需要建图 YAML 中的 extrin_calib.extrinsic_R 和 extrinsic_T。"
-        ) from error
-    for name, values, size in [
-        ("extrin_calib.extrinsic_R", extrinsic_R, 9),
-        ("extrin_calib.extrinsic_T", extrinsic_T, 3),
-    ]:
-        if not isinstance(values, list) or len(values) != size or any(
-            isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)
-            for value in values
-        ):
-            raise RuntimeError(f"{name} 必须包含 {size} 个有限数值。")
+        try:
+            extrinsics = parameters["extrin_calib"]
+            extrinsic_R = extrinsics["extrinsic_R"]
+            extrinsic_T = extrinsics["extrinsic_T"]
+        except (KeyError, TypeError) as error:
+            raise RuntimeError(
+                "定位模式需要建图 YAML 中的 extrin_calib.extrinsic_R 和 extrinsic_T。"
+            ) from error
+        for name, values, size in [
+            ("extrin_calib.extrinsic_R", extrinsic_R, 9),
+            ("extrin_calib.extrinsic_T", extrinsic_T, 3),
+        ]:
+            if not isinstance(values, list) or len(values) != size or any(
+                isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)
+                for value in values
+            ):
+                raise RuntimeError(f"{name} 必须包含 {size} 个有限数值。")
 
     start_delay = LaunchConfiguration("start_delay")
 
-    # The static TF always uses mapping's final pose, after prior voxel initialization.
+    # Direct mapping uses identity; prior mode waits for mapping's final alignment.
     map_odom_trans = Node(
         package="relocalization",
         executable="transform_publisher",
@@ -66,8 +66,18 @@ def _launch_setup(context):
         output="screen",
         parameters=[
             {"map_frame_id": parameters.get("publish", {}).get("map_frame_id", "map")},
+            {"locate_in_prior_map": locate_in_prior_map},
         ],
     )
+
+    if not locate_in_prior_map:
+        return [
+            LogInfo(msg=f"直接建图：配准停用，map 与 camera_init 重合；配置：{mapping_params_file}"),
+            map_odom_trans,
+            Node(package="relocalization", executable="teaser_gicp_node",
+                 name="teaser_gicp_node", output="screen",
+                 parameters=[{"locate_in_prior_map": False}]),
+        ]
 
     # Registration parameters follow old/launch_top/example_teaser_gicp.launch.py.
     teaser_gicp_node = Node(
@@ -112,6 +122,8 @@ def _launch_setup(context):
             {"registration_type": "VGICP"},
             parameters.get("relocalization", {}),
             {"algorithm": LaunchConfiguration("algorithm")},
+            # Shared mode cannot be overridden by nested registration options.
+            {"locate_in_prior_map": locate_in_prior_map},
         ],
     )
 
@@ -124,7 +136,7 @@ def _launch_setup(context):
     )
 
     return [
-        LogInfo(msg=f"重定位共用建图配置：{mapping_params_file}"),
+        LogInfo(msg=f"配准与坐标变换共用建图配置：{mapping_params_file}"),
         map_odom_trans,
         delayed_relocalization,
     ]
@@ -139,7 +151,7 @@ def generate_launch_description():
     mapping_config_arg = DeclareLaunchArgument(
         "config_file",
         default_value=mapping_config_cmd,
-        description="与建图共用的 YAML，要求先验模式，读取地图路径及 LiDAR 到 IMU 的外参。",
+        description="与建图共用的 YAML；直接建图停用配准并发布单位 TF，先验模式读取地图与外参。",
     )
 
     start_delay_arg = DeclareLaunchArgument(

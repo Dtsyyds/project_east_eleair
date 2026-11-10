@@ -183,9 +183,24 @@ class SessionManager:
         self.stopping = None
         self.lock = asyncio.Lock()
         self.combined = None
+        self.started_mono = None
+
+    def output_root(self, mode):
+        return (self.config['algorithm_root'] / 'PCD' / ('priori' if mode == 'mapping' else 'relocate')).resolve()
 
     def status(self):
-        return dict(self.current)
+        result = dict(self.current)
+        result['output_roots'] = {mode: str(self.output_root(mode)) for mode in ('mapping', 'relocation')}
+        observing = self.current['state'] in ('starting', 'running')
+        result['health'] = self.bridge.health(self.current['mode']) if observing else {'state': 'unknown', 'checks': [], 'inputs': []}
+        if self.current.get('session_id') and self.current['state'] in ACTIVE:
+            result['position'] = self.bridge.position_status(self.current['mode'])
+        if self.current['state'] == 'starting':
+            result['initialization'] = {
+                'elapsed': max(0, time.monotonic() - self.started_mono),
+                'timeout': self.config['mapping_timeout' if self.current['mode'] == 'mapping' else 'relocation_timeout'],
+                'checks': result['health']['checks']}
+        return result
 
     def persist(self):
         path = self.directory / 'session.json'
@@ -218,18 +233,37 @@ class SessionManager:
 
     def preflight(self, params):
         from .__main__ import static_check
-        errors = []
+        from .ros_bridge import check_item
+        checked_at = time.time()
+        checks = []
+        if self.current['state'] in ACTIVE:
+            checks.append(check_item('session', '当前会话', False, '已有活动 SLAM 会话', '请等待本次任务正常结束。'))
+            return {'ok': False, 'errors': ['已有活动 SLAM 会话'], 'checks': checks, 'checked_at': checked_at}
+        mode = None
         try:
             mode, _, _ = self.options(params)
-            errors.extend(static_check(self.config, check_port=False))
-            errors.extend(self.bridge.preflight())
-            for directory in (self.config['runtime_directory'], self.config['algorithm_root'] / 'PCD' / ('priori' if mode == 'mapping' else 'relocate')):
+            checks.append(check_item('options', '配置与先验地图', True, '直接建图无需先验' if mode == 'mapping' else '先验 XYZ PCD 校验通过'))
+        except (OSError, ValueError) as error:
+            checks.append(check_item('options', '配置与先验地图', False, str(error), '检查建图模式及所选先验地图。'))
+        dependencies = static_check(self.config, check_port=False)
+        checks.append(check_item('dependencies', '软件依赖与算法安装', not dependencies,
+            '\n'.join(dependencies) or '依赖检查通过', '检查运行环境和算法安装，查看详情中的缺失项。'))
+        checks.extend(self.bridge.preflight_checks())
+        directories = [('runtime_directory', '会话记录目录', self.config['runtime_directory']),
+                       ('output_directory', '地图输出目录', self.output_root(mode) if mode else None)]
+        for key, label, directory in directories:
+            if directory is None:
+                checks.append(check_item(key, label, None, '配置未通过，尚未检查输出目录', '修正配置后重新检查。'))
+                continue
+            try:
                 directory.mkdir(parents=True, exist_ok=True)
                 with tempfile.TemporaryFile(dir=directory):
                     pass
-        except (OSError, ValueError) as error:
-            errors.append(str(error))
-        return {'ok': not errors, 'errors': errors}
+                checks.append(check_item(key, label, True, str(directory)))
+            except OSError as error:
+                checks.append(check_item(key, label, False, str(error), '检查目录权限及磁盘空间。'))
+        errors = [c['detail'] for c in checks if c['status'] != 'pass']
+        return {'ok': not errors, 'errors': errors, 'checks': checks, 'checked_at': checked_at}
 
     async def start(self, params, request_id=None):
         from .__main__ import base_parameters
@@ -243,7 +277,7 @@ class SessionManager:
             sid = time.strftime('%Y%m%d_%H%M%S') + '_' + uuid.uuid4().hex[:12]
             self.directory = self.config['runtime_directory'] / sid
             self.directory.mkdir(parents=True)
-            self.output = self.config['algorithm_root'] / 'PCD' / ('priori' if mode == 'mapping' else 'relocate') / sid
+            self.output = self.output_root(mode) / sid
             self.output.mkdir(parents=True)
             data = base_parameters(self.config)
             p = data['/**']['ros__parameters']
@@ -261,14 +295,15 @@ class SessionManager:
                             'save': save, 'started': time.time(), 'runtime_directory': str(self.directory),
                             'output_directory': str(self.output), 'save_result': None, 'error': None,
                             'processes': {}, 'node_failures': {}, 'save_error': None}
-            self.bridge.begin(self.current['started'])
+            self.started_mono = time.monotonic()
+            self.bridge.begin(self.current['started'], p.get('publish', {}).get('map_frame_id', 'map'))
             self.combined = (self.directory / 'launch.log').open('ab', buffering=0)
             self.processes, self.readers, self.stopping = {}, [], None
             self.persist()
             try:
-                launches = [('mapping', 'fast_livo', 'mapping_relocation.launch.py')]
-                if mode == 'relocation':
-                    launches.append(('relocation', 'relocalization', 'relocalization.launch.py'))
+                # One launch owns the complete stack in both modes. Keep the
+                # mapping log key for existing session/log consumers.
+                launches = [('mapping', 'relocalization', 'slam.launch.py')]
                 for name, package, launch in launches:
                     command = ['ros2', 'launch', package, launch, f'config_file:={config_file}',
                                'sigterm_timeout:=120', 'sigkill_timeout:=5']
@@ -344,7 +379,7 @@ class SessionManager:
                     if self.bridge.ready(self.current['mode']):
                         self.current['state'] = 'running'
                         self.persist()
-                    elif time.time() - self.current['started'] > timeout:
+                    elif time.monotonic() - self.started_mono > timeout:
                         self.current['error'] = f'初始化超时（{timeout:g}s），未收到本次有效里程计/跟踪/先验初始化证据'
                         await self.stop(self.current['session_id'])
                         return
@@ -371,7 +406,9 @@ class SessionManager:
                 await self.monitor
         forced = False
         for process in self.processes.values():
-            if process.stdin:
+            # The unified launch already shuts down its peers on a core-node
+            # failure. Do not send a second SIGINT while FAST-LIVO saves.
+            if process.stdin and not self.current['node_failures']:
                 process.stdin.close()  # EOF is also the service-death fallback.
         self.current['state'] = 'saving' if self.current['save'] else 'stopping'
         self.persist()
@@ -412,6 +449,7 @@ class SessionManager:
             outcome = 'no_valid_map'
         self.current.update(state='failed' if self.current['error'] or forced or outcome == 'failed' else 'stopped',
                             save_result=outcome, maps=valid, returncodes=codes, ended=time.time())
+        self.current['position'] = self.bridge.position_status(self.current['mode'])
         self.persist()
 
     def logs(self, sid, cursor=0):

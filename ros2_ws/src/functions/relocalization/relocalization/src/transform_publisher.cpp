@@ -1,9 +1,9 @@
 /*
-将建图完成先验初始化后的最终局部参考系位姿发布为静态 TF。
-固定订阅 /fast_livo2/initial_map_pose，并常驻维护 map -> camera_init。
+统一维护 map -> camera_init：直接建图使用单位变换；重定位等待建图完成先验初始化。
 */
 #include <rclcpp/rclcpp.hpp>
 #include <cmath>
+#include <stdexcept>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <tf2_ros/static_transform_broadcaster.h>
 
@@ -15,7 +15,23 @@ public:
     {
         odom_frame_id = this->declare_parameter<std::string>("odom_frame_id", "camera_init");
         map_frame_id = this->declare_parameter<std::string>("map_frame_id", "map");
+        if (odom_frame_id.empty() || map_frame_id.empty() || odom_frame_id == map_frame_id) {
+            throw std::invalid_argument("map_frame_id and odom_frame_id must be non-empty and distinct.");
+        }
+        const bool prior_mode = this->declare_parameter<bool>("locate_in_prior_map", true);
         broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
+        if (!prior_mode) {
+            geometry_msgs::msg::TransformStamped transform;
+            transform.header.stamp = this->now();
+            transform.header.frame_id = map_frame_id;
+            transform.child_frame_id = odom_frame_id;
+            transform.transform.rotation.w = 1.0;
+            broadcaster_->sendTransform(transform);
+            received_ = true;
+            RCLCPP_INFO(get_logger(), "Direct mapping: published identity %s -> %s.",
+                        map_frame_id.c_str(), odom_frame_id.c_str());
+            return;
+        }
         subscription_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
             "/fast_livo2/initial_map_pose", rclcpp::QoS(1).reliable().transient_local(),
             std::bind(&TransformPublisherNode::callback, this, std::placeholders::_1));

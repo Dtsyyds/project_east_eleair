@@ -57,6 +57,13 @@ public:
     explicit TeaserGicpNode(const std::string &algorithm)
         : Node("teaser_gicp_node"), state_(LocalizationState::TEASER_PHASE)
     {
+        // Direct mapping still owns this node, but has no registration work.
+        // Return before prior-map validation, subscriptions and watchdog setup.
+        if (!this->declare_parameter<bool>("locate_in_prior_map", true)) {
+            RCLCPP_INFO(this->get_logger(),
+                "Direct mapping: registration disabled; transform_publisher provides identity map alignment.");
+            return;
+        }
         // ================= 参数声明 =================
         
         this->declare_parameter("algorithm", algorithm);
@@ -303,12 +310,12 @@ private:
     // ===================== 核心处理函数 =====================
     void process_cloud(pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud)
     {
+        if (finished_) return;
         if (teaser_map_cloud_.empty() || gicp_map_pcl_->empty()) {
             RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 5000, "Map not ready.");
             return;
         }
 
-        if (finished_) return;
         if (!input_cloud || input_cloud->size()<10) return;
         input_cloud->erase(std::remove_if(input_cloud->begin(), input_cloud->end(), [](const auto &point){ return !pcl::isFinite(point); }), input_cloud->end());
         if (input_cloud->size()<10) return;
@@ -604,6 +611,7 @@ private:
 
     void deliver_initial_pose()
     {
+        if (initial_pose_accepted_) return;
         const auto now = std::chrono::steady_clock::now();
         if (initial_pose_future_.valid()) {
             // Poll without spinning or blocking inside the executor's timer callback.
@@ -611,10 +619,19 @@ private:
                 const auto response = initial_pose_future_.get();
                 if (!response->accepted)
                     throw std::runtime_error("Mapping rejected the initial pose: " + response->message);
+                initial_pose_accepted_ = true;
+                watchdog_->cancel();
+                cloud_sub_.reset();
+#ifdef USE_LIVOX
+                lvx_cloud_sub_.reset();
+#endif
+                pose_sub_.reset();
+                initial_pose_future_ = {};
+                initial_pose_request_.reset();
+                initial_pose_client_.reset();
                 RCLCPP_INFO(get_logger(),
-                    "Mapping confirmed initial pose acceptance: %s Solver exits; IMU/prior-map initialization continues independently.",
+                    "Mapping confirmed initial pose acceptance: %s Registration complete; node remains idle until shutdown. IMU/prior-map initialization continues independently.",
                     response->message.c_str());
-                rclcpp::shutdown();
                 return;
             }
             if (now - request_sent_time_ < std::chrono::seconds(2) &&
@@ -650,6 +667,7 @@ private:
     // ===================== ROS 回调 =====================
     void cloud_callback(const sensor_msgs::msg::PointCloud2::SharedPtr msg)
     {
+        if (finished_) return;
         pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud(new pcl::PointCloud<pcl::PointXYZ>);
         pcl::fromROSMsg(*msg, *input_cloud);
         process_cloud(input_cloud);
@@ -658,6 +676,7 @@ private:
 #ifdef USE_LIVOX
     void lvx_cloud_callback(const livox_ros_driver2::msg::CustomMsg::SharedPtr msg)
     {
+        if (finished_) return;
         pcl::PointCloud<pcl::PointXYZ>::Ptr input_cloud(new pcl::PointCloud<pcl::PointXYZ>);
         input_cloud->reserve(msg->point_num);
         for (uint i = 0; i < msg->point_num; i++) {
@@ -671,6 +690,7 @@ private:
 
     void pose_callback(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg)
     {
+        if (finished_) return;
         const auto &position=msg->pose.pose.position; const auto &orientation=msg->pose.pose.orientation;
         const double norm=orientation.x*orientation.x+orientation.y*orientation.y+orientation.z*orientation.z+orientation.w*orientation.w;
         if (msg->header.frame_id!=map_frame_id_ || !std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z) || !std::isfinite(norm) || norm<1e-12) {
@@ -722,6 +742,7 @@ private:
     int max_attempts_=300, attempts_=0;
     double timeout_seconds_=120, initial_pose_timeout_seconds_=30;
     bool finished_=false;
+    bool initial_pose_accepted_=false;
     std::chrono::steady_clock::time_point start_time_, delivery_start_time_, request_sent_time_;
     rclcpp::TimerBase::SharedPtr watchdog_;
     pcl::PointCloud<pcl::FPFHSignature33>::Ptr sac_target_features_;

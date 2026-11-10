@@ -83,7 +83,10 @@ def static_check(c, check_port=True):
             errors.append(f'依赖 {module} 不可用：{error}')
     try:
         from ament_index_python.packages import get_package_share_directory, get_package_prefix
-        for package, launch, executable in [('fast_livo', 'mapping_relocation.launch.py', 'fastlivo_mapping'), ('relocalization', 'relocalization.launch.py', 'teaser_gicp_node')]:
+        for package, launch, executable in [
+                ('fast_livo', 'mapping_relocation.launch.py', 'fastlivo_mapping'),
+                ('relocalization', 'slam.launch.py', 'teaser_gicp_node'),
+                ('relocalization', 'relocalization.launch.py', 'transform_publisher')]:
             for path in (Path(get_package_share_directory(package)) / 'launch' / launch,
                          Path(get_package_prefix(package)) / 'lib' / package / executable):
                 if not path.is_file():

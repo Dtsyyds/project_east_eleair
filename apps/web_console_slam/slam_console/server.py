@@ -14,6 +14,7 @@ from websockets.exceptions import ConnectionClosed
 from .session import SessionManager
 
 APP = Path(__file__).resolve().parents[1]
+VERSION = '20261111-position'
 STATIC = {'/': ('index.html', 'text/html; charset=utf-8'),
           '/index.html': ('index.html', 'text/html; charset=utf-8'),
           '/console.js': ('console.js', 'text/javascript; charset=utf-8'),
@@ -92,6 +93,7 @@ class Server:
                     raise ValueError('服务正在退出')
                 if op == 'status':
                     result = self.manager.status()
+                    result['backend_version'] = VERSION
                     start_id = params.get('start_request_id')
                     if start_id:
                         cached = self.cache.get(start_id)
@@ -148,7 +150,7 @@ class Server:
                     continue
                 now = asyncio.get_running_loop().time()
                 if now - last_status >= .5:
-                    await send({'type': 'status', **self.manager.status()})
+                    await send({'type': 'status', 'backend_version': VERSION, **self.manager.status()})
                     last_status = now
                 sid = self.manager.current['session_id']
                 for topic, preview in self.manager.bridge.previews().items():
